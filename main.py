@@ -40,6 +40,8 @@ def cat(file):
 
 
 def get_pages_in_pdf(file):
+    # TODO: add also the option to use pdfinfo (like in the original shell script)
+    # TODO: see if you can find the number of pages using a python module (e.g. PyPDF2)
     cmd = 'mdls -raw -name kMDItemNumberOfPages %s' % file
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
