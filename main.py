@@ -11,9 +11,15 @@ import tempfile
 
 
 def tesseract_wrapper(input_file, output_file):
-    cmd = 'tesseract %s stdout --psm 12 > %s || exit 1' % (input_file, output_file)
+    # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
+    cmd = 'tesseract %s stdout --psm 12'
     args = shlex.split(cmd)
+    subprocess.run(args, stdout=open(output_file, 'w'), encoding='utf-8', bufsize=4096)
     result = subprocess.run(args, stdout=subprocess.PIPE)
+    if result.returncode == 1:
+        return 1  # command failed
+    else:
+        return 0  # command succeeded
 
 
 # Environment variables with default values
@@ -74,15 +80,19 @@ def remove_file(file):
 
 def ocr_file(input_file, output_file, mime_type):
     def convert_pdf_page(page, input_file, output_file):
-        args = 'gs -dSAFER -q -r300 -dFirstPage=%s -dLastPage=%s dNOPAUSE ' \
+        cmd = 'gs -dSAFER -q -r300 -dFirstPage=%s -dLastPage=%s dNOPAUSE ' \
               '-dINTERPOLATE -sDEVICE=png16m -sOutputFile=%s %s -c quit' % (page, page, output_file, input_file)
-        args = shlex.split(args)
+        args = shlex.split(cmd)
+        result = subprocess.run(args, stdout=subprocess.PIPE)
+        return result.returncode
+
         return args
 
     def convert_djvu_page(page, input_file, output_file):
-        args = 'ddjvu -page=%s -format=tif %s %s' % (page, input_file, output_file)
-        args = shlex.split(args)
-        return args
+        cmd = 'ddjvu -page=%s -format=tif %s %s' % (page, input_file, output_file)
+        args = shlex.split(cmd)
+        result = subprocess.run(args, stdout=subprocess.PIPE)
+        return result.returncode
 
     ipdb.set_trace()
 
@@ -126,6 +136,8 @@ def ocr_file(input_file, output_file, mime_type):
             # TODO: decho
             print('Running OCR of page %s, using tmp files %s and %s ...' % (page, tmp_file, tmp_file_txt))
 
+            # TODO: do something with the returned values, or better raise errors instead and log
+            # the errors
             page_convert_cmd(input_file, tmp_file, page)
             OCR_COMMAND(tmp_file, tmp_file_txt)
             cat(tmp_file_txt)
