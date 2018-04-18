@@ -38,6 +38,7 @@ def decho():
     pass
 
 
+# TODO: place all the bash wrappers in a module in the utilities package
 def cat(file):
     cmd = 'cat {}'.format(file)
     args = shlex.split(cmd)
@@ -140,6 +141,7 @@ def ocr_file(input_file, output_file, mime_type):
             # the errors
             page_convert_cmd(input_file, tmp_file, page)
             OCR_COMMAND(tmp_file, tmp_file_txt)
+            # TODO: use python copy instead of cat
             cat(tmp_file_txt)
 
             # TODO: decho
@@ -148,8 +150,7 @@ def ocr_file(input_file, output_file, mime_type):
             remove_file(tmp_file_txt)
         page += 1
 
-        # TODO: run > command
-        # TODO: is it necessary
+        # TODO: run > command, i.e. everything on the stdout must be copied to the output file
         # cmd = '> %s' %output_file
 
 
