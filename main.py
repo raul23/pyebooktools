@@ -9,6 +9,7 @@ import ipdb
 import os
 import re
 import shlex
+import string
 import subprocess
 import tempfile
 
@@ -181,13 +182,60 @@ def ocr_file(input_file, output_file, mime_type):
     return 0
 
 
-def find_isbns(basename):
+# Validates ISBN-10 and ISBN-13 numbers
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L215
+def is_isbn_valid(isbn):
+    ipdb.set_trace()
+    # Remove whitespaces (space, tab, newline, and so on), '-', and capitalize all
+    # characters (ISBNs can consist of numbers [0-9] and the letters [xX])
+    isbn = ''.join(isbn.split())
+    isbn = isbn.replace('-', '')
+    isbn = isbn.upper()
+
+    sum = 0
+    # Case 1: ISBN-10
+    if len(isbn) == 10:
+        for i in range(len(isbn)):
+            number = isbn[i]
+            if i == 9 and number == 'X':
+                number = 10
+            sum += (number * (10 - i))
+        if sum % 11 == 0:
+            return True
+    # Case 2: ISBN-13
+    elif len(isbn) == 13:
+        if isbn[0:3] in ['978', '979']:
+            for i in range(0, len(isbn), 2):
+                sum += int(isbn[i])
+            for i in range(1, len(isbn), 2):
+                sum += (int(isbn[i])*3)
+            if sum % 10 == 0:
+                return True
+    return False
+
+
+# Searches the in_str for ISBN-like sequences and removes duplicates and finally
+# validates them using is_isbn_valid() and returns them separated by
+# $ISBN_RET_SEPARATOR
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L274
+def find_isbns(in_str):
     ipdb.set_trace()
     isbns = []
-    matches = re.finditer(ISBN_REGEX, basename)
+    matches = re.finditer(ISBN_REGEX, in_str)
     for _, match in enumerate(matches):
         match = match.group()
-        isbns.append(match)
+        # Remove everything except numbers, 'x', 'X'
+        # NOTE: equivalent to `tr -c -d '0-9xX'`
+        # TODO: they don't remove \n in their code
+        # TODO: do the following in a function
+        del_tab = string.printable[10:].replace('x', '').replace('X', '')
+        tran_tab = str.maketrans('', '', del_tab)
+        match = match.translate(tran_tab)
+        # Only keep unique ISBNs
+        if not match in isbns:
+            # Validate ISBN
+            if is_isbn_valid(match):
+                isbns.append(match)
     return ISBN_RET_SEPARATOR.join(isbns)
 
 
@@ -201,16 +249,14 @@ def find_isbns(basename):
 def search_file_for_isbns(file_path):
     # TODO: decho
     print('Searching file {} for ISBN numbers...'.format(file_path))
-
-    ipdb.set_trace()
     # First step: check the filename for ISBNs
     basename = os.path.basename(file_path)
     isbns = find_isbns(basename)
-    if not isbns:
+    if isbns:
         pass
         # TODO: decho
         print('Extracted ISBNs {} from the file name!'.format(isbns))
-        print(isbns, end='')
+        print(isbns)
         return
 
     # Second step: if valid mime type, search file contents for isbns
@@ -241,8 +287,11 @@ if __name__ == '__main__':
 
     # Testing search_file_for_isbns()
     # Test1: check the filename for ISBNs
-    test_strs = ['/Users/test/ebooks/9788175257665_93-9483-398-9.pdf',
-                 '/Users/test/ebooks/ISBN9788175257665.djvu']
+    # test_strs = ['/Users/test/ebooks/9788175257665_93-9483-398-9.pdf',
+    #              '/Users/test/ebooks/ISBN9788175257665.djvu']
+    # Test2: check for duplicate ISBNs in filename
+    test_strs = ['/Users/test/ebooks/9788175257665_9788-1752-57665_9789475237625.pdf',
+                 '/Users/test/ebooks/ISBN9788175257665_9788175257665abcdef9788-1752-57665abcdef.pdf']
     ipdb.set_trace()
     for s in test_strs:
         search_file_for_isbns(s)
