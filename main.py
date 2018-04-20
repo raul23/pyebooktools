@@ -2,9 +2,12 @@
 Port ebooks-managing shell scripts to Python
 ref.: https://github.com/na--/ebook-tools
 """
+# TODO: python3 compatible only, e.g. print('', end='') [use from __future__ import print_function for python 2]
+# ref.: https://stackoverflow.com/a/5071123
 # import PyPDF2
 import ipdb
 import os
+import re
 import shlex
 import subprocess
 import tempfile
@@ -26,14 +29,23 @@ def tesseract_wrapper(input_file, output_file):
 OCR_ENABLED = False
 OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
 OCR_COMMAND = tesseract_wrapper
+# This regular expression should match most ISBN10/13-like sequences in
+# texts. To minimize false-positives, matches should be passed through
+# is_isbn_valid() or another ISBN validator
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L46
+ISBN_REGEX = r"(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])"
+ISBN_RET_SEPARATOR = ','
 
 
 # Returns non-zero status if the supplied command does not exist
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L289
+# TODO: complete its implementation
 def command_exists(test_cmd):
     cmd = 'command -v %s >/dev/null 2>&1' % test_cmd
     return cmd
 
 
+# TODO: complete its implementation
 def decho():
     pass
 
@@ -57,7 +69,7 @@ def get_pages_in_pdf(file):
 
 
 # Returns number of pages in djvu document
-def get_pages_in_djvu(input_file):
+def get_pages_in_djvu(file):
     # TODO: To access the djvu command line utilities and their documentation,
     # you must set the shell variable PATH and MANPATH appropriately. This can
     # be achieved by invoking a convenient shell script hidden inside the application bundle:
@@ -169,12 +181,49 @@ def ocr_file(input_file, output_file, mime_type):
     return 0
 
 
+def find_isbns(basename):
+    ipdb.set_trace()
+    isbns = []
+    matches = re.finditer(ISBN_REGEX, basename)
+    for _, match in enumerate(matches):
+        match = match.group()
+        isbns.append(match)
+    return ISBN_RET_SEPARATOR.join(isbns)
+
+
+# Tries to find ISBN numbers in the given ebook file by using progressively
+# more "expensive" tactics.
+# These are the steps:
+# - Check the supplied file name for ISBNs (the path is ignored)
+# - If the MIME type of the file matches ISBN_DIRECT_GREP_FILES, search  the
+#   file contents directly for ISBNs
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L499
+def search_file_for_isbns(file_path):
+    # TODO: decho
+    print('Searching file {} for ISBN numbers...'.format(file_path))
+
+    ipdb.set_trace()
+    # First step: check the filename for ISBNs
+    basename = os.path.basename(file_path)
+    isbns = find_isbns(basename)
+    if not isbns:
+        pass
+        # TODO: decho
+        print('Extracted ISBNs {} from the file name!'.format(isbns))
+        print(isbns, end='')
+        return
+
+    # Second step: if valid mime type, search file contents for isbns
+    pass
+
+
 if __name__ == '__main__':
     # NOTE: to find file's mimetype
     # file --brief --mime-type file.pdf
 
     # Testing ocr_file()
     # Test1: pdf document
+    """
     ocr_file(input_file=os.path.expanduser('~/test/ebooks/book1.pdf'),
              output_file='out.txt',
              mime_type='application/pdf')
@@ -188,3 +237,12 @@ if __name__ == '__main__':
     ocr_file(input_file=os.path.expanduser('~/test/ebooks/image.png'),
              output_file='out.txt',
              mime_type='image/')
+    """
+
+    # Testing search_file_for_isbns()
+    # Test1: check the filename for ISBNs
+    test_strs = ['/Users/test/ebooks/9788175257665_93-9483-398-9.pdf',
+                 '/Users/test/ebooks/ISBN9788175257665.djvu']
+    ipdb.set_trace()
+    for s in test_strs:
+        search_file_for_isbns(s)
