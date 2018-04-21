@@ -37,6 +37,26 @@ OCR_COMMAND = tesseract_wrapper
 ISBN_REGEX = r"(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])"
 ISBN_RET_SEPARATOR = ','
 
+# Horizontal whitespace and dash-like ASCII and Unicode characters that are
+# used for better matching of ISBNs in (badly) OCR-ed books. Gathered from:
+# - https://en.wikipedia.org/wiki/Whitespace_character
+# - https://en.wikipedia.org/wiki/Dash#Similar_Unicode_characters
+# - https://en.wikipedia.org/wiki/Dash#Common_dashes
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L31
+"""
+: "${WSD:="[\\x{0009}\\x{0020}\\x{00A0}\\x{1680}\\x{2000}\
+\\x{2001}\\x{2002}\\x{2003}\\x{2004}\\x{2005}\\x{2006}\\x{2007}\\x{2008}\
+\\x{2009}\\x{200A}\\x{202F}\\x{205F}\\x{3000}\\x{180E}\\x{200B}\\x{200C}\
+\\x{200D}\\x{2060}\\x{FEFF}\\x{002D}\\x{005F}\\x{007E}\\x{00AD}\\x{00AF}\
+\\x{02C9}\\x{02CD}\\x{02D7}\\x{02DC}\\x{2010}\\x{2011}\\x{2012}\\x{203E}\
+\\x{2043}\\x{207B}\\x{208B}\\x{2212}\\x{223C}\\x{23AF}\\x{23E4}\\x{2500}\
+\\x{2796}\\x{2E3A}\\x{2E3B}\\x{10191}\\x{2012}\\x{2013}\\x{2014}\\x{2015}\
+\\x{2053}\\x{058A}\\x{05BE}\\x{1428}\\x{1B78}\\x{3161}\\x{30FC}\\x{FE63}\
+\\x{FF0D}\\x{10110}\\x{1104B}\\x{11052}\\x{110BE}\\x{1D360}]?"}"
+"""
+# TODO: add ASCII and Unicode horizontal for whitespace and dash characters
+WSD = []
+
 
 # Returns non-zero status if the supplied command does not exist
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L289
@@ -196,10 +216,11 @@ def is_isbn_valid(isbn):
     # Case 1: ISBN-10
     if len(isbn) == 10:
         for i in range(len(isbn)):
-            number = isbn[i]
-            if i == 9 and number == 'X':
+            number = int(isbn[i])
+            if i == 9 and isbn[i] == 'X':
                 number = 10
             sum += (number * (10 - i))
+        ipdb.set_trace()
         if sum % 11 == 0:
             return True
     # Case 2: ISBN-13
@@ -209,8 +230,10 @@ def is_isbn_valid(isbn):
                 sum += int(isbn[i])
             for i in range(1, len(isbn), 2):
                 sum += (int(isbn[i])*3)
+            ipdb.set_trace()
             if sum % 10 == 0:
                 return True
+    ipdb.set_trace()
     return False
 
 
@@ -290,8 +313,22 @@ if __name__ == '__main__':
     # test_strs = ['/Users/test/ebooks/9788175257665_93-9483-398-9.pdf',
     #              '/Users/test/ebooks/ISBN9788175257665.djvu']
     # Test2: check for duplicate ISBNs in filename
-    test_strs = ['/Users/test/ebooks/9788175257665_9788-1752-57665_9789475237625.pdf',
-                 '/Users/test/ebooks/ISBN9788175257665_9788175257665abcdef9788-1752-57665abcdef.pdf']
+    # test_strs = ['/Users/test/ebooks/9788175257665_9788-1752-57665_9789475237625.pdf',
+    #              '/Users/test/ebooks/ISBN9788175257665_9788175257665abcdef9788-1752-57665abcdef.pdf']
+    # Test3: validate ISBNs
+    """
+    valid_test_strs = ['/Users/test/ebooks/book_0-387-97812-7.pdf',
+                       '/Users/test/ebooks/book_3-540-97812-7.pdf',
+                       '/Users/test/ebooks/book_978-0-521-89806-5.djvu',
+                       '/Users/test/ebooks/book9780198782926author.pdf'
+                       '/Users/test/ebooks/image.png']
+    """
+    invalid_test_sts = ['/Users/test/ebooks/book_977-0-521-89806-9.djvu',
+                        '/Users/test/ebooks/book_978-0-521-28980-6.pdf',
+                        '/Users/test/ebooks/book978-0-198-78292-4.pdf']
     ipdb.set_trace()
-    for s in test_strs:
+    # TODO: validate filenames with two and more ISBNs
+    #for s in valid_test_strs:
+    #    search_file_for_isbns(s)
+    for s in invalid_test_sts:
         search_file_for_isbns(s)
