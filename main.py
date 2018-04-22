@@ -26,17 +26,6 @@ def tesseract_wrapper(input_file, output_file):
         return 0  # command succeeded
 
 
-# Environment variables with default values
-OCR_ENABLED = False
-OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
-OCR_COMMAND = tesseract_wrapper
-# This regular expression should match most ISBN10/13-like sequences in
-# texts. To minimize false-positives, matches should be passed through
-# is_isbn_valid() or another ISBN validator
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L46
-ISBN_REGEX = r"(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])"
-ISBN_RET_SEPARATOR = ','
-
 # Horizontal whitespace and dash-like ASCII and Unicode characters that are
 # used for better matching of ISBNs in (badly) OCR-ed books. Gathered from:
 # - https://en.wikipedia.org/wiki/Whitespace_character
@@ -56,6 +45,31 @@ ISBN_RET_SEPARATOR = ','
 """
 # TODO: add ASCII and Unicode horizontal for whitespace and dash characters
 WSD = []
+
+# This regular expression should match most ISBN10/13-like sequences in
+# texts. To minimize false-positives, matches should be passed through
+# is_isbn_valid() or another ISBN validator
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L46
+ISBN_REGEX = r"(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])"
+ISBN_DIRECT_GREP_FILES = "^(text/(plain|xml|html)|application/xml)$"
+ISBN_IGNORED_FILES = "^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$"
+ISBN_RET_SEPARATOR = ','
+
+# These options specify if and how we should reorder ISBN_DIRECT_GREP files
+# before passing them to find_isbns(). If true, the first
+# ISBN_GREP_RF_SCAN_FIRST lines of the files are passed as is, then we pass
+# the last ISBN_GREP_RF_REVERSE_LAST in reverse order and finally we pass the
+# remainder in the middle. There is no issue if files have fewer lines, there
+# will be no duplicate lines passed to grep.
+ISBN_GREP_REORDER_FILES = True
+ISBN_GREP_RF_SCAN_FIRST = 400
+ISBN_GREP_RF_REVERSE_LAST = 50
+
+# Whether to use OCR on image files, pdfs and djvu files for ISBN searching
+# and conversion to txt
+OCR_ENABLED = False
+OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
+OCR_COMMAND = tesseract_wrapper
 
 
 # Returns non-zero status if the supplied command does not exist
@@ -205,7 +219,6 @@ def ocr_file(input_file, output_file, mime_type):
 # Validates ISBN-10 and ISBN-13 numbers
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L215
 def is_isbn_valid(isbn):
-    ipdb.set_trace()
     # Remove whitespaces (space, tab, newline, and so on), '-', and capitalize all
     # characters (ISBNs can consist of numbers [0-9] and the letters [xX])
     isbn = ''.join(isbn.split())
@@ -233,7 +246,6 @@ def is_isbn_valid(isbn):
             ipdb.set_trace()
             if sum % 10 == 0:
                 return True
-    ipdb.set_trace()
     return False
 
 
@@ -241,10 +253,9 @@ def is_isbn_valid(isbn):
 # validates them using is_isbn_valid() and returns them separated by
 # $ISBN_RET_SEPARATOR
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L274
-def find_isbns(in_str):
-    ipdb.set_trace()
+def find_isbns(input_str):
     isbns = []
-    matches = re.finditer(ISBN_REGEX, in_str)
+    matches = re.finditer(ISBN_REGEX, input_str)
     for _, match in enumerate(matches):
         match = match.group()
         # Remove everything except numbers, 'x', 'X'
@@ -262,18 +273,58 @@ def find_isbns(in_str):
     return ISBN_RET_SEPARATOR.join(isbns)
 
 
+def get_mimetype(file_path):
+    # TODO: get MIME type with a python package, see the magic package
+    # ref.: https://stackoverflow.com/a/2753385
+    cmd = 'file --brief --mime-type {}'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.stdout.decode('UTF-8').split()[0]
+
+
+# If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
+# to the values of ISBN_GREP_RF_SCAN_FIRST and ISBN_GREP_RF_REVERSE_LAST
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L261
+def reorder_file_content(file_path):
+    ipdb.set_trace()
+    if ISBN_GREP_REORDER_FILES:
+        print('Reordering input file (if possible), read first ISBN_GREP_RF_SCAN_FIRST '
+              'lines normally, then read last ISBN_GREP_RF_REVERSE_LAST lines '
+              'in reverse and then read the rest')
+        tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
+        # TODO: try out with big file, more than 800 pages (approx. 73k lines)
+        # TODO: see alternatives for reading big file @ https://stackoverflow.com/a/4999741 (mmap),
+        # https://stackoverflow.com/a/24809292 (linecache), https://stackoverflow.com/a/42733235 (buffer)
+        with open(file_path, 'r') as f:
+            data = f.readlines()
+            num_lines = len(data)
+            first_part = data[:ISBN_GREP_RF_SCAN_FIRST]
+            middle_part = data[ISBN_GREP_RF_SCAN_FIRST:(num_lines-ISBN_GREP_RF_REVERSE_LAST)]
+            last_part = data[-ISBN_GREP_RF_REVERSE_LAST:]
+        with open(file_path, 'w') as f:
+            pass
+        # Remove temporary file
+        remove_file(tmp_file_txt)
+    else:
+        return file_path
+
+
 # Tries to find ISBN numbers in the given ebook file by using progressively
 # more "expensive" tactics.
 # These are the steps:
-# - Check the supplied file name for ISBNs (the path is ignored)
-# - If the MIME type of the file matches ISBN_DIRECT_GREP_FILES, search  the
-#   file contents directly for ISBNs
+# 1. Check the supplied file name for ISBNs (the path is ignored)
+# 2. If the MIME type of the file matches ISBN_DIRECT_GREP_FILES, search the
+#    file contents directly for ISBNs
+# 3. If the MIME type matches ISBN_IGNORED_FILES, the function returns early
+#    with no results
+# 4. Check the file metadata from calibre's `ebook-meta` for ISBNs
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L499
 def search_file_for_isbns(file_path):
     # TODO: decho
     print('Searching file {} for ISBN numbers...'.format(file_path))
-    # First step: check the filename for ISBNs
+    # Step 1: check the filename for ISBNs
     basename = os.path.basename(file_path)
+    ipdb.set_trace()
     isbns = find_isbns(basename)
     if isbns:
         pass
@@ -282,8 +333,25 @@ def search_file_for_isbns(file_path):
         print(isbns)
         return
 
-    # Second step: if valid mime type, search file contents for isbns
-    pass
+    # Steps 2-3: (2) if valid MIME type, search file contents for isbns and
+    # (3) if invalid MIME type, exit without results
+    mimetype = get_mimetype(file_path)
+    if re.match(ISBN_DIRECT_GREP_FILES, mimetype):
+        # TODO: decho
+        print('Ebook is in text format, trying to find ISBN directly')
+        reord_file_path = reorder_file_content(file_path)
+    elif re.match(ISBN_IGNORED_FILES, mimetype):
+        print('The file type in the blacklist, ignoring...')
+        return
+
+    # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
+
+    if isbns:
+        # TODO: decho
+        print('Returning the found ISBNs {}!'.format(isbns))
+        print(isbns)
+    else:
+        print('Could not find any ISBNs in {} :('.format(file_path))
 
 
 if __name__ == '__main__':
@@ -322,13 +390,18 @@ if __name__ == '__main__':
                        '/Users/test/ebooks/book_978-0-521-89806-5.djvu',
                        '/Users/test/ebooks/book9780198782926author.pdf'
                        '/Users/test/ebooks/image.png']
-    """
     invalid_test_sts = ['/Users/test/ebooks/book_977-0-521-89806-9.djvu',
                         '/Users/test/ebooks/book_978-0-521-28980-6.pdf',
                         '/Users/test/ebooks/book978-0-198-78292-4.pdf']
-    ipdb.set_trace()
     # TODO: validate filenames with two and more ISBNs
-    #for s in valid_test_strs:
-    #    search_file_for_isbns(s)
+    for s in valid_test_strs:
+        search_file_for_isbns(s)
     for s in invalid_test_sts:
+        search_file_for_isbns(s)
+    """
+    test_sts = [os.path.expanduser('~/test/ebooks/book3.txt'),
+                os.path.expanduser('~/test/ebooks/book1.pdf'),
+                os.path.expanduser('~/test/ebooks/book2.djvu')]
+    ipdb.set_trace()
+    for s in test_sts:
         search_file_for_isbns(s)
