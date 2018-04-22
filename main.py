@@ -258,8 +258,8 @@ def find_isbns(input_str):
     matches = re.finditer(ISBN_REGEX, input_str)
     for _, match in enumerate(matches):
         match = match.group()
-        # Remove everything except numbers, 'x', 'X'
-        # NOTE: equivalent to `tr -c -d '0-9xX'`
+        # Remove everything except numbers [0-9], 'x', and 'X'
+        # NOTE: equivalent to UNIX command `tr -c -d '0-9xX'`
         # TODO: they don't remove \n in their code
         # TODO: do the following in a function
         del_tab = string.printable[10:].replace('x', '').replace('X', '')
@@ -285,28 +285,38 @@ def get_mimetype(file_path):
 # If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
 # to the values of ISBN_GREP_RF_SCAN_FIRST and ISBN_GREP_RF_REVERSE_LAST
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L261
-def reorder_file_content(file_path):
+def reorder_file_content(input_file):
     ipdb.set_trace()
     if ISBN_GREP_REORDER_FILES:
         print('Reordering input file (if possible), read first ISBN_GREP_RF_SCAN_FIRST '
               'lines normally, then read last ISBN_GREP_RF_REVERSE_LAST lines '
               'in reverse and then read the rest')
-        tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
         # TODO: try out with big file, more than 800 pages (approx. 73k lines)
         # TODO: see alternatives for reading big file @ https://stackoverflow.com/a/4999741 (mmap),
         # https://stackoverflow.com/a/24809292 (linecache), https://stackoverflow.com/a/42733235 (buffer)
-        with open(file_path, 'r') as f:
+        with open(input_file, 'r') as f:
+            # Read whole fle
+            # TODO: do we remove newlines?
             data = f.readlines()
             num_lines = len(data)
+            # Read the first ISBN_GREP_RF_SCAN_FIRST lines of the file text
             first_part = data[:ISBN_GREP_RF_SCAN_FIRST]
+            # Read the middle part of the file text
             middle_part = data[ISBN_GREP_RF_SCAN_FIRST:(num_lines-ISBN_GREP_RF_REVERSE_LAST)]
+            # Read the last part and reverse it
             last_part = data[-ISBN_GREP_RF_REVERSE_LAST:]
-        with open(file_path, 'w') as f:
-            pass
-        # Remove temporary file
-        remove_file(tmp_file_txt)
+            last_part.reverse()
+            # TODO: try out with large lists, if efficiency is a concern then check itertools.chain
+            # ref.: https://stackoverflow.com/a/4344735
+            # Concatenate the three parts: first, last part (reversed), and middle part
+            data = first_part + last_part + middle_part
+            data = "".join(data)
     else:
-        return file_path
+        print('Since ISBN_GREP_REORDER_FILES is False, input file will not be reordered')
+        with open(input_file, 'r') as f:
+            # TODO: do we remove newlines? with f.read().rstrip("\n")
+            data = f.read()
+    return data
 
 
 # Tries to find ISBN numbers in the given ebook file by using progressively
@@ -330,7 +340,6 @@ def search_file_for_isbns(file_path):
         pass
         # TODO: decho
         print('Extracted ISBNs {} from the file name!'.format(isbns))
-        print(isbns)
         return
 
     # Steps 2-3: (2) if valid MIME type, search file contents for isbns and
@@ -339,7 +348,14 @@ def search_file_for_isbns(file_path):
     if re.match(ISBN_DIRECT_GREP_FILES, mimetype):
         # TODO: decho
         print('Ebook is in text format, trying to find ISBN directly')
-        reord_file_path = reorder_file_content(file_path)
+        data = reorder_file_content(file_path)
+        isbns = find_isbns(data)
+        if isbns:
+            # TODO: decho
+            print('Extracted ISBNs {} from the text file contents!'.format(isbns))
+        else:
+            # TODO: decho
+            print('Did not find any ISBNs')
     elif re.match(ISBN_IGNORED_FILES, mimetype):
         print('The file type in the blacklist, ignoring...')
         return
@@ -349,7 +365,6 @@ def search_file_for_isbns(file_path):
     if isbns:
         # TODO: decho
         print('Returning the found ISBNs {}!'.format(isbns))
-        print(isbns)
     else:
         print('Could not find any ISBNs in {} :('.format(file_path))
 
