@@ -86,42 +86,50 @@ def decho():
 
 
 # TODO: place all the bash wrappers in a module in the utilities package
-def cat(file):
-    cmd = 'cat {}'.format(file)
+def cat(file_path):
+    cmd = 'cat {}'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args)
     return result
 
 
+def get_ebook_metadata(file_path):
+    # TODO: add `ebook-meta` in PATH
+    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta {}'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.stdout
+
+
 # Returns number of pages in pdf document
-def get_pages_in_pdf(file):
-    # TODO: add also the option to use pdfinfo (like in the original shell script)
+def get_pages_in_pdf(file_path):
+    # TODO: add also the option to use `pdfinfo` (like in the original shell script)
     # TODO: see if you can find the number of pages using a python module (e.g. PyPDF2)
-    cmd = 'mdls -raw -name kMDItemNumberOfPages %s' % file
+    cmd = 'mdls -raw -name kMDItemNumberOfPages %s' % file_path
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return int(result.stdout)
 
 
 # Returns number of pages in djvu document
-def get_pages_in_djvu(file):
+def get_pages_in_djvu(file_path):
     # TODO: To access the djvu command line utilities and their documentation,
     # you must set the shell variable PATH and MANPATH appropriately. This can
     # be achieved by invoking a convenient shell script hidden inside the application bundle:
     #    $ eval `/Applications/DjView.app/Contents/setpath.sh`
     # ref.: ReadMe from DjVuLibre
     # TODO: not need to specify the full path to djvused if you set correctly the right env. variables
-    cmd = '/Applications/DjView.app/Contents/bin/djvused -e "n" %s' % input_file
+    cmd = '/Applications/DjView.app/Contents/bin/djvused -e "n" %s' % file_path
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return int(result.stdout)
 
 
 # TODO: place it in path module
-def remove_file(file):
+def remove_file(file_path):
     # TODO add reference: https://stackoverflow.com/a/42641792
     try:
-        os.remove(file)
+        os.remove(file_path)
         return 0
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
@@ -285,7 +293,7 @@ def get_mimetype(file_path):
 # If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
 # to the values of ISBN_GREP_RF_SCAN_FIRST and ISBN_GREP_RF_REVERSE_LAST
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L261
-def reorder_file_content(input_file):
+def reorder_file_content(file_path):
     ipdb.set_trace()
     if ISBN_GREP_REORDER_FILES:
         print('Reordering input file (if possible), read first ISBN_GREP_RF_SCAN_FIRST '
@@ -294,7 +302,7 @@ def reorder_file_content(input_file):
         # TODO: try out with big file, more than 800 pages (approx. 73k lines)
         # TODO: see alternatives for reading big file @ https://stackoverflow.com/a/4999741 (mmap),
         # https://stackoverflow.com/a/24809292 (linecache), https://stackoverflow.com/a/42733235 (buffer)
-        with open(input_file, 'r') as f:
+        with open(file_path, 'r') as f:
             # Read whole fle
             # TODO: do we remove newlines?
             data = f.readlines()
@@ -313,7 +321,7 @@ def reorder_file_content(input_file):
             data = "".join(data)
     else:
         print('Since ISBN_GREP_REORDER_FILES is False, input file will not be reordered')
-        with open(input_file, 'r') as f:
+        with open(file_path, 'r') as f:
             # TODO: do we remove newlines? with f.read().rstrip("\n")
             data = f.read()
     return data
@@ -361,6 +369,15 @@ def search_file_for_isbns(file_path):
         return
 
     # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
+    # TODO: decho
+    print('Ebook metadata:')
+    # TODO: add the following
+    # echo "$ebookmeta" | debug_prefixer "	" 0 --width=80 -t
+    isbns = get_ebook_metadata(file_path)
+    find_isbns(isbns)
+    if isbns:
+        # TODO: decho
+        print('Extracted ISBNs {} from calibre ebook metadata!'.format(isbns))
 
     if isbns:
         # TODO: decho
