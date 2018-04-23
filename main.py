@@ -98,7 +98,7 @@ def get_ebook_metadata(file_path):
     cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta {}'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
-    return result.stdout
+    return result.stdout.decode('UTF-8')
 
 
 # Returns number of pages in pdf document
@@ -306,14 +306,16 @@ def reorder_file_content(file_path):
             # Read whole fle
             # TODO: do we remove newlines?
             data = f.readlines()
-            num_lines = len(data)
             # Read the first ISBN_GREP_RF_SCAN_FIRST lines of the file text
             first_part = data[:ISBN_GREP_RF_SCAN_FIRST]
-            # Read the middle part of the file text
-            middle_part = data[ISBN_GREP_RF_SCAN_FIRST:(num_lines-ISBN_GREP_RF_REVERSE_LAST)]
+            del data[:ISBN_GREP_RF_SCAN_FIRST]
             # Read the last part and reverse it
             last_part = data[-ISBN_GREP_RF_REVERSE_LAST:]
-            last_part.reverse()
+            if last_part:
+                last_part.reverse()
+                del data[-ISBN_GREP_RF_REVERSE_LAST:]
+            # Read the middle part of the file text
+            middle_part = data
             # TODO: try out with large lists, if efficiency is a concern then check itertools.chain
             # ref.: https://stackoverflow.com/a/4344735
             # Concatenate the three parts: first, last part (reversed), and middle part
@@ -364,20 +366,23 @@ def search_file_for_isbns(file_path):
         else:
             # TODO: decho
             print('Did not find any ISBNs')
+        return
     elif re.match(ISBN_IGNORED_FILES, mimetype):
         print('The file type in the blacklist, ignoring...')
         return
 
     # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
+    ipdb.set_trace()
     # TODO: decho
     print('Ebook metadata:')
     # TODO: add the following
     # echo "$ebookmeta" | debug_prefixer "	" 0 --width=80 -t
-    isbns = get_ebook_metadata(file_path)
-    find_isbns(isbns)
+    ebookmeta = get_ebook_metadata(file_path)
+    isbns = find_isbns(ebookmeta)
     if isbns:
         # TODO: decho
         print('Extracted ISBNs {} from calibre ebook metadata!'.format(isbns))
+        return
 
     if isbns:
         # TODO: decho
@@ -409,31 +414,36 @@ if __name__ == '__main__':
     """
 
     # Testing search_file_for_isbns()
-    # Test1: check the filename for ISBNs
+    # Test 1: check the filename for ISBNs
     # test_strs = ['/Users/test/ebooks/9788175257665_93-9483-398-9.pdf',
     #              '/Users/test/ebooks/ISBN9788175257665.djvu']
-    # Test2: check for duplicate ISBNs in filename
+    # Test 2: check for duplicate ISBNs in filename
     # test_strs = ['/Users/test/ebooks/9788175257665_9788-1752-57665_9789475237625.pdf',
     #              '/Users/test/ebooks/ISBN9788175257665_9788175257665abcdef9788-1752-57665abcdef.pdf']
-    # Test3: validate ISBNs
+    # Test 3: validate ISBNs
     """
     valid_test_strs = ['/Users/test/ebooks/book_0-387-97812-7.pdf',
                        '/Users/test/ebooks/book_3-540-97812-7.pdf',
                        '/Users/test/ebooks/book_978-0-521-89806-5.djvu',
                        '/Users/test/ebooks/book9780198782926author.pdf'
                        '/Users/test/ebooks/image.png']
-    invalid_test_sts = ['/Users/test/ebooks/book_977-0-521-89806-9.djvu',
-                        '/Users/test/ebooks/book_978-0-521-28980-6.pdf',
-                        '/Users/test/ebooks/book978-0-198-78292-4.pdf']
+    invalid_test_strs = ['/Users/test/ebooks/book_977-0-521-89806-9.djvu',
+                         '/Users/test/ebooks/book_978-0-521-28980-6.pdf',
+                         '/Users/test/ebooks/book978-0-198-78292-4.pdf']
     # TODO: validate filenames with two and more ISBNs
     for s in valid_test_strs:
         search_file_for_isbns(s)
     for s in invalid_test_sts:
         search_file_for_isbns(s)
+    
+    # Test 4: if valid mimetype, get ISBNs from file content (txt only)
+    test_strs = [os.path.expanduser('~/test/ebooks/book3.txt'),
+                 os.path.expanduser('~/test/ebooks/book1.pdf'),
+                 os.path.expanduser('~/test/ebooks/book2.djvu')]
     """
-    test_sts = [os.path.expanduser('~/test/ebooks/book3.txt'),
-                os.path.expanduser('~/test/ebooks/book1.pdf'),
-                os.path.expanduser('~/test/ebooks/book2.djvu')]
-    ipdb.set_trace()
-    for s in test_sts:
+    # Test 5: get ebook metadata with calibre's `ebook-meta`
+    test_strs = [os.path.expanduser('~/test/ebooks/metadata.opf'),
+                 os.path.expanduser('~/test/ebooks/book3.txt'),
+                 os.path.expanduser('~/test/ebooks/book1.pdf')]
+    for s in test_strs:
         search_file_for_isbns(s)
