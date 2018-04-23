@@ -1,4 +1,4 @@
-# digital_library
+# ebook_manager
 Digital library: management and organization of ebooks
 
 Porting ebooks-managing shell scripts to Python  
