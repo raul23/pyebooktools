@@ -1,6 +1,5 @@
 """
-Port ebooks-managing shell scripts to Python
-ref.: https://github.com/na--/ebook-tools
+A Python port of ebooks-managing shell scripts from https://github.com/na--/ebook-tools
 """
 # TODO: python3 compatible only, e.g. print('', end='') [use from __future__ import print_function for python 2]
 # ref.: https://stackoverflow.com/a/5071123
@@ -68,14 +67,6 @@ ISBN_GREP_RF_REVERSE_LAST = 50
 OCR_ENABLED = False
 OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
 OCR_COMMAND = tesseract_wrapper
-
-
-# Returns non-zero status if the supplied command does not exist
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L289
-# TODO: complete its implementation
-def command_exists(test_cmd):
-    cmd = 'command -v %s >/dev/null 2>&1' % test_cmd
-    return cmd
 
 
 # TODO: complete its implementation
@@ -274,7 +265,7 @@ def is_isbn_valid(isbn):
 def find_isbns(input_str):
     isbns = []
     matches = re.finditer(ISBN_REGEX, input_str)
-    for _, match in enumerate(matches):
+    for i, match in enumerate(matches):
         match = match.group()
         # Remove everything except numbers [0-9], 'x', and 'X'
         # NOTE: equivalent to UNIX command `tr -c -d '0-9xX'`
@@ -283,6 +274,8 @@ def find_isbns(input_str):
         del_tab = string.printable[10:].replace('x', '').replace('X', '')
         tran_tab = str.maketrans('', '', del_tab)
         match = match.translate(tran_tab)
+        # TODO: keep two lists, one for storing valid isbns and the other will store all the unique ISBNs tested so far
+        # so that you don't have to call is_isbn_valid on ISBN already seen
         # Only keep unique ISBNs
         if not match in isbns:
             # Validate ISBN
@@ -302,8 +295,8 @@ def get_mimetype(file_path):
     return result.stdout.decode('UTF-8').split()[0]
 
 
-def extract_archive(tmpdir, file_path):
-    cmd = '7z x -o"{}" {}'.format(tmpdir, file_path)
+def extract_archive(input_file, output_file):
+    cmd = '7z x -o"{}" {}'.format(output_file, input_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return result.returncode
@@ -321,7 +314,7 @@ def reorder_file_content(file_path):
         # TODO: see alternatives for reading big file @ https://stackoverflow.com/a/4999741 (mmap),
         # https://stackoverflow.com/a/24809292 (linecache), https://stackoverflow.com/a/42733235 (buffer)
         with open(file_path, 'r') as f:
-            # Read whole fle
+            # Read whole file as a list of lines
             # TODO: do we remove newlines?
             data = f.readlines()
             # Read the first ISBN_GREP_RF_SCAN_FIRST lines of the file text
@@ -343,6 +336,7 @@ def reorder_file_content(file_path):
         print('Since ISBN_GREP_REORDER_FILES is False, input file will not be reordered')
         with open(file_path, 'r') as f:
             # TODO: do we remove newlines? with f.read().rstrip("\n")
+            # Read whole content of file as a string
             data = f.read()
     return data
 
@@ -359,7 +353,7 @@ def get_all_isbns_from_archive(file_path):
 
     print('Trying to decompress {} into tmp folder {} and recursively scan the contents'.format(file_path, tmpdir))
     # TODO: add debug_prefixer
-    if extract_archive(tmpdir, file_path):
+    if extract_archive(file_path, tmpdir):
         print('Error extracting the file (probably not an archive)! Removing tmp dir...')
         remove_tree(tmpdir)
         return ''
@@ -396,6 +390,61 @@ def get_all_isbns_from_archive(file_path):
     return ISBN_RET_SEPARATOR.join(all_isbns)
 
 
+# ref.: https://stackoverflow.com/a/28909933
+def command_exists(cmd):
+    return shutil.which(cmd) is not None
+
+
+def pdftotext(input_file, output_file):
+    cmd = 'pdftotext {} {}'.format(input_file, output_file)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.returncode
+
+
+def catdoc(input_file, output_file):
+    raise NotImplementedError('catdoc is not implemented')
+
+
+def djvutxt(input_file, output_file):
+    cmd = '/Applications/DjView.app/Contents/bin/djvutxt {} {}'.format(input_file, output_file)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.returncode
+
+
+def ebook_convert(input_file, output_file):
+    # TODO: add `ebook-convert` in PATH
+    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-convert {} {}'.format(input_file, output_file)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.returncode
+
+
+# Tries to convert the supplied ebook file into .txt. It uses calibre's
+# ebook-convert tool. For optimization, if present, it will use pdftotext
+# for pdfs, catdoc for word files and djvutxt for djvu files.
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L393
+def convert_to_txt(input_file, output_file, mimetype):
+    if mimetype == 'application/pdf' and command_exists('pdftotext'):
+        print('The file looks like a pdf, using pdftotext to extract the text')
+        pdftotext(input_file, output_file)
+    elif mimetype == 'application/msword' and command_exists('catdoc'):
+        print('The file looks like a doc, using catdoc to extract the text')
+        catdoc(input_file, output_file)
+    # TODO: not need to specify the full path to djvutxt if you set correctly the right env. variables
+    elif mimetype.startswith('image/vnd.djvu') and command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
+        print('The file looks like a djvu, using djvutxt to extract the text')
+        djvutxt(input_file, output_file)
+    elif (not mimetype.startswith('image/vnd.djvu')) and mimetype.startswith('image/'):
+        print('The file looks like a normal image ({}), skipping ebook-convert usage!'.format(mimetype))
+        return 1
+    else:
+        print("Trying to use calibre's ebook-convert to convert the {} file to .txt".format(mimetype))
+        ebook_convert(input_file, output_file)
+    return 0
+
+
 # Tries to find ISBN numbers in the given ebook file by using progressively
 # more "expensive" tactics.
 # These are the steps:
@@ -407,6 +456,8 @@ def get_all_isbns_from_archive(file_path):
 # 4. Check the file metadata from calibre's `ebook-meta` for ISBNs
 # 5. Try to extract the file as an archive with `7z`; if successful,
 #    recursively call search_file_for_isbns for all the extracted files
+# 6. If the file is not an archive, try to convert it to a .txt file
+#    via convert_to_txt()
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L499
 def search_file_for_isbns(file_path):
     # TODO: decho
@@ -459,10 +510,45 @@ def search_file_for_isbns(file_path):
         print('Extracted ISBNs {} from the archive file'.format(isbns))
         return isbns
 
+    # Step 6: convert file to .txt
+    try_ocr = False
+    tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
+    print('Converting ebook to text format in file {}...'.format(tmp_file_txt))
+
+    # TODO: add debug_prefixer
+    if convert_to_txt(file_path, tmp_file_txt, mimetype) == 0:
+        print('Conversion to text was successful, checking the result...')
+        with open(tmp_file_txt, 'r') as f:
+            data = f.read()
+        if not re.match('[A-Za-z0-9]+', data):
+            print('The converted txt with size {} bytes does not seem to contain text:'
+                  .format(os.stat(tmp_file_txt).st_size))
+            try_ocr = True
+        else:
+            data = reorder_file_content(tmp_file_txt)
+            isbns = find_isbns(data)
+            if isbns:
+                # TODO: decho
+                print('Text output contains ISBNs {}!'.format(isbns))
+            elif OCR_ENABLED == 'always':
+                # TODO: decho
+                print('We will try OCR because the successfully converted text did not have any ISBNs')
+                try_ocr = True
+            else:
+                # TODO: decho
+                print('Did not find any ISBNs and will NOT try OCR')
+    else:
+        print('There was an error converting the book to txt format')
+        try_ocr = True
+
+    print('Removing {}...'.format(tmp_file_txt))
+    remove_file(tmp_file_txt)
+
     if isbns:
         # TODO: decho
         print('Returning the found ISBNs {}!'.format(isbns))
     else:
+        # TODO: decho
         print('Could not find any ISBNs in {} :('.format(file_path))
 
     return isbns
@@ -524,6 +610,9 @@ if __name__ == '__main__':
                  os.path.expanduser('~/test/ebooks/book1.pdf')]
     """
     # Test 6: decompress with 7z [step 5]
-    test_strs = [os.path.expanduser('~/test/ebooks/books2.7z')]
+    # test_strs = [os.path.expanduser('~/test/ebooks/books2.7z')]
+    # Test 7: convert file to .txt
+    test_strs = [os.path.expanduser('~/test/ebooks/book1.pdf'),
+                 os.path.expanduser('~/test/ebooks/book2.djvu')]
     for s in test_strs:
         search_file_for_isbns(s)
