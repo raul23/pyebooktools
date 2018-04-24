@@ -633,7 +633,10 @@ if __name__ == '__main__':
     # Test 6: decompress with 7z [step 5]
     # test_strs = [os.path.expanduser('~/test/ebooks/books2.7z')]
     # Test 7: convert file to .txt
-    test_strs = [os.path.expanduser('~/test/ebooks/book1.pdf'),
-                 os.path.expanduser('~/test/ebooks/book2.djvu')]
+    # test_strs = [os.path.expanduser('~/test/ebooks/book1.pdf'),
+    #              os.path.expanduser('~/test/ebooks/book2.djvu')]
+    # Test 8: ocr the files
+    test_strs = [os.path.expanduser('~/test/ebooks/book2.djvu'),
+                 os.path.expanduser('~/test/ebooks/book4.pdf')]
     for s in test_strs:
         search_file_for_isbns(s)
