@@ -188,7 +188,7 @@ def ocr_file(input_file, output_file, mime_type):
     # TODO: if ocr_first_pages or ocr_last_pages, set them to 0
     ocr_first_pages = OCR_ONLY_FIRST_LAST_PAGES[0]
     ocr_last_pages = OCR_ONLY_FIRST_LAST_PAGES[1]
-    # TODO: pre-compute the list of page to process based on ocr_first_pages and ocr_last_pages
+    # Pre-compute the list of pages to process based on ocr_first_pages and ocr_last_pages
     if OCR_ONLY_FIRST_LAST_PAGES:
         pages_to_process = [i+1 for i in range(0, ocr_first_pages)]
         pages_to_process.extend([i+1 for i in range(num_pages-ocr_last_pages, num_pages)])
@@ -196,6 +196,7 @@ def ocr_file(input_file, output_file, mime_type):
         # OCR_ONLY_FIRST_LAST_PAGES is False
         pages_to_process = [i for i in range(0, num_pages)]
 
+    text = ''
     for page in pages_to_process:
         # Make temporary files
         tmp_file = tempfile.mkstemp()[1]
@@ -212,17 +213,19 @@ def ocr_file(input_file, output_file, mime_type):
         page_convert_cmd(page, input_file, tmp_file)
         # image --> text
         OCR_COMMAND(tmp_file, tmp_file_txt)
-        # TODO: use python copy instead of cat
-        cat(tmp_file_txt)
-
+        with open(tmp_file_txt, 'r') as f:
+            data = f.read()
+            print(data)
+        text += data
         # TODO: decho
         # Remove temporary files
         print('Cleaning up tmp files %s and %s' % (tmp_file, tmp_file_txt))
         remove_file(tmp_file)
         remove_file(tmp_file_txt)
 
-    # TODO: run > command, i.e. everything on the stdout must be copied to the output file
-    # cmd = '> %s' %output_file
+    # Everything on the stdout must be copied to the output file
+    with open(output_file, 'w') as f:
+        f.write(text)
     # TODO: they don't return anything
     return 0
 
@@ -258,8 +261,8 @@ def is_isbn_valid(isbn):
     return False
 
 
-# Searches the in_str for ISBN-like sequences and removes duplicates and finally
-# validates them using is_isbn_valid() and returns them separated by
+# Searches the input string for ISBN-like sequences and removes duplicates and
+# finally validates them using is_isbn_valid() and returns them separated by
 # $ISBN_RET_SEPARATOR
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L274
 def find_isbns(input_str):
@@ -521,7 +524,6 @@ def search_file_for_isbns(file_path):
     # TODO: add debug_prefixer
     if convert_to_txt(file_path, tmp_file_txt, mimetype) == 0:
         print('Conversion to text was successful, checking the result...')
-        ipdb.set_trace()
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
         if not re.match('[A-Za-z0-9]+', data):
@@ -636,6 +638,7 @@ if __name__ == '__main__':
     # test_strs = [os.path.expanduser('~/test/ebooks/book1.pdf'),
     #              os.path.expanduser('~/test/ebooks/book2.djvu')]
     # Test 8: ocr the files
+    OCR_ENABLED = True
     test_strs = [os.path.expanduser('~/test/ebooks/book2.djvu'),
                  os.path.expanduser('~/test/ebooks/book4.pdf')]
     for s in test_strs:
