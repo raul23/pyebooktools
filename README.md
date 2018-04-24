@@ -1,5 +1,5 @@
-# digital_library
-Digital library: management and organization of ebooks
+# ebook_manager
+Ebook manager in Python
 
-Porting ebooks-managing shell scripts to Python  
+Porting ebook-managing shell scripts to Python  
 ref.: https://github.com/na--/ebook-tools
