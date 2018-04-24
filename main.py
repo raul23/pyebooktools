@@ -458,6 +458,9 @@ def convert_to_txt(input_file, output_file, mimetype):
 #    recursively call search_file_for_isbns for all the extracted files
 # 6. If the file is not an archive, try to convert it to a .txt file
 #    via convert_to_txt()
+# 7. If OCR is enabled and convert_to_txt() fails or its result is empty,
+#    try OCR-ing the file. If the result is non-empty but does not contain
+#    ISBNs and OCR_ENABLED is set to "always", run OCR as well.
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L499
 def search_file_for_isbns(file_path):
     # TODO: decho
@@ -518,6 +521,7 @@ def search_file_for_isbns(file_path):
     # TODO: add debug_prefixer
     if convert_to_txt(file_path, tmp_file_txt, mimetype) == 0:
         print('Conversion to text was successful, checking the result...')
+        ipdb.set_trace()
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
         if not re.match('[A-Za-z0-9]+', data):
@@ -540,6 +544,23 @@ def search_file_for_isbns(file_path):
     else:
         print('There was an error converting the book to txt format')
         try_ocr = True
+
+    # Step 7: OCR the file
+    if not isbns and OCR_ENABLED is not False and try_ocr:
+        print('Trying to run OCR on the file...')
+        # TODO: add debug_prefixer
+        if ocr_file(file_path, tmp_file_txt, mimetype) == 0:
+            print('OCR was successful, checking the result...')
+            data = reorder_file_content(tmp_file_txt)
+            isbns = find_isbns(data)
+            if isbns:
+                # TODO: decho
+                print('Text output contains ISBNs {}!'.format(isbns))
+            else:
+                print('Did not find any ISBNs in the OCR output')
+        else:
+            # TODO: decho
+            print('There was an error while running OCR!')
 
     print('Removing {}...'.format(tmp_file_txt))
     remove_file(tmp_file_txt)
