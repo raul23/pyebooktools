@@ -9,6 +9,7 @@ import ipdb
 import os
 import re
 import shlex
+import shutil
 import string
 import subprocess
 import tempfile
@@ -20,10 +21,7 @@ def tesseract_wrapper(input_file, output_file):
     cmd = 'tesseract {} stdout --psm 12'.format(input_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=open(output_file, 'w'), encoding='utf-8', bufsize=4096)
-    if result.returncode == 1:
-        return 1  # command failed
-    else:
-        return 0  # command succeeded
+    return result.returncode
 
 
 # Horizontal whitespace and dash-like ASCII and Unicode characters that are
@@ -136,6 +134,18 @@ def remove_file(file_path):
         return 1
 
 
+# Recursively delete a directory tree, including the parent directory
+# ref.: https://stackoverflow.com/a/186236
+def remove_tree(file_path):
+    # TODO:
+    try:
+        shutil.rmtree(file_path)
+        return 0
+    except Exception as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+        return 1
+
+
 # OCR on a pdf, djvu document and image to extract ISBN
 # NOTE: If pdf or djvu document: first needs to be converted to image and then OCR
 def ocr_file(input_file, output_file, mime_type):
@@ -173,6 +183,7 @@ def ocr_file(input_file, output_file, mime_type):
         OCR_COMMAND(input_file, output_file)
         # TODO: run > command
         # cmd = '> %s' % output_file
+        # TODO: they don't return anything
         return 0
     else:
         # TODO: decho
@@ -221,6 +232,7 @@ def ocr_file(input_file, output_file, mime_type):
 
     # TODO: run > command, i.e. everything on the stdout must be copied to the output file
     # cmd = '> %s' %output_file
+    # TODO: they don't return anything
     return 0
 
 
@@ -241,7 +253,6 @@ def is_isbn_valid(isbn):
             if i == 9 and isbn[i] == 'X':
                 number = 10
             sum += (number * (10 - i))
-        ipdb.set_trace()
         if sum % 11 == 0:
             return True
     # Case 2: ISBN-13
@@ -251,7 +262,6 @@ def is_isbn_valid(isbn):
                 sum += int(isbn[i])
             for i in range(1, len(isbn), 2):
                 sum += (int(isbn[i])*3)
-            ipdb.set_trace()
             if sum % 10 == 0:
                 return True
     return False
@@ -282,6 +292,8 @@ def find_isbns(input_str):
 
 
 def get_mimetype(file_path):
+    # TODO: handle errors in functions with returncode, check other functions
+    # where don't use returncode
     # TODO: get MIME type with a python package, see the magic package
     # ref.: https://stackoverflow.com/a/2753385
     cmd = 'file --brief --mime-type {}'.format(file_path)
@@ -290,11 +302,17 @@ def get_mimetype(file_path):
     return result.stdout.decode('UTF-8').split()[0]
 
 
+def extract_archive(tmpdir, file_path):
+    cmd = '7z x -o"{}" {}'.format(tmpdir, file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.returncode
+
+
 # If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
 # to the values of ISBN_GREP_RF_SCAN_FIRST and ISBN_GREP_RF_REVERSE_LAST
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L261
 def reorder_file_content(file_path):
-    ipdb.set_trace()
     if ISBN_GREP_REORDER_FILES:
         print('Reordering input file (if possible), read first ISBN_GREP_RF_SCAN_FIRST '
               'lines normally, then read last ISBN_GREP_RF_REVERSE_LAST lines '
@@ -329,6 +347,55 @@ def reorder_file_content(file_path):
     return data
 
 
+# Checks if directory is empty
+# ref.: https://stackoverflow.com/a/47363995
+def is_dir_empty(path):
+    return next(os.scandir(path), None) is None
+
+
+def get_all_isbns_from_archive(file_path):
+    all_isbns = []
+    tmpdir = tempfile.mkdtemp()
+
+    print('Trying to decompress {} into tmp folder {} and recursively scan the contents'.format(file_path, tmpdir))
+    # TODO: add debug_prefixer
+    if extract_archive(tmpdir, file_path):
+        print('Error extracting the file (probably not an archive)! Removing tmp dir...')
+        remove_tree(tmpdir)
+        return ''
+
+    print('Archive extracted successfully in {}, scanning contents recursively...'.format(tmpdir))
+    # TODO: ref.: https://stackoverflow.com/a/2759553
+    # TODO: ignore .DS_Store
+    for path, dirs, files in os.walk(tmpdir, topdown=False):
+        # TODO: they use flag options for sorting the directory contents
+        # see https://github.com/na--/ebook-tools#miscellaneous-options [FILE_SORT_FLAGS]
+        for file_to_check in files:
+            # TODO: add debug_prefixer
+            file_to_check = os.path.join(path, file_to_check)
+            isbns = search_file_for_isbns(file_to_check)
+            if isbns:
+                # TODO: decho
+                print('Found ISBNs {}!'.format(isbns))
+                # TODO: two prints, one for stderror and the other for stdout
+                print(isbns.replace(ISBN_RET_SEPARATOR, '\n'))
+                for isbn in isbns.split(','):
+                    if isbn not in all_isbns:
+                        all_isbns.append(isbn)
+            # TODO: decho
+            print('Removing {}...'.format(file_to_check))
+            remove_file(file_to_check)
+        if len(os.listdir(path)) == 0 and path != tmpdir:
+            os.rmdir(path)
+        elif path == tmpdir:
+            if len(os.listdir(tmpdir)) == 1 and '.DS_Store' in tmpdir:
+                remove_file(os.path.join(tmpdir, '.DS_Store'))
+    print('Removing temporary folder {} (should be empty)...'.format(tmpdir))
+    if is_dir_empty(tmpdir):
+        remove_tree(tmpdir)
+    return ISBN_RET_SEPARATOR.join(all_isbns)
+
+
 # Tries to find ISBN numbers in the given ebook file by using progressively
 # more "expensive" tactics.
 # These are the steps:
@@ -338,19 +405,21 @@ def reorder_file_content(file_path):
 # 3. If the MIME type matches ISBN_IGNORED_FILES, the function returns early
 #    with no results
 # 4. Check the file metadata from calibre's `ebook-meta` for ISBNs
+# 5. Try to extract the file as an archive with `7z`; if successful,
+#    recursively call search_file_for_isbns for all the extracted files
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L499
 def search_file_for_isbns(file_path):
     # TODO: decho
     print('Searching file {} for ISBN numbers...'.format(file_path))
     # Step 1: check the filename for ISBNs
     basename = os.path.basename(file_path)
-    ipdb.set_trace()
+    # TODO: make sure that we return an empty string when we can't find ISBNs
     isbns = find_isbns(basename)
     if isbns:
         pass
         # TODO: decho
         print('Extracted ISBNs {} from the file name!'.format(isbns))
-        return
+        return isbns
 
     # Steps 2-3: (2) if valid MIME type, search file contents for isbns and
     # (3) if invalid MIME type, exit without results
@@ -366,13 +435,12 @@ def search_file_for_isbns(file_path):
         else:
             # TODO: decho
             print('Did not find any ISBNs')
-        return
+        return isbns
     elif re.match(ISBN_IGNORED_FILES, mimetype):
         print('The file type in the blacklist, ignoring...')
-        return
+        return isbns
 
     # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
-    ipdb.set_trace()
     # TODO: decho
     print('Ebook metadata:')
     # TODO: add the following
@@ -382,13 +450,22 @@ def search_file_for_isbns(file_path):
     if isbns:
         # TODO: decho
         print('Extracted ISBNs {} from calibre ebook metadata!'.format(isbns))
-        return
+        return isbns
+
+    # Step 5: decompress with 7z
+    isbns = get_all_isbns_from_archive(file_path)
+    if isbns:
+        # TODO: decho
+        print('Extracted ISBNs {} from the archive file'.format(isbns))
+        return isbns
 
     if isbns:
         # TODO: decho
         print('Returning the found ISBNs {}!'.format(isbns))
     else:
         print('Could not find any ISBNs in {} :('.format(file_path))
+
+    return isbns
 
 
 if __name__ == '__main__':
@@ -436,14 +513,17 @@ if __name__ == '__main__':
     for s in invalid_test_sts:
         search_file_for_isbns(s)
     
-    # Test 4: if valid mimetype, get ISBNs from file content (txt only)
+    # Test 4: if valid mimetype, get ISBNs from file content (txt only) [step 4]
     test_strs = [os.path.expanduser('~/test/ebooks/book3.txt'),
                  os.path.expanduser('~/test/ebooks/book1.pdf'),
                  os.path.expanduser('~/test/ebooks/book2.djvu')]
-    """
+    
     # Test 5: get ebook metadata with calibre's `ebook-meta`
     test_strs = [os.path.expanduser('~/test/ebooks/metadata.opf'),
                  os.path.expanduser('~/test/ebooks/book3.txt'),
                  os.path.expanduser('~/test/ebooks/book1.pdf')]
+    """
+    # Test 6: decompress with 7z [step 5]
+    test_strs = [os.path.expanduser('~/test/ebooks/books2.7z')]
     for s in test_strs:
         search_file_for_isbns(s)
