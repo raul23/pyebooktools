@@ -1,5 +1,12 @@
 import ipdb
-import argparse
+import ast
+try:
+    # Python 3
+    from configparser import ConfigParser, NoOptionError, NoSectionError
+except ImportError:
+    # Python 2.7
+    from ConfigParser import NoOptionError, NoSectionError
+    from ConfigParser import SafeConfigParser as ConfigParser
 import os
 
 from lib import search_file_for_isbns
@@ -8,6 +15,27 @@ from lib import search_file_for_isbns
 # Environment variables
 CORRUPTION_CHECK_ONLY = False
 ORGANIZE_WITHOUT_ISBN = False
+SETTINGS_PATH = os.path.expanduser('~/PycharmProjects/digital_library/config.ini')
+
+
+# TODO: add function in utilities
+def read_config(config_path):
+    parser = ConfigParser()
+    found = parser.read(config_path)
+    if config_path not in found:
+        print("ERROR: {} is empty".format(config_path))
+        return None
+    options = {}
+    for section in parser.sections():
+        options.setdefault(section, {})
+        for option in parser.options(section):
+            options[section].setdefault(option, None)
+            value = get_option_value(parser, section, option)
+            if value is None:
+                print("ERROR: The option '{}' could not be retrieved from {}".format(option, config_path))
+                return None
+            options[section][option] = value
+    return options
 
 
 def check_file_for_corruption():
@@ -53,6 +81,12 @@ def organize_file(file_path):
 
 
 if __name__ == '__main__':
+    # Read configuration file
+    config_ini = read_config(SETTINGS_PATH)
+    if config_ini is None:
+        # TODO: exit script
+        print("ERROR: {} could not be read".format(SETTINGS_PATH))
+
     ebooks_directories = [os.path.expanduser('~/test/ebooks/folderB')]
     ipdb.set_trace()
     for fpath in ebooks_directories:
