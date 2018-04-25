@@ -5,10 +5,10 @@ import os
 import sys
 import ipdb
 try:
-    from utilities import database
+    from utils import database
 except ImportError:
     sys.path.insert(0, os.path.expanduser("../"))
-    from utilities import database
+    from utils import database
 
 
 SOURCE_PATH = '~/test/ebooks'

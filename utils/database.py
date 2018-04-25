@@ -3,8 +3,8 @@ import os
 import sqlite3
 
 
-from utilities.gen import print_exception
-from utilities.path import check_file_exists
+from utils.gen import print_exception
+from utils.path import check_file_exists
 
 
 class SqliteDatabase:

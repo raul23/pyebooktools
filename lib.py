@@ -577,6 +577,35 @@ def search_file_for_isbns(file_path):
     return isbns
 
 
+# Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from
+# online sources. The first parameter is the comma-separated list of allowed
+# plugins (e.g. 'Goodreads,Amazon.com,Google') and the second parameter is the
+# remaining of the `fetch-ebook-metadata`'s options, e.g.
+# options='--verbose --opf isbn=1234567890'
+# Returns the ebook metadata as a string; if no metadata found, an empty string
+# is returned
+# ref.: https://bit.ly/2HS0iXQ
+def fetch_metadata(isbn_sources, options=''):
+    ipdb.set_trace()
+    args = '{} {}'.format('fetch-ebook-metadata', options)
+    isbn_sources = isbn_sources.split(',')
+    for isbn_source in isbn_sources:
+        # TODO: check if there are spaces in the arguments, and if it is the case
+        # enclose the arguments in quotation marks. This testing should be done
+        # in a separate function so that it can be called in other places.
+        if ' ' in isbn_source:
+            isbn_source = '"{}"'.format(isbn_source)
+        args += ' --allowed-plugin={} '.format(isbn_source)
+    ipdb.set_trace()
+    # Remove trailing whitespace
+    args = args.strip()
+    print('Calling `{}`'.format(args))
+    args = shlex.split(args)
+    result = subprocess.run(args, stdout=subprocess.PIPE)
+    return result.stdout
+
+
+
 if __name__ == '__main__':
     # NOTE: to find file's mimetype
     # file --brief --mime-type file.pdf

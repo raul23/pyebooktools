@@ -4,12 +4,16 @@ from configparser import ConfigParser, NoOptionError, NoSectionError
 import linecache
 import os
 import sys
+import tempfile
 
-from lib import search_file_for_isbns
+from lib import fetch_metadata, search_file_for_isbns
 
 
 # Environment variables
 SETTINGS_PATH = os.path.expanduser('~/PycharmProjects/digital_library/config.ini')
+
+
+global config_ini
 
 
 # TODO: add function in utilities
@@ -118,17 +122,34 @@ def organize_by_filename_and_meta(file_path, reason=''):
     raise NotImplementedError('organize_by_filename_and_meta is not implemented!')
 
 
+# Sequentially tries to fetch metadata for each of the supplied ISBNs; if any
+# is found, writes it to a tmp .txt file and calls organize_known_ebook()
+# Arguments: path, isbns (coma-separated)
+# TODO: in their description, they refer to `organize_known_ebook` but it should be `move_or_link_ebook_file_and_metadata`
+# ref.: https://bit.ly/2HNv3x0
 def organize_by_isbns(file_path, isbns):
-    pass
+    isbn_sources = config_ini['general-options']['isbn_metadata_fetch_order']
+    isbn_sources = isbn_sources.split(',')
+    isbns = isbns.split(',')
+    for isbn in isbns:
+        tmp_file = tempfile.mkstemp(suffix='.txt')[1]
+        # TODO: decho
+        print('Trying to fetch metadata for ISBN {} into temp file {}...'.format(isbn, tmp_file))
+
+        for isbn_source in isbn_sources:
+            print('Fetching metadata from {} sources...'.format(isbn_source))
+            ipdb.set_trace()
+            options = '--verbose --isbn={}'.format(12345)
+            if fetch_metadata(isbn_source, options):
+                pass
 
 
-def organize_file(file_path, corruption_check_only=False, organize_without_isbn=False):
-    ipdb.set_trace()
+def organize_file(file_path):
     file_err = check_file_for_corruption()
     if file_err:
         # TODO: decho
         print('File {} is corrupt with error {}'.format(file_path, file_err))
-    elif corruption_check_only:
+    elif config_ini['organize-ebooks']['corruption_check_only']:
         # TODO: decho
         print('We are only checking for corruption, do not continue organising...')
         skip_file(file_path, 'File appears OK')
@@ -139,7 +160,7 @@ def organize_file(file_path, corruption_check_only=False, organize_without_isbn=
         if isbns:
             print('Organizing {} by ISBNs {}!'.format(file_path, isbns))
             organize_by_isbns(file_path, isbns)
-        elif organize_without_isbn:
+        elif config_ini['organize-ebooks']['organize_without_isbn']:
             print('No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
@@ -157,7 +178,6 @@ if __name__ == '__main__':
 
     # f.strip() in case there is are spaces around the folder path
     ebook_folders = [os.path.expanduser(f.strip()) for f in config_ini['organize-ebooks']['ebook_folders'].split(',')]
-    ipdb.set_trace()
     for fpath in ebook_folders:
         print('Recursively scanning {} for files'.format(fpath))
         # TODO: They make use of sorting flags for walking through the files [FILE_SORT_FLAGS]
@@ -165,6 +185,4 @@ if __name__ == '__main__':
         for path, dirs, files in os.walk(fpath):
             for file in files:
                 # TODO: add debug_prefixer
-                organize_file(file_path=os.path.join(path, file),
-                              corruption_check_only=config_ini['organize-ebooks']['corruption_check_only'],
-                              organize_without_isbn=config_ini['organize-ebooks']['organize_without_isbn'])
+                organize_file(file_path=os.path.join(path, file))
