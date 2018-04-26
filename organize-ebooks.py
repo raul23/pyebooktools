@@ -140,10 +140,8 @@ def organize_by_isbns(file_path, isbns):
 
         for isbn_source in isbn_sources:
             print('STDERR: Fetching metadata from {} sources...'.format(isbn_source))
-            ipdb.set_trace()
             options = '--verbose --isbn={}'.format(isbn)
             metadata = fetch_metadata(isbn_source, options)
-            ipdb.set_trace()
             if metadata:
                 with open(tmp_file, 'w') as f:
                     f.write(metadata)
@@ -164,9 +162,9 @@ def organize_by_isbns(file_path, isbns):
                 with open(tmp_file, 'a') as f:
                     f.write(more_metadata)
 
-                ipdb.set_trace()
                 print('STDERR: Organizing {} (with {})...'.format(file_path, tmp_file))
                 output_folder = config_ini['organize-ebooks']['output_folder']
+                ipdb.set_trace()
                 new_path = move_or_link_ebook_file_and_metadata(output_folder, file_path, tmp_file)
                 ok_file(file_path, new_path)
                 # TODO: they have a `return`, but we should just break from the
@@ -176,7 +174,7 @@ def organize_by_isbns(file_path, isbns):
         # but then the temp file are not removed, ref.: https://bit.ly/2r0sUV8
         # TODO 2: see if the removal of the temp file is done at the right
         # place, i.e. at the end of the first for loop
-        print('Removing temp file {}...'.format(tmp_file))
+        print('STDERR: Removing temp file {}...'.format(tmp_file))
         remove_file(tmp_file)
 
 
@@ -201,20 +199,87 @@ def organize_file(file_path):
     print('STDERR: =====================================================')
 
 
+# If an option is given as comma-separated arguments, check that each argument
+# is enclosed with double quotes and remove any trailing whitespace
+def check_comma_options(section_name, option):
+    new_option = []
+    for s in config_ini[section_name][option].split(','):
+        s = s.strip()
+        if ' ' in s:
+            s = '"{}"'.format(s)
+        new_option.append(s)
+    config_ini[section_name][option] = ','.join(new_option)
+
+
+def expand_folder_paths(section_name, option):
+    new_option = []
+    for s in config_ini[section_name][option].split(','):
+        if s:
+            new_option.append(os.path.expanduser(s))
+    config_ini[section_name][option] = ','.join(new_option)
+
+
+def add_cwd(section_name, option):
+    if not config_ini[section_name][option]:
+        config_ini[section_name][option] = os.getcwd()
+
+
+# Checks and fixes configuration options
+# TODO: this function and al. should be in lib.py because it might be used by other scripts
+def check_config_ini():
+    all_actions = {'general-options/isbn_metadata_fetch_order': ['comma'],
+                   'general-options/organize_without_isbn_sources': ['comma'],
+                   'general-options/file_sort_flags': ['comma'],
+                   'organize-ebooks/ebook_folders': ['comma', 'expand'],
+                   'organize-ebooks/output_folder': ['expand', 'cwd'],
+                   'organize-ebooks/output_folder_uncertain': ['expand'],
+                   'organize-ebooks/output_folder_corrupt': ['expand'],
+                   'organize-ebooks/output_folder_pamphlets': ['expand'],
+                   'interactive-organizer/output_folders': ['comma', 'expand'],
+                   'interactive-organizer/custom_move_base_dir': ['expand'],
+                   'interactive-organizer/restore_original_base_dir': ['expand'],
+                   'rename-calibre-library/output_folder': ['expand', 'cwd'],
+                   'split-into-folders/output_folder': ['expand', 'cwd']
+                   }
+
+    ipdb.set_trace()
+    for option, actions in all_actions.items():
+        section_name, option_name = option.split('/')
+        for action in actions:
+            # TODO: add a try except if KeyError in config_ini
+            if action == 'comma':
+                check_comma_options(section_name, option_name)
+            elif action == 'expand':
+                expand_folder_paths(section_name, option_name)
+            elif action == 'cwd':
+                add_cwd(section_name, option_name)
+            else:
+                print('STDERR: action ({}) not recognized'.format(action))
+    ipdb.set_trace()
+
+    return 1
+
+
 if __name__ == '__main__':
     # Read configuration file
     config_ini = read_config(SETTINGS_PATH)
     if config_ini is None:
         # TODO: exit script
-        print("ERROR: {} could not be read".format(SETTINGS_PATH))
+        print('ERROR: {} could not be read'.format(SETTINGS_PATH))
+
+    # Check configuration options
+    retval = check_config_ini()
+    if retval:
+        print('ERROR: {} contains invalid options. Check the list and fix them.'.format(SETTINGS_PATH))
 
     ebook_folders = config_ini['organize-ebooks']['ebook_folders'].split(',')
     for fpath in ebook_folders:
-        # strip() in case there are spaces around the folder path
-        fpath = fpath.strip()
+        # Remove white spaces around the folder path
+        fpath = os.path.expanduser(fpath).strip()
         print('Recursively scanning {} for files'.format(fpath))
         # TODO: They make use of sorting flags for walking through the files [FILE_SORT_FLAGS]
         # ref.: https://bit.ly/2HuI3YS
+        ipdb.set_trace()
         for path, dirs, files in os.walk(fpath):
             for file in files:
                 # TODO: add debug_prefixer

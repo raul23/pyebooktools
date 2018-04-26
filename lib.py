@@ -542,9 +542,10 @@ def search_file_for_isbns(file_path):
     return isbns
 
 
-# Arguments: new_folder, current_ebook_path, current_metadata_path
 # ref.: https://bit.ly/2HxYEaw
-def move_or_link_ebook_file_and_metadata():
+def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path):
+    # Get ebook's file extension
+    ipdb.set_trace()
     pass
 
 
