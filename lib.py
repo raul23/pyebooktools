@@ -69,11 +69,6 @@ OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
 OCR_COMMAND = tesseract_wrapper
 
 
-# TODO: complete its implementation
-def decho():
-    pass
-
-
 # TODO: place all the bash wrappers in a module in the utilities package
 def cat(file_path):
     cmd = 'cat {}'.format(file_path)
@@ -177,12 +172,10 @@ def ocr_file(input_file, output_file, mime_type):
         # TODO: they don't return anything
         return 0
     else:
-        # TODO: decho
-        print('Unsupported mimetype %s!' % mime_type)
+        print('STDERR: Unsupported mimetype %s!' % mime_type)
         return 4
 
-    # TODO: decho
-    print('Running OCR on file %s %s pages and with mimetype %s...'
+    print('STDERR: Running OCR on file %s %s pages and with mimetype %s...'
           % (input_file, num_pages, mime_type))
 
     # TODO: if ocr_first_pages or ocr_last_pages, set them to 0
@@ -203,8 +196,7 @@ def ocr_file(input_file, output_file, mime_type):
         # TODO: on mac, --suffix option is not present for the command mktemp
         # mktemp --suffix='.txt'
         tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
-        # TODO: decho
-        print('Running OCR of page %s, using tmp files %s and %s ...'
+        print('STDERR: Running OCR of page %s, using tmp files %s and %s ...'
               % (page, tmp_file, tmp_file_txt))
 
         # TODO: do something with the returned values, or better raise errors and log
@@ -217,9 +209,8 @@ def ocr_file(input_file, output_file, mime_type):
             data = f.read()
             print(data)
         text += data
-        # TODO: decho
         # Remove temporary files
-        print('Cleaning up tmp files %s and %s' % (tmp_file, tmp_file_txt))
+        print('STDERR: Cleaning up tmp files %s and %s' % (tmp_file, tmp_file_txt))
         remove_file(tmp_file)
         remove_file(tmp_file_txt)
 
@@ -372,15 +363,13 @@ def get_all_isbns_from_archive(file_path):
             file_to_check = os.path.join(path, file_to_check)
             isbns = search_file_for_isbns(file_to_check)
             if isbns:
-                # TODO: decho
-                print('Found ISBNs {}!'.format(isbns))
+                print('STDERR: Found ISBNs {}!'.format(isbns))
                 # TODO: two prints, one for stderror and the other for stdout
                 print(isbns.replace(ISBN_RET_SEPARATOR, '\n'))
                 for isbn in isbns.split(','):
                     if isbn not in all_isbns:
                         all_isbns.append(isbn)
-            # TODO: decho
-            print('Removing {}...'.format(file_to_check))
+            print('STDERR: Removing {}...'.format(file_to_check))
             remove_file(file_to_check)
         if len(os.listdir(path)) == 0 and path != tmpdir:
             os.rmdir(path)
@@ -464,56 +453,47 @@ def convert_to_txt(input_file, output_file, mimetype):
 # 7. If OCR is enabled and convert_to_txt() fails or its result is empty,
 #    try OCR-ing the file. If the result is non-empty but does not contain
 #    ISBNs and OCR_ENABLED is set to "always", run OCR as well.
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L499
+# ref.: https://bit.ly/2r28US2
 def search_file_for_isbns(file_path):
-    # TODO: decho
-    print('Searching file {} for ISBN numbers...'.format(file_path))
+    print('STDERR: Searching file {} for ISBN numbers...'.format(file_path))
     # Step 1: check the filename for ISBNs
     basename = os.path.basename(file_path)
     # TODO: make sure that we return an empty string when we can't find ISBNs
     isbns = find_isbns(basename)
     if isbns:
-        pass
-        # TODO: decho
-        print('Extracted ISBNs {} from the file name!'.format(isbns))
+        print('STDERR: Extracted ISBNs {} from the file name!'.format(isbns))
         return isbns
 
     # Steps 2-3: (2) if valid MIME type, search file contents for isbns and
     # (3) if invalid MIME type, exit without results
     mimetype = get_mimetype(file_path)
     if re.match(ISBN_DIRECT_GREP_FILES, mimetype):
-        # TODO: decho
-        print('Ebook is in text format, trying to find ISBN directly')
+        print('STDERR: Ebook is in text format, trying to find ISBN directly')
         data = reorder_file_content(file_path)
         isbns = find_isbns(data)
         if isbns:
-            # TODO: decho
-            print('Extracted ISBNs {} from the text file contents!'.format(isbns))
+            print('STDERR: Extracted ISBNs {} from the text file contents!'.format(isbns))
         else:
-            # TODO: decho
-            print('Did not find any ISBNs')
+            print('STDERR: Did not find any ISBNs')
         return isbns
     elif re.match(ISBN_IGNORED_FILES, mimetype):
         print('The file type in the blacklist, ignoring...')
         return isbns
 
     # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
-    # TODO: decho
-    print('Ebook metadata:')
+    print('STDERR: Ebook metadata:')
     # TODO: add the following
     # echo "$ebookmeta" | debug_prefixer "	" 0 --width=80 -t
     ebookmeta = get_ebook_metadata(file_path)
     isbns = find_isbns(ebookmeta)
     if isbns:
-        # TODO: decho
-        print('Extracted ISBNs {} from calibre ebook metadata!'.format(isbns))
+        print('STDERR: Extracted ISBNs {} from calibre ebook metadata!'.format(isbns))
         return isbns
 
     # Step 5: decompress with 7z
     isbns = get_all_isbns_from_archive(file_path)
     if isbns:
-        # TODO: decho
-        print('Extracted ISBNs {} from the archive file'.format(isbns))
+        print('STDERR: Extracted ISBNs {} from the archive file'.format(isbns))
         return isbns
 
     # Step 6: convert file to .txt
@@ -534,15 +514,12 @@ def search_file_for_isbns(file_path):
             data = reorder_file_content(tmp_file_txt)
             isbns = find_isbns(data)
             if isbns:
-                # TODO: decho
-                print('Text output contains ISBNs {}!'.format(isbns))
+                print('STDERR: Text output contains ISBNs {}!'.format(isbns))
             elif OCR_ENABLED == 'always':
-                # TODO: decho
-                print('We will try OCR because the successfully converted text did not have any ISBNs')
+                print('STDERR: We will try OCR because the successfully converted text did not have any ISBNs')
                 try_ocr = True
             else:
-                # TODO: decho
-                print('Did not find any ISBNs and will NOT try OCR')
+                print('STDERR: Did not find any ISBNs and will NOT try OCR')
     else:
         print('There was an error converting the book to txt format')
         try_ocr = True
@@ -556,25 +533,27 @@ def search_file_for_isbns(file_path):
             data = reorder_file_content(tmp_file_txt)
             isbns = find_isbns(data)
             if isbns:
-                # TODO: decho
-                print('Text output contains ISBNs {}!'.format(isbns))
+                print('STDERR: Text output contains ISBNs {}!'.format(isbns))
             else:
                 print('Did not find any ISBNs in the OCR output')
         else:
-            # TODO: decho
-            print('There was an error while running OCR!')
+            print('STDERR: There was an error while running OCR!')
 
     print('Removing {}...'.format(tmp_file_txt))
     remove_file(tmp_file_txt)
 
     if isbns:
-        # TODO: decho
-        print('Returning the found ISBNs {}!'.format(isbns))
+        print('STDERR: Returning the found ISBNs {}!'.format(isbns))
     else:
-        # TODO: decho
-        print('Could not find any ISBNs in {} :('.format(file_path))
+        print('STDERR: Could not find any ISBNs in {} :('.format(file_path))
 
     return isbns
+
+
+# Arguments: new_folder, current_ebook_path, current_metadata_path
+# ref.: https://bit.ly/2HxYEaw
+def move_or_link_ebook_file_and_metadata():
+    pass
 
 
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from

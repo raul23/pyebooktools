@@ -6,7 +6,7 @@ import os
 import sys
 import tempfile
 
-from lib import fetch_metadata, remove_file, search_file_for_isbns
+from lib import fetch_metadata, move_or_link_ebook_file_and_metadata, remove_file, search_file_for_isbns
 
 
 # Environment variables
@@ -117,6 +117,10 @@ def skip_file(file_path, reason):
     raise NotImplementedError('skip_file is not implemented!')
 
 
+def ok_file(old_path, new_path):
+    return ''
+
+
 # Arguments: path, reason (optional)
 def organize_by_filename_and_meta(file_path, reason=''):
     raise NotImplementedError('organize_by_filename_and_meta is not implemented!')
@@ -125,18 +129,17 @@ def organize_by_filename_and_meta(file_path, reason=''):
 # Sequentially tries to fetch metadata for each of the supplied ISBNs; if any
 # is found, writes it to a tmp .txt file and calls organize_known_ebook()
 # Arguments: path, isbns (coma-separated)
-# TODO: in their description, they refer to `organize_known_ebook` but it should be `move_or_link_ebook_file_and_metadata`
-# ref.: https://bit.ly/2HNv3x0
+# TODO: in their description, they refer to `organize_known_ebook` but it should
+# be `move_or_link_ebook_file_and_metadata`, ref.: https://bit.ly/2HNv3x0
 def organize_by_isbns(file_path, isbns):
     isbn_sources = config_ini['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
     for isbn in isbns.split(','):
         tmp_file = tempfile.mkstemp(suffix='.txt')[1]
-        # TODO: decho
-        print('Trying to fetch metadata for ISBN {} into temp file {}...'.format(isbn, tmp_file))
+        print('STDERR: Trying to fetch metadata for ISBN {} into temp file {}...'.format(isbn, tmp_file))
 
         for isbn_source in isbn_sources:
-            print('Fetching metadata from {} sources...'.format(isbn_source))
+            print('STDERR: Fetching metadata from {} sources...'.format(isbn_source))
             ipdb.set_trace()
             options = '--verbose --isbn={}'.format(isbn)
             metadata = fetch_metadata(isbn_source, options)
@@ -144,10 +147,11 @@ def organize_by_isbns(file_path, isbns):
             if metadata:
                 with open(tmp_file, 'w') as f:
                     f.write(metadata)
-                # TODO: is it necessary to sleep after fetching the metadata from online sources like the do?
-                # The code is run sequentially, so we are executing the rest of the code here once fetch_metadata() is done
-                # TODO: decho
-                print('Successfully fetched metadata: ')
+                # TODO: is it necessary to sleep after fetching the metadata from
+                # online sources like they do? The code is run sequentially, so
+                # we are executing the rest of the code here once fetch_metadata()
+                # is done, ref.: https://bit.ly/2vV9MfU
+                print('STDERR: Successfully fetched metadata: ')
                 print(metadata)
                 # TODO: add debug_prefixer
 
@@ -159,13 +163,19 @@ def organize_by_isbns(file_path, isbns):
                 print(more_metadata)
                 with open(tmp_file, 'a') as f:
                     f.write(more_metadata)
+
                 ipdb.set_trace()
+                print('STDERR: Organizing {} (with {})...'.format(file_path, tmp_file))
+                output_folder = config_ini['organize-ebooks']['output_folder']
+                new_path = move_or_link_ebook_file_and_metadata(output_folder, file_path, tmp_file)
+                ok_file(file_path, new_path)
+                # TODO: they have a `return`, but we should just break from the
+                # two for loops to then be able to remove temp file
 
-                # TODO: decho
-                print('Organizing {} (with {})...'.format(file_path, tmp_file))
-
-        # TODO 1: after fetching, writing metadata, and organizing, they return but then the temp file are not removed
-        # TODO 1: see https://bit.ly/2r0sUV8
+        # TODO 1: after fetching, writing metadata, and organizing, they return
+        # but then the temp file are not removed, ref.: https://bit.ly/2r0sUV8
+        # TODO 2: see if the removal of the temp file is done at the right
+        # place, i.e. at the end of the first for loop
         print('Removing temp file {}...'.format(tmp_file))
         remove_file(tmp_file)
 
@@ -173,15 +183,12 @@ def organize_by_isbns(file_path, isbns):
 def organize_file(file_path):
     file_err = check_file_for_corruption()
     if file_err:
-        # TODO: decho
-        print('File {} is corrupt with error {}'.format(file_path, file_err))
+        print('STDERR: File {} is corrupt with error {}'.format(file_path, file_err))
     elif config_ini['organize-ebooks']['corruption_check_only']:
-        # TODO: decho
-        print('We are only checking for corruption, do not continue organising...')
+        print('STDERR: We are only checking for corruption, do not continue organising...')
         skip_file(file_path, 'File appears OK')
     else:
-        # TODO: decho
-        print('File passed the corruption test, looking for ISBNs...')
+        print('STDERR: File passed the corruption test, looking for ISBNs...')
         isbns = search_file_for_isbns(file_path)
         if isbns:
             print('Organizing {} by ISBNs {}!'.format(file_path, isbns))
@@ -191,8 +198,7 @@ def organize_file(file_path):
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
             skip_file(file_path, 'No ISBNs found; Non-ISBN organization disabled')
-    # TODO: decho
-    print('=====================================================')
+    print('STDERR: =====================================================')
 
 
 if __name__ == '__main__':
@@ -202,12 +208,13 @@ if __name__ == '__main__':
         # TODO: exit script
         print("ERROR: {} could not be read".format(SETTINGS_PATH))
 
-    # f.strip() in case there is are spaces around the folder path
-    ebook_folders = [os.path.expanduser(f.strip()) for f in config_ini['organize-ebooks']['ebook_folders'].split(',')]
+    ebook_folders = config_ini['organize-ebooks']['ebook_folders'].split(',')
     for fpath in ebook_folders:
+        # strip() in case there are spaces around the folder path
+        fpath = fpath.strip()
         print('Recursively scanning {} for files'.format(fpath))
         # TODO: They make use of sorting flags for walking through the files [FILE_SORT_FLAGS]
-        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L313
+        # ref.: https://bit.ly/2HuI3YS
         for path, dirs, files in os.walk(fpath):
             for file in files:
                 # TODO: add debug_prefixer
