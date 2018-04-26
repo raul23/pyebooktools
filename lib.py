@@ -69,14 +69,6 @@ OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
 OCR_COMMAND = tesseract_wrapper
 
 
-# TODO: place all the bash wrappers in a module in the utilities package
-def cat(file_path):
-    cmd = 'cat {}'.format(file_path)
-    args = shlex.split(cmd)
-    result = subprocess.run(args)
-    return result
-
-
 def get_ebook_metadata(file_path):
     # TODO: add `ebook-meta` in PATH
     cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta {}'.format(file_path)
