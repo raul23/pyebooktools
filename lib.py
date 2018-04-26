@@ -586,7 +586,6 @@ def search_file_for_isbns(file_path):
 # is returned
 # ref.: https://bit.ly/2HS0iXQ
 def fetch_metadata(isbn_sources, options=''):
-    ipdb.set_trace()
     args = '{} {}'.format('fetch-ebook-metadata', options)
     isbn_sources = isbn_sources.split(',')
     for isbn_source in isbn_sources:
@@ -596,14 +595,16 @@ def fetch_metadata(isbn_sources, options=''):
         if ' ' in isbn_source:
             isbn_source = '"{}"'.format(isbn_source)
         args += ' --allowed-plugin={} '.format(isbn_source)
-    ipdb.set_trace()
     # Remove trailing whitespace
     args = args.strip()
     print('Calling `{}`'.format(args))
     args = shlex.split(args)
-    result = subprocess.run(args, stdout=subprocess.PIPE)
-    return result.stdout
-
+    # NOTE: `stderr` contains the log from running the fetch-data query from the
+    # specified online sources. Thus, `stderr` is a superset of `stdout` which
+    # only contains the ebook metadata for those fields that have the pattern
+    # '[a-zA-Z()]+ +: .*'
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return result.stdout.decode('UTF-8')
 
 
 if __name__ == '__main__':

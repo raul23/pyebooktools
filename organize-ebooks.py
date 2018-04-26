@@ -6,7 +6,7 @@ import os
 import sys
 import tempfile
 
-from lib import fetch_metadata, search_file_for_isbns
+from lib import fetch_metadata, remove_file, search_file_for_isbns
 
 
 # Environment variables
@@ -130,8 +130,7 @@ def organize_by_filename_and_meta(file_path, reason=''):
 def organize_by_isbns(file_path, isbns):
     isbn_sources = config_ini['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
-    isbns = isbns.split(',')
-    for isbn in isbns:
+    for isbn in isbns.split(','):
         tmp_file = tempfile.mkstemp(suffix='.txt')[1]
         # TODO: decho
         print('Trying to fetch metadata for ISBN {} into temp file {}...'.format(isbn, tmp_file))
@@ -139,9 +138,36 @@ def organize_by_isbns(file_path, isbns):
         for isbn_source in isbn_sources:
             print('Fetching metadata from {} sources...'.format(isbn_source))
             ipdb.set_trace()
-            options = '--verbose --isbn={}'.format(12345)
-            if fetch_metadata(isbn_source, options):
-                pass
+            options = '--verbose --isbn={}'.format(isbn)
+            metadata = fetch_metadata(isbn_source, options)
+            ipdb.set_trace()
+            if metadata:
+                with open(tmp_file, 'w') as f:
+                    f.write(metadata)
+                # TODO: is it necessary to sleep after fetching the metadata from online sources like the do?
+                # The code is run sequentially, so we are executing the rest of the code here once fetch_metadata() is done
+                # TODO: decho
+                print('Successfully fetched metadata: ')
+                print(metadata)
+                # TODO: add debug_prefixer
+
+                print('Adding additional metadata to the end of the metadata file...')
+                more_metadata = 'ISBN                : {}\n' \
+                                'All found ISBNs     : {}\n' \
+                                'Old file path       : {}\n' \
+                                'Metadata source     : {}'.format(isbn, isbns, file_path, isbn_source)
+                print(more_metadata)
+                with open(tmp_file, 'a') as f:
+                    f.write(more_metadata)
+                ipdb.set_trace()
+
+                # TODO: decho
+                print('Organizing {} (with {})...'.format(file_path, tmp_file))
+
+        # TODO 1: after fetching, writing metadata, and organizing, they return but then the temp file are not removed
+        # TODO 1: see https://bit.ly/2r0sUV8
+        print('Removing temp file {}...'.format(tmp_file))
+        remove_file(tmp_file)
 
 
 def organize_file(file_path):
