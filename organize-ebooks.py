@@ -242,7 +242,6 @@ def check_config_ini():
                    'split-into-folders/output_folder': ['expand', 'cwd']
                    }
 
-    ipdb.set_trace()
     for option, actions in all_actions.items():
         section_name, option_name = option.split('/')
         for action in actions:
@@ -255,9 +254,8 @@ def check_config_ini():
                 add_cwd(section_name, option_name)
             else:
                 print('STDERR: action ({}) not recognized'.format(action))
-    ipdb.set_trace()
 
-    return 1
+    return 0
 
 
 if __name__ == '__main__':
@@ -268,9 +266,10 @@ if __name__ == '__main__':
         print('ERROR: {} could not be read'.format(SETTINGS_PATH))
 
     # Check configuration options
-    retval = check_config_ini()
-    if retval:
-        print('ERROR: {} contains invalid options. Check the list and fix them.'.format(SETTINGS_PATH))
+    if check_config_ini() == 1:
+        # TODO: even if there are invalid options, we will continue in case those
+        # options are not necessary for what the user wants to do
+        print('ERROR: {} contains invalid options.'.format(SETTINGS_PATH))
 
     ebook_folders = config_ini['organize-ebooks']['ebook_folders'].split(',')
     for fpath in ebook_folders:
