@@ -6,6 +6,7 @@ A Python port of ebooks-managing shell scripts from https://github.com/na--/eboo
 # import PyPDF2
 import ipdb
 import os
+from pathlib import Path
 import re
 import shlex
 import shutil
@@ -28,7 +29,7 @@ def tesseract_wrapper(input_file, output_file):
 # - https://en.wikipedia.org/wiki/Whitespace_character
 # - https://en.wikipedia.org/wiki/Dash#Similar_Unicode_characters
 # - https://en.wikipedia.org/wiki/Dash#Common_dashes
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L31
+# ref.: https://bit.ly/2r3C02G
 """
 : "${WSD:="[\\x{0009}\\x{0020}\\x{00A0}\\x{1680}\\x{2000}\
 \\x{2001}\\x{2002}\\x{2003}\\x{2004}\\x{2005}\\x{2006}\\x{2007}\\x{2008}\
@@ -46,7 +47,7 @@ WSD = []
 # This regular expression should match most ISBN10/13-like sequences in
 # texts. To minimize false-positives, matches should be passed through
 # is_isbn_valid() or another ISBN validator
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L46
+# ref.: https://bit.ly/2KgQ4yA
 ISBN_REGEX = r"(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])"
 ISBN_DIRECT_GREP_FILES = "^(text/(plain|xml|html)|application/xml)$"
 ISBN_IGNORED_FILES = "^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$"
@@ -70,7 +71,7 @@ OCR_COMMAND = tesseract_wrapper
 
 
 def get_ebook_metadata(file_path):
-    # TODO: add `ebook-meta` in PATH
+    # TODO: add `ebook-meta` in PATH, right now it is only working for mac
     cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta {}'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
@@ -214,7 +215,7 @@ def ocr_file(input_file, output_file, mime_type):
 
 
 # Validates ISBN-10 and ISBN-13 numbers
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L215
+# ref.: https://bit.ly/2HO2lMD
 def is_isbn_valid(isbn):
     # Remove whitespaces (space, tab, newline, and so on), '-', and capitalize all
     # characters (ISBNs can consist of numbers [0-9] and the letters [xX])
@@ -247,7 +248,7 @@ def is_isbn_valid(isbn):
 # Searches the input string for ISBN-like sequences and removes duplicates and
 # finally validates them using is_isbn_valid() and returns them separated by
 # $ISBN_RET_SEPARATOR
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L274
+# ref.: https://bit.ly/2HyLoSQ
 def find_isbns(input_str):
     isbns = []
     matches = re.finditer(ISBN_REGEX, input_str)
@@ -263,7 +264,7 @@ def find_isbns(input_str):
         # TODO: keep two lists, one for storing valid isbns and the other will store all the unique ISBNs tested so far
         # so that you don't have to call is_isbn_valid on ISBN already seen
         # Only keep unique ISBNs
-        if not match in isbns:
+        if match not in isbns:
             # Validate ISBN
             if is_isbn_valid(match):
                 isbns.append(match)
@@ -290,7 +291,7 @@ def extract_archive(input_file, output_file):
 
 # If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
 # to the values of ISBN_GREP_RF_SCAN_FIRST and ISBN_GREP_RF_REVERSE_LAST
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L261
+# ref.: https://bit.ly/2JuaEKw
 def reorder_file_content(file_path):
     if ISBN_GREP_REORDER_FILES:
         print('Reordering input file (if possible), read first ISBN_GREP_RF_SCAN_FIRST '
@@ -408,7 +409,7 @@ def ebook_convert(input_file, output_file):
 # Tries to convert the supplied ebook file into .txt. It uses calibre's
 # ebook-convert tool. For optimization, if present, it will use pdftotext
 # for pdfs, catdoc for word files and djvutxt for djvu files.
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L393
+# ref.: https://bit.ly/2HXdf2I
 def convert_to_txt(input_file, output_file, mimetype):
     if mimetype == 'application/pdf' and command_exists('pdftotext'):
         print('The file looks like a pdf, using pdftotext to extract the text')
@@ -543,10 +544,60 @@ def search_file_for_isbns(file_path):
 
 
 # ref.: https://bit.ly/2HxYEaw
-def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path):
-    # Get ebook's file extension
+# TODO: output_filename_template should be accessed from config_ini, all scripts should have access to config_ini
+def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path, output_filename_template):
     ipdb.set_trace()
-    pass
+    # Get ebook's file extension
+    d = {'EXT': Path(current_ebook_path).suffix}
+
+    # Extract fields from metadata file
+    with open(current_metadata_path, 'r') as f:
+        for line in f:
+            # Get field name and value separately, e.g. 'Title  : A nice ebook'
+            # field_name = 'Title  ' and field_value = ' A nice ebook'
+            # Find the first colon and split on its position
+            pos = line.find(':')
+            field_name, field_value = line[:pos], line[pos+1:]
+
+            #########################
+            # Processing field name #
+            #########################
+            # Processing field name
+            # Remove trailing whitespace, including tab
+            field_name = field_name.strip()
+            # Replace spaces in field name with underscore
+            field_name = field_name.replace(' ', '_')
+            # Remove all non-alphanumeric characters except the underscore
+            del_tab = string.printable[62:].replace('_', '')
+            tran_tab = str.maketrans('', '', del_tab)
+            field_name = field_name.translate(tran_tab)
+            # Convert field name to upper case
+            field_name = field_name.upper()
+
+            ##########################
+            # Processing field value #
+            ##########################
+            # Processing field value
+            # Remove trailing whitespace, including tab
+            field_value = field_value.strip()
+            pattern_tab = '\\/*?<>|\x01\x1F\x7F\x22\x24\x60'
+            tran_tab = str.maketrans(pattern_tab, '_' * len(pattern_tab), '')
+            field_value = field_value.translate(tran_tab)
+            # Get only the first 100 characters
+            field_value = field_value[:100]
+
+            d[field_name] = field_value
+
+    ipdb.set_trace()
+    print('STDERR: Variables that will be used for the new filename construction:')
+    for k, v in d.items():
+        # TODO: add debug_prefixer
+        print('STDERR: {}'.format(d[k]))
+
+
+
+
+
 
 
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from

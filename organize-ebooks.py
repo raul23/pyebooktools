@@ -9,11 +9,9 @@ import tempfile
 from lib import fetch_metadata, move_or_link_ebook_file_and_metadata, remove_file, search_file_for_isbns
 
 
-# Environment variables
-SETTINGS_PATH = os.path.expanduser('~/PycharmProjects/digital_library/config.ini')
-
-
 global config_ini
+# TODO: add as an environment variable
+SETTINGS_PATH = os.path.expanduser('~/PycharmProjects/digital_library/config.ini')
 
 
 # TODO: add function in utilities
@@ -165,7 +163,7 @@ def organize_by_isbns(file_path, isbns):
                 print('STDERR: Organizing {} (with {})...'.format(file_path, tmp_file))
                 output_folder = config_ini['organize-ebooks']['output_folder']
                 ipdb.set_trace()
-                new_path = move_or_link_ebook_file_and_metadata(output_folder, file_path, tmp_file)
+                new_path = move_or_link_ebook_file_and_metadata(output_folder, file_path, tmp_file, config_ini['general-options']['output_filename_template'])
                 ok_file(file_path, new_path)
                 # TODO: they have a `return`, but we should just break from the
                 # two for loops to then be able to remove temp file
@@ -254,7 +252,6 @@ def check_config_ini():
                 add_cwd(section_name, option_name)
             else:
                 print('STDERR: action ({}) not recognized'.format(action))
-
     return 0
 
 
@@ -267,7 +264,7 @@ if __name__ == '__main__':
 
     # Check configuration options
     if check_config_ini() == 1:
-        # TODO: even if there are invalid options, we will continue in case those
+        # TODO: even if there are invalid options, we will continue in case these
         # options are not necessary for what the user wants to do
         print('ERROR: {} contains invalid options.'.format(SETTINGS_PATH))
 
@@ -278,7 +275,6 @@ if __name__ == '__main__':
         print('Recursively scanning {} for files'.format(fpath))
         # TODO: They make use of sorting flags for walking through the files [FILE_SORT_FLAGS]
         # ref.: https://bit.ly/2HuI3YS
-        ipdb.set_trace()
         for path, dirs, files in os.walk(fpath):
             for file in files:
                 # TODO: add debug_prefixer
