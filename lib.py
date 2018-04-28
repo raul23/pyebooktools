@@ -559,45 +559,52 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
             pos = line.find(':')
             field_name, field_value = line[:pos], line[pos+1:]
 
+            # TODO: try to use subprocess.run instead of subprocess.Popen and
+            # creating two processes
+
             #########################
             # Processing field name #
             #########################
-            # Processing field name
-            # Remove trailing whitespace, including tab
+            #  Remove trailing whitespace, including tab
             field_name = field_name.strip()
-            # Replace spaces in field name with underscore
-            field_name = field_name.replace(' ', '_')
-            # Remove all non-alphanumeric characters except the underscore
-            del_tab = string.printable[62:].replace('_', '')
-            tran_tab = str.maketrans('', '', del_tab)
-            field_name = field_name.translate(tran_tab)
-            # Convert field name to upper case
-            field_name = field_name.upper()
+            p1 = subprocess.Popen(['echo', field_name], stdout=subprocess.PIPE)
+            cmd = "sed -e 's/[ \t]*$//' -e 's/ /_/g' -e 's/[^a-zA-Z0-9_]//g'"
+            args = shlex.split(cmd)
+            p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
+            # Remove '\n' at the end of `result`
+            result = p2.communicate()[0].decode('UTF-8').strip()
+            # TODO: converting characters to upper case with `-e 's/\(.*\)/\\U\1/'`
+            # doesn't work on mac, \\U is not supported
+            field_name = result.upper()
 
             ##########################
             # Processing field value #
             ##########################
-            # Processing field value
             # Remove trailing whitespace, including tab
             field_value = field_value.strip()
-            pattern_tab = '\\/*?<>|\x01\x1F\x7F\x22\x24\x60'
-            tran_tab = str.maketrans(pattern_tab, '_' * len(pattern_tab), '')
-            field_value = field_value.translate(tran_tab)
-            # Get only the first 100 characters
-            field_value = field_value[:100]
+            p1 = subprocess.Popen(['echo', field_value], stdout=subprocess.PIPE)
+            cmd = "sed -e 's/[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]/_/g'"
+            args = shlex.split(cmd)
+            p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
+            field_value = p2.communicate()[0].decode('UTF-8').strip()
 
             d[field_name] = field_value
 
     ipdb.set_trace()
     print('STDERR: Variables that will be used for the new filename construction:')
+    #cmd = '/usr/local/bin/bash -c " declare -A d=( {} ); eval echo {} "'
+    cmd = 'declare -A d=( {} )'  # echo "${d[TITLE]}"
+    array = ''
     for k, v in d.items():
         # TODO: add debug_prefixer
         print('STDERR: {}'.format(d[k]))
+        array += ' ["{}"]="{}" '.format(k, v)
 
-
-
-
-
+    ipdb.set_trace()
+    #cmd = cmd.format(array, output_filename_template)
+    cmd = cmd.format(array)
+    cmd += '; eval echo "{}"'.format(output_filename_template)
+    subprocess.Popen(['/usr/local/bin/bash', '-c', cmd])
 
 
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from
