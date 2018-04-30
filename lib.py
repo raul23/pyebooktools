@@ -599,7 +599,7 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
 
     ipdb.set_trace()
     print('STDERR: Variables that will be used for the new filename construction:')
-    cmd = 'declare -A d=( {} )'  # echo "${d[TITLE]}"
+    cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
     array = ''
     for k, v in d.items():
         # TODO: add debug_prefixer
@@ -608,7 +608,8 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
 
     ipdb.set_trace()
     cmd = cmd.format(array)
-    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; new_name="$(eval echo "$OUTPUT_FILENAME_TEMPLATE")"; echo $new_name'.format(output_filename_template)
+    # TODO: make it safer; maybe by removing single/double quotation marks from `OUTPUT_FILENAME_TEMPLATE`
+    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(output_filename_template)
     result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
     new_name = result.stdout.read().decode('UTF-8').strip()
 
