@@ -543,12 +543,19 @@ def search_file_for_isbns(file_path):
     return isbns
 
 
+
+def unique_filename():
+    pass
+
+
 # ref.: https://bit.ly/2HxYEaw
 # TODO: output_filename_template should be accessed from config_ini, all scripts should have access to config_ini
 def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path, output_filename_template):
     ipdb.set_trace()
     # Get ebook's file extension
-    d = {'EXT': Path(current_ebook_path).suffix}
+    ext = Path(current_ebook_path).suffix
+    ext = ext[1:] if ext[0] == '.' else ext
+    d = {'EXT': ext}
 
     # Extract fields from metadata file
     with open(current_metadata_path, 'r') as f:
@@ -592,7 +599,6 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
 
     ipdb.set_trace()
     print('STDERR: Variables that will be used for the new filename construction:')
-    #cmd = '/usr/local/bin/bash -c " declare -A d=( {} ); eval echo {} "'
     cmd = 'declare -A d=( {} )'  # echo "${d[TITLE]}"
     array = ''
     for k, v in d.items():
@@ -601,10 +607,10 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
         array += ' ["{}"]="{}" '.format(k, v)
 
     ipdb.set_trace()
-    #cmd = cmd.format(array, output_filename_template)
     cmd = cmd.format(array)
-    cmd += '; eval echo "{}"'.format(output_filename_template)
-    subprocess.Popen(['/usr/local/bin/bash', '-c', cmd])
+    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; new_name="$(eval echo "$OUTPUT_FILENAME_TEMPLATE")"; echo $new_name'.format(output_filename_template)
+    result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
+    new_name = result.stdout.read().decode('UTF-8').strip()
 
 
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from
