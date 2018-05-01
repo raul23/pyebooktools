@@ -1,4 +1,4 @@
-# ebook-tools
+# ebook-tools [IN-PROGRESS]
 Python scripts for organizing and managing ebook collections
 
 Porting ebook-tools' shell scripts to Python  
