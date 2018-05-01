@@ -4,6 +4,7 @@ A Python port of ebooks-managing shell scripts from https://github.com/na--/eboo
 # TODO: python3 compatible only, e.g. print('', end='') [use from __future__ import print_function for python 2]
 # ref.: https://stackoverflow.com/a/5071123
 # import PyPDF2
+from datetime import datetime
 import ipdb
 import os
 from pathlib import Path
@@ -22,6 +23,11 @@ def tesseract_wrapper(input_file, output_file):
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=open(output_file, 'w'), encoding='utf-8', bufsize=4096)
     return result.returncode
+
+
+# TODO: following variables should be checked first if they are set, if not
+# then set with the specified value, like it is done in bash: ${FOO:=val}
+# which means 'Set $FOO to val if not set'
 
 
 # Horizontal whitespace and dash-like ASCII and Unicode characters that are
@@ -68,6 +74,36 @@ ISBN_GREP_RF_REVERSE_LAST = 50
 OCR_ENABLED = False
 OCR_ONLY_FIRST_LAST_PAGES = (4, 3)
 OCR_COMMAND = tesseract_wrapper
+
+
+def get_re_year():
+    # In bash: (19[0-9]|20[0-$(date '+%Y' | cut -b 3)])[0-9]"
+    # output: (19[0-9]|20[0-1])[0-9]
+    regex = '(19[0-9]|20[0-{}])[0-9]'.format(str(datetime.now())[2])
+    return regex
+
+
+def get_without_isbn_ignore():
+    re_year = get_re_year()
+    regex = ''
+    # Perdiodicals with filenames that contain something like 2010-11, 199010, 2015_7, 20110203:
+    regex += '(^|[^0-9]){}[ _\\.-]*(0?[1-9]|10|11|12)([0-9][0-9])?(\$|[^0-9])'.format(re_year)
+    # Periodicals with month numbers before the year
+    regex += '|(^|[^0-9])([0-9][0-9])?(0?[1-9]|10|11|12)[ _\\.-]*${RE_YEAR}(\$|[^0-9])'
+    # Periodicals with months or issues
+    regex += '|((^|[^a-z])(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|sep(tember)?|oct(ober)?|nov(ember)?|dec(ember)?|mag(azine)?|issue|#[ _\\.-]*[0-9]+)+(\$|[^a-z]))'
+    # Periodicals with seasons and years
+    regex += '|((spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall)[ _\\.-]*${RE_YEAR})'
+    regex += '|(${RE_YEAR}[ _\\.-]*(spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall))'
+    # Remove newlines
+    regex.split()
+    return regex
+
+
+# Should be matched against a lowercase filename.ext, lines that start with
+# and newlines are removed. The default value should filter out most periodicals
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L74
+WITHOUT_ISBN_IGNORE = get_without_isbn_ignore()
 
 
 def get_ebook_metadata(file_path):
@@ -251,6 +287,8 @@ def is_isbn_valid(isbn):
 # ref.: https://bit.ly/2HyLoSQ
 def find_isbns(input_str):
     isbns = []
+    # TODO: they are using grep -oP
+    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L279
     matches = re.finditer(ISBN_REGEX, input_str)
     for i, match in enumerate(matches):
         match = match.group()
@@ -392,6 +430,7 @@ def catdoc(input_file, output_file):
 
 
 def djvutxt(input_file, output_file):
+    # TODO: add djvutxt in PATH
     cmd = '/Applications/DjView.app/Contents/bin/djvutxt {} {}'.format(input_file, output_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
@@ -518,7 +557,9 @@ def search_file_for_isbns(file_path):
         try_ocr = True
 
     # Step 7: OCR the file
-    if not isbns and OCR_ENABLED is not False and try_ocr:
+    # TODO: test same condition than
+    # if not isbns and OCR_ENABLED is not False and try_ocr:
+    if not isbns and OCR_ENABLED and try_ocr:
         print('Trying to run OCR on the file...')
         # TODO: add debug_prefixer
         if ocr_file(file_path, tmp_file_txt, mimetype) == 0:
@@ -543,15 +584,53 @@ def search_file_for_isbns(file_path):
     return isbns
 
 
+# Return "folder_path/basename" if no file exists at this path. Otherwise,
+# sequentially insert " ($n)" before the extension of `basename` and return the
+# first path for which no file is present.
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L295
+def unique_filename(folder_path, basename):
+    ipdb.set_trace()
+    stem = Path(basename).stem
+    ext = Path(basename).suffix
+    new_path = os.path.join(folder_path, basename)
+    counter = 0
+    while os.path.isfile(new_path):
+        counter += 1
+        print('File {} already exists in destination {}, trying with counter {}!'.format(new_path, folder_path, counter))
+        new_stem = '{} {}'.format(stem, counter)
+        new_path = os.path.join(folder_path, new_stem) + ext
+    return new_path
 
-def unique_filename():
-    pass
+
+# TODO: all scripts should have access to `config_ini`
+def move_or_link_file(current_path, new_path, config_ini):
+    new_folder = os.path.dirname(new_path)
+
+    if config_ini['general-options']['dry_run']:
+        print('STDERR: (DRY RUN! All operations except metadata deletion are skipped!)')
+
+    if os.path.isdir(new_folder):
+        print('STDERR: Creating folder {}'.format(new_folder))
+        if not config_ini['general-options']['dry-run']:
+            # TODO: make directory
+            print('mkdir -p "$new_folder"')
+
+    if config_ini['general-options']['symlink_only']:
+        print('Symlinking file {} to {}...'.format(current_path, new_path))
+        if not config_ini['general-options']['dry_run']:
+            # TODO: symlink
+            print('ln -s "$(realpath "$current_path")" "$new_path"')
+    else:
+        print('STDERR: Moving file {} to {}...'.format(current_path, new_path))
+        if not config_ini['general-options']['dry_run']:
+            # TODO: move file with clobber
+            print('mv --no-clobber "$current_path" "$new_path"')
 
 
 # ref.: https://bit.ly/2HxYEaw
-# TODO: output_filename_template should be accessed from config_ini, all scripts should have access to config_ini
-def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path, output_filename_template):
-    ipdb.set_trace()
+# TODO: `output_filename_template` should be accessed from config_ini, all
+# scripts should have access to config_ini
+def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path, config_ini):
     # Get ebook's file extension
     ext = Path(current_ebook_path).suffix
     ext = ext[1:] if ext[0] == '.' else ext
@@ -568,6 +647,7 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
 
             # TODO: try to use subprocess.run instead of subprocess.Popen and
             # creating two processes
+            # OR try to do it without subprocess, only with Python regex
 
             #########################
             # Processing field name #
@@ -594,10 +674,11 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
             args = shlex.split(cmd)
             p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
             field_value = p2.communicate()[0].decode('UTF-8').strip()
+            # Get only the first 100 characters
+            field_value = field_value[:100]
 
             d[field_name] = field_value
 
-    ipdb.set_trace()
     print('STDERR: Variables that will be used for the new filename construction:')
     cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
     array = ''
@@ -609,9 +690,26 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     ipdb.set_trace()
     cmd = cmd.format(array)
     # TODO: make it safer; maybe by removing single/double quotation marks from `OUTPUT_FILENAME_TEMPLATE`
-    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(output_filename_template)
+    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config_ini['general-options']['output_filename_template'])
     result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
     new_name = result.stdout.read().decode('UTF-8').strip()
+    print('STDERR: The new file name of the book file/link {} will be: {}'.format(current_ebook_path, new_name))
+
+    ipdb.set_trace()
+    new_path = unique_filename(new_folder, new_name)
+    print(new_path)
+
+    move_or_link_file(current_ebook_path, new_path)
+    if config_ini['general-options']['keep_metadata']:
+        print('STDERR: Removing metadata file {}...'.format(current_metadata_path))
+        remove_file(current_metadata_path)
+    else:
+        print('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config_ini['general-options']['output_metadata_extension']))
+        if not config_ini['general-options']['dry_run']:
+            # TODO: move file with mv --no-clobber
+            print('mv --no-clobber')
+        else:
+            remove_file(current_metadata_path)
 
 
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from

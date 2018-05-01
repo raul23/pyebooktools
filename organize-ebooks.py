@@ -3,10 +3,12 @@ import ast
 from configparser import ConfigParser, NoOptionError, NoSectionError
 import linecache
 import os
+import re
 import sys
 import tempfile
 
-from lib import fetch_metadata, move_or_link_ebook_file_and_metadata, remove_file, search_file_for_isbns
+from lib import fetch_metadata, get_mimetype, move_or_link_ebook_file_and_metadata, \
+    remove_file, search_file_for_isbns, unique_filename
 
 
 global config_ini
@@ -119,9 +121,73 @@ def ok_file(old_path, new_path):
     return ''
 
 
+def is_pamphlet(file_path):
+    print('STDERR: Checking whether {} looks like a pamphlet...'.format(file_path))
+    # TODO: check that it does the same as to_lower() @ https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L184
+    lowercase_name = os.path.basename(file_path).lower()
+
+    pamphlet_included_files = config_ini['organize-ebooks']['pamphlet_included_files']
+    # TODO: check that it does the same as `if [[ "$lowercase_name" =~ $PAMPHLET_INCLUDED_FILES ]];`
+    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L73
+    if re.match(pamphlet_included_files, lowercase_name):
+        parts = []
+        # TODO: check that it does the same as `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_INCLUDED_FILES" | paste -sd';')]"`
+        # TODO: they are using grep -oE
+        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L74
+        matches = re.finditer(pamphlet_included_files, lowercase_name)
+        for i, match in enumerate(matches):
+            parts.append(match.group())
+        matches = ';'.join(parts)
+        print('Parts of the filename match the pamphlet include regex: [{}]'.format(matches))
+        return True
+
+    print('STDERR: The file does not match the pamphlet include regex, continuing...')
+
+    pamphlet_excluded_files = config_ini['organize-ebooks']['pamphlet_excluded_files']
+    # TODO: check that it does the same as `if [[ "$lowercase_name" =~ $PAMPHLET_EXCLUDED_FILES ]]; then`
+    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L79
+    if re.match(pamphlet_excluded_files, lowercase_name):
+        parts = []
+        # TODO: check that it does the same as `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_EXCLUDED_FILES" | paste -sd';')]"`
+        # TODO: they are using grep -oE
+        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L80
+        matches = re.finditer(pamphlet_excluded_files, lowercase_name)
+        for i, match in enumerate(matches):
+            parts.append(match.group())
+        matches = ';'.join(parts)
+        print('Parts of the filename match the pamphlet exclude regex: [{}]'.format(matches))
+        # TODO: [ERROR] they are returning 1, but it should be returning 0
+        # because the file is considered as a pamphlet
+        return True
+
+    print('STDERR: The file does not match the pamphlet exclude regex, continuing...')
+
+    mimetype = get_mimetype(file_path)
+
+
 # Arguments: path, reason (optional)
-def organize_by_filename_and_meta(file_path, reason=''):
-    raise NotImplementedError('organize_by_filename_and_meta is not implemented!')
+def organize_by_filename_and_meta(old_path, prev_reason):
+    prev_reason = '{}; '.format(prev_reason)
+    print('STDERR: Organizing {} by non-ISBN metadata and filename...'.format(old_path))
+    # TODO: check that it does the same as to_lower() @ https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L184
+    lowercase_name = os.path.basename(old_path).lower()
+    without_isbn_ignore = config_ini['organize-ebooks']['without_isbn_ignore']
+    # TODO: check that it does the same as `if [[ "$WITHOUT_ISBN_IGNORE" != "" && "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
+    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L161
+    if without_isbn_ignore and re.match(without_isbn_ignore, lowercase_name):
+        parts = []
+        # TODO: check that it does the same as `matches="[$(echo "$lowercase_name" | grep -oE "$WITHOUT_ISBN_IGNORE" | paste -sd';')]`
+        # TODO: they are using grep -oE
+        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L163
+        matches = re.finditer(without_isbn_ignore, lowercase_name)
+        for i, match in enumerate(matches):
+            parts.append(match.group())
+        matches = ';'.join(parts)
+        print('Parts of the filename match the ignore regex: [{}]'.format(matches))
+        skip_file(old_path, '{}File matches the ignore regex ({})'.format(prev_reason, matches))
+        return
+    else:
+        print('STDERR: File does not match the ignore regex, continuing...')
 
 
 # Sequentially tries to fetch metadata for each of the supplied ISBNs; if any
@@ -130,6 +196,15 @@ def organize_by_filename_and_meta(file_path, reason=''):
 # TODO: in their description, they refer to `organize_known_ebook` but it should
 # be `move_or_link_ebook_file_and_metadata`, ref.: https://bit.ly/2HNv3x0
 def organize_by_isbns(file_path, isbns):
+    ipdb.set_trace()
+    organize_by_filename_and_meta('/Users/nova/test/ebook-tools', 'Could not fetch metadata for ISBNs')
+
+    ipdb.set_trace()
+    new_path = unique_filename(folder_path=config_ini['organize-ebooks']['output_folder'],
+                               basename='Cory Doctorow - [Little Brother #1] - Little Brother (2008) [0765319853].pdf')
+    print(new_path)
+    ipdb.set_trace()
+
     isbn_sources = config_ini['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
     for isbn in isbns.split(','):
@@ -162,18 +237,27 @@ def organize_by_isbns(file_path, isbns):
 
                 print('STDERR: Organizing {} (with {})...'.format(file_path, tmp_file))
                 output_folder = config_ini['organize-ebooks']['output_folder']
-                ipdb.set_trace()
-                new_path = move_or_link_ebook_file_and_metadata(output_folder, file_path, tmp_file, config_ini['general-options']['output_filename_template'])
+                new_path = move_or_link_ebook_file_and_metadata(new_folder=output_folder,
+                                                                current_ebook_path=file_path,
+                                                                current_metadata_path=tmp_file,
+                                                                config_ini=config_ini)
                 ok_file(file_path, new_path)
                 # TODO: they have a `return`, but we should just break from the
                 # two for loops to then be able to remove temp file
 
         # TODO 1: after fetching, writing metadata, and organizing, they return
-        # but then the temp file are not removed, ref.: https://bit.ly/2r0sUV8
+        # but then the temp files are not removed, ref.: https://bit.ly/2r0sUV8
         # TODO 2: see if the removal of the temp file is done at the right
         # place, i.e. at the end of the first for loop
         print('STDERR: Removing temp file {}...'.format(tmp_file))
         remove_file(tmp_file)
+
+    if config_ini['organize-ebooks']['organize_without_isbn']:
+        print('STDERR: Could not organize via the found ISBNs, organizing by filename and metadata instead...')
+        organize_by_filename_and_meta(file_path, 'Could not fetch metadata for ISBNs {}'.format(isbns))
+    else:
+        print('STDERR: Organization by filename and metadata is not turned on, giving up...')
+        skip_file(file_path, 'Could not fetch metadata for ISBNs {}; Non-ISBN organization disabled'.format(isbns))
 
 
 def organize_file(file_path):

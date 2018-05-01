@@ -109,6 +109,7 @@ ENV/
 # SQlite
 *.sqlite
 
-# Project files
+# Project debug files
 out.txt
 notes.txt
+*.pdf
