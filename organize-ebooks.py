@@ -7,7 +7,8 @@ import re
 import sys
 import tempfile
 
-from lib import fetch_metadata, get_mimetype, move_or_link_ebook_file_and_metadata, \
+from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
+    get_mime_type, get_pages_in_pdf, move_or_link_ebook_file_and_metadata, move_or_link_file, \
     remove_file, search_file_for_isbns, unique_filename
 
 
@@ -109,31 +110,39 @@ def read_config(config_path):
     return options
 
 
-def check_file_for_corruption():
-    return ''
+def fail_file(old_path, reason, new_path):
+    # TODO: add red color to ERR, https://bit.ly/2FzamzE
+    return 'ERR:\t{}\n' \
+           'REASON:\t{}\n' \
+           'TO:\t{}\n'.format(old_path, reason, new_path)
 
 
 def skip_file(file_path, reason):
-    raise NotImplementedError('skip_file is not implemented!')
+    # TODO: add green color to OK, https://bit.ly/2JKoPva
+    return 'OK:\t{}\n' \
+           'TO:\t{}\n'.format(file_path, reason)
 
 
 def ok_file(old_path, new_path):
-    return ''
+    # TODO: https://bit.ly/2rf38f5
+    return 'SKIP:\t{}\nREASON:\t{}\n'.format(old_path, new_path)
 
 
 def is_pamphlet(file_path):
     print('STDERR: Checking whether {} looks like a pamphlet...'.format(file_path))
-    # TODO: check that it does the same as to_lower() @ https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L184
+    # TODO: check that it does the same as to_lower() @ https://bit.ly/2w0O5LN
     lowercase_name = os.path.basename(file_path).lower()
 
     pamphlet_included_files = config_ini['organize-ebooks']['pamphlet_included_files']
-    # TODO: check that it does the same as `if [[ "$lowercase_name" =~ $PAMPHLET_INCLUDED_FILES ]];`
-    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L73
+    # TODO: check that it does the same as
+    # `if [[ "$lowercase_name" =~ $PAMPHLET_INCLUDED_FILES ]];`
+    # ref.: https://bit.ly/2I5nvFW
     if re.match(pamphlet_included_files, lowercase_name):
         parts = []
-        # TODO: check that it does the same as `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_INCLUDED_FILES" | paste -sd';')]"`
+        # TODO: check that it does the same as
+        # `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_INCLUDED_FILES" | paste -sd';')]"`
         # TODO: they are using grep -oE
-        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L74
+        # ref.: https://bit.ly/2w2PeCo
         matches = re.finditer(pamphlet_included_files, lowercase_name)
         for i, match in enumerate(matches):
             parts.append(match.group())
@@ -144,13 +153,15 @@ def is_pamphlet(file_path):
     print('STDERR: The file does not match the pamphlet include regex, continuing...')
 
     pamphlet_excluded_files = config_ini['organize-ebooks']['pamphlet_excluded_files']
-    # TODO: check that it does the same as `if [[ "$lowercase_name" =~ $PAMPHLET_EXCLUDED_FILES ]]; then`
-    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L79
+    # TODO: check that it does the same as
+    # `if [[ "$lowercase_name" =~ $PAMPHLET_EXCLUDED_FILES ]]; then`
+    # ref.: https://bit.ly/2KscBZj
     if re.match(pamphlet_excluded_files, lowercase_name):
         parts = []
-        # TODO: check that it does the same as `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_EXCLUDED_FILES" | paste -sd';')]"`
+        # TODO: check that it does the same as
+        # `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_EXCLUDED_FILES" | paste -sd';')]"`
         # TODO: they are using grep -oE
-        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L80
+        # ref.: https://bit.ly/2JHhlZJ
         matches = re.finditer(pamphlet_excluded_files, lowercase_name)
         for i, match in enumerate(matches):
             parts.append(match.group())
@@ -162,23 +173,47 @@ def is_pamphlet(file_path):
 
     print('STDERR: The file does not match the pamphlet exclude regex, continuing...')
 
-    mimetype = get_mimetype(file_path)
+    mime_type = get_mime_type(file_path)
+    file_size_KiB = get_file_size(file_path)
+    pamphlet_max_pdf_pages = ['organize-ebooks']['pamphlet_max_pdf_pages']
+    pamphlet_max_filesize_kib = ['organize-ebooks']['pamphlet_max_filesize_kib']
+    if mime_type == 'application/pdf':
+        print('STDERR: The file looks like a pdf, checking if the number of '
+              'pages is larger than {} ...'.format(pamphlet_max_pdf_pages))
+        pages = get_pages_in_pdf(file_path)
+
+        if pages > pamphlet_max_pdf_pages:
+            print('STDERR: The file has {} pages, too many for a pamphlet'.format(pages))
+            return False
+        else:
+            print('STDERR: The file has only {} pages, looks like a pamphlet'.format(pages))
+
+    elif file_size_KiB < pamphlet_max_filesize_kib:
+        print('STDERR: File has a type {} and a small size ({} KiB), looks like'
+              'a pamphlet'.format(mime_type, file_size_KiB))
+        return True
+    else:
+        print('STDERR: File has a type {} and a large size ({} KB), does NOT '
+              'look like a pamphlet'.format(mime_type, file_size_KiB))
+        return False
 
 
 # Arguments: path, reason (optional)
 def organize_by_filename_and_meta(old_path, prev_reason):
     prev_reason = '{}; '.format(prev_reason)
     print('STDERR: Organizing {} by non-ISBN metadata and filename...'.format(old_path))
-    # TODO: check that it does the same as to_lower() @ https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L184
+    # TODO: check that it does the same as to_lower() @ https://bit.ly/2w0O5LN
     lowercase_name = os.path.basename(old_path).lower()
     without_isbn_ignore = config_ini['organize-ebooks']['without_isbn_ignore']
-    # TODO: check that it does the same as `if [[ "$WITHOUT_ISBN_IGNORE" != "" && "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
-    # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L161
+    # TODO: check that it does the same as
+    # `if [[ "$WITHOUT_ISBN_IGNORE" != "" && "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
+    # ref.: https://bit.ly/2HJTzfg
     if without_isbn_ignore and re.match(without_isbn_ignore, lowercase_name):
         parts = []
-        # TODO: check that it does the same as `matches="[$(echo "$lowercase_name" | grep -oE "$WITHOUT_ISBN_IGNORE" | paste -sd';')]`
+        # TODO: check that it does the same as
+        # `matches="[$(echo "$lowercase_name" | grep -oE "$WITHOUT_ISBN_IGNORE" | paste -sd';')]`
         # TODO: they are using grep -oE
-        # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/organize-ebooks.sh#L163
+        # ref.: https://bit.ly/2jj2Vnz
         matches = re.finditer(without_isbn_ignore, lowercase_name)
         for i, match in enumerate(matches):
             parts.append(match.group())
@@ -188,6 +223,125 @@ def organize_by_filename_and_meta(old_path, prev_reason):
         return
     else:
         print('STDERR: File does not match the ignore regex, continuing...')
+
+    if is_pamphlet(old_path):
+        print('File {} looks like a pamphlet!'.format(old_path))
+        output_folder_pamphlets = config_ini['organize-ebooks']['output_folder_pamphlets']
+        if output_folder_pamphlets:
+            dirname = os.path.dirname(old_path)
+            basename = os.path.basename(old_path)
+            new_path = unique_filename(os.path.join(output_folder_pamphlets, dirname), basename)
+
+            print('STDERR: Moving file {} to {}!'.format(old_path, new_path))
+            ok_file(old_path, new_path)
+
+            move_or_link_file(old_path, new_path)
+        else:
+            print('STDERR: Output folder for pamphlet files is not set, skipping...')
+            skip_file(old_path, 'No pamphlet folder specified')
+        return
+
+    output_folder_uncertain = ['organize-ebooks']['output_folder_uncertain']
+    if not output_folder_uncertain:
+        print('STDERR: No uncertain folder specified, skipping...')
+        skip_file(old_path, 'No uncertain folder specified')
+        return
+
+    ebookmeta = get_ebook_metadata(old_path)
+    print('STDERR: Ebook metadata:')
+    # TODO: add debug_prefixer, https://bit.ly/2FxphKV
+    print(ebookmeta)
+
+    tmpmfile = tempfile.mkstemp(suffix='.txt')[1]
+    print('STDERR: Created temporary file for metadata downloads {}'.format(tmpmfile))
+
+    def finisher(fetch_method):
+        print('STDERR: Successfully fetched metadata: ')
+        # TODO: debug_prefixer, https://bit.ly/2rdr1EK
+        print('STDERR: Adding additional metadata to the end of the metadata file...')
+        # TODO: add ebook metadata at the end of the file
+        # echo "$ebookmeta" | sed -E 's/^(.+[^ ])   ([ ]+): /OF \1\2: /'
+        # ref.: https://bit.ly/2HNGa60
+        more_metadata = 'Old file path       : {}\n' \
+                        'Meta fetch method   : {}\n'.format(old_path, fetch_method)
+        with open(tmpmfile, 'a') as f:
+            f.write(more_metadata)
+
+        isbn = find_isbns(more_metadata)
+        if isbn:
+            with open(tmpmfile, 'a') as f:
+                f.write('ISBN                : {}'.format(isbn))
+
+        print('STDERR: Organizing {} (with {})...'.format(old_path, tmpmfile))
+        new_path = move_or_link_ebook_file_and_metadata(output_folder_uncertain, old_path, tmpmfile)
+        ok_file(old_path, new_path)
+
+    # TODO: get title and author from `ebook-meta`
+    # ref.: https://bit.ly/2JHKQe0
+    title = ''
+    author = ''
+    # TODO: complete condition for title
+    # if [[ "${title//[^[:alpha:]]/}" != "" && "$title" != "unknown" ]]
+    # ref.: https://bit.ly/2HDHZGm
+    cond = ''
+    if cond and title != 'unknown':
+        print('STDERR: There is a relatively normal-looking title, searching for metadata...')
+
+        # TODO: complete condition for author
+        cond = ''
+        if cond and author != 'unknown':
+            print('STDERR: Trying to fetch metadata by title {} and author {}...'.format(title, author))
+            options = '--verbose --title="{}" --author="{}"'.format(title, author)
+            # TODO: check that fetch_metadata() can also return an empty string
+            metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+            if metadata:
+                # TODO: they are writing outside the if, https://bit.ly/2FyIiwh
+                with open(tmpmfile, 'a') as f:
+                    # TODO: do we write even if metadata can be empty?
+                    f.write(metadata)
+                finisher('title&author')
+                return
+            print('STDERR: Trying to swap places - author {} and title {}...'.format(title, author))
+            options = '--verbose --title="{}" --author="{}"'.format(author, title)
+            metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+            if metadata:
+                # TODO: they are writing outside the if, https://bit.ly/2Kt78kX
+                with open(tmpmfile, 'a') as f:
+                    # TODO: do we write even if metadata can be empty?
+                    f.write(metadata)
+                finisher('rev-title&author')
+                return
+
+            print('STDERR: Trying to fetch metadata only by title {}...'.format(title))
+            options = '--verbose --title="{}"'.format(title)
+            metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+            if metadata:
+                # TODO: they are writing outside the if, https://bit.ly/2vZeFES
+                with open(tmpmfile, 'a') as f:
+                    # TODO: do we write even if metadata can be empty?
+                    f.write(metadata)
+                finisher('title')
+                return
+
+    # TODO: tokenize basename
+    # filename="$(basename "${old_path%.*}" | tokenize)"
+    # ref.: https://bit.ly/2jlyBIR
+    filename = os.path.splitext(os.path.basename(old_path))[0]
+    print('STDERR: Trying to fetch metadata only the filename {}...'.format(filename))
+    options = '--verbose --title="{}"'.format(filename)
+    metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+    if metadata:
+        # TODO: they are writing outside the if, https://bit.ly/2I3GH6X
+        with open(tmpmfile, 'a') as f:
+            # TODO: do we write even if metadata can be empty?
+            f.write(filename)
+        finisher('title')
+        return
+
+    print('STDERR: Could not find anything, removing the temp file {}...'.format(tmpmfile))
+    remove_file(tmpmfile)
+
+    skip_file(old_path, '{}Insufficient or wrong file name/metadata'.format(prev_reason))
 
 
 # Sequentially tries to fetch metadata for each of the supplied ISBNs; if any
@@ -264,6 +418,29 @@ def organize_file(file_path):
     file_err = check_file_for_corruption()
     if file_err:
         print('STDERR: File {} is corrupt with error {}'.format(file_path, file_err))
+        output_folder_corrupt = config_ini['organize-ebooks']['output_folder_corrupt']
+        if output_folder_corrupt:
+            new_path = unique_filename(output_folder_corrupt, os.path.basename(file_path))
+
+            fail_file(file_path, 'File is corrupt: {}'.format(file_err), new_path)
+
+            move_or_link_file(file_path, new_path)
+
+            # TODO: do we add the meta extension directly to new_path (which
+            # already has an extension); thus if new_path='/test/path/book.pdf'
+            # then new_metadata_path='/test/path/book.pdf.meta' or should it be
+            # new_metadata_path='/test/path/book.meta' (which is what I'm doing here)
+            # ref.: https://bit.ly/2I6K3pW
+            output_metadata_extension = config_ini['general-options']['output_metadata_extension']
+            new_metadata_path = '{}.{}'.format(os.path.splitext(new_path)[0], output_metadata_extension)
+            print('STDERR: Saving original filename to {}...'.format(new_metadata_path))
+            if not config_ini['general-options']['dry_run']:
+                metadata = 'Corruption reason   : {}\nOld file path       : {}\n'.format(file_err, file_path)
+                with open(new_metadata_path, 'w') as f:
+                    f.write(metadata)
+        else:
+            print('STDERR: Output folder for corrupt files is not set, doing nothing')
+            fail_file(file_path, 'File is corrupt: {}'.format(file_err))
     elif config_ini['organize-ebooks']['corruption_check_only']:
         print('STDERR: We are only checking for corruption, do not continue organising...')
         skip_file(file_path, 'File appears OK')
@@ -271,10 +448,10 @@ def organize_file(file_path):
         print('STDERR: File passed the corruption test, looking for ISBNs...')
         isbns = search_file_for_isbns(file_path)
         if isbns:
-            print('Organizing {} by ISBNs {}!'.format(file_path, isbns))
+            print('STDERR: Organizing {} by ISBNs {}!'.format(file_path, isbns))
             organize_by_isbns(file_path, isbns)
         elif config_ini['organize-ebooks']['organize_without_isbn']:
-            print('No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
+            print('STDERR: No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
             skip_file(file_path, 'No ISBNs found; Non-ISBN organization disabled')

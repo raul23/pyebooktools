@@ -19,7 +19,7 @@ import tempfile
 # OCR: converts image to text
 def tesseract_wrapper(input_file, output_file):
     # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
-    cmd = 'tesseract {} stdout --psm 12'.format(input_file)
+    cmd = 'tesseract "{}" stdout --psm 12'.format(input_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=open(output_file, 'w'), encoding='utf-8', bufsize=4096)
     return result.returncode
@@ -106,9 +106,55 @@ def get_without_isbn_ignore():
 WITHOUT_ISBN_IGNORE = get_without_isbn_ignore()
 
 
+def convert_bytes_binary(num, unit):
+    """
+    this function will convert bytes to MiB.... GiB... etc
+
+    ref.: https://stackoverflow.com/a/39988702
+    """
+    for x in ['bytes', 'KiB', 'MiB', 'GiB', 'TiB']:
+        if num < 1024.0 or x == unit:
+            # return "%3.1f %s" % (num, x)
+            return num
+        num /= 1024.0
+
+
+def convert_bytes_decimal(num, unit):
+    """
+    this function will convert bytes to MB.... GB... etc
+
+    ref.: https://stackoverflow.com/a/39988702
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1000.0 or x == unit:
+            # return "%3.1f %s" % (num, x)
+            return num
+        num /= 1000.0
+
+
+# NOTE: the original function was returning the file size in MB... GB... but it
+# was actually returning the file in MiB... GiB... etc (dividing by 1024, not 1000)
+# see the comment @ https://bit.ly/2HL5RnI
+# TODO: call this function when computing file size here in lib.py
+# TODO: unit can be given with binary prefix as {'bytes', 'KiB', 'MiB', 'GiB', TiB'}
+# or decimal prefix as {'bytes', 'KB', 'MB', 'GB', TB'}
+def get_file_size(file_path, unit):
+    """
+    this function will return the file size
+
+    ref.: https://stackoverflow.com/a/39988702
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        if unit[1] == 'i':
+            return convert_bytes_binary(file_info.st_size, unit=unit)
+        else:
+            return convert_bytes_decimal(file_info.st_size, unit=unit)
+
+
 def get_ebook_metadata(file_path):
     # TODO: add `ebook-meta` in PATH, right now it is only working for mac
-    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta {}'.format(file_path)
+    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta "{}"'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return result.stdout.decode('UTF-8')
@@ -118,7 +164,7 @@ def get_ebook_metadata(file_path):
 def get_pages_in_pdf(file_path):
     # TODO: add also the option to use `pdfinfo` (like in the original shell script)
     # TODO: see if you can find the number of pages using a python module (e.g. PyPDF2)
-    cmd = 'mdls -raw -name kMDItemNumberOfPages %s' % file_path
+    cmd = 'mdls -raw -name kMDItemNumberOfPages "{}"'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return int(result.stdout)
@@ -132,7 +178,7 @@ def get_pages_in_djvu(file_path):
     #    $ eval `/Applications/DjView.app/Contents/setpath.sh`
     # ref.: ReadMe from DjVuLibre
     # TODO: not need to specify the full path to djvused if you set correctly the right env. variables
-    cmd = '/Applications/DjView.app/Contents/bin/djvused -e "n" %s' % file_path
+    cmd = '/Applications/DjView.app/Contents/bin/djvused -e "n" "{}"'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return int(result.stdout)
@@ -161,14 +207,86 @@ def remove_tree(file_path):
         return 1
 
 
+# ref.: https://stackoverflow.com/a/15924160
+def is_file_empty(file_path):
+    # TODO: test when file doesn't exist
+    # TODO: see if the proposed solution @ https://stackoverflow.com/a/15924160
+    # is equivalent to using try and catch the `OSError`
+    try:
+        return os.path.getsize(file_path) > 0
+    except OSError as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+        return False
+
+
+# Checks the supplied file for different kinds of corruption:
+#  - If it's zero-sized or contains only \0
+#  - If it has a pdf extension but different mime type
+#  - If it's a pdf and `pdfinfo` returns an error
+#  - If it has an archive extension but `7z t` returns an error
+# ref.: https://bit.ly/2JLpqgf
+# TODO: config_ini should be accessed by all scripts, not passed as an argument
+def check_file_for_corruption(file_path, config_ini):
+    file_err = ''
+    print('STDERR: Testing {] for corruption...'.format(file_path))
+
+    # TODO: test that it is the same as
+    # if [[ "$(tr -d '\0' < "$file_path" | head -c 1)" == "" ]]; then
+    # ref.: https://bit.ly/2jpX0xf
+    if is_file_empty(file_path):
+        print('The file is empty or contains only zeros!')
+        file_err = 'The file is empty or contains only zeros'
+        return file_err
+
+    ext = Path(file_path).suffix
+    mime_type = get_mime_type(file_path)
+
+    if mime_type == 'application/octet-strea' and re.match('^(pdf|djv|djvu)$', mime_type):
+        print('The file has a {} extension but {} MIME type!'.format(ext, mime_type))
+    elif mime_type == 'application/pdf':
+        print('STDERR: Checking pdf file for integrity...')
+        if not command_exists('pdfinfo'):
+            print('STDERR: pdfinfo does not exist, could not check if pdf is OK')
+        else:
+            # TODO: need to call `pdfinfo`, https://bit.ly/2KvQgKu
+            pdfinfo_output = ''
+            if pdfinfo_output or False:
+                print('STDERR: pdfinfo returned an error!')
+                # TODO: add debug_prefixer, https://bit.ly/2rdyoMr
+                print(pdfinfo_output)
+                print('Has pdf MIME type or extension, but pdfinfo returned an error!')
+                file_err = 'Has pdf MIME type or extension, but pdfinfo returned an error'
+                return
+            else:
+                print('STDERR: pdfinfo returned successfully')
+                # TODO: add debug_prefixer, https://bit.ly/2jmj8YY
+                print(pdfinfo_output)
+                if re.match('^Page size:\s*0 x 0 pts$', pdfinfo_output):
+                    print('STDERR: pdf is corrupt anyway, page size property is empty!')
+                    print('pdf can be parsed, but page size is 0 x 0 pts!')
+
+    if re.match(config_ini['organize-ebooks']['tested_archive_extensions']):
+        print('STDERR: The file has a {} extension, testing with 7z...'.format(ext))
+        log = test_archive(file_path)
+        if log:
+            print('STDERR: Test failed!')
+            # TODO: add debug_prefixer, https://bit.ly/2HFYQIJ
+            print(log)
+            print('Looks like an archive, but testing it with 7z failed!')
+            file_err = 'Looks like an archive, but testing it with 7z failed'
+
+    # No error
+    assert file_err == ''
+    return file_err
+
+
 # OCR on a pdf, djvu document and image to extract ISBN
 # NOTE: If pdf or djvu document: first needs to be converted to image and then OCR
 def ocr_file(input_file, output_file, mime_type):
     def convert_pdf_page(page, input_file, output_file):
         # Converts pdf to png image
-        cmd = 'gs -dSAFER -q -r300 -dFirstPage=%s -dLastPage=%s -dNOPAUSE ' \
-              '-dINTERPOLATE -sDEVICE=png16m -sOutputFile=%s %s -c quit' \
-              % (page, page, output_file, input_file)
+        cmd = 'gs -dSAFER -q -r300 -dFirstPage={} -dLastPage={} -dNOPAUSE ' \
+              '-dINTERPOLATE -sDEVICE=png16m -sOutputFile="{}" "{}" -c quit'.format(page, page, output_file, input_file)
         args = shlex.split(cmd)
         result = subprocess.run(args, stdout=subprocess.PIPE)
         return result.returncode
@@ -176,7 +294,8 @@ def ocr_file(input_file, output_file, mime_type):
     # Converts djvu to tif image
     def convert_djvu_page(page, input_file, output_file):
         # TODO: not need to specify the full path to djvused if you set correctly the right env. variables
-        cmd = '/Applications/DjView.app/Contents/bin/ddjvu -page=%s -format=tif %s %s' % (page, input_file, output_file)
+        cmd = '/Applications/DjView.app/Contents/bin/ddjvu -page={} ' \
+              '-format=tif {} {}'.format(page, input_file, output_file)
         args = shlex.split(cmd)
         result = subprocess.run(args, stdout=subprocess.PIPE)
         return result.returncode
@@ -184,8 +303,9 @@ def ocr_file(input_file, output_file, mime_type):
     num_pages = 1
     page_convert_cmd = ''
     if mime_type.startswith('application/pdf'):
-        # TODO: they are using the pdfinfo command but it might not be present; in check_file_for_corruption(), they
-        # are testing if this command exists but not in ocr_file()
+        # TODO: they are using the `pdfinfo` command but it might not be present;
+        # in check_file_for_corruption(), they are testing if this command exists
+        # but not in ocr_file()
         num_pages = get_pages_in_pdf(input_file)
         page_convert_cmd = convert_pdf_page
     elif mime_type.startswith('image/vnd.djvu'):
@@ -193,7 +313,7 @@ def ocr_file(input_file, output_file, mime_type):
         page_convert_cmd = convert_djvu_page
     elif mime_type.startswith('image/'):
         # TODO: in their code, they don't initialize num_pages
-        print('Running OCR on file %s and with mimetype %s...'
+        print('Running OCR on file %s and with mime type %s...'
               % (input_file, mime_type))
         OCR_COMMAND(input_file, output_file)
         # TODO: run > command
@@ -201,10 +321,10 @@ def ocr_file(input_file, output_file, mime_type):
         # TODO: they don't return anything
         return 0
     else:
-        print('STDERR: Unsupported mimetype %s!' % mime_type)
+        print('STDERR: Unsupported mime type %s!' % mime_type)
         return 4
 
-    print('STDERR: Running OCR on file %s %s pages and with mimetype %s...'
+    print('STDERR: Running OCR on file %s %s pages and with mime type %s...'
           % (input_file, num_pages, mime_type))
 
     # TODO: if ocr_first_pages or ocr_last_pages, set them to 0
@@ -309,12 +429,12 @@ def find_isbns(input_str):
     return ISBN_RET_SEPARATOR.join(isbns)
 
 
-def get_mimetype(file_path):
+def get_mime_type(file_path):
     # TODO: handle errors in functions with returncode, check other functions
     # where don't use returncode
     # TODO: get MIME type with a python package, see the magic package
     # ref.: https://stackoverflow.com/a/2753385
-    cmd = 'file --brief --mime-type {}'.format(file_path)
+    cmd = 'file --brief --mime-type "{}"'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return result.stdout.decode('UTF-8').split()[0]
@@ -325,6 +445,13 @@ def extract_archive(input_file, output_file):
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return result.returncode
+
+
+def test_archive(file_path):
+    cmd = '7z t "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return result.stderr
 
 
 # If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
@@ -449,22 +576,22 @@ def ebook_convert(input_file, output_file):
 # ebook-convert tool. For optimization, if present, it will use pdftotext
 # for pdfs, catdoc for word files and djvutxt for djvu files.
 # ref.: https://bit.ly/2HXdf2I
-def convert_to_txt(input_file, output_file, mimetype):
-    if mimetype == 'application/pdf' and command_exists('pdftotext'):
+def convert_to_txt(input_file, output_file, mime_type):
+    if mime_type == 'application/pdf' and command_exists('pdftotext'):
         print('The file looks like a pdf, using pdftotext to extract the text')
         pdftotext(input_file, output_file)
-    elif mimetype == 'application/msword' and command_exists('catdoc'):
+    elif mime_type == 'application/msword' and command_exists('catdoc'):
         print('The file looks like a doc, using catdoc to extract the text')
         catdoc(input_file, output_file)
     # TODO: not need to specify the full path to djvutxt if you set correctly the right env. variables
-    elif mimetype.startswith('image/vnd.djvu') and command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
+    elif mime_type.startswith('image/vnd.djvu') and command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
         print('The file looks like a djvu, using djvutxt to extract the text')
         djvutxt(input_file, output_file)
-    elif (not mimetype.startswith('image/vnd.djvu')) and mimetype.startswith('image/'):
-        print('The file looks like a normal image ({}), skipping ebook-convert usage!'.format(mimetype))
+    elif (not mime_type.startswith('image/vnd.djvu')) and mime_type.startswith('image/'):
+        print('The file looks like a normal image ({}), skipping ebook-convert usage!'.format(mime_type))
         return 1
     else:
-        print("Trying to use calibre's ebook-convert to convert the {} file to .txt".format(mimetype))
+        print("Trying to use calibre's ebook-convert to convert the {} file to .txt".format(mime_type))
         ebook_convert(input_file, output_file)
     return 0
 
@@ -498,8 +625,8 @@ def search_file_for_isbns(file_path):
 
     # Steps 2-3: (2) if valid MIME type, search file contents for isbns and
     # (3) if invalid MIME type, exit without results
-    mimetype = get_mimetype(file_path)
-    if re.match(ISBN_DIRECT_GREP_FILES, mimetype):
+    mime_type = get_mime_type(file_path)
+    if re.match(ISBN_DIRECT_GREP_FILES, mime_type):
         print('STDERR: Ebook is in text format, trying to find ISBN directly')
         data = reorder_file_content(file_path)
         isbns = find_isbns(data)
@@ -508,7 +635,7 @@ def search_file_for_isbns(file_path):
         else:
             print('STDERR: Did not find any ISBNs')
         return isbns
-    elif re.match(ISBN_IGNORED_FILES, mimetype):
+    elif re.match(ISBN_IGNORED_FILES, mime_type):
         print('The file type in the blacklist, ignoring...')
         return isbns
 
@@ -534,7 +661,7 @@ def search_file_for_isbns(file_path):
     print('Converting ebook to text format in file {}...'.format(tmp_file_txt))
 
     # TODO: add debug_prefixer
-    if convert_to_txt(file_path, tmp_file_txt, mimetype) == 0:
+    if convert_to_txt(file_path, tmp_file_txt, mime_type) == 0:
         print('Conversion to text was successful, checking the result...')
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
@@ -562,7 +689,7 @@ def search_file_for_isbns(file_path):
     if not isbns and OCR_ENABLED and try_ocr:
         print('Trying to run OCR on the file...')
         # TODO: add debug_prefixer
-        if ocr_file(file_path, tmp_file_txt, mimetype) == 0:
+        if ocr_file(file_path, tmp_file_txt, mime_type) == 0:
             print('OCR was successful, checking the result...')
             data = reorder_file_content(tmp_file_txt)
             isbns = find_isbns(data)
@@ -738,12 +865,14 @@ def fetch_metadata(isbn_sources, options=''):
     # specified online sources. Thus, `stderr` is a superset of `stdout` which
     # only contains the ebook metadata for those fields that have the pattern
     # '[a-zA-Z()]+ +: .*'
+    # TODO: make sure that you are getting only the fields that match the pattern
+    # '[a-zA-Z()]+ +: .*' since you are not using regex on the result
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return result.stdout.decode('UTF-8')
 
 
 if __name__ == '__main__':
-    # NOTE: to find file's mimetype
+    # NOTE: to find file's mime type
     # file --brief --mime-type file.pdf
 
     # Testing ocr_file()
@@ -787,7 +916,7 @@ if __name__ == '__main__':
     for s in invalid_test_sts:
         search_file_for_isbns(s)
     
-    # Test 4: if valid mimetype, get ISBNs from file content (txt only) [step 4]
+    # Test 4: if valid mime type, get ISBNs from file content (txt only) [step 4]
     test_strs = [os.path.expanduser('~/test/ebooks/book3.txt'),
                  os.path.expanduser('~/test/ebooks/book1.pdf'),
                  os.path.expanduser('~/test/ebooks/book2.djvu')]
