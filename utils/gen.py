@@ -1,9 +1,69 @@
+import argparse
+import ast
+from configparser import ConfigParser, NoOptionError, NoSectionError
 import linecache
 import sys
+import textwrap as _textwrap
 
 
-def test():
-    pass
+# TODO: add function in utilities
+def get_data_type(val):
+    """
+    Given a string, returns its corresponding data type
+
+    ref.: https://stackoverflow.com/a/10261229
+
+    :param val: string value
+    :return: Data type of string value
+    """
+    try:
+        # TODO: not safe to evaluate string
+        t = ast.literal_eval(val)
+    except ValueError:
+        return str
+    except SyntaxError:
+        return str
+    else:
+        if type(t) is bool:
+            return bool
+        elif type(t) is int:
+            return int
+        elif type(t) is float:
+            return float
+        else:
+            return str
+
+
+# TODO: add function in utilities
+def get_option_value(parser, section, option):
+    value_type = get_data_type(parser.get(section, option))
+    try:
+        if value_type == int:
+            return parser.getint(section, option)
+        elif value_type == float:
+            return parser.getfloat(section, option)
+        elif value_type == bool:
+            return parser.getboolean(section, option)
+        else:
+            return parser.get(section, option)
+    except NoSectionError:
+        print_exception()
+        return None
+    except NoOptionError:
+        print_exception()
+        return None
+
+
+# ref.: https://stackoverflow.com/a/32974697
+class MultilineFormatter(argparse.HelpFormatter):
+    def _fill_text(self, text, width, indent):
+        text = self._whitespace_matcher.sub(' ', text).strip()
+        paragraphs = text.split('|n ')
+        multiline_text = ''
+        for paragraph in paragraphs:
+            formatted_paragraph = _textwrap.fill(paragraph, width, initial_indent=indent, subsequent_indent=indent) + '\n\n'
+            multiline_text = multiline_text + formatted_paragraph
+        return multiline_text
 
 
 def print_exception(error=None):
@@ -28,3 +88,22 @@ def print_exception(error=None):
     # TODO: find a way to add the error description (e.g. AttributeError) without
     # having to provide the error description as input to the function
     print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), err_desc))
+
+
+def read_config(config_path):
+    parser = ConfigParser()
+    found = parser.read(config_path)
+    if config_path not in found:
+        print("ERROR: {} is empty".format(config_path))
+        return None
+    options = {}
+    for section in parser.sections():
+        options.setdefault(section, {})
+        for option in parser.options(section):
+            options[section].setdefault(option, None)
+            value = get_option_value(parser, section, option)
+            if value is None:
+                print("ERROR: The option '{}' could not be retrieved from {}".format(option, config_path))
+                return None
+            options[section][option] = value
+    return options

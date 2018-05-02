@@ -16,6 +16,9 @@ import subprocess
 import tempfile
 
 
+import config
+
+
 # OCR: converts image to text
 def tesseract_wrapper(input_file, output_file):
     # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
@@ -225,8 +228,8 @@ def is_file_empty(file_path):
 #  - If it's a pdf and `pdfinfo` returns an error
 #  - If it has an archive extension but `7z t` returns an error
 # ref.: https://bit.ly/2JLpqgf
-# TODO: config_ini should be accessed by all scripts, not passed as an argument
-def check_file_for_corruption(file_path, config_ini):
+def check_file_for_corruption(file_path):
+    ipdb.set_trace()
     file_err = ''
     print('STDERR: Testing {] for corruption...'.format(file_path))
 
@@ -265,7 +268,7 @@ def check_file_for_corruption(file_path, config_ini):
                     print('STDERR: pdf is corrupt anyway, page size property is empty!')
                     print('pdf can be parsed, but page size is 0 x 0 pts!')
 
-    if re.match(config_ini['organize-ebooks']['tested_archive_extensions']):
+    if re.match(config.config_ini['organize-ebooks']['tested_archive_extensions']):
         print('STDERR: The file has a {} extension, testing with 7z...'.format(ext))
         log = test_archive(file_path)
         if log:
@@ -729,35 +732,35 @@ def unique_filename(folder_path, basename):
     return new_path
 
 
-# TODO: all scripts should have access to `config_ini`
-def move_or_link_file(current_path, new_path, config_ini):
+# TODO: all scripts should have access to `config.config_ini`
+def move_or_link_file(current_path, new_path):
     new_folder = os.path.dirname(new_path)
 
-    if config_ini['general-options']['dry_run']:
+    if config.config_ini['general-options']['dry_run']:
         print('STDERR: (DRY RUN! All operations except metadata deletion are skipped!)')
 
     if os.path.isdir(new_folder):
         print('STDERR: Creating folder {}'.format(new_folder))
-        if not config_ini['general-options']['dry-run']:
+        if not config.config_ini['general-options']['dry-run']:
             # TODO: make directory
             print('mkdir -p "$new_folder"')
 
-    if config_ini['general-options']['symlink_only']:
+    if config.config_ini['general-options']['symlink_only']:
         print('Symlinking file {} to {}...'.format(current_path, new_path))
-        if not config_ini['general-options']['dry_run']:
+        if not config.config_ini['general-options']['dry_run']:
             # TODO: symlink
             print('ln -s "$(realpath "$current_path")" "$new_path"')
     else:
         print('STDERR: Moving file {} to {}...'.format(current_path, new_path))
-        if not config_ini['general-options']['dry_run']:
+        if not config.config_ini['general-options']['dry_run']:
             # TODO: move file with clobber
             print('mv --no-clobber "$current_path" "$new_path"')
 
 
 # ref.: https://bit.ly/2HxYEaw
-# TODO: `output_filename_template` should be accessed from config_ini, all
-# scripts should have access to config_ini
-def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path, config_ini):
+# TODO: `output_filename_template` should be accessed from config.config_ini, all
+# scripts should have access to config.config_ini
+def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path):
     # Get ebook's file extension
     ext = Path(current_ebook_path).suffix
     ext = ext[1:] if ext[0] == '.' else ext
@@ -817,7 +820,7 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     ipdb.set_trace()
     cmd = cmd.format(array)
     # TODO: make it safer; maybe by removing single/double quotation marks from `OUTPUT_FILENAME_TEMPLATE`
-    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config_ini['general-options']['output_filename_template'])
+    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config.config_ini['general-options']['output_filename_template'])
     result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
     new_name = result.stdout.read().decode('UTF-8').strip()
     print('STDERR: The new file name of the book file/link {} will be: {}'.format(current_ebook_path, new_name))
@@ -827,12 +830,12 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     print(new_path)
 
     move_or_link_file(current_ebook_path, new_path)
-    if config_ini['general-options']['keep_metadata']:
+    if config.config_ini['general-options']['keep_metadata']:
         print('STDERR: Removing metadata file {}...'.format(current_metadata_path))
         remove_file(current_metadata_path)
     else:
-        print('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config_ini['general-options']['output_metadata_extension']))
-        if not config_ini['general-options']['dry_run']:
+        print('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config.config_ini['general-options']['output_metadata_extension']))
+        if not config.config_ini['general-options']['dry_run']:
             # TODO: move file with mv --no-clobber
             print('mv --no-clobber')
         else:

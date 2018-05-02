@@ -1,113 +1,18 @@
 import ipdb
-import ast
-from configparser import ConfigParser, NoOptionError, NoSectionError
-import linecache
+import argparse
 import os
 import re
-import sys
 import tempfile
 
+import config
+from utils.gen import MultilineFormatter
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
     get_mime_type, get_pages_in_pdf, move_or_link_ebook_file_and_metadata, move_or_link_file, \
     remove_file, search_file_for_isbns, unique_filename
 
 
-global config_ini
 # TODO: add as an environment variable
 SETTINGS_PATH = os.path.expanduser('~/PycharmProjects/digital_library/config.ini')
-
-
-# TODO: add function in utilities
-def print_exception(error=None):
-    """
-    For a given exception, PRINTS filename, line number, the line itself, and
-    exception description.
-
-    ref.: https://stackoverflow.com/a/20264059
-
-    :return: None
-    """
-    exc_type, exc_obj, tb = sys.exc_info()
-    f = tb.tb_frame
-    lineno = tb.tb_lineno
-    filename = f.f_code.co_filename
-    linecache.checkcache(filename)
-    line = linecache.getline(filename, lineno, f.f_globals)
-    if error is None:
-        err_desc = exc_obj
-    else:
-        err_desc = "{}: {}".format(error, exc_obj)
-    # TODO: find a way to add the error description (e.g. AttributeError) without
-    # having to provide the error description as input to the function
-    print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), err_desc))
-
-
-# TODO: add function in utilities
-def get_data_type(val):
-    """
-    Given a string, returns its corresponding data type
-
-    ref.: https://stackoverflow.com/a/10261229
-
-    :param val: string value
-    :return: Data type of string value
-    """
-    try:
-        # TODO: not safe to evaluate string
-        t = ast.literal_eval(val)
-    except ValueError:
-        return str
-    except SyntaxError:
-        return str
-    else:
-        if type(t) is bool:
-            return bool
-        elif type(t) is int:
-            return int
-        elif type(t) is float:
-            return float
-        else:
-            return str
-
-
-# TODO: add function in utilities
-def get_option_value(parser, section, option):
-    value_type = get_data_type(parser.get(section, option))
-    try:
-        if value_type == int:
-            return parser.getint(section, option)
-        elif value_type == float:
-            return parser.getfloat(section, option)
-        elif value_type == bool:
-            return parser.getboolean(section, option)
-        else:
-            return parser.get(section, option)
-    except NoSectionError:
-        print_exception()
-        return None
-    except NoOptionError:
-        print_exception()
-        return None
-
-
-# TODO: add function in utilities
-def read_config(config_path):
-    parser = ConfigParser()
-    found = parser.read(config_path)
-    if config_path not in found:
-        print("ERROR: {} is empty".format(config_path))
-        return None
-    options = {}
-    for section in parser.sections():
-        options.setdefault(section, {})
-        for option in parser.options(section):
-            options[section].setdefault(option, None)
-            value = get_option_value(parser, section, option)
-            if value is None:
-                print("ERROR: The option '{}' could not be retrieved from {}".format(option, config_path))
-                return None
-            options[section][option] = value
-    return options
 
 
 def fail_file(old_path, reason, new_path):
@@ -133,7 +38,7 @@ def is_pamphlet(file_path):
     # TODO: check that it does the same as to_lower() @ https://bit.ly/2w0O5LN
     lowercase_name = os.path.basename(file_path).lower()
 
-    pamphlet_included_files = config_ini['organize-ebooks']['pamphlet_included_files']
+    pamphlet_included_files = config.config_ini['organize-ebooks']['pamphlet_included_files']
     # TODO: check that it does the same as
     # `if [[ "$lowercase_name" =~ $PAMPHLET_INCLUDED_FILES ]];`
     # ref.: https://bit.ly/2I5nvFW
@@ -152,7 +57,7 @@ def is_pamphlet(file_path):
 
     print('STDERR: The file does not match the pamphlet include regex, continuing...')
 
-    pamphlet_excluded_files = config_ini['organize-ebooks']['pamphlet_excluded_files']
+    pamphlet_excluded_files = config.config_ini['organize-ebooks']['pamphlet_excluded_files']
     # TODO: check that it does the same as
     # `if [[ "$lowercase_name" =~ $PAMPHLET_EXCLUDED_FILES ]]; then`
     # ref.: https://bit.ly/2KscBZj
@@ -204,7 +109,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     print('STDERR: Organizing {} by non-ISBN metadata and filename...'.format(old_path))
     # TODO: check that it does the same as to_lower() @ https://bit.ly/2w0O5LN
     lowercase_name = os.path.basename(old_path).lower()
-    without_isbn_ignore = config_ini['organize-ebooks']['without_isbn_ignore']
+    without_isbn_ignore = config.config_ini['organize-ebooks']['without_isbn_ignore']
     # TODO: check that it does the same as
     # `if [[ "$WITHOUT_ISBN_IGNORE" != "" && "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
     # ref.: https://bit.ly/2HJTzfg
@@ -226,7 +131,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
 
     if is_pamphlet(old_path):
         print('File {} looks like a pamphlet!'.format(old_path))
-        output_folder_pamphlets = config_ini['organize-ebooks']['output_folder_pamphlets']
+        output_folder_pamphlets = config.config_ini['organize-ebooks']['output_folder_pamphlets']
         if output_folder_pamphlets:
             dirname = os.path.dirname(old_path)
             basename = os.path.basename(old_path)
@@ -293,7 +198,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
             print('STDERR: Trying to fetch metadata by title {} and author {}...'.format(title, author))
             options = '--verbose --title="{}" --author="{}"'.format(title, author)
             # TODO: check that fetch_metadata() can also return an empty string
-            metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+            metadata = fetch_metadata(config.config_ini['general-options']['organize_without_isbn_sources'], options)
             if metadata:
                 # TODO: they are writing outside the if, https://bit.ly/2FyIiwh
                 with open(tmpmfile, 'a') as f:
@@ -303,7 +208,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
                 return
             print('STDERR: Trying to swap places - author {} and title {}...'.format(title, author))
             options = '--verbose --title="{}" --author="{}"'.format(author, title)
-            metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+            metadata = fetch_metadata(config.config_ini['general-options']['organize_without_isbn_sources'], options)
             if metadata:
                 # TODO: they are writing outside the if, https://bit.ly/2Kt78kX
                 with open(tmpmfile, 'a') as f:
@@ -314,7 +219,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
 
             print('STDERR: Trying to fetch metadata only by title {}...'.format(title))
             options = '--verbose --title="{}"'.format(title)
-            metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+            metadata = fetch_metadata(config.config_ini['general-options']['organize_without_isbn_sources'], options)
             if metadata:
                 # TODO: they are writing outside the if, https://bit.ly/2vZeFES
                 with open(tmpmfile, 'a') as f:
@@ -329,7 +234,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     filename = os.path.splitext(os.path.basename(old_path))[0]
     print('STDERR: Trying to fetch metadata only the filename {}...'.format(filename))
     options = '--verbose --title="{}"'.format(filename)
-    metadata = fetch_metadata(config_ini['general-options']['organize_without_isbn_sources'], options)
+    metadata = fetch_metadata(config.config_ini['general-options']['organize_without_isbn_sources'], options)
     if metadata:
         # TODO: they are writing outside the if, https://bit.ly/2I3GH6X
         with open(tmpmfile, 'a') as f:
@@ -354,12 +259,12 @@ def organize_by_isbns(file_path, isbns):
     organize_by_filename_and_meta('/Users/nova/test/ebook-tools', 'Could not fetch metadata for ISBNs')
 
     ipdb.set_trace()
-    new_path = unique_filename(folder_path=config_ini['organize-ebooks']['output_folder'],
+    new_path = unique_filename(folder_path=config.config_ini['organize-ebooks']['output_folder'],
                                basename='Cory Doctorow - [Little Brother #1] - Little Brother (2008) [0765319853].pdf')
     print(new_path)
     ipdb.set_trace()
 
-    isbn_sources = config_ini['general-options']['isbn_metadata_fetch_order']
+    isbn_sources = config.config_ini['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
     for isbn in isbns.split(','):
         tmp_file = tempfile.mkstemp(suffix='.txt')[1]
@@ -390,11 +295,11 @@ def organize_by_isbns(file_path, isbns):
                     f.write(more_metadata)
 
                 print('STDERR: Organizing {} (with {})...'.format(file_path, tmp_file))
-                output_folder = config_ini['organize-ebooks']['output_folder']
+                output_folder = config.config_ini['organize-ebooks']['output_folder']
                 new_path = move_or_link_ebook_file_and_metadata(new_folder=output_folder,
                                                                 current_ebook_path=file_path,
                                                                 current_metadata_path=tmp_file,
-                                                                config_ini=config_ini)
+                                                                config_ini=config.config_ini)
                 ok_file(file_path, new_path)
                 # TODO: they have a `return`, but we should just break from the
                 # two for loops to then be able to remove temp file
@@ -406,7 +311,7 @@ def organize_by_isbns(file_path, isbns):
         print('STDERR: Removing temp file {}...'.format(tmp_file))
         remove_file(tmp_file)
 
-    if config_ini['organize-ebooks']['organize_without_isbn']:
+    if config.config_ini['organize-ebooks']['organize_without_isbn']:
         print('STDERR: Could not organize via the found ISBNs, organizing by filename and metadata instead...')
         organize_by_filename_and_meta(file_path, 'Could not fetch metadata for ISBNs {}'.format(isbns))
     else:
@@ -415,10 +320,10 @@ def organize_by_isbns(file_path, isbns):
 
 
 def organize_file(file_path):
-    file_err = check_file_for_corruption()
+    file_err = check_file_for_corruption(file_path)
     if file_err:
         print('STDERR: File {} is corrupt with error {}'.format(file_path, file_err))
-        output_folder_corrupt = config_ini['organize-ebooks']['output_folder_corrupt']
+        output_folder_corrupt = config.config_ini['organize-ebooks']['output_folder_corrupt']
         if output_folder_corrupt:
             new_path = unique_filename(output_folder_corrupt, os.path.basename(file_path))
 
@@ -431,17 +336,17 @@ def organize_file(file_path):
             # then new_metadata_path='/test/path/book.pdf.meta' or should it be
             # new_metadata_path='/test/path/book.meta' (which is what I'm doing here)
             # ref.: https://bit.ly/2I6K3pW
-            output_metadata_extension = config_ini['general-options']['output_metadata_extension']
+            output_metadata_extension = config.config_ini['general-options']['output_metadata_extension']
             new_metadata_path = '{}.{}'.format(os.path.splitext(new_path)[0], output_metadata_extension)
             print('STDERR: Saving original filename to {}...'.format(new_metadata_path))
-            if not config_ini['general-options']['dry_run']:
+            if not config.config_ini['general-options']['dry_run']:
                 metadata = 'Corruption reason   : {}\nOld file path       : {}\n'.format(file_err, file_path)
                 with open(new_metadata_path, 'w') as f:
                     f.write(metadata)
         else:
             print('STDERR: Output folder for corrupt files is not set, doing nothing')
             fail_file(file_path, 'File is corrupt: {}'.format(file_err))
-    elif config_ini['organize-ebooks']['corruption_check_only']:
+    elif config.config_ini['organize-ebooks']['corruption_check_only']:
         print('STDERR: We are only checking for corruption, do not continue organising...')
         skip_file(file_path, 'File appears OK')
     else:
@@ -450,7 +355,7 @@ def organize_file(file_path):
         if isbns:
             print('STDERR: Organizing {} by ISBNs {}!'.format(file_path, isbns))
             organize_by_isbns(file_path, isbns)
-        elif config_ini['organize-ebooks']['organize_without_isbn']:
+        elif config.config_ini['organize-ebooks']['organize_without_isbn']:
             print('STDERR: No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
@@ -458,78 +363,24 @@ def organize_file(file_path):
     print('STDERR: =====================================================')
 
 
-# If an option is given as comma-separated arguments, check that each argument
-# is enclosed with double quotes and remove any trailing whitespace
-def check_comma_options(section_name, option):
-    new_option = []
-    for s in config_ini[section_name][option].split(','):
-        s = s.strip()
-        if ' ' in s:
-            s = '"{}"'.format(s)
-        new_option.append(s)
-    config_ini[section_name][option] = ','.join(new_option)
-
-
-def expand_folder_paths(section_name, option):
-    new_option = []
-    for s in config_ini[section_name][option].split(','):
-        if s:
-            new_option.append(os.path.expanduser(s))
-    config_ini[section_name][option] = ','.join(new_option)
-
-
-def add_cwd(section_name, option):
-    if not config_ini[section_name][option]:
-        config_ini[section_name][option] = os.getcwd()
-
-
-# Checks and fixes configuration options
-# TODO: this function and al. should be in lib.py because it might be used by other scripts
-def check_config_ini():
-    all_actions = {'general-options/isbn_metadata_fetch_order': ['comma'],
-                   'general-options/organize_without_isbn_sources': ['comma'],
-                   'general-options/file_sort_flags': ['comma'],
-                   'organize-ebooks/ebook_folders': ['comma', 'expand'],
-                   'organize-ebooks/output_folder': ['expand', 'cwd'],
-                   'organize-ebooks/output_folder_uncertain': ['expand'],
-                   'organize-ebooks/output_folder_corrupt': ['expand'],
-                   'organize-ebooks/output_folder_pamphlets': ['expand'],
-                   'interactive-organizer/output_folders': ['comma', 'expand'],
-                   'interactive-organizer/custom_move_base_dir': ['expand'],
-                   'interactive-organizer/restore_original_base_dir': ['expand'],
-                   'rename-calibre-library/output_folder': ['expand', 'cwd'],
-                   'split-into-folders/output_folder': ['expand', 'cwd']
-                   }
-
-    for option, actions in all_actions.items():
-        section_name, option_name = option.split('/')
-        for action in actions:
-            # TODO: add a try except if KeyError in config_ini
-            if action == 'comma':
-                check_comma_options(section_name, option_name)
-            elif action == 'expand':
-                expand_folder_paths(section_name, option_name)
-            elif action == 'cwd':
-                add_cwd(section_name, option_name)
-            else:
-                print('STDERR: action ({}) not recognized'.format(action))
-    return 0
-
-
 if __name__ == '__main__':
+    # Parse arguments from command-line
+    description = """
+    Automatically organize folders with potentially huge amounts of unorganized
+    ebooks. This is done by renaming the files with proper names and moving them
+    to other folders.
+    |n
+    NOTE: This is a Python port of organize-ebooks.sh @ 
+    https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
+    """
+    parser = argparse.ArgumentParser(description=description, formatter_class=MultilineFormatter)
+    parser.parse_args()
+    ipdb.set_trace()
     # Read configuration file
-    config_ini = read_config(SETTINGS_PATH)
-    if config_ini is None:
-        # TODO: exit script
-        print('ERROR: {} could not be read'.format(SETTINGS_PATH))
+    config.init(SETTINGS_PATH)
+    ipdb.set_trace()
 
-    # Check configuration options
-    if check_config_ini() == 1:
-        # TODO: even if there are invalid options, we will continue in case these
-        # options are not necessary for what the user wants to do
-        print('ERROR: {} contains invalid options.'.format(SETTINGS_PATH))
-
-    ebook_folders = config_ini['organize-ebooks']['ebook_folders'].split(',')
+    ebook_folders = config.config.config_ini['organize-ebooks']['ebook_folders'].split(',')
     for fpath in ebook_folders:
         # Remove white spaces around the folder path
         fpath = os.path.expanduser(fpath).strip()
