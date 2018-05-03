@@ -3,12 +3,12 @@ import argparse
 import os
 import re
 import tempfile
+import textwrap
 
 import config
-from utils.gen import MultilineFormatter
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
-    get_mime_type, get_pages_in_pdf, move_or_link_ebook_file_and_metadata, move_or_link_file, \
-    remove_file, search_file_for_isbns, unique_filename
+    get_mime_type, get_pages_in_pdf, handle_script_arg, move_or_link_ebook_file_and_metadata, move_or_link_file, \
+    remove_file, search_file_for_isbns, unique_filename, VERSION
 
 
 # TODO: add as an environment variable
@@ -365,16 +365,37 @@ def organize_file(file_path):
 
 if __name__ == '__main__':
     # Parse arguments from command-line
-    description = """
-    Automatically organize folders with potentially huge amounts of unorganized
-    ebooks. This is done by renaming the files with proper names and moving them
-    to other folders.
-    |n
+    description = '''
+    eBook Organizer v{}
+    
+    For information about the possible options, see the config.ini file.
+
     NOTE: This is a Python port of organize-ebooks.sh @ 
     https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
-    """
-    parser = argparse.ArgumentParser(description=description, formatter_class=MultilineFormatter)
-    parser.parse_args()
+    '''.format(VERSION)
+    parser = argparse.ArgumentParser(
+        description=textwrap.dedent(description),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage='python %(prog)s [OPTIONS] EBOOK_FOLDERS')
+
+    # TODO: do we add help for each argument?
+    parser.add_argument('-c', '--config-path', default=os.path.join(os.getcwd(), 'config.ini'))
+    parser.add_argument('-cco', '--corruption-check-only', action='store_false')
+    parser.add_argument('-owi', '--organize-without-isbn', action='store_false')
+
+    parser.add_argument('-o', '--output-folder', default=os.getcwd())
+    parser.add_argument('-ofu', '--output-folder-uncertain', default='')
+    parser.add_argument('-ofc', '--output-folder-corrupt', default='')
+    parser.add_argument('-ofp', '--output-folder-pamphlets', default='')
+
+    parser.add_argument('--pamphlet-included-files', default='\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$')
+    parser.add_argument('--pamphlet-excluded-files', default='\.(chm|epub|cbr|cbz|mobi|lit|pdb)$')
+    parser.add_argument('--pamphlet-max-pdf-pages', default=50, type=int)
+    parser.add_argument('--pamphlet-max-filesize-kib', default=250, type=int)
+
+    handle_script_arg(parser)
+
+    args = parser.parse_args()
     ipdb.set_trace()
     # Read configuration file
     config.init(SETTINGS_PATH)

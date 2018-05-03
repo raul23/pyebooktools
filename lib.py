@@ -19,6 +19,9 @@ import tempfile
 import config
 
 
+VERSION = '0.5.1'
+
+
 # OCR: converts image to text
 def tesseract_wrapper(input_file, output_file):
     # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
@@ -872,6 +875,41 @@ def fetch_metadata(isbn_sources, options=''):
     # '[a-zA-Z()]+ +: .*' since you are not using regex on the result
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return result.stdout.decode('UTF-8')
+
+
+# Handle parsing from arguments and setting all the common config vars
+# ref.: https://bit.ly/2KwN54Z
+# NOTE: in-place modification of parser
+def handle_script_arg(parser):
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(VERSION))
+    parser.add_argument('-v', '--verbose', action='store_false')
+    parser.add_argument('-d', '--dry-run', action='store_false')
+    parser.add_argument('-sl', '--symlink-only', action='store_false')
+    parser.add_argument('-km', '--keep-metadata', action='store_false')
+
+    parser.add_argument('--tested-archive-extensions', default='^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$')
+    parser.add_argument('-i', '--isbn-regex', default='(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])')
+    parser.add_argument('--isbn-direct-grep-files', default='^(text/(plain|xml|html)|application/xml)$')
+    parser.add_argument('--isbn-ignored-files', default='^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$')
+    parser.add_argument('--reorder-files-for-grep', nargs='+', default=[True, 400, 50])
+    parser.add_argument('-ocr', '--ocr-enabled', action='store_false')
+    parser.add_argument('-ocrop', '--ocr-only-first-last-pages', nargs='+', default=[7, 3])
+    parser.add_argument('-ocrc', '--ocr-command', default='tesseract_wrapper')
+
+    parser.add_argument('--token-min-length', default=3, type=int)
+    parser.add_argument('--tokens-to-ignore', default='ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}')
+
+    parser.add_argument('-mfo', '--metadata-fetch-order', default='Goodreads,Amazon.com,Google,ISBNDB,WorldCat xISBN,OZON.ru')
+    parser.add_argument('-owis', '--organize-without-isbn-sources', default='Goodreads,Amazon.com,Google')
+    parser.add_argument('-wii', '--without-isbn-ignore', default=get_without_isbn_ignore())
+    # TODO: add argument FILE_SORT_FLAGS
+    # parser.add_argument('-fsf', '--file-sort-flags', default='')
+
+    parser.add_argument('-oft', '--output-filename-template', default='${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}')
+    parser.add_argument('-ome', '--output-metadata-extension', default='meta')
+
+    # TODO: add argument DEBUG_PREFIX_LENGTH
+    # parser.add_argument('--debug-prefix-length', default=40, type=int)
 
 
 if __name__ == '__main__':

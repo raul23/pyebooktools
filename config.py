@@ -63,16 +63,16 @@ def check_config_ini():
     return 0
 
 
-def init(settings_path):
+def init(config_path):
     global config_ini
-    config_ini = read_config(settings_path)
+    config_ini = read_config(config_path)
 
     if config_ini is None:
         # TODO: exit script
-        print('ERROR: {} could not be read'.format(settings_path))
+        print('ERROR: {} could not be read'.format(config_path))
 
     # Check configuration options
     if check_config_ini() == 1:
         # NOTE: even if there are invalid options, we will continue in case
         # these invalid options are not necessary for what the user wants to do next
-        print('ERROR: {} contains invalid options.'.format(settings_path))
+        print('ERROR: {} contains invalid options.'.format(config_path))
