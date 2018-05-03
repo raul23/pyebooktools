@@ -48,19 +48,33 @@ def check_config_ini():
 
     for option, actions in all_actions.items():
         section_name, option_name = option.split('/')
-        if not(section_name in config_ini and option_name in config_ini[section_name]):
-            continue
-        for action in actions:
-            # TODO: add a try except if KeyError in config_ini
-            if action == 'comma':
-                check_comma_options(section_name, option_name)
-            elif action == 'expand':
-                expand_folder_paths(section_name, option_name)
-            elif action == 'cwd':
-                add_cwd(section_name, option_name)
-            else:
-                print('STDERR: action ({}) not recognized'.format(action))
-    return 0
+        if section_name in config_ini and option_name in config_ini[section_name]:
+            for action in actions:
+                # TODO: add a try except if KeyError in config_ini
+                if action == 'comma':
+                    check_comma_options(section_name, option_name)
+                elif action == 'expand':
+                    expand_folder_paths(section_name, option_name)
+                elif action == 'cwd':
+                    add_cwd(section_name, option_name)
+                else:
+                    print('STDERR: action ({}) not recognized'.format(action))
+
+
+def update_config_from_arg_groups(parser):
+    ipdb.set_trace()
+
+
+
+    for group in groups:
+        section_name = group.title
+        if section_name in config_ini:
+            options = group.__dict__['_group_actions']
+            for opt in options:
+                if opt.dest in config_ini[section_name]:
+                    #config_ini[section_name][opt.dest] =
+                    pass
+
 
 
 def init(config_path):
@@ -72,7 +86,4 @@ def init(config_path):
         print('ERROR: {} could not be read'.format(config_path))
 
     # Check configuration options
-    if check_config_ini() == 1:
-        # NOTE: even if there are invalid options, we will continue in case
-        # these invalid options are not necessary for what the user wants to do next
-        print('ERROR: {} contains invalid options.'.format(config_path))
+    check_config_ini()

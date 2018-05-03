@@ -6,13 +6,10 @@ import tempfile
 import textwrap
 
 import config
+from config import update_config_from_arg_groups
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
     get_mime_type, get_pages_in_pdf, handle_script_arg, move_or_link_ebook_file_and_metadata, move_or_link_file, \
     remove_file, search_file_for_isbns, unique_filename, VERSION
-
-
-# TODO: add as an environment variable
-SETTINGS_PATH = os.path.expanduser('~/PycharmProjects/digital_library/config.ini')
 
 
 def fail_file(old_path, reason, new_path):
@@ -364,6 +361,10 @@ def organize_file(file_path):
 
 
 if __name__ == '__main__':
+    # IMPORTANT: command-line parameters have precedence over options in
+    # configuration file config.ini, i.e. command-line parameters will override
+    # options specified in the configuration file config.ini
+
     # Parse arguments from command-line
     description = '''
     eBook Organizer v{}
@@ -379,29 +380,32 @@ if __name__ == '__main__':
         usage='python %(prog)s [OPTIONS] EBOOK_FOLDERS')
 
     # TODO: do we add help for each argument?
-    parser.add_argument('-c', '--config-path', default=os.path.join(os.getcwd(), 'config.ini'))
-    parser.add_argument('-cco', '--corruption-check-only', action='store_false')
-    parser.add_argument('-owi', '--organize-without-isbn', action='store_false')
+    group1 = parser.add_argument_group('organize-ebooks', 'eBook Organizer')
+    group2 = parser.add_argument_group('general-options', 'Library for building ebook management scripts')
+    group1.add_argument('-cco', '--corruption-check-only', action='store_true')
+    group1.add_argument('-owi', '--organize-without-isbn', action='store_true')
 
-    parser.add_argument('-o', '--output-folder', default=os.getcwd())
-    parser.add_argument('-ofu', '--output-folder-uncertain', default='')
-    parser.add_argument('-ofc', '--output-folder-corrupt', default='')
-    parser.add_argument('-ofp', '--output-folder-pamphlets', default='')
+    group1.add_argument('-o', '--output-folder', default=os.getcwd())
+    group1.add_argument('-ofu', '--output-folder-uncertain', default='')
+    group1.add_argument('-ofc', '--output-folder-corrupt', default='')
+    group1.add_argument('-ofp', '--output-folder-pamphlets', default='')
 
-    parser.add_argument('--pamphlet-included-files', default='\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$')
-    parser.add_argument('--pamphlet-excluded-files', default='\.(chm|epub|cbr|cbz|mobi|lit|pdb)$')
-    parser.add_argument('--pamphlet-max-pdf-pages', default=50, type=int)
-    parser.add_argument('--pamphlet-max-filesize-kib', default=250, type=int)
+    group1.add_argument('--pamphlet-included-files', default='\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$')
+    group1.add_argument('--pamphlet-excluded-files', default='\.(chm|epub|cbr|cbz|mobi|lit|pdb)$')
+    group1.add_argument('--pamphlet-max-pdf-pages', default=50, type=int)
+    group1.add_argument('--pamphlet-max-filesize-kib', default=250, type=int)
 
-    handle_script_arg(parser)
+    handle_script_arg(group2)
 
     args = parser.parse_args()
-    ipdb.set_trace()
     # Read configuration file
-    config.init(SETTINGS_PATH)
+    config.init(args.config_path)
     ipdb.set_trace()
 
-    ebook_folders = config.config.config_ini['organize-ebooks']['ebook_folders'].split(',')
+    # Update options from configuration file (config.ini) with arguments from command-line
+    update_config_from_arg_groups(parser)
+
+    ebook_folders = config.config_ini['organize-ebooks']['ebook_folders'].split(',')
     for fpath in ebook_folders:
         # Remove white spaces around the folder path
         fpath = os.path.expanduser(fpath).strip()

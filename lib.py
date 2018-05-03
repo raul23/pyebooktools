@@ -882,17 +882,18 @@ def fetch_metadata(isbn_sources, options=''):
 # NOTE: in-place modification of parser
 def handle_script_arg(parser):
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(VERSION))
-    parser.add_argument('-v', '--verbose', action='store_false')
-    parser.add_argument('-d', '--dry-run', action='store_false')
-    parser.add_argument('-sl', '--symlink-only', action='store_false')
-    parser.add_argument('-km', '--keep-metadata', action='store_false')
+    parser.add_argument('-c', '--config-path', default=os.path.join(os.getcwd(), 'config.ini'))
+    parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('-d', '--dry-run', action='store_true')
+    parser.add_argument('-sl', '--symlink-only', action='store_true')
+    parser.add_argument('-km', '--keep-metadata', action='store_true')
 
     parser.add_argument('--tested-archive-extensions', default='^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$')
     parser.add_argument('-i', '--isbn-regex', default='(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])')
     parser.add_argument('--isbn-direct-grep-files', default='^(text/(plain|xml|html)|application/xml)$')
     parser.add_argument('--isbn-ignored-files', default='^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$')
     parser.add_argument('--reorder-files-for-grep', nargs='+', default=[True, 400, 50])
-    parser.add_argument('-ocr', '--ocr-enabled', action='store_false')
+    parser.add_argument('-ocr', '--ocr-enabled', action='store_true')
     parser.add_argument('-ocrop', '--ocr-only-first-last-pages', nargs='+', default=[7, 3])
     parser.add_argument('-ocrc', '--ocr-command', default='tesseract_wrapper')
 
