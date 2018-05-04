@@ -4,6 +4,7 @@ A Python port of ebooks-managing shell scripts from https://github.com/na--/eboo
 # TODO: python3 compatible only, e.g. print('', end='') [use from __future__ import print_function for python 2]
 # ref.: https://stackoverflow.com/a/5071123
 # import PyPDF2
+import argparse
 from datetime import datetime
 import ipdb
 import os
@@ -877,6 +878,30 @@ def fetch_metadata(isbn_sources, options=''):
     return result.stdout.decode('UTF-8')
 
 
+class ReorderFilesAction(argparse.Action):
+    def __init__(self, option_strings, dest, nargs=None, **kwargs):
+        if nargs is not None:
+            raise ValueError("nargs not allowed")
+        super(ReorderFilesAction, self).__init__(option_strings, dest, **kwargs)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        # print('%r %r %r' % (namespace, values, option_string))
+        # `values` should be a string with one or three values separated by strings,
+        # e.g. 'True, 400, 50' or 'False'
+        # Each value corresponds to a specific option: isbn_grep_reorder_files,
+        # isbn_grep_rf_scan_first, or isbn_grep_rf_reverse_last
+        options_values = values.split(',')
+        if len(options_values) not in [1, 3]:
+            # TODO: exit
+            print("[ERROR] `{}` doesn't have the required number of values: {}".format(self.dest, values))
+        # Set each option with the corresponding value
+        setattr(namespace, 'isbn_grep_reorder_files', options_values[0])
+        if len(options_values) == 3:
+            setattr(namespace, 'isbn_grep_rf_scan_first', options_values[1])
+            setattr(namespace, 'isbn_grep_rf_reverse_last', options_values[2])
+        setattr(namespace, self.dest, values)
+
+
 # Handle parsing from arguments and setting all the common config vars
 # ref.: https://bit.ly/2KwN54Z
 # NOTE: in-place modification of parser
@@ -888,13 +913,12 @@ def handle_script_arg(parser):
     parser.add_argument('-sl', '--symlink-only', action='store_true')
     parser.add_argument('-km', '--keep-metadata', action='store_true')
 
-    parser.add_argument('--tested-archive-extensions', default='^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$')
     parser.add_argument('-i', '--isbn-regex', default='(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])')
     parser.add_argument('--isbn-direct-grep-files', default='^(text/(plain|xml|html)|application/xml)$')
     parser.add_argument('--isbn-ignored-files', default='^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$')
-    parser.add_argument('--reorder-files-for-grep', nargs='+', default=[True, 400, 50])
+    parser.add_argument('--reorder-files-for-grep', default='True, 400, 50', action=ReorderFilesAction)
     parser.add_argument('-ocr', '--ocr-enabled', action='store_true')
-    parser.add_argument('-ocrop', '--ocr-only-first-last-pages', nargs='+', default=[7, 3])
+    parser.add_argument('-ocrop', '--ocr-only-first-last-pages', default='7,3')
     parser.add_argument('-ocrc', '--ocr-command', default='tesseract_wrapper')
 
     parser.add_argument('--token-min-length', default=3, type=int)
@@ -911,6 +935,8 @@ def handle_script_arg(parser):
 
     # TODO: add argument DEBUG_PREFIX_LENGTH
     # parser.add_argument('--debug-prefix-length', default=40, type=int)
+    parser.add_argument('-dl', '--disable_logging', action='store_true')
+    parser.add_argument('-lcp', '--logging_conf_path', default='')
 
 
 if __name__ == '__main__':

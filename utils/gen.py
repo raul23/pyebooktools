@@ -1,9 +1,9 @@
-import argparse
 import ast
 from configparser import ConfigParser, NoOptionError, NoSectionError
+import json
 import linecache
+import logging.config
 import sys
-import textwrap as _textwrap
 
 
 # TODO: add function in utilities
@@ -17,7 +17,7 @@ def get_data_type(val):
     :return: Data type of string value
     """
     try:
-        # TODO: not safe to evaluate string
+        # TODO: might not be safe to evaluate string
         t = ast.literal_eval(val)
     except ValueError:
         return str
@@ -95,3 +95,10 @@ def read_config(config_path):
                 return None
             options[section][option] = value
     return options
+
+
+# TODO: test that log_conf_path is a json file
+def setup_logging(log_conf_path):
+    with open(log_conf_path, 'r') as f:
+        config_dict = json.load(f)
+        logging.config.dictConfig(config_dict)

@@ -1,15 +1,28 @@
 import ipdb
 import argparse
+import logging
 import os
 import re
 import tempfile
 import textwrap
+import sys
 
 import config
 from config import update_config_from_arg_groups
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
     get_mime_type, get_pages_in_pdf, handle_script_arg, move_or_link_ebook_file_and_metadata, move_or_link_file, \
     remove_file, search_file_for_isbns, unique_filename, VERSION
+from utils.gen import setup_logging
+
+
+# Get the logger
+if __name__ == '__main__':
+    # When run as a script
+    logger = logging.getLogger(os.path.splitext(__file__)[0])
+else:
+    # When imported as a module
+    # TODO: test this part when imported as a module
+    logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
 
 
 def fail_file(old_path, reason, new_path):
@@ -384,6 +397,7 @@ if __name__ == '__main__':
     group2 = parser.add_argument_group('general-options', 'Library for building ebook management scripts')
     group1.add_argument('-cco', '--corruption-check-only', action='store_true')
     group1.add_argument('-owi', '--organize-without-isbn', action='store_true')
+    group1.add_argument('--tested-archive-extensions', default='^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$')
 
     group1.add_argument('-o', '--output-folder', default=os.getcwd())
     group1.add_argument('-ofu', '--output-folder-uncertain', default='')
@@ -396,8 +410,22 @@ if __name__ == '__main__':
     group1.add_argument('--pamphlet-max-filesize-kib', default=250, type=int)
 
     handle_script_arg(group2)
-
     args = parser.parse_args()
+
+    # Setup logging
+    ipdb.set_trace()
+    if args.disable_logging:
+        # In the reference, they were using 'maxint' but in Python 3,
+        # 'sys' has no attribute 'maxint'; thus I'm using 'maxsize' instead
+        # ref.: https://stackoverflow.com/a/44101013
+        # See https://stackoverflow.com/a/13795777, for a solution that uses
+        # float("inf") instead of sys.maxsize which would also work with legacy Python 2.7
+        logging.disable(sys.maxsize)
+        # To enable logging:
+        # logging.disable(logging.NOTSET)
+    else:
+        setup_logging(args.logging_conf_path)
+
     # Read configuration file
     config.init(args.config_path)
     ipdb.set_trace()
