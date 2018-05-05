@@ -8,39 +8,45 @@ import textwrap
 import sys
 
 import config
-from config import update_config_from_arg_groups
+
+from config import check_comma_options, expand_folder_paths, init_config, update_config_from_arg_groups
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
     get_mime_type, get_pages_in_pdf, get_without_isbn_ignore, handle_script_arg, move_or_link_ebook_file_and_metadata, \
-    move_or_link_file, remove_file, search_file_for_isbns, unique_filename, VERSION
-from utils.gen import setup_logging
+    move_or_link_file, remove_file, search_file_for_isbns, unique_filename, BOLD, GREEN, NC, RED, VERSION
+from utils.gen import get_full_exception, setup_logging
 
 
 # Get the logger
 if __name__ == '__main__':
     # When run as a script
-    logger = logging.getLogger(os.path.splitext(__file__)[0])
+    logger = logging.getLogger('{}.{}'.format(os.path.basename(os.getcwd()), os.path.splitext(__file__)[0]))
 else:
     # When imported as a module
     # TODO: test this part when imported as a module
     logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
 
 
-def fail_file(old_path, reason, new_path):
+def fail_file(old_path, reason, new_path=None):
     # TODO: add red color to ERR, https://bit.ly/2FzamzE
-    return 'ERR:\t{}\n' \
-           'REASON:\t{}\n' \
-           'TO:\t{}\n'.format(old_path, reason, new_path)
+    first_two_lines = '\n{}ERR{}\t: {}\n' \
+                      'REASON\t: {}\n'.format(RED, NC, old_path, reason)
+    if new_path is None:
+        return first_two_lines
+    else:
+        third_line = 'TO\t: {}\n'.format( new_path)
+        return first_two_lines + third_line
 
 
-def skip_file(file_path, reason):
+def ok_file(file_path, reason):
     # TODO: add green color to OK, https://bit.ly/2JKoPva
-    return 'OK:\t{}\n' \
-           'TO:\t{}\n'.format(file_path, reason)
+    return '\n{}OK{}\t: {}\n' \
+           'TO\t: {}\n'.format(GREEN, NC, file_path, reason)
 
 
-def ok_file(old_path, new_path):
+def skip_file(old_path, new_path):
     # TODO: https://bit.ly/2rf38f5
-    return 'SKIP:\t{}\nREASON:\t{}\n'.format(old_path, new_path)
+    return '\nSKIP\t: {}\n' \
+           'REASON\t: {}\n'.format(old_path, new_path)
 
 
 def is_pamphlet(file_path):
@@ -331,8 +337,9 @@ def organize_by_isbns(file_path, isbns):
 
 def organize_file(file_path):
     file_err = check_file_for_corruption(file_path)
+    ipdb.set_trace()
     if file_err:
-        print('STDERR: File {} is corrupt with error {}'.format(file_path, file_err))
+        logger.info('File {} is corrupt with error: {}'.format(file_path, file_err))
         output_folder_corrupt = config.config_dict['organize-ebooks']['output_folder_corrupt']
         if output_folder_corrupt:
             new_path = unique_filename(output_folder_corrupt, os.path.basename(file_path))
@@ -354,7 +361,7 @@ def organize_file(file_path):
                 with open(new_metadata_path, 'w') as f:
                     f.write(metadata)
         else:
-            print('STDERR: Output folder for corrupt files is not set, doing nothing')
+            logger.info('Output folder for corrupt files is not set, doing nothing')
             fail_file(file_path, 'File is corrupt: {}'.format(file_err))
     elif config.config_dict['organize-ebooks']['corruption_check_only']:
         print('STDERR: We are only checking for corruption, do not continue organising...')
@@ -370,7 +377,7 @@ def organize_file(file_path):
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
             skip_file(file_path, 'No ISBNs found; Non-ISBN organization disabled')
-    print('STDERR: =====================================================')
+    print('=====================================================')
 
 
 if __name__ == '__main__':
@@ -436,28 +443,38 @@ if __name__ == '__main__':
             logging_enabled = True
 
     # Read configuration file
-    config.init(args.config_path)
+    init_config(args.config_path)
+
     # (2nd try) Setup logging right after parsing configuration file
     if not logging_enabled:
-        if setup_logging(config.config_dict['logging_conf_path']) is None:
+        try:
+            if setup_logging(config.config_dict['general-options']['logging_conf_path']) is None:
+                print('[ERROR] Logging could not be setup')
+                sys.exit(1)
+            else:
+                logging_enabled = True
+        except KeyError as e:
+            get_full_exception(e)
             print('[ERROR] Logging could not be setup')
             sys.exit(1)
-        else:
-            logging_enabled = True
-
-    ipdb.set_trace()
 
     # Update options from configuration file with arguments from command-line
     update_config_from_arg_groups(parser)
 
     ebook_folders = config.config_dict['organize-ebooks']['ebook_folders'].split(',')
     for fpath in ebook_folders:
-        # Remove white spaces around the folder path
-        fpath = os.path.expanduser(fpath).strip()
-        print('Recursively scanning {} for files'.format(fpath))
+        # Do some preprocessing on the file path: expand the file path if it
+        # starts with '~' and remove whitespaces around file paths
+        fpath = expand_folder_paths(fpath)
+        fpath = check_comma_options(fpath)
+        logger.info('Recursively scanning {} for files'.format(fpath))
         # TODO: They make use of sorting flags for walking through the files [FILE_SORT_FLAGS]
         # ref.: https://bit.ly/2HuI3YS
         for path, dirs, files in os.walk(fpath):
             for file in files:
-                # TODO: add debug_prefixer
-                organize_file(file_path=os.path.join(path, file))
+                try:
+                    organize_file(file_path=os.path.join(path, file))
+                except KeyError as e:
+                    err_msg = get_full_exception(error=e, to_print=False)
+                    logger.critical(err_msg)
+                    sys.exit(1)

@@ -10,16 +10,13 @@ handlers:
     level: DEBUG
     class: logging.FileHandler
     filename: debug.log
+    mode: w
     formatter: verbose
 loggers:
   ebook-tools:
     handlers: [file]
     level: DEBUG
     propagate: False
-  utils:
-    handlers: [file]
-    level: DEBUG
-    propagate: False
 root:
-  level: DEBUG
+  level: WARNING
   handlers: [file]

@@ -8,6 +8,8 @@ import sys
 
 import yaml
 
+from .path import check_file_exists
+
 
 # logger = logging.getLogger(__name__)
 
@@ -56,11 +58,11 @@ def get_option_value(parser, section, option):
             # ref.: https://bit.ly/2HMpvng
             value = bytes(value, 'utf-8').decode('unicode_escape')
             return value
-    except NoSectionError:
-        print_exception()
+    except NoSectionError as e:
+        get_full_exception(e)
         return None
-    except NoOptionError:
-        print_exception()
+    except NoOptionError as e:
+        get_full_exception(e)
         return None
 
 
@@ -74,8 +76,8 @@ def is_yaml_file(ext):
 def load_json(f):
     try:
         data = json.load(f)
-    except json.JSONDecodeError as exc:
-        print_exception(exc)
+    except json.JSONDecodeError as e:
+        get_full_exception(e)
         return None
     return data
 
@@ -84,20 +86,20 @@ def load_json(f):
 def load_yaml(f):
     try:
         data = yaml.load(f)
-    except yaml.YAMLError as exc:
-        print_exception(exc)
+    except yaml.YAMLError as e:
+        get_full_exception(e)
         return None
     return data
 
 
-def print_exception(error=None):
+def get_full_exception(error=None, to_print=True):
     """
-    For a given exception, print filename, line number, the line itself, and
-    exception description.
+    For a given exception, print/return filename, line number, the line itself,
+    and exception description.
 
     ref.: https://stackoverflow.com/a/20264059
 
-    :return: None
+    :return: TODO
     """
     exc_type, exc_obj, tb = sys.exc_info()
     f = tb.tb_frame
@@ -108,20 +110,24 @@ def print_exception(error=None):
     if error is None:
         err_desc = exc_obj
     else:
-        err_desc = "{}: {}".format(error, exc_obj)
+        err_desc = '{}: {}'.format(repr(error).split('(')[0], exc_obj)
     # TODO: find a way to add the error description (e.g. AttributeError) without
     # having to provide the error description as input to the function
-    print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename,
-                                                       lineno,
-                                                       line.strip(),
-                                                       err_desc))
+    exception_msg = 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), err_desc)
+    if to_print:
+        print(exception_msg)
+    else:
+        return exception_msg
 
 
 def read_config_from_ini(config_path):
+    if not check_file_exists(config_path):
+        print("[ERROR] Main ini configuration file doesn't exit: {}".format(config_path))
+        return None
     parser = ConfigParser()
     found = parser.read(config_path)
     if config_path not in found:
-        print("ERROR: {} is empty".format(config_path))
+        print('[ERROR] {} is empty'.format(config_path))
         return None
     options = {}
     for section in parser.sections():
@@ -130,28 +136,39 @@ def read_config_from_ini(config_path):
             options[section].setdefault(option, None)
             value = get_option_value(parser, section, option)
             if value is None:
-                print("ERROR: The option '{}' could not be retrieved from {}".format(option, config_path))
+                print("[ERROR] The option '{}' could not be retrieved from {}".format(option, config_path))
                 return None
             options[section][option] = value
     return options
 
 
 def read_config_from_yaml(config_path):
+    if not check_file_exists(config_path):
+        print("[ERROR] Main yaml configuration file doesn't exit: {}".format(config_path))
+        return None
     with open(config_path, 'r') as f:
         return load_yaml(f)
 
 
-def setup_logging(logging_conf_path):
+def setup_logging(config_path):
+    if not check_file_exists(config_path):
+        print("[ERROR] Logging configuration file doesn't exit: {}".format(config_path))
+        return None
     config_dict = None
-    ext = Path(logging_conf_path).suffix
-    with open(logging_conf_path, 'r') as f:
+    ext = Path(config_path).suffix
+    with open(config_path, 'r') as f:
         if ext == '.json':
             config_dict = load_json(f)
         elif is_yaml_file(ext):
             config_dict = load_yaml(f)
         else:
             print('[ERROR] File format for logging configuration file not '
-                  'supported: {}'.format(logging_conf_path))
-    logging.config.dictConfig(config_dict)
+                  'supported: {}'.format(config_path))
+    try:
+        logging.config.dictConfig(config_dict)
+    except ValueError as e:
+        get_full_exception(e)
+        config_dict = None
+
     return config_dict
 

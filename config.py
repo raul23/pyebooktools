@@ -15,6 +15,10 @@ from utils.gen import is_yaml_file, read_config_from_ini, read_config_from_yaml
 logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
 
 
+global config_dict
+config_dict = None
+
+
 # If an option is given as comma-separated arguments, check that each argument
 # is enclosed with double quotes and remove any trailing whitespace
 def check_comma_options(value):
@@ -64,12 +68,10 @@ def update_config_from_arg_groups(parser):
             else:
                 # Invalid option name, e.g. the program version is not added in `config_dict`
                 logger.debug('Invalid option name: {}'.format(opt.dest))
-    ipdb.set_trace()
 
 
-def init(config_path):
+def init_config(config_path):
     global config_dict
-
     ext = Path(config_path).suffix
     # TODO: remove support for .ini files
     if is_yaml_file(ext):

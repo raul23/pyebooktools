@@ -15,7 +15,7 @@ general-options:
   isbn_grep_reorder_files: True
   isbn_grep_rf_scan_first: 400
   isbn_grep_rf_reverse_last: 50
-  isbn_metadata_fetch_order: Goodreads,Amazon.com, Google,ISBNDB,WorldCat xISBN,OZON.ru
+  isbn_metadata_fetch_order: Goodreads,Amazon.com,Google,ISBNDB,WorldCat xISBN,OZON.ru
   # ===========================================================================
   # Options for OCR
   # ===========================================================================
@@ -27,7 +27,7 @@ general-options:
   # ===========================================================================
   token_min_length: 3
   tokens_to_ignore: ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}
-  organize_without_isbn_sources: Goodreads,Amazon.com, Google
+  organize_without_isbn_sources: Goodreads,Amazon.com,Google
   # ===========================================================================
   # Options related to the input and output files
   # ===========================================================================
@@ -37,7 +37,7 @@ general-options:
   # Miscellaneous options
   # ===========================================================================
   disable_logging: False
-  logging_conf_path:
+  logging_conf_path: ""
 
 organize-ebooks:
   # ===========================================================================

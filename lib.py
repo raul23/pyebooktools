@@ -7,6 +7,7 @@ A Python port of ebooks-managing shell scripts from https://github.com/na--/eboo
 import argparse
 from datetime import datetime
 import ipdb
+import logging
 import os
 from pathlib import Path
 import re
@@ -20,7 +21,14 @@ import tempfile
 import config
 
 
+logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
+
+
 VERSION = '0.5.1'
+GREEN = '\033[0;32m'
+RED = '\033[0;31m'
+BOLD = '\033[1m'
+NC = '\033[0m'
 
 
 # OCR: converts image to text
@@ -191,6 +199,31 @@ def get_pages_in_djvu(file_path):
     return int(result.stdout)
 
 
+def pdfinfo(file_path):
+    cmd = 'pdfinfo "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+def convert_result_from_shell_cmd(old_result):
+    class Result:
+        def __init__(self):
+            self.stdout = ''
+            self.stderr = ''
+            self.returncode = None
+
+    new_result = Result()
+    if hasattr(old_result, 'stdout'):
+        new_result.stdout = old_result.stdout.decode('UTF-8')
+    if hasattr(old_result, 'stderr'):
+        new_result.stderr = old_result.stderr.decode('UTF-8')
+    if hasattr(old_result, 'returncode'):
+        new_result.returncode = old_result.returncode
+
+    return new_result
+
+
 # TODO: place it in path module
 def remove_file(file_path):
     # TODO add reference: https://stackoverflow.com/a/42641792
@@ -220,7 +253,7 @@ def is_file_empty(file_path):
     # TODO: see if the proposed solution @ https://stackoverflow.com/a/15924160
     # is equivalent to using try and catch the `OSError`
     try:
-        return os.path.getsize(file_path) > 0
+        return not os.path.getsize(file_path) > 0
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
         return False
@@ -233,57 +266,62 @@ def is_file_empty(file_path):
 #  - If it has an archive extension but `7z t` returns an error
 # ref.: https://bit.ly/2JLpqgf
 def check_file_for_corruption(file_path):
-    ipdb.set_trace()
     file_err = ''
-    print('STDERR: Testing {] for corruption...'.format(file_path))
+    logger.info('Testing {} for corruption...'.format(file_path))
 
     # TODO: test that it is the same as
     # if [[ "$(tr -d '\0' < "$file_path" | head -c 1)" == "" ]]; then
     # ref.: https://bit.ly/2jpX0xf
     if is_file_empty(file_path):
-        print('The file is empty or contains only zeros!')
-        file_err = 'The file is empty or contains only zeros'
+        file_err = 'The file {} is empty or contains only zeros!'.format(file_path)
+        logger.debug(file_err)
         return file_err
 
-    ext = Path(file_path).suffix
+    ext = Path(file_path).suffix[1:]  # Remove the dot from extension
     mime_type = get_mime_type(file_path)
 
-    if mime_type == 'application/octet-strea' and re.match('^(pdf|djv|djvu)$', mime_type):
-        print('The file has a {} extension but {} MIME type!'.format(ext, mime_type))
+    if mime_type == 'application/octet-stream' and re.match('^(pdf|djv|djvu)$', mime_type):
+        file_err = 'The file has a {} extension but {} MIME type!'.format(ext, mime_type)
+        logger.debug(file_err)
+        return file_err
     elif mime_type == 'application/pdf':
-        print('STDERR: Checking pdf file for integrity...')
+        logger.info('Checking pdf file for integrity...')
         if not command_exists('pdfinfo'):
-            print('STDERR: pdfinfo does not exist, could not check if pdf is OK')
+            file_err = 'pdfinfo does not exist, could not check if pdf is OK'
+            logger.debug(file_err)
+            return file_err
         else:
-            # TODO: need to call `pdfinfo`, https://bit.ly/2KvQgKu
-            pdfinfo_output = ''
-            if pdfinfo_output or False:
-                print('STDERR: pdfinfo returned an error!')
-                # TODO: add debug_prefixer, https://bit.ly/2rdyoMr
-                print(pdfinfo_output)
-                print('Has pdf MIME type or extension, but pdfinfo returned an error!')
-                file_err = 'Has pdf MIME type or extension, but pdfinfo returned an error'
-                return
+            pdfinfo_output = pdfinfo(file_path)
+            if pdfinfo_output.stderr:
+                logger.info('pdfinfo returned an error!')
+                logger.debug(pdfinfo_output.stderr)
+                file_err = 'Has pdf MIME type or extension, but pdfinfo returned an error!'
+                logger.debug(file_err)
+                return file_err
             else:
-                print('STDERR: pdfinfo returned successfully')
-                # TODO: add debug_prefixer, https://bit.ly/2jmj8YY
-                print(pdfinfo_output)
-                if re.match('^Page size:\s*0 x 0 pts$', pdfinfo_output):
-                    print('STDERR: pdf is corrupt anyway, page size property is empty!')
-                    print('pdf can be parsed, but page size is 0 x 0 pts!')
+                logger.info('pdfinfo returned successfully')
+                logger.debug(pdfinfo_output.stdout)
+                if re.search('^Page size:\s*0 x 0 pts$', pdfinfo_output.stdout):
+                    logger.info('pdf is corrupt anyway, page size property is empty!')
+                    file_err = 'pdf can be parsed, but page size is 0 x 0 pts!'
+                    logger.debug(file_err)
+                    return file_err
 
-    if re.match(config.config_dict['organize-ebooks']['tested_archive_extensions']):
-        print('STDERR: The file has a {} extension, testing with 7z...'.format(ext))
+    if re.match(config.config_dict['organize-ebooks']['tested_archive_extensions'], ext):
+        logger.info('The file has a {} extension, testing with 7z...'.format(ext))
         log = test_archive(file_path)
-        if log:
-            print('STDERR: Test failed!')
-            # TODO: add debug_prefixer, https://bit.ly/2HFYQIJ
-            print(log)
-            print('Looks like an archive, but testing it with 7z failed!')
-            file_err = 'Looks like an archive, but testing it with 7z failed'
+        if log.stderr:
+            logger.info('Test failed!')
+            logger.debug(log.stderr)
+            file_err = 'Looks like an archive, but testing it with 7z failed!'
+            return file_err
+        else:
+            logger.info('Test succeeded!')
+            logger.debug(log.stdout)
 
-    # No error
-    assert file_err == ''
+    if file_err != '':
+        logger.warning('We are at the end of the function and file_err="{}"; it '
+                       'should be empty!'.format(file_err))
     return file_err
 
 
@@ -437,8 +475,6 @@ def find_isbns(input_str):
 
 
 def get_mime_type(file_path):
-    # TODO: handle errors in functions with returncode, check other functions
-    # where don't use returncode
     # TODO: get MIME type with a python package, see the magic package
     # ref.: https://stackoverflow.com/a/2753385
     cmd = 'file --brief --mime-type "{}"'.format(file_path)
@@ -458,7 +494,7 @@ def test_archive(file_path):
     cmd = '7z t "{}"'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return result.stderr
+    return convert_result_from_shell_cmd(result)
 
 
 # If ISBN_GREP_REORDER_FILES is enabled, reorders the specified file according
@@ -935,7 +971,7 @@ def handle_script_arg(parser):
     # TODO: add argument DEBUG_PREFIX_LENGTH
     # parser.add_argument('--debug-prefix-length', default=40, type=int)
     parser.add_argument('-dl', '--disable_logging', action='store_true')
-    parser.add_argument('-lcp', '--logging_conf_path', default='')
+    parser.add_argument('-lcp', '--logging_conf_path', default=os.path.join(os.getcwd(), 'logging_config.yaml'))
 
 
 if __name__ == '__main__':
