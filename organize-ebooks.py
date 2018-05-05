@@ -418,8 +418,8 @@ if __name__ == '__main__':
         # In the reference, they were using 'maxint' but in Python 3,
         # 'sys' has no attribute 'maxint'; thus I'm using 'maxsize' instead
         # ref.: https://stackoverflow.com/a/44101013
-        # See https://stackoverflow.com/a/13795777, for a solution that uses
-        # float("inf") instead of sys.maxsize which would also work with legacy Python 2.7
+        # See https://stackoverflow.com/a/13795777 for a solution that uses
+        # float("inf") instead of sys.maxsize which could also work with legacy Python 2.7
         logging.disable(sys.maxsize)
         # To enable logging:
         # logging.disable(logging.NOTSET)

@@ -6,7 +6,6 @@ import logging.config
 import sys
 
 
-# TODO: add function in utilities
 def get_data_type(val):
     """
     Given a string, returns its corresponding data type
@@ -34,7 +33,6 @@ def get_data_type(val):
             return str
 
 
-# TODO: add function in utilities
 def get_option_value(parser, section, option):
     value_type = get_data_type(parser.get(section, option))
     try:
@@ -45,7 +43,13 @@ def get_option_value(parser, section, option):
         elif value_type == bool:
             return parser.getboolean(section, option)
         else:
-            return parser.get(section, option)
+            value = parser.get(section, option)
+            # Get the string before the escaping was applied by configparser
+            # configparser adds an extra '\' before '\n' when it encounters a
+            # newline in the configuration file config.ini
+            # ref.: https://bit.ly/2HMpvng
+            value = bytes(value, 'utf-8').decode('unicode_escape')
+            return value
     except NoSectionError:
         print_exception()
         return None
@@ -78,7 +82,7 @@ def print_exception(error=None):
     print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), err_desc))
 
 
-def read_config(config_path):
+def read_config_from_ini(config_path):
     parser = ConfigParser()
     found = parser.read(config_path)
     if config_path not in found:
@@ -95,6 +99,10 @@ def read_config(config_path):
                 return None
             options[section][option] = value
     return options
+
+
+def read_config_from_yaml(config_path):
+    pass
 
 
 # TODO: test that log_conf_path is a json file

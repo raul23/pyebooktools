@@ -113,3 +113,6 @@ ENV/
 out.txt
 notes.txt
 *.pdf
+
+# configuration files
+*.ini
