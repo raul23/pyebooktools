@@ -3,15 +3,13 @@ from configparser import ConfigParser, NoOptionError, NoSectionError
 import json
 import linecache
 import logging.config
-import os
+from pathlib import Path
 import sys
 
 import yaml
 
 
-import ipdb
-ipdb.set_trace()
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 def get_data_type(val):
@@ -66,6 +64,32 @@ def get_option_value(parser, section, option):
         return None
 
 
+def is_yaml_file(ext):
+    if ext[0] == '.':
+        ext = ext[1:]
+    return ext in ['yaml', 'yml']
+
+
+# f: file object
+def load_json(f):
+    try:
+        data = json.load(f)
+    except json.JSONDecodeError as exc:
+        print_exception(exc)
+        return None
+    return data
+
+
+# f: file object
+def load_yaml(f):
+    try:
+        data = yaml.load(f)
+    except yaml.YAMLError as exc:
+        print_exception(exc)
+        return None
+    return data
+
+
 def print_exception(error=None):
     """
     For a given exception, print filename, line number, the line itself, and
@@ -87,7 +111,10 @@ def print_exception(error=None):
         err_desc = "{}: {}".format(error, exc_obj)
     # TODO: find a way to add the error description (e.g. AttributeError) without
     # having to provide the error description as input to the function
-    print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), err_desc))
+    print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename,
+                                                       lineno,
+                                                       line.strip(),
+                                                       err_desc))
 
 
 def read_config_from_ini(config_path):
@@ -110,16 +137,21 @@ def read_config_from_ini(config_path):
 
 
 def read_config_from_yaml(config_path):
-    with open(config_path, 'r') as stream:
-        try:
-            options = yaml.load(stream)
-        except yaml.YAMLError as exc:
-            print_exception(exc)
-            return None
-    return options
+    with open(config_path, 'r') as f:
+        return load_yaml(f)
 
 
-def setup_logging(log_conf_path):
-    with open(log_conf_path, 'r') as f:
-        config_dict = json.load(f)
-        logging.config.dictConfig(config_dict)
+def setup_logging(logging_conf_path):
+    config_dict = None
+    ext = Path(logging_conf_path).suffix
+    with open(logging_conf_path, 'r') as f:
+        if ext == '.json':
+            config_dict = load_json(f)
+        elif is_yaml_file(ext):
+            config_dict = load_yaml(f)
+        else:
+            print('[ERROR] File format for logging configuration file not '
+                  'supported: {}'.format(logging_conf_path))
+    logging.config.dictConfig(config_dict)
+    return config_dict
+

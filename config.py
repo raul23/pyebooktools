@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-from utils.gen import read_config_from_ini, read_config_from_yaml
+from utils.gen import is_yaml_file, read_config_from_ini, read_config_from_yaml
 
 
 # Build logger name based on module's directory and module name
@@ -36,7 +36,6 @@ def expand_folder_paths(value):
 
 
 def update_config_from_arg_groups(parser):
-    ipdb.set_trace()
     # Get all ArgumentGroups and arguments
     groups = parser.__dict__['_action_groups']
     args = parser.parse_args().__dict__
@@ -63,7 +62,7 @@ def update_config_from_arg_groups(parser):
                     config_dict[section_name][opt.dest] = new_value
                     logger.info('Option {}/{} is updated: {}  -->  {}'.format(section_name, opt.dest, old_value, new_value))
             else:
-                # Invalid option name, e.g. the program version is not added in `config_ini`
+                # Invalid option name, e.g. the program version is not added in `config_dict`
                 logger.debug('Invalid option name: {}'.format(opt.dest))
     ipdb.set_trace()
 
@@ -73,7 +72,7 @@ def init(config_path):
 
     ext = Path(config_path).suffix
     # TODO: remove support for .ini files
-    if ext == '.yaml':
+    if is_yaml_file(ext):
         config_dict = read_config_from_yaml(config_path)
     else:
         config_dict = read_config_from_ini(config_path)

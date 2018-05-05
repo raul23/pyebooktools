@@ -116,3 +116,4 @@ notes.txt
 
 # configuration files
 *.ini
+logging_conf.json

@@ -924,9 +924,8 @@ def handle_script_arg(parser):
     parser.add_argument('--token-min-length', default=3, type=int)
     parser.add_argument('--tokens-to-ignore', default='ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}')
 
-    parser.add_argument('-mfo', '--metadata-fetch-order', default='Goodreads,Amazon.com,Google,ISBNDB,WorldCat xISBN,OZON.ru')
+    parser.add_argument('-imfo', '--isbn-metadata-fetch-order', default='Goodreads,Amazon.com,Google,ISBNDB,WorldCat xISBN,OZON.ru')
     parser.add_argument('-owis', '--organize-without-isbn-sources', default='Goodreads,Amazon.com,Google')
-    parser.add_argument('-wii', '--without-isbn-ignore', default=get_without_isbn_ignore())
     # TODO: add argument FILE_SORT_FLAGS
     # parser.add_argument('-fsf', '--file-sort-flags', default='')
 

@@ -15,7 +15,7 @@ general-options:
   isbn_grep_reorder_files: True
   isbn_grep_rf_scan_first: 400
   isbn_grep_rf_reverse_last: 50
-  isbn_metadata_fetch_order: Goodreads,Amazon.com,Google,ISBNDB,WorldCat xISBN,OZON.ru
+  isbn_metadata_fetch_order: Goodreads,Amazon.com, Google,ISBNDB,WorldCat xISBN,OZON.ru
   # ===========================================================================
   # Options for OCR
   # ===========================================================================
@@ -27,12 +27,12 @@ general-options:
   # ===========================================================================
   token_min_length: 3
   tokens_to_ignore: ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}
-  organize_without_isbn_sources: Goodreads,Amazon.com,Google
+  organize_without_isbn_sources: Goodreads,Amazon.com, Google
   # ===========================================================================
   # Options related to the input and output files
   # ===========================================================================
   output_filename_template: ${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}
-  output_metadata_extensio: meta
+  output_metadata_extension: meta
   # ===========================================================================
   # Miscellaneous options
   # ===========================================================================
@@ -55,10 +55,10 @@ organize-ebooks:
   # ===========================================================================
   # Output options
   # ===========================================================================
-  output_folder: "cwd"
-  output_folder_uncertain:
-  output_folder_corrupt:
-  output_folder_pamphlets:
+  output_folder: ""
+  output_folder_uncertain: ""
+  output_folder_corrupt: ""
+  output_folder_pamphlets: ""
 
 interactive-organizer:
   output_folders:
@@ -72,11 +72,11 @@ find-isbns:
   isbn_ret_separator: "\n"
 
 rename-calibre-library:
-  output_folder: "cwd"
+  output_folder: ""
   save_metadata: recreate
 
 split-into-folders:
-  output_folder: "cwd"
+  output_folder: ""
   start_number: 0
   folder_pattern: "%05d000"
   files_per_folder: 1000

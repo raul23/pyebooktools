@@ -10,8 +10,8 @@ import sys
 import config
 from config import update_config_from_arg_groups
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
-    get_mime_type, get_pages_in_pdf, handle_script_arg, move_or_link_ebook_file_and_metadata, move_or_link_file, \
-    remove_file, search_file_for_isbns, unique_filename, VERSION
+    get_mime_type, get_pages_in_pdf, get_without_isbn_ignore, handle_script_arg, move_or_link_ebook_file_and_metadata, \
+    move_or_link_file, remove_file, search_file_for_isbns, unique_filename, VERSION
 from utils.gen import setup_logging
 
 
@@ -397,6 +397,7 @@ if __name__ == '__main__':
     group2 = parser.add_argument_group('general-options', 'Library for building ebook management scripts')
     group1.add_argument('-cco', '--corruption-check-only', action='store_true')
     group1.add_argument('-owi', '--organize-without-isbn', action='store_true')
+    parser.add_argument('-wii', '--without-isbn-ignore', default=get_without_isbn_ignore())
     group1.add_argument('--tested-archive-extensions', default='^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$')
 
     group1.add_argument('-o', '--output-folder', default=os.getcwd())
@@ -412,8 +413,6 @@ if __name__ == '__main__':
     handle_script_arg(group2)
     args = parser.parse_args()
 
-    # Setup logging
-    ipdb.set_trace()
     if args.disable_logging:
         # In the reference, they were using 'maxint' but in Python 3,
         # 'sys' has no attribute 'maxint'; thus I'm using 'maxsize' instead
@@ -423,11 +422,29 @@ if __name__ == '__main__':
         logging.disable(sys.maxsize)
         # To enable logging:
         # logging.disable(logging.NOTSET)
-    else:
-        setup_logging(args.logging_conf_path)
+
+    # NOTE: there are two parts where we try to setup logging:
+    # (1) right after parsing the command-line and
+    # (2) right after parsing the configuration file
+    logging_enabled = False
+    # (1st try) Setup logging right after parsing the command-line
+    if args.logging_conf_path:
+        if setup_logging(args.logging_conf_path) is None:
+            print('[ERROR] Logging could not be setup')
+            sys.exit(1)
+        else:
+            logging_enabled = True
 
     # Read configuration file
     config.init(args.config_path)
+    # (2nd try) Setup logging right after parsing configuration file
+    if not logging_enabled:
+        if setup_logging(config.config_dict['logging_conf_path']) is None:
+            print('[ERROR] Logging could not be setup')
+            sys.exit(1)
+        else:
+            logging_enabled = True
+
     ipdb.set_trace()
 
     # Update options from configuration file with arguments from command-line
