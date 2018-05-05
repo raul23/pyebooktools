@@ -1,15 +1,17 @@
 import ipdb
 import logging
 import os
+from pathlib import Path
 
-# from utils.gen import read_config_from_ini
-from utils.gen import read_config_from_yaml
+from utils.gen import read_config_from_ini, read_config_from_yaml
 
 
-# Build logger name based on module's package and module name
-# i.e. package_name.module_name
-# NOTE: all loggers that start with `package_name` will inherit from the same
-# logger named `package_name` that is defined in the logging configuration file 'log_conf.json'
+# Build logger name based on module's directory and module name
+# i.e. directory_name.module_name
+# NOTE 1: all loggers that start with `directory_name` will inherit from the same
+# logger named `directory_name` that is defined in the logging configuration file
+# NOTE 2: *.py files that don't have an __ini__.py in the directory are not
+# considered as part of a package
 logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
 
 
@@ -68,8 +70,13 @@ def update_config_from_arg_groups(parser):
 
 def init(config_path):
     global config_dict
-    # config_dict = read_config_from_ini(config_path)
-    config_dict = read_config_from_yaml(config_path)
+
+    ext = Path(config_path).suffix
+    # TODO: remove support for .ini files
+    if ext == '.yaml':
+        config_dict = read_config_from_yaml(config_path)
+    else:
+        config_dict = read_config_from_ini(config_path)
 
     if config_dict is None:
         # TODO: exit script

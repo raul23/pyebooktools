@@ -31,7 +31,7 @@ general-options:
   # ===========================================================================
   # Options related to the input and output files
   # ===========================================================================
-  output_filename_template: ${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}
+  output_filename_template: ${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}
   output_metadata_extensio: meta
   # ===========================================================================
   # Miscellaneous options

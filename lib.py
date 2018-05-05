@@ -272,7 +272,7 @@ def check_file_for_corruption(file_path):
                     print('STDERR: pdf is corrupt anyway, page size property is empty!')
                     print('pdf can be parsed, but page size is 0 x 0 pts!')
 
-    if re.match(config.config_ini['organize-ebooks']['tested_archive_extensions']):
+    if re.match(config.config_dict['organize-ebooks']['tested_archive_extensions']):
         print('STDERR: The file has a {} extension, testing with 7z...'.format(ext))
         log = test_archive(file_path)
         if log:
@@ -736,34 +736,34 @@ def unique_filename(folder_path, basename):
     return new_path
 
 
-# TODO: all scripts should have access to `config.config_ini`
+# TODO: all scripts should have access to `config.config_dict`
 def move_or_link_file(current_path, new_path):
     new_folder = os.path.dirname(new_path)
 
-    if config.config_ini['general-options']['dry_run']:
+    if config.config_dict['general-options']['dry_run']:
         print('STDERR: (DRY RUN! All operations except metadata deletion are skipped!)')
 
     if os.path.isdir(new_folder):
         print('STDERR: Creating folder {}'.format(new_folder))
-        if not config.config_ini['general-options']['dry-run']:
+        if not config.config_dict['general-options']['dry-run']:
             # TODO: make directory
             print('mkdir -p "$new_folder"')
 
-    if config.config_ini['general-options']['symlink_only']:
+    if config.config_dict['general-options']['symlink_only']:
         print('Symlinking file {} to {}...'.format(current_path, new_path))
-        if not config.config_ini['general-options']['dry_run']:
+        if not config.config_dict['general-options']['dry_run']:
             # TODO: symlink
             print('ln -s "$(realpath "$current_path")" "$new_path"')
     else:
         print('STDERR: Moving file {} to {}...'.format(current_path, new_path))
-        if not config.config_ini['general-options']['dry_run']:
+        if not config.config_dict['general-options']['dry_run']:
             # TODO: move file with clobber
             print('mv --no-clobber "$current_path" "$new_path"')
 
 
 # ref.: https://bit.ly/2HxYEaw
-# TODO: `output_filename_template` should be accessed from config.config_ini, all
-# scripts should have access to config.config_ini
+# TODO: `output_filename_template` should be accessed from config.config_dict, all
+# scripts should have access to config.config_dict
 def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current_metadata_path):
     # Get ebook's file extension
     ext = Path(current_ebook_path).suffix
@@ -824,7 +824,7 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     ipdb.set_trace()
     cmd = cmd.format(array)
     # TODO: make it safer; maybe by removing single/double quotation marks from `OUTPUT_FILENAME_TEMPLATE`
-    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config.config_ini['general-options']['output_filename_template'])
+    cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config.config_dict['general-options']['output_filename_template'])
     result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
     new_name = result.stdout.read().decode('UTF-8').strip()
     print('STDERR: The new file name of the book file/link {} will be: {}'.format(current_ebook_path, new_name))
@@ -834,12 +834,12 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     print(new_path)
 
     move_or_link_file(current_ebook_path, new_path)
-    if config.config_ini['general-options']['keep_metadata']:
+    if config.config_dict['general-options']['keep_metadata']:
         print('STDERR: Removing metadata file {}...'.format(current_metadata_path))
         remove_file(current_metadata_path)
     else:
-        print('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config.config_ini['general-options']['output_metadata_extension']))
-        if not config.config_ini['general-options']['dry_run']:
+        print('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config.config_dict['general-options']['output_metadata_extension']))
+        if not config.config_dict['general-options']['dry_run']:
             # TODO: move file with mv --no-clobber
             print('mv --no-clobber')
         else:
@@ -907,7 +907,7 @@ class ReorderFilesAction(argparse.Action):
 # NOTE: in-place modification of parser
 def handle_script_arg(parser):
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(VERSION))
-    parser.add_argument('-c', '--config-path', default=os.path.join(os.getcwd(), 'config.ini'))
+    parser.add_argument('-c', '--config-path', default=os.path.join(os.getcwd(), 'config.yaml'))
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('-d', '--dry-run', action='store_true')
     parser.add_argument('-sl', '--symlink-only', action='store_true')

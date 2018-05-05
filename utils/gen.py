@@ -3,7 +3,15 @@ from configparser import ConfigParser, NoOptionError, NoSectionError
 import json
 import linecache
 import logging.config
+import os
 import sys
+
+import yaml
+
+
+import ipdb
+ipdb.set_trace()
+logger = logging.getLogger(__name__)
 
 
 def get_data_type(val):
@@ -102,10 +110,15 @@ def read_config_from_ini(config_path):
 
 
 def read_config_from_yaml(config_path):
-    pass
+    with open(config_path, 'r') as stream:
+        try:
+            options = yaml.load(stream)
+        except yaml.YAMLError as exc:
+            print_exception(exc)
+            return None
+    return options
 
 
-# TODO: test that log_conf_path is a json file
 def setup_logging(log_conf_path):
     with open(log_conf_path, 'r') as f:
         config_dict = json.load(f)
