@@ -1,4 +1,5 @@
-# TODO: change '-' to '_' in names
+# TODO: change '-' to '_' in option names
+# TODO: change 'grep' to 'search' in option names
 general-options:
   # ===========================================================================
   # General control flags

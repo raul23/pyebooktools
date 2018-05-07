@@ -20,7 +20,6 @@ import tempfile
 
 
 import config
-from utils.gen import get_full_exception
 
 
 logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
@@ -238,18 +237,19 @@ def convert_result_from_shell_cmd(old_result):
                     new_val = old_val.decode('UTF-8')
                 except AttributeError as e:
                     # `old_val` already a string
-                    ipdb.set_trace()
-                    logger.debug('Error decoding old value: {}'.format())
-                    logger.debug(e.__repr__())
-                    logger.debug('Value already a string. No decoding necessary.')
+                    # logger.debug('Error decoding old value: {}'.format(old_val))
+                    # logger.debug(e.__repr__())
+                    # logger.debug('Value already a string. No decoding necessary')
+                    new_val = old_val
                 try:
                     new_val = ast.literal_eval(new_val)
                 # TODO: two errors on the same line
                 except (SyntaxError, ValueError) as e:
-                    # NOTE: ValueError can happen if value consists of [A-Za-z]
-                    logger.debug('Error evaluating the value: {}'.format(old_val))
-                    logger.debug(e.__repr__())
-                    logger.debug('Will consider the value as a string')
+                    # NOTE: ValueError might happen if value consists of [A-Za-z]
+                    # logger.debug('Error evaluating the value: {}'.format(old_val))
+                    # logger.debug(e.__repr__())
+                    # logger.debug('Aborting evaluation of string. Will consider the string as it is')
+                    pass
             else:
                 new_val = old_val
         setattr(new_result, attr_name, new_val)
@@ -377,7 +377,6 @@ def ocr_file(input_file, output_file, mime_type):
         result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return convert_result_from_shell_cmd(result)
 
-    ipdb.set_trace()
     num_pages = 1
     page_convert_cmd = ''
     if mime_type.startswith('application/pdf'):
@@ -396,12 +395,13 @@ def ocr_file(input_file, output_file, mime_type):
         page_convert_cmd = convert_djvu_page
     elif mime_type.startswith('image/'):
         # TODO: in their code, they don't initialize num_pages
-        print('Running OCR on file %s and with mime type %s...'
-              % (input_file, mime_type))
+        logger.info('Running OCR on file %s and with mime type %s...'
+                    % (input_file, mime_type))
         # TODO: find out if you can call the ocr_command function without `eval`
         ocr_command = config.config_dict['general-options']['ocr_command']
         if ocr_command in globals():
-            eval('{}("{}", "{}")'.format(ocr_command, input_file, output_file))
+            result = eval('{}("{}", "{}")'.format(ocr_command, input_file, output_file))
+            logger.debug('Result of {}:\n{}'.format(ocr_command.__repr__(), result))
         else:
             logger.debug("Function {} doesn't exit. Ending ocr.".format(ocr_command))
             return 1
@@ -446,7 +446,8 @@ def ocr_file(input_file, output_file, mime_type):
         logger.debug('Result of {}:\n{}'.format(ocr_command.__repr__(), result))
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
-            print(data)
+            # TODO: remove this debug eventually; too much data printed
+            logger.debug(data)
         text += data
         # Remove temporary files
         logger.info('Cleaning up tmp files %s and %s' % (tmp_file, tmp_file_txt))
@@ -454,6 +455,7 @@ def ocr_file(input_file, output_file, mime_type):
         remove_file(tmp_file_txt)
 
     # Everything on the stdout must be copied to the output file
+    logger.info('Writing the reordered text')
     with open(output_file, 'w') as f:
         f.write(text)
     # TODO: they don't return anything
@@ -601,7 +603,7 @@ def get_all_isbns_from_archive(file_path):
         remove_tree(tmpdir)
         return ''
 
-    print('Archive extracted successfully in {}, scanning contents recursively...'.format(tmpdir))
+    logger.info('Archive extracted successfully in {}, scanning contents recursively...'.format(tmpdir))
     # TODO: ref.: https://stackoverflow.com/a/2759553
     # TODO: ignore .DS_Store
     for path, dirs, files in os.walk(tmpdir, topdown=False):
@@ -612,20 +614,20 @@ def get_all_isbns_from_archive(file_path):
             file_to_check = os.path.join(path, file_to_check)
             isbns = search_file_for_isbns(file_to_check)
             if isbns:
-                print('STDERR: Found ISBNs {}!'.format(isbns))
+                logger.info('Found ISBNs {}!'.format(isbns))
                 # TODO: two prints, one for stderror and the other for stdout
-                print(isbns.replace(config.config_dict['find-isbns']['isbn_ret_separator'], '\n'))
+                logger.info(isbns.replace(config.config_dict['find-isbns']['isbn_ret_separator'], '\n'))
                 for isbn in isbns.split(','):
                     if isbn not in all_isbns:
                         all_isbns.append(isbn)
-            print('STDERR: Removing {}...'.format(file_to_check))
+            logger.info('Removing {}...'.format(file_to_check))
             remove_file(file_to_check)
         if len(os.listdir(path)) == 0 and path != tmpdir:
             os.rmdir(path)
         elif path == tmpdir:
             if len(os.listdir(tmpdir)) == 1 and '.DS_Store' in tmpdir:
                 remove_file(os.path.join(tmpdir, '.DS_Store'))
-    print('Removing temporary folder {} (should be empty)...'.format(tmpdir))
+    logger.info('Removing temporary folder {} (should be empty)...'.format(tmpdir))
     if is_dir_empty(tmpdir):
         remove_tree(tmpdir)
     return config.config_dict['find-isbns']['isbn_ret_separator'].join(all_isbns)
@@ -749,14 +751,13 @@ def search_file_for_isbns(file_path):
     tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
     logger.info('Converting ebook to text format in file {}...'.format(tmp_file_txt))
 
-    ipdb.set_trace()
     result = convert_to_txt(file_path, tmp_file_txt, mime_type)
     if result.returncode == 0:
         logger.info('Conversion to text was successful, checking the result...')
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
         # TODO: debug, to remove
-        data = '*'
+        # data = '*'
         if not re.search('[A-Za-z0-9]+', data):
             logger.info('The converted txt with size {} bytes does not seem to '
                         'contain text'.format(os.stat(tmp_file_txt).st_size))
@@ -779,7 +780,7 @@ def search_file_for_isbns(file_path):
 
     # Step 7: OCR the file
     # TODO: debug, to remove
-    config.config_dict['general-options']['ocr_enabled'] = True
+    # config.config_dict['general-options']['ocr_enabled'] = True
     if not isbns and config.config_dict['general-options']['ocr_enabled'] and try_ocr:
         logger.info('Trying to run OCR on the file...')
         if ocr_file(file_path, tmp_file_txt, mime_type) == 0:
@@ -809,14 +810,13 @@ def search_file_for_isbns(file_path):
 # first path for which no file is present.
 # ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L295
 def unique_filename(folder_path, basename):
-    ipdb.set_trace()
     stem = Path(basename).stem
     ext = Path(basename).suffix
     new_path = os.path.join(folder_path, basename)
     counter = 0
     while os.path.isfile(new_path):
         counter += 1
-        print('File {} already exists in destination {}, trying with counter {}!'.format(new_path, folder_path, counter))
+        logger.info('File {} already exists in destination {}, trying with counter {}!'.format(new_path, folder_path, counter))
         new_stem = '{} {}'.format(stem, counter)
         new_path = os.path.join(folder_path, new_stem) + ext
     return new_path
@@ -827,24 +827,24 @@ def move_or_link_file(current_path, new_path):
     new_folder = os.path.dirname(new_path)
 
     if config.config_dict['general-options']['dry_run']:
-        print('STDERR: (DRY RUN! All operations except metadata deletion are skipped!)')
+        logger.info('(DRY RUN! All operations except metadata deletion are skipped!)')
 
     if os.path.isdir(new_folder):
-        print('STDERR: Creating folder {}'.format(new_folder))
+        logger.info('Creating folder {}'.format(new_folder))
         if not config.config_dict['general-options']['dry-run']:
             # TODO: make directory
-            print('mkdir -p "$new_folder"')
+            logger.info('mkdir -p "$new_folder"')
 
     if config.config_dict['general-options']['symlink_only']:
-        print('Symlinking file {} to {}...'.format(current_path, new_path))
+        logger.info('Symlinking file {} to {}...'.format(current_path, new_path))
         if not config.config_dict['general-options']['dry_run']:
             # TODO: symlink
-            print('ln -s "$(realpath "$current_path")" "$new_path"')
+            logger.info('ln -s "$(realpath "$current_path")" "$new_path"')
     else:
-        print('STDERR: Moving file {} to {}...'.format(current_path, new_path))
+        logger.info('Moving file {} to {}...'.format(current_path, new_path))
         if not config.config_dict['general-options']['dry_run']:
             # TODO: move file with clobber
-            print('mv --no-clobber "$current_path" "$new_path"')
+            logger.info('mv --no-clobber "$current_path" "$new_path"')
 
 
 # ref.: https://bit.ly/2HxYEaw
@@ -899,35 +899,32 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
 
             d[field_name] = field_value
 
-    print('STDERR: Variables that will be used for the new filename construction:')
+    logger.info('Variables that will be used for the new filename construction:')
     cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
     array = ''
     for k, v in d.items():
-        # TODO: add debug_prefixer
-        print('STDERR: {}'.format(d[k]))
+        logger.debug('{}'.format(d[k]))
         array += ' ["{}"]="{}" '.format(k, v)
 
-    ipdb.set_trace()
     cmd = cmd.format(array)
     # TODO: make it safer; maybe by removing single/double quotation marks from `OUTPUT_FILENAME_TEMPLATE`
     cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config.config_dict['general-options']['output_filename_template'])
     result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
     new_name = result.stdout.read().decode('UTF-8').strip()
-    print('STDERR: The new file name of the book file/link {} will be: {}'.format(current_ebook_path, new_name))
+    logger.info('The new file name of the book file/link {} will be: {}'.format(current_ebook_path, new_name))
 
-    ipdb.set_trace()
     new_path = unique_filename(new_folder, new_name)
-    print(new_path)
+    logger.info(new_path)
 
     move_or_link_file(current_ebook_path, new_path)
     if config.config_dict['general-options']['keep_metadata']:
-        print('STDERR: Removing metadata file {}...'.format(current_metadata_path))
+        logger.info('Removing metadata file {}...'.format(current_metadata_path))
         remove_file(current_metadata_path)
     else:
-        print('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config.config_dict['general-options']['output_metadata_extension']))
+        logger.info('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config.config_dict['general-options']['output_metadata_extension']))
         if not config.config_dict['general-options']['dry_run']:
             # TODO: move file with mv --no-clobber
-            print('mv --no-clobber')
+            logger.info('mv --no-clobber')
         else:
             remove_file(current_metadata_path)
 
@@ -944,24 +941,19 @@ def fetch_metadata(isbn_sources, options=''):
     args = '{} {}'.format('fetch-ebook-metadata', options)
     isbn_sources = isbn_sources.split(',')
     for isbn_source in isbn_sources:
-        # TODO: check if there are spaces in the arguments, and if it is the case
-        # enclose the arguments in quotation marks. This testing should be done
-        # in a separate function so that it can be called in other places.
-        if ' ' in isbn_source:
-            isbn_source = '"{}"'.format(isbn_source)
         args += ' --allowed-plugin={} '.format(isbn_source)
     # Remove trailing whitespace
     args = args.strip()
-    print('Calling `{}`'.format(args))
+    logger.info('Calling `{}`'.format(args))
     args = shlex.split(args)
-    # NOTE: `stderr` contains the log from running the fetch-data query from the
-    # specified online sources. Thus, `stderr` is a superset of `stdout` which
-    # only contains the ebook metadata for those fields that have the pattern
-    # '[a-zA-Z()]+ +: .*'
+    # NOTE: `stderr` contains the whole log from running the fetch-data query
+    # from the specified online sources. Thus, `stderr` is a superset of
+    # `stdout` which only contains the ebook metadata for those fields that
+    # have the pattern '[a-zA-Z()]+ +: .*'
     # TODO: make sure that you are getting only the fields that match the pattern
-    # '[a-zA-Z()]+ +: .*' since you are not using regex on the result
+    # '[a-zA-Z()]+ +: .*' since you are not using a regex on the result
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return result.stdout.decode('UTF-8')
+    return convert_result_from_shell_cmd(result)
 
 
 class ReorderFilesAction(argparse.Action):
@@ -979,6 +971,7 @@ class ReorderFilesAction(argparse.Action):
         options_values = values.split(',')
         if len(options_values) not in [1, 3]:
             # TODO: exit
+            # TODO: log instead of print, same also in other places
             print("[ERROR] `{}` doesn't have the required number of values: {}".format(self.dest, values))
         # Set each option with the corresponding value
         setattr(namespace, 'isbn_grep_reorder_files', options_values[0])

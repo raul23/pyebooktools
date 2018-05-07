@@ -49,7 +49,7 @@ def skip_file(old_path, new_path):
 
 
 def is_pamphlet(file_path):
-    print('STDERR: Checking whether {} looks like a pamphlet...'.format(file_path))
+    logger.info('Checking whether {} looks like a pamphlet...'.format(file_path))
     # TODO: check that it does the same as to_lower() @ https://bit.ly/2w0O5LN
     lowercase_name = os.path.basename(file_path).lower()
 
@@ -67,10 +67,10 @@ def is_pamphlet(file_path):
         for i, match in enumerate(matches):
             parts.append(match.group())
         matches = ';'.join(parts)
-        print('Parts of the filename match the pamphlet include regex: [{}]'.format(matches))
+        logger.info('Parts of the filename match the pamphlet include regex: [{}]'.format(matches))
         return True
 
-    print('STDERR: The file does not match the pamphlet include regex, continuing...')
+    logger.info('The file does not match the pamphlet include regex, continuing...')
 
     pamphlet_excluded_files = config.config_dict['organize-ebooks']['pamphlet_excluded_files']
     # TODO: check that it does the same as
@@ -86,42 +86,42 @@ def is_pamphlet(file_path):
         for i, match in enumerate(matches):
             parts.append(match.group())
         matches = ';'.join(parts)
-        print('Parts of the filename match the pamphlet exclude regex: [{}]'.format(matches))
+        logger.info('Parts of the filename match the pamphlet exclude regex: [{}]'.format(matches))
         # TODO: [ERROR] they are returning 1, but it should be returning 0
         # because the file is considered as a pamphlet
         return True
 
-    print('STDERR: The file does not match the pamphlet exclude regex, continuing...')
+    logger.info('The file does not match the pamphlet exclude regex, continuing...')
 
     mime_type = get_mime_type(file_path)
     file_size_KiB = get_file_size(file_path)
     pamphlet_max_pdf_pages = ['organize-ebooks']['pamphlet_max_pdf_pages']
     pamphlet_max_filesize_kib = ['organize-ebooks']['pamphlet_max_filesize_kib']
     if mime_type == 'application/pdf':
-        print('STDERR: The file looks like a pdf, checking if the number of '
-              'pages is larger than {} ...'.format(pamphlet_max_pdf_pages))
+        logger.info('The file looks like a pdf, checking if the number of pages '
+                    'is larger than {} ...'.format(pamphlet_max_pdf_pages))
         pages = get_pages_in_pdf(file_path)
 
         if pages > pamphlet_max_pdf_pages:
-            print('STDERR: The file has {} pages, too many for a pamphlet'.format(pages))
+            logger.info('The file has {} pages, too many for a pamphlet'.format(pages))
             return False
         else:
-            print('STDERR: The file has only {} pages, looks like a pamphlet'.format(pages))
+            logger.info('The file has only {} pages, looks like a pamphlet'.format(pages))
 
     elif file_size_KiB < pamphlet_max_filesize_kib:
-        print('STDERR: File has a type {} and a small size ({} KiB), looks like'
-              'a pamphlet'.format(mime_type, file_size_KiB))
+        logger.info('File has a type {} and a small size ({} KiB), looks like a '
+                    'pamphlet'.format(mime_type, file_size_KiB))
         return True
     else:
-        print('STDERR: File has a type {} and a large size ({} KB), does NOT '
-              'look like a pamphlet'.format(mime_type, file_size_KiB))
+        logger.info('File has a type {} and a large size ({} KB), does NOT look '
+                    'like a pamphlet'.format(mime_type, file_size_KiB))
         return False
 
 
 # Arguments: path, reason (optional)
 def organize_by_filename_and_meta(old_path, prev_reason):
     prev_reason = '{}; '.format(prev_reason)
-    print('STDERR: Organizing {} by non-ISBN metadata and filename...'.format(old_path))
+    logger.info('Organizing {} by non-ISBN metadata and filename...'.format(old_path))
     # TODO: check that it does the same as to_lower() @ https://bit.ly/2w0O5LN
     lowercase_name = os.path.basename(old_path).lower()
     without_isbn_ignore = config.config_dict['organize-ebooks']['without_isbn_ignore']
@@ -138,47 +138,45 @@ def organize_by_filename_and_meta(old_path, prev_reason):
         for i, match in enumerate(matches):
             parts.append(match.group())
         matches = ';'.join(parts)
-        print('Parts of the filename match the ignore regex: [{}]'.format(matches))
+        logger.info('Parts of the filename match the ignore regex: [{}]'.format(matches))
         skip_file(old_path, '{}File matches the ignore regex ({})'.format(prev_reason, matches))
         return
     else:
-        print('STDERR: File does not match the ignore regex, continuing...')
+        logger.info('File does not match the ignore regex, continuing...')
 
     if is_pamphlet(old_path):
-        print('File {} looks like a pamphlet!'.format(old_path))
+        logger.info('File {} looks like a pamphlet!'.format(old_path))
         output_folder_pamphlets = config.config_dict['organize-ebooks']['output_folder_pamphlets']
         if output_folder_pamphlets:
             dirname = os.path.dirname(old_path)
             basename = os.path.basename(old_path)
             new_path = unique_filename(os.path.join(output_folder_pamphlets, dirname), basename)
 
-            print('STDERR: Moving file {} to {}!'.format(old_path, new_path))
+            logger.info('Moving file {} to {}!'.format(old_path, new_path))
             ok_file(old_path, new_path)
 
             move_or_link_file(old_path, new_path)
         else:
-            print('STDERR: Output folder for pamphlet files is not set, skipping...')
+            logger.info('Output folder for pamphlet files is not set, skipping...')
             skip_file(old_path, 'No pamphlet folder specified')
         return
 
     output_folder_uncertain = ['organize-ebooks']['output_folder_uncertain']
     if not output_folder_uncertain:
-        print('STDERR: No uncertain folder specified, skipping...')
+        logger.info('No uncertain folder specified, skipping...')
         skip_file(old_path, 'No uncertain folder specified')
         return
 
     ebookmeta = get_ebook_metadata(old_path)
-    print('STDERR: Ebook metadata:')
-    # TODO: add debug_prefixer, https://bit.ly/2FxphKV
-    print(ebookmeta)
+    logger.info('Ebook metadata:')
+    logger.info(ebookmeta)
 
     tmpmfile = tempfile.mkstemp(suffix='.txt')[1]
-    print('STDERR: Created temporary file for metadata downloads {}'.format(tmpmfile))
+    logger.info('Created temporary file for metadata downloads {}'.format(tmpmfile))
 
     def finisher(fetch_method):
-        print('STDERR: Successfully fetched metadata: ')
-        # TODO: debug_prefixer, https://bit.ly/2rdr1EK
-        print('STDERR: Adding additional metadata to the end of the metadata file...')
+        logger.info('Successfully fetched metadata: ')
+        logger.info('Adding additional metadata to the end of the metadata file...')
         # TODO: add ebook metadata at the end of the file
         # echo "$ebookmeta" | sed -E 's/^(.+[^ ])   ([ ]+): /OF \1\2: /'
         # ref.: https://bit.ly/2HNGa60
@@ -192,7 +190,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
             with open(tmpmfile, 'a') as f:
                 f.write('ISBN                : {}'.format(isbn))
 
-        print('STDERR: Organizing {} (with {})...'.format(old_path, tmpmfile))
+        logger.info('Organizing {} (with {})...'.format(old_path, tmpmfile))
         new_path = move_or_link_ebook_file_and_metadata(output_folder_uncertain, old_path, tmpmfile)
         ok_file(old_path, new_path)
 
@@ -205,12 +203,12 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     # ref.: https://bit.ly/2HDHZGm
     cond = ''
     if cond and title != 'unknown':
-        print('STDERR: There is a relatively normal-looking title, searching for metadata...')
+        logger.info('There is a relatively normal-looking title, searching for metadata...')
 
         # TODO: complete condition for author
         cond = ''
         if cond and author != 'unknown':
-            print('STDERR: Trying to fetch metadata by title {} and author {}...'.format(title, author))
+            logger.info('Trying to fetch metadata by title {} and author {}...'.format(title, author))
             options = '--verbose --title="{}" --author="{}"'.format(title, author)
             # TODO: check that fetch_metadata() can also return an empty string
             metadata = fetch_metadata(config.config_dict['general-options']['organize_without_isbn_sources'], options)
@@ -221,7 +219,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
                     f.write(metadata)
                 finisher('title&author')
                 return
-            print('STDERR: Trying to swap places - author {} and title {}...'.format(title, author))
+            logger.info('Trying to swap places - author {} and title {}...'.format(title, author))
             options = '--verbose --title="{}" --author="{}"'.format(author, title)
             metadata = fetch_metadata(config.config_dict['general-options']['organize_without_isbn_sources'], options)
             if metadata:
@@ -232,7 +230,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
                 finisher('rev-title&author')
                 return
 
-            print('STDERR: Trying to fetch metadata only by title {}...'.format(title))
+            logger.info('Trying to fetch metadata only by title {}...'.format(title))
             options = '--verbose --title="{}"'.format(title)
             metadata = fetch_metadata(config.config_dict['general-options']['organize_without_isbn_sources'], options)
             if metadata:
@@ -247,7 +245,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     # filename="$(basename "${old_path%.*}" | tokenize)"
     # ref.: https://bit.ly/2jlyBIR
     filename = os.path.splitext(os.path.basename(old_path))[0]
-    print('STDERR: Trying to fetch metadata only the filename {}...'.format(filename))
+    logger.info('Trying to fetch metadata only the filename {}...'.format(filename))
     options = '--verbose --title="{}"'.format(filename)
     metadata = fetch_metadata(config.config_dict['general-options']['organize_without_isbn_sources'], options)
     if metadata:
@@ -258,37 +256,36 @@ def organize_by_filename_and_meta(old_path, prev_reason):
         finisher('title')
         return
 
-    print('STDERR: Could not find anything, removing the temp file {}...'.format(tmpmfile))
+    logger.info('Could not find anything, removing the temp file {}...'.format(tmpmfile))
     remove_file(tmpmfile)
 
     skip_file(old_path, '{}Insufficient or wrong file name/metadata'.format(prev_reason))
 
 
 # Sequentially tries to fetch metadata for each of the supplied ISBNs; if any
-# is found, writes it to a tmp .txt file and calls organize_known_ebook()
-# Arguments: path, isbns (coma-separated)
+# is found, writes it to a tmp.txt file and calls organize_known_ebook()
+# Arguments: path, isbns (comma-separated)
 # TODO: in their description, they refer to `organize_known_ebook` but it should
 # be `move_or_link_ebook_file_and_metadata`, ref.: https://bit.ly/2HNv3x0
 def organize_by_isbns(file_path, isbns):
-    ipdb.set_trace()
-    organize_by_filename_and_meta('/Users/nova/test/ebook-tools', 'Could not fetch metadata for ISBNs')
-
-    ipdb.set_trace()
-    new_path = unique_filename(folder_path=config.config_dict['organize-ebooks']['output_folder'],
-                               basename='Cory Doctorow - [Little Brother #1] - Little Brother (2008) [0765319853].pdf')
-    print(new_path)
-    ipdb.set_trace()
-
     isbn_sources = config.config_dict['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
     for isbn in isbns.split(','):
         tmp_file = tempfile.mkstemp(suffix='.txt')[1]
-        print('STDERR: Trying to fetch metadata for ISBN {} into temp file {}...'.format(isbn, tmp_file))
+        logger.info('Trying to fetch metadata for ISBN {} into temp file {}...'.format(isbn, tmp_file))
 
         for isbn_source in isbn_sources:
-            print('STDERR: Fetching metadata from {} sources...'.format(isbn_source))
+            # Check if there are spaces in the arguments, and if it is the case
+            # enclose the arguments in quotation marks
+            if ' ' in isbn_source:
+                isbn_source = '"{}"'.format(isbn_source)
+            # Remove whitespaces around the isbn source
+            isbn_source = isbn_source.split()
+            logger.info('Fetching metadata from {} sources...'.format(isbn_source))
             options = '--verbose --isbn={}'.format(isbn)
-            metadata = fetch_metadata(isbn_source, options)
+
+            result = fetch_metadata(isbn_source, options)
+            metadata = result.stdout
             if metadata:
                 with open(tmp_file, 'w') as f:
                     f.write(metadata)
@@ -296,25 +293,23 @@ def organize_by_isbns(file_path, isbns):
                 # online sources like they do? The code is run sequentially, so
                 # we are executing the rest of the code here once fetch_metadata()
                 # is done, ref.: https://bit.ly/2vV9MfU
-                print('STDERR: Successfully fetched metadata: ')
-                print(metadata)
-                # TODO: add debug_prefixer
+                logger.info('Successfully fetched metadata: ')
+                logger.info(metadata)
 
-                print('Adding additional metadata to the end of the metadata file...')
+                logger.info('Adding additional metadata to the end of the metadata file...')
                 more_metadata = 'ISBN                : {}\n' \
                                 'All found ISBNs     : {}\n' \
                                 'Old file path       : {}\n' \
                                 'Metadata source     : {}'.format(isbn, isbns, file_path, isbn_source)
-                print(more_metadata)
+                logger.info(more_metadata)
                 with open(tmp_file, 'a') as f:
                     f.write(more_metadata)
 
-                print('STDERR: Organizing {} (with {})...'.format(file_path, tmp_file))
+                logger.info('Organizing {} (with {})...'.format(file_path, tmp_file))
                 output_folder = config.config_dict['organize-ebooks']['output_folder']
                 new_path = move_or_link_ebook_file_and_metadata(new_folder=output_folder,
                                                                 current_ebook_path=file_path,
-                                                                current_metadata_path=tmp_file,
-                                                                config_dict=config.config_dict)
+                                                                current_metadata_path=tmp_file)
                 ok_file(file_path, new_path)
                 # TODO: they have a `return`, but we should just break from the
                 # two for loops to then be able to remove temp file
@@ -323,14 +318,14 @@ def organize_by_isbns(file_path, isbns):
         # but then the temp files are not removed, ref.: https://bit.ly/2r0sUV8
         # TODO 2: see if the removal of the temp file is done at the right
         # place, i.e. at the end of the first for loop
-        print('STDERR: Removing temp file {}...'.format(tmp_file))
+        logger.info('Removing temp file {}...'.format(tmp_file))
         remove_file(tmp_file)
 
     if config.config_dict['organize-ebooks']['organize_without_isbn']:
-        print('STDERR: Could not organize via the found ISBNs, organizing by filename and metadata instead...')
+        logger.info('Could not organize via the found ISBNs, organizing by filename and metadata instead...')
         organize_by_filename_and_meta(file_path, 'Could not fetch metadata for ISBNs {}'.format(isbns))
     else:
-        print('STDERR: Organization by filename and metadata is not turned on, giving up...')
+        logger.info('Organization by filename and metadata is not turned on, giving up...')
         skip_file(file_path, 'Could not fetch metadata for ISBNs {}; Non-ISBN organization disabled'.format(isbns))
 
 
@@ -354,7 +349,7 @@ def organize_file(file_path):
             # ref.: https://bit.ly/2I6K3pW
             output_metadata_extension = config.config_dict['general-options']['output_metadata_extension']
             new_metadata_path = '{}.{}'.format(os.path.splitext(new_path)[0], output_metadata_extension)
-            print('STDERR: Saving original filename to {}...'.format(new_metadata_path))
+            logger.info('Saving original filename to {}...'.format(new_metadata_path))
             if not config.config_dict['general-options']['dry_run']:
                 metadata = 'Corruption reason   : {}\nOld file path       : {}\n'.format(file_err, file_path)
                 with open(new_metadata_path, 'w') as f:
@@ -363,7 +358,7 @@ def organize_file(file_path):
             logger.info('Output folder for corrupt files is not set, doing nothing')
             fail_file(file_path, 'File is corrupt: {}'.format(file_err))
     elif config.config_dict['organize-ebooks']['corruption_check_only']:
-        print('STDERR: We are only checking for corruption, do not continue organising...')
+        logger.info('We are only checking for corruption, do not continue organising...')
         skip_file(file_path, 'File appears OK')
     else:
         logger.info('File passed the corruption test, looking for ISBNs...')
@@ -436,6 +431,7 @@ if __name__ == '__main__':
     # (1st try) Setup logging right after parsing the command-line
     if args.logging_conf_path:
         if setup_logging(args.logging_conf_path) is None:
+            # TODO: log instead of print; and by default pipe log through console
             print('[ERROR] Logging could not be setup')
             sys.exit(1)
         else:
