@@ -24,7 +24,8 @@ def get_data_type(val):
     :return: Data type of string value
     """
     try:
-        # TODO: might not be safe to evaluate string
+        # TODO: might not be safe to evaluate string; check in other places if
+        # literal_eval is used
         t = ast.literal_eval(val)
     except ValueError:
         return str

@@ -1,3 +1,4 @@
+# TODO: change '-' to '_' in names
 general-options:
   # ===========================================================================
   # General control flags
@@ -69,7 +70,7 @@ interactive-organizer:
   match_partial_words: False
 
 find-isbns:
-  isbn_ret_separator: "\n"
+  isbn_ret_separator: ","
 
 rename-calibre-library:
   output_folder: ""

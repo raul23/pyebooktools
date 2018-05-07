@@ -27,7 +27,7 @@ else:
 
 
 def fail_file(old_path, reason, new_path=None):
-    # TODO: add red color to ERR, https://bit.ly/2FzamzE
+    # More info about printing in terminal with color: https://stackoverflow.com/a/21786287
     first_two_lines = '\n{}ERR{}\t: {}\n' \
                       'REASON\t: {}\n'.format(RED, NC, old_path, reason)
     if new_path is None:
@@ -38,7 +38,6 @@ def fail_file(old_path, reason, new_path=None):
 
 
 def ok_file(file_path, reason):
-    # TODO: add green color to OK, https://bit.ly/2JKoPva
     return '\n{}OK{}\t: {}\n' \
            'TO\t: {}\n'.format(GREEN, NC, file_path, reason)
 
@@ -367,17 +366,17 @@ def organize_file(file_path):
         print('STDERR: We are only checking for corruption, do not continue organising...')
         skip_file(file_path, 'File appears OK')
     else:
-        print('STDERR: File passed the corruption test, looking for ISBNs...')
+        logger.info('File passed the corruption test, looking for ISBNs...')
         isbns = search_file_for_isbns(file_path)
         if isbns:
-            print('STDERR: Organizing {} by ISBNs {}!'.format(file_path, isbns))
+            logger.info('Organizing {} by ISBNs {}!'.format(file_path, isbns))
             organize_by_isbns(file_path, isbns)
         elif config.config_dict['organize-ebooks']['organize_without_isbn']:
-            print('STDERR: No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
+            logger.info('No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
             skip_file(file_path, 'No ISBNs found; Non-ISBN organization disabled')
-    print('=====================================================')
+    logger.info('=====================================================')
 
 
 if __name__ == '__main__':
