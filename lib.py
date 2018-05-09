@@ -20,6 +20,7 @@ import tempfile
 
 
 import config
+from utils.path import file_exists
 
 
 logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
@@ -824,16 +825,16 @@ def unique_filename(folder_path, basename):
 
 # TODO: all scripts should have access to `config.config_dict`
 def move_or_link_file(current_path, new_path):
+    ipdb.set_trace()
     new_folder = os.path.dirname(new_path)
 
     if config.config_dict['general-options']['dry_run']:
         logger.info('(DRY RUN! All operations except metadata deletion are skipped!)')
 
-    if os.path.isdir(new_folder):
+    if not os.path.isdir(new_folder):
         logger.info('Creating folder {}'.format(new_folder))
-        if not config.config_dict['general-options']['dry-run']:
-            # TODO: make directory
-            logger.info('mkdir -p "$new_folder"')
+        if not config.config_dict['general-options']['dry_run']:
+            os.makedirs(new_folder)
 
     if config.config_dict['general-options']['symlink_only']:
         logger.info('Symlinking file {} to {}...'.format(current_path, new_path))
@@ -843,8 +844,9 @@ def move_or_link_file(current_path, new_path):
     else:
         logger.info('Moving file {} to {}...'.format(current_path, new_path))
         if not config.config_dict['general-options']['dry_run']:
-            # TODO: move file with clobber
-            logger.info('mv --no-clobber "$current_path" "$new_path"')
+            # TODO: check if there are other places where you would need to expanduser()
+            if file_exists(new_path):
+                shutil.move(current_path, new_path)
 
 
 # ref.: https://bit.ly/2HxYEaw
@@ -859,8 +861,8 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     # Extract fields from metadata file
     with open(current_metadata_path, 'r') as f:
         for line in f:
-            # Get field name and value separately, e.g. 'Title  : A nice ebook'
-            # field_name = 'Title  ' and field_value = ' A nice ebook'
+            # Get field name and value separately, e.g.
+            # 'Title  : A nice ebook' ---> field_name = 'Title  ' and field_value = ' A nice ebook'
             # Find the first colon and split on its position
             pos = line.find(':')
             field_name, field_value = line[:pos], line[pos+1:]
@@ -875,6 +877,7 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
             #  Remove trailing whitespace, including tab
             field_name = field_name.strip()
             p1 = subprocess.Popen(['echo', field_name], stdout=subprocess.PIPE)
+            # TODO: explain what's going on with this replacement code
             cmd = "sed -e 's/[ \t]*$//' -e 's/ /_/g' -e 's/[^a-zA-Z0-9_]//g'"
             args = shlex.split(cmd)
             p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
@@ -890,6 +893,7 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
             # Remove trailing whitespace, including tab
             field_value = field_value.strip()
             p1 = subprocess.Popen(['echo', field_value], stdout=subprocess.PIPE)
+            # TODO: explain what's going on with this replacement code
             cmd = "sed -e 's/[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]/_/g'"
             args = shlex.split(cmd)
             p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
@@ -900,22 +904,24 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
             d[field_name] = field_value
 
     logger.info('Variables that will be used for the new filename construction:')
-    cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
     array = ''
     for k, v in d.items():
         logger.debug('{}'.format(d[k]))
         array += ' ["{}"]="{}" '.format(k, v)
 
+    cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
     cmd = cmd.format(array)
     # TODO: make it safer; maybe by removing single/double quotation marks from `OUTPUT_FILENAME_TEMPLATE`
+    # TODO: explain what's going
     cmd += '; OUTPUT_FILENAME_TEMPLATE=\'"{}"\'; eval echo "$OUTPUT_FILENAME_TEMPLATE"'.format(config.config_dict['general-options']['output_filename_template'])
     result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd], stdout=subprocess.PIPE)
     new_name = result.stdout.read().decode('UTF-8').strip()
     logger.info('The new file name of the book file/link {} will be: {}'.format(current_ebook_path, new_name))
 
     new_path = unique_filename(new_folder, new_name)
-    logger.info(new_path)
+    logger.info('Full path: {}'.format(new_path))
 
+    ipdb.set_trace()
     move_or_link_file(current_ebook_path, new_path)
     if config.config_dict['general-options']['keep_metadata']:
         logger.info('Removing metadata file {}...'.format(current_metadata_path))

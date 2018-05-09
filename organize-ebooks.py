@@ -268,6 +268,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
 # TODO: in their description, they refer to `organize_known_ebook` but it should
 # be `move_or_link_ebook_file_and_metadata`, ref.: https://bit.ly/2HNv3x0
 def organize_by_isbns(file_path, isbns):
+    ipdb.set_trace()
     isbn_sources = config.config_dict['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
     for isbn in isbns.split(','):
@@ -280,7 +281,7 @@ def organize_by_isbns(file_path, isbns):
             if ' ' in isbn_source:
                 isbn_source = '"{}"'.format(isbn_source)
             # Remove whitespaces around the isbn source
-            isbn_source = isbn_source.split()
+            isbn_source = isbn_source.strip()
             logger.info('Fetching metadata from {} sources...'.format(isbn_source))
             options = '--verbose --isbn={}'.format(isbn)
 
@@ -331,7 +332,6 @@ def organize_by_isbns(file_path, isbns):
 
 def organize_file(file_path):
     file_err = check_file_for_corruption(file_path)
-    ipdb.set_trace()
     if file_err:
         logger.info('File {} is corrupt with error: {}'.format(file_path, file_err))
         output_folder_corrupt = config.config_dict['organize-ebooks']['output_folder_corrupt']
@@ -384,7 +384,7 @@ if __name__ == '__main__':
     description = '''
     eBook Organizer v{}
     
-    For information about the possible options, see the README.md
+    For more information about the possible options, see the README.md
 
     NOTE: This is a Python port of organize-ebooks.sh @ 
     https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh

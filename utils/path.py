@@ -1,7 +1,7 @@
 import os
 
 
-def check_file_exists(path):
+def file_exists(path):
     """
     Checks if both a file exists and it is a file. Returns True if it is the
     case (can be a file or file symlink).
