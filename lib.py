@@ -640,7 +640,7 @@ def command_exists(cmd):
 
 
 def pdftotext(input_file, output_file):
-    cmd = 'pdftotext {} {}'.format(input_file, output_file)
+    cmd = 'pdftotext "{}" "{}"'.format(input_file, output_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -652,7 +652,7 @@ def catdoc(input_file, output_file):
 
 def djvutxt(input_file, output_file):
     # TODO: add djvutxt in PATH
-    cmd = '/Applications/DjView.app/Contents/bin/djvutxt {} {}'.format(input_file, output_file)
+    cmd = '/Applications/DjView.app/Contents/bin/djvutxt "{}" "{}"'.format(input_file, output_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -660,7 +660,7 @@ def djvutxt(input_file, output_file):
 
 def ebook_convert(input_file, output_file):
     # TODO: add `ebook-convert` in $PATH
-    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-convert {} {}'.format(input_file, output_file)
+    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-convert "{}" "{}"'.format(input_file, output_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -825,7 +825,6 @@ def unique_filename(folder_path, basename):
 
 # TODO: all scripts should have access to `config.config_dict`
 def move_or_link_file(current_path, new_path):
-    ipdb.set_trace()
     new_folder = os.path.dirname(new_path)
 
     if config.config_dict['general-options']['dry_run']:
@@ -839,14 +838,15 @@ def move_or_link_file(current_path, new_path):
     if config.config_dict['general-options']['symlink_only']:
         logger.info('Symlinking file {} to {}...'.format(current_path, new_path))
         if not config.config_dict['general-options']['dry_run']:
-            # TODO: symlink
-            logger.info('ln -s "$(realpath "$current_path")" "$new_path"')
+            os.symlink(current_path, new_path)
     else:
         logger.info('Moving file {} to {}...'.format(current_path, new_path))
         if not config.config_dict['general-options']['dry_run']:
             # TODO: check if there are other places where you would need to expanduser()
-            if file_exists(new_path):
+            if not file_exists(new_path):
                 shutil.move(current_path, new_path)
+            else:
+                logger.info('File already exists: {}'.format(new_path))
 
 
 # ref.: https://bit.ly/2HxYEaw
@@ -921,18 +921,22 @@ def move_or_link_ebook_file_and_metadata(new_folder, current_ebook_path, current
     new_path = unique_filename(new_folder, new_name)
     logger.info('Full path: {}'.format(new_path))
 
-    ipdb.set_trace()
     move_or_link_file(current_ebook_path, new_path)
     if config.config_dict['general-options']['keep_metadata']:
         logger.info('Removing metadata file {}...'.format(current_metadata_path))
         remove_file(current_metadata_path)
     else:
-        logger.info('Moving metadata file {} to {}.{}....'.format(current_metadata_path, new_path, config.config_dict['general-options']['output_metadata_extension']))
+        new_metadata_path = '{}.{}'.format(new_path, config.config_dict['general-options']['output_metadata_extension'])
+        logger.info('Moving metadata file {} to {}....'.format(current_metadata_path, new_metadata_path))
         if not config.config_dict['general-options']['dry_run']:
-            # TODO: move file with mv --no-clobber
-            logger.info('mv --no-clobber')
+            if not file_exists(new_metadata_path):
+                shutil.move(current_metadata_path, new_metadata_path)
+            else:
+                logger.info('File already exists: {}'.format(new_metadata_path))
         else:
+            logger.debug('Removing current metadata file: {}'.format(current_metadata_path))
             remove_file(current_metadata_path)
+    return new_path
 
 
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from

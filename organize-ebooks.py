@@ -31,21 +31,21 @@ def fail_file(old_path, reason, new_path=None):
     first_two_lines = '\n{}ERR{}\t: {}\n' \
                       'REASON\t: {}\n'.format(RED, NC, old_path, reason)
     if new_path is None:
-        return first_two_lines
+        print(first_two_lines)
     else:
         third_line = 'TO\t: {}\n'.format( new_path)
-        return first_two_lines + third_line
+        print(first_two_lines + third_line)
 
 
 def ok_file(file_path, reason):
-    return '\n{}OK{}\t: {}\n' \
-           'TO\t: {}\n'.format(GREEN, NC, file_path, reason)
+    print('\n{}OK{}\t: {}\n'
+          'TO\t: {}\n'.format(GREEN, NC, file_path, reason))
 
 
 def skip_file(old_path, new_path):
     # TODO: https://bit.ly/2rf38f5
-    return '\nSKIP\t: {}\n' \
-           'REASON\t: {}\n'.format(old_path, new_path)
+    print('\nSKIP\t: {}\n'
+          'REASON\t: {}\n'.format(old_path, new_path))
 
 
 def is_pamphlet(file_path):
@@ -268,7 +268,6 @@ def organize_by_filename_and_meta(old_path, prev_reason):
 # TODO: in their description, they refer to `organize_known_ebook` but it should
 # be `move_or_link_ebook_file_and_metadata`, ref.: https://bit.ly/2HNv3x0
 def organize_by_isbns(file_path, isbns):
-    ipdb.set_trace()
     isbn_sources = config.config_dict['general-options']['isbn_metadata_fetch_order']
     isbn_sources = isbn_sources.split(',')
     for isbn in isbns.split(','):
@@ -285,8 +284,11 @@ def organize_by_isbns(file_path, isbns):
             logger.info('Fetching metadata from {} sources...'.format(isbn_source))
             options = '--verbose --isbn={}'.format(isbn)
 
-            result = fetch_metadata(isbn_source, options)
-            metadata = result.stdout
+            #result = fetch_metadata(isbn_source, options)
+
+            #metadata = result.stdout
+            # TODO: DEBUGGING to be removed
+            metadata = 'Title               : A Hilbert Space Problem Book\nAuthor(s)           : Paul R. Halmos\nPublisher           : Springer\nLanguages           : eng\nRating              : 2.5\nPublished           : 1967-01-01T00:00:00+00:00\nIdentifiers         : goodreads:851559, isbn:9780387906850\nComments            : <p>From the Preface: "This book was written for the active reader. The first part consists of problems, frequently preceded by definitions and motivation, and sometimes followed by corollaries and historical remarks... The second part, a very short one, consists of hints... The third part, the longest, consists of solutions: proofs, answers, or contructions, depending on the nature of the problem....  </p>\n<p>This is not an introduction to Hilbert space theory. Some knowledge of that subject is a prerequisite: at the very least, a study of the elements of Hilbert space theory should proceed concurrently with the reading of this book."</p>\n'
             if metadata:
                 with open(tmp_file, 'w') as f:
                     f.write(metadata)
@@ -311,14 +313,11 @@ def organize_by_isbns(file_path, isbns):
                 new_path = move_or_link_ebook_file_and_metadata(new_folder=output_folder,
                                                                 current_ebook_path=file_path,
                                                                 current_metadata_path=tmp_file)
+                ipdb.set_trace()
                 ok_file(file_path, new_path)
-                # TODO: they have a `return`, but we should just break from the
-                # two for loops to then be able to remove temp file
+                # NOTE: `tmp_file` was already removed in move_or_link_ebook_file_and_metadata()
+                return
 
-        # TODO 1: after fetching, writing metadata, and organizing, they return
-        # but then the temp files are not removed, ref.: https://bit.ly/2r0sUV8
-        # TODO 2: see if the removal of the temp file is done at the right
-        # place, i.e. at the end of the first for loop
         logger.info('Removing temp file {}...'.format(tmp_file))
         remove_file(tmp_file)
 
@@ -473,3 +472,4 @@ if __name__ == '__main__':
                     err_msg = get_full_exception(error=e, to_print=False)
                     logger.critical(err_msg)
                     sys.exit(1)
+    sys.exit(0)
