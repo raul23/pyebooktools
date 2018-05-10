@@ -8,7 +8,7 @@ import sys
 
 import yaml
 
-from .path import check_file_exists
+from .path import file_exists
 
 
 # logger = logging.getLogger(__name__)
@@ -122,7 +122,7 @@ def get_full_exception(error=None, to_print=True):
 
 
 def read_config_from_ini(config_path):
-    if not check_file_exists(config_path):
+    if not file_exists(config_path):
         print("[ERROR] Main ini configuration file doesn't exit: {}".format(config_path))
         return None
     parser = ConfigParser()
@@ -144,7 +144,7 @@ def read_config_from_ini(config_path):
 
 
 def read_config_from_yaml(config_path):
-    if not check_file_exists(config_path):
+    if not file_exists(config_path):
         print("[ERROR] Main yaml configuration file doesn't exit: {}".format(config_path))
         return None
     with open(config_path, 'r') as f:
@@ -152,7 +152,7 @@ def read_config_from_yaml(config_path):
 
 
 def setup_logging(config_path):
-    if not check_file_exists(config_path):
+    if not file_exists(config_path):
         print("[ERROR] Logging configuration file doesn't exit: {}".format(config_path))
         return None
     config_dict = None
