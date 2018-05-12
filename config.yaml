@@ -50,7 +50,8 @@ organize-ebooks:
   tested_archive_extensions: ^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$
   organize_without_isbn: False
   without_isbn_ignore:
-  pamphlet_included_files: \.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$
+  # TODO: why '?' in pptx?, ref.: https://bit.ly/2ryWlgt
+  pamphlet_included_files: \.(png|jpg|jpeg|gif|bmp|svg|csv|pptx)$
   pamphlet_excluded_files: \.(chm|epub|cbr|cbz|mobi|lit|pdb)$
   pamphlet_max_pdf_pages: 50
   pamphlet_max_filesize_kib: 250

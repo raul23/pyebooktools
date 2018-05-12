@@ -57,7 +57,7 @@ def is_pamphlet(file_path):
     # TODO: check that it does the same as
     # `if [[ "$lowercase_name" =~ $PAMPHLET_INCLUDED_FILES ]];`
     # ref.: https://bit.ly/2I5nvFW
-    if re.match(pamphlet_included_files, lowercase_name):
+    if re.search(pamphlet_included_files, lowercase_name):
         parts = []
         # TODO: check that it does the same as
         # `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_INCLUDED_FILES" | paste -sd';')]"`
@@ -76,7 +76,7 @@ def is_pamphlet(file_path):
     # TODO: check that it does the same as
     # `if [[ "$lowercase_name" =~ $PAMPHLET_EXCLUDED_FILES ]]; then`
     # ref.: https://bit.ly/2KscBZj
-    if re.match(pamphlet_excluded_files, lowercase_name):
+    if re.search(pamphlet_excluded_files, lowercase_name):
         parts = []
         # TODO: check that it does the same as
         # `matches="[$(echo "$lowercase_name" | grep -oE "$PAMPHLET_EXCLUDED_FILES" | paste -sd';')]"`
@@ -107,6 +107,7 @@ def is_pamphlet(file_path):
             return False
         else:
             logger.info('The file has only {} pages, looks like a pamphlet'.format(pages))
+            return True
 
     elif file_size_KiB < pamphlet_max_filesize_kib:
         logger.info('File has a type {} and a small size ({} KiB), looks like a '
@@ -283,12 +284,10 @@ def organize_by_isbns(file_path, isbns):
             isbn_source = isbn_source.strip()
             logger.info('Fetching metadata from {} sources...'.format(isbn_source))
             options = '--verbose --isbn={}'.format(isbn)
-
-            #result = fetch_metadata(isbn_source, options)
-
-            #metadata = result.stdout
+            result = fetch_metadata(isbn_source, options)
+            metadata = result.stdout
             # TODO: DEBUGGING to be removed
-            metadata = 'Title               : A Hilbert Space Problem Book\nAuthor(s)           : Paul R. Halmos\nPublisher           : Springer\nLanguages           : eng\nRating              : 2.5\nPublished           : 1967-01-01T00:00:00+00:00\nIdentifiers         : goodreads:851559, isbn:9780387906850\nComments            : <p>From the Preface: "This book was written for the active reader. The first part consists of problems, frequently preceded by definitions and motivation, and sometimes followed by corollaries and historical remarks... The second part, a very short one, consists of hints... The third part, the longest, consists of solutions: proofs, answers, or contructions, depending on the nature of the problem....  </p>\n<p>This is not an introduction to Hilbert space theory. Some knowledge of that subject is a prerequisite: at the very least, a study of the elements of Hilbert space theory should proceed concurrently with the reading of this book."</p>\n'
+            # metadata = 'Title               : A Hilbert Space Problem Book\nAuthor(s)           : Paul R. Halmos\nPublisher           : Springer\nLanguages           : eng\nRating              : 2.5\nPublished           : 1967-01-01T00:00:00+00:00\nIdentifiers         : goodreads:851559, isbn:9780387906850\nComments            : <p>From the Preface: "This book was written for the active reader. The first part consists of problems, frequently preceded by definitions and motivation, and sometimes followed by corollaries and historical remarks... The second part, a very short one, consists of hints... The third part, the longest, consists of solutions: proofs, answers, or contructions, depending on the nature of the problem....  </p>\n<p>This is not an introduction to Hilbert space theory. Some knowledge of that subject is a prerequisite: at the very least, a study of the elements of Hilbert space theory should proceed concurrently with the reading of this book."</p>\n'
             if metadata:
                 with open(tmp_file, 'w') as f:
                     f.write(metadata)
@@ -313,7 +312,7 @@ def organize_by_isbns(file_path, isbns):
                 new_path = move_or_link_ebook_file_and_metadata(new_folder=output_folder,
                                                                 current_ebook_path=file_path,
                                                                 current_metadata_path=tmp_file)
-                ipdb.set_trace()
+
                 ok_file(file_path, new_path)
                 # NOTE: `tmp_file` was already removed in move_or_link_ebook_file_and_metadata()
                 return
@@ -362,7 +361,9 @@ def organize_file(file_path):
     else:
         logger.info('File passed the corruption test, looking for ISBNs...')
         isbns = search_file_for_isbns(file_path)
-        if isbns:
+        ipdb.set_trace()
+        # TODO: debugging, remove False
+        if isbns and False:
             logger.info('Organizing {} by ISBNs {}!'.format(file_path, isbns))
             organize_by_isbns(file_path, isbns)
         elif config.config_dict['organize-ebooks']['organize_without_isbn']:
@@ -397,7 +398,7 @@ if __name__ == '__main__':
     group2 = parser.add_argument_group('general-options', 'Library for building ebook management scripts')
     group1.add_argument('-cco', '--corruption-check-only', action='store_true')
     group1.add_argument('-owi', '--organize-without-isbn', action='store_true')
-    parser.add_argument('-wii', '--without-isbn-ignore', default=get_without_isbn_ignore())
+    group1.add_argument('-wii', '--without-isbn-ignore', default=get_without_isbn_ignore())
     group1.add_argument('--tested-archive-extensions', default='^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$')
 
     group1.add_argument('-o', '--output-folder', default=os.getcwd())
@@ -405,7 +406,7 @@ if __name__ == '__main__':
     group1.add_argument('-ofc', '--output-folder-corrupt', default='')
     group1.add_argument('-ofp', '--output-folder-pamphlets', default='')
 
-    group1.add_argument('--pamphlet-included-files', default='\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$')
+    group1.add_argument('--pamphlet-included-files', default='\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx)$')
     group1.add_argument('--pamphlet-excluded-files', default='\.(chm|epub|cbr|cbz|mobi|lit|pdb)$')
     group1.add_argument('--pamphlet-max-pdf-pages', default=50, type=int)
     group1.add_argument('--pamphlet-max-filesize-kib', default=250, type=int)

@@ -103,6 +103,7 @@ def get_re_year():
     return regex
 
 
+# TODO: test it
 def get_without_isbn_ignore():
     re_year = get_re_year()
     regex = ''
@@ -116,7 +117,8 @@ def get_without_isbn_ignore():
     regex += '|((spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall)[ _\\.-]*${RE_YEAR})'
     regex += '|(${RE_YEAR}[ _\\.-]*(spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall))'
     # Remove newlines
-    regex.split()
+    # TODO: is it necessary?
+    regex = regex.replace('\n', '')
     return regex
 
 
