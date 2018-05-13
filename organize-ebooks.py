@@ -366,7 +366,8 @@ def organize_file(file_path):
         if isbns and False:
             logger.info('Organizing {} by ISBNs {}!'.format(file_path, isbns))
             organize_by_isbns(file_path, isbns)
-        elif config.config_dict['organize-ebooks']['organize_without_isbn']:
+        # TODO: debugging, remove True
+        elif config.config_dict['organize-ebooks']['organize_without_isbn'] or True:
             logger.info('No ISBNs found for {}, organizing by filename and metadata...'.format(file_path))
             organize_by_filename_and_meta(file_path, 'No ISBNs found')
         else:
