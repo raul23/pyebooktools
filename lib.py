@@ -108,14 +108,14 @@ def get_without_isbn_ignore():
     re_year = get_re_year()
     regex = ''
     # Perdiodicals with filenames that contain something like 2010-11, 199010, 2015_7, 20110203:
-    regex += '(^|[^0-9]){}[ _\\.-]*(0?[1-9]|10|11|12)([0-9][0-9])?(\$|[^0-9])'.format(re_year)
+    regex += '(^|[^0-9]){}[ _\.-]*(0?[1-9]|10|11|12)([0-9][0-9])?($|[^0-9])'.format(re_year)
     # Periodicals with month numbers before the year
-    regex += '|(^|[^0-9])([0-9][0-9])?(0?[1-9]|10|11|12)[ _\\.-]*${RE_YEAR}(\$|[^0-9])'
+    regex += '|(^|[^0-9])([0-9][0-9])?(0?[1-9]|10|11|12)[ _\.-]*{}($|[^0-9])'.format(re_year)
     # Periodicals with months or issues
-    regex += '|((^|[^a-z])(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|sep(tember)?|oct(ober)?|nov(ember)?|dec(ember)?|mag(azine)?|issue|#[ _\\.-]*[0-9]+)+(\$|[^a-z]))'
+    regex += '|((^|[^a-z])(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|sep(tember)?|oct(ober)?|nov(ember)?|dec(ember)?|mag(azine)?|issue|#[ _\.-]*[0-9]+)+($|[^a-z]))'
     # Periodicals with seasons and years
-    regex += '|((spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall)[ _\\.-]*${RE_YEAR})'
-    regex += '|(${RE_YEAR}[ _\\.-]*(spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall))'
+    regex += '|((spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall)[ _\.-]*{})'.format(re_year)
+    regex += '|({}[ _\.-]*(spr(ing)?|sum(mer)?|aut(umn)?|win(ter)?|fall))'.format(re_year)
     # Remove newlines
     # TODO: is it necessary?
     regex = regex.replace('\n', '')

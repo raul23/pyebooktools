@@ -129,6 +129,7 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     # TODO: check that it does the same as
     # `if [[ "$WITHOUT_ISBN_IGNORE" != "" && "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
     # ref.: https://bit.ly/2HJTzfg
+    ipdb.set_trace()
     if without_isbn_ignore and re.match(without_isbn_ignore, lowercase_name):
         parts = []
         # TODO: check that it does the same as
@@ -468,6 +469,7 @@ if __name__ == '__main__':
         # ref.: https://bit.ly/2HuI3YS
         for path, dirs, files in os.walk(fpath):
             for file in files:
+                # TODO: catch any error and continue with next filename, see https://stackoverflow.com/a/26199212
                 try:
                     organize_file(file_path=os.path.join(path, file))
                 except KeyError as e:
