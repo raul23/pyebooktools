@@ -94,27 +94,33 @@ def is_pamphlet(file_path):
     logger.info('The file does not match the pamphlet exclude regex, continuing...')
 
     mime_type = get_mime_type(file_path)
-    file_size_KiB = get_file_size(file_path)
-    pamphlet_max_pdf_pages = ['organize-ebooks']['pamphlet_max_pdf_pages']
-    pamphlet_max_filesize_kib = ['organize-ebooks']['pamphlet_max_filesize_kib']
+    file_size_KiB = get_file_size(file_path, unit='KiB')
+    if file_size_KiB is None:
+        logger.error('Could not get the file size (KiB) for {}'.format(file_path))
+        return None
+    pamphlet_max_pdf_pages = config.config_dict['organize-ebooks']['pamphlet_max_pdf_pages']
+    pamphlet_max_filesize_kib = config.config_dict['organize-ebooks']['pamphlet_max_filesize_kib']
     if mime_type == 'application/pdf':
         logger.info('The file looks like a pdf, checking if the number of pages '
                     'is larger than {} ...'.format(pamphlet_max_pdf_pages))
-        pages = get_pages_in_pdf(file_path)
+        result = get_pages_in_pdf(file_path)
+        pages = result.stdout
 
-        if pages > pamphlet_max_pdf_pages:
+        if pages is None:
+            logger.error('Could not get the number of pages for {}'.format(file_path))
+            return None
+        elif pages > pamphlet_max_pdf_pages:
             logger.info('The file has {} pages, too many for a pamphlet'.format(pages))
             return False
         else:
             logger.info('The file has only {} pages, looks like a pamphlet'.format(pages))
             return True
-
     elif file_size_KiB < pamphlet_max_filesize_kib:
-        logger.info('File has a type {} and a small size ({} KiB), looks like a '
+        logger.info('The file has a type {} and a small size ({} KiB), looks like a '
                     'pamphlet'.format(mime_type, file_size_KiB))
         return True
     else:
-        logger.info('File has a type {} and a large size ({} KB), does NOT look '
+        logger.info('The file has a type {} and a large size ({} KB), does NOT look '
                     'like a pamphlet'.format(mime_type, file_size_KiB))
         return False
 
@@ -129,7 +135,6 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     # TODO: check that it does the same as
     # `if [[ "$WITHOUT_ISBN_IGNORE" != "" && "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
     # ref.: https://bit.ly/2HJTzfg
-    ipdb.set_trace()
     if without_isbn_ignore and re.match(without_isbn_ignore, lowercase_name):
         parts = []
         # TODO: check that it does the same as
@@ -146,7 +151,8 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     else:
         logger.info('File does not match the ignore regex, continuing...')
 
-    if is_pamphlet(old_path):
+    is_p = is_pamphlet(old_path)
+    if is_p is True:
         logger.info('File {} looks like a pamphlet!'.format(old_path))
         output_folder_pamphlets = config.config_dict['organize-ebooks']['output_folder_pamphlets']
         if output_folder_pamphlets:
@@ -162,14 +168,22 @@ def organize_by_filename_and_meta(old_path, prev_reason):
             logger.info('Output folder for pamphlet files is not set, skipping...')
             skip_file(old_path, 'No pamphlet folder specified')
         return
+    elif is_p is False:
+        logger.debug("File {} doesn't look like a pamphlet".format(old_path))
+    else:
+        logger.debug("Couldn't determine if file {} is a pamphlet".format(old_path))
 
-    output_folder_uncertain = ['organize-ebooks']['output_folder_uncertain']
+    ipdb.set_trace()
+    output_folder_uncertain = config.config_dict['organize-ebooks']['output_folder_uncertain']
     if not output_folder_uncertain:
         logger.info('No uncertain folder specified, skipping...')
         skip_file(old_path, 'No uncertain folder specified')
         return
 
-    ebookmeta = get_ebook_metadata(old_path)
+    result = get_ebook_metadata(old_path)
+    if result.stderr:
+        logger.error('`ebook-meta` returns an error: '.format(result.error))
+    ebookmeta = result.stdout
     logger.info('Ebook metadata:')
     logger.info(ebookmeta)
 
@@ -179,25 +193,28 @@ def organize_by_filename_and_meta(old_path, prev_reason):
     def finisher(fetch_method):
         logger.info('Successfully fetched metadata: ')
         logger.info('Adding additional metadata to the end of the metadata file...')
-        # TODO: add ebook metadata at the end of the file
-        # echo "$ebookmeta" | sed -E 's/^(.+[^ ])   ([ ]+): /OF \1\2: /'
-        # ref.: https://bit.ly/2HNGa60
         more_metadata = 'Old file path       : {}\n' \
                         'Meta fetch method   : {}\n'.format(old_path, fetch_method)
+        lines = ''
+        for line in ebookmeta.splitlines():
+            lines.append(re.sub('^(.+[^ ]) ([ ]+):', 'OF \1 \2', line))
+        ebookmeta = '\n'.join(lines)
         with open(tmpmfile, 'a') as f:
             f.write(more_metadata)
+            f.write(ebookmeta)
 
         isbn = find_isbns(more_metadata)
         if isbn:
             with open(tmpmfile, 'a') as f:
                 f.write('ISBN                : {}'.format(isbn))
+        else:
+            logger.debug('No isbn found for file {}'.format(old_path))
 
         logger.info('Organizing {} (with {})...'.format(old_path, tmpmfile))
         new_path = move_or_link_ebook_file_and_metadata(output_folder_uncertain, old_path, tmpmfile)
         ok_file(old_path, new_path)
 
     # TODO: get title and author from `ebook-meta`
-    # ref.: https://bit.ly/2JHKQe0
     title = ''
     author = ''
     # TODO: complete condition for title

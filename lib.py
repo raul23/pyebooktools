@@ -134,7 +134,12 @@ def convert_bytes_binary(num, unit):
 
     ref.: https://stackoverflow.com/a/39988702
     """
-    for x in ['bytes', 'KiB', 'MiB', 'GiB', 'TiB']:
+    unit = unit.lower()
+    units = ['bytes', 'kib', 'mib', 'gib', 'tib']
+    if unit not in units:
+        logger.error('{} is not a valid unit\nAborting {}()'.format(unit, convert_bytes_binary.__name__))
+        return None
+    for x in units:
         if num < 1024.0 or x == unit:
             # return "%3.1f %s" % (num, x)
             return num
@@ -147,7 +152,12 @@ def convert_bytes_decimal(num, unit):
 
     ref.: https://stackoverflow.com/a/39988702
     """
-    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+    unit = unit.lower()
+    units = ['bytes', 'kb', 'mb', 'gb', 'tb']
+    if unit not in units:
+        logger.error('{} is not a valid unit\nAborting {}()'.format(unit, convert_bytes_decimal.__name__))
+        return None
+    for x in units:
         if num < 1000.0 or x == unit:
             # return "%3.1f %s" % (num, x)
             return num
@@ -172,6 +182,9 @@ def get_file_size(file_path, unit):
             return convert_bytes_binary(file_info.st_size, unit=unit)
         else:
             return convert_bytes_decimal(file_info.st_size, unit=unit)
+    else:
+        logger.error('{} is not a file\nAborting get_file_size()'.format(file_path))
+        return None
 
 
 def get_ebook_metadata(file_path):
