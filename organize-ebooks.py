@@ -12,7 +12,8 @@ import config
 from config import check_comma_options, expand_folder_paths, init_config, update_config_from_arg_groups
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
     get_mime_type, get_pages_in_pdf, get_without_isbn_ignore, handle_script_arg, move_or_link_ebook_file_and_metadata, \
-    move_or_link_file, remove_file, search_file_for_isbns, unique_filename, BOLD, GREEN, NC, RED, VERSION
+    move_or_link_file, remove_file, search_file_for_isbns, search_meta_val, unique_filename, \
+    BOLD, GREEN, NC, RED, VERSION
 from utils.gen import get_full_exception, setup_logging
 
 
@@ -197,7 +198,9 @@ def organize_by_filename_and_meta(old_path, prev_reason):
                         'Meta fetch method   : {}\n'.format(old_path, fetch_method)
         lines = ''
         for line in ebookmeta.splitlines():
-            lines.append(re.sub('^(.+[^ ]) ([ ]+):', 'OF \1 \2', line))
+            # TODO: remove next line if simpler version does the same thing
+            #lines.append(re.sub('^(.+[^ ]) ([ ]+):', 'OF \1 \2', line))
+            lines.append(re.sub('^(.+)( +):', 'OF \1 \2', line))
         ebookmeta = '\n'.join(lines)
         with open(tmpmfile, 'a') as f:
             f.write(more_metadata)
@@ -215,13 +218,13 @@ def organize_by_filename_and_meta(old_path, prev_reason):
         ok_file(old_path, new_path)
 
     # TODO: get title and author from `ebook-meta`
-    title = ''
-    author = ''
-    # TODO: complete condition for title
+    title = search_meta_val(ebookmeta, 'Title')
+    author = search_meta_val(ebookmeta, 'Author')
+
+    # Equivalent to (in bash):
     # if [[ "${title//[^[:alpha:]]/}" != "" && "$title" != "unknown" ]]
     # ref.: https://bit.ly/2HDHZGm
-    cond = ''
-    if cond and title != 'unknown':
+    if re.sub(r'[^A-Za-z]', '', title) != '' and title != 'unknown':
         logger.info('There is a relatively normal-looking title, searching for metadata...')
 
         # TODO: complete condition for author

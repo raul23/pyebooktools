@@ -272,6 +272,31 @@ def convert_result_from_shell_cmd(old_result):
     return new_result
 
 
+# Returns a single value by key by parsing the calibre-style text metadata
+# hashmap that is passed as argument
+# ref.: https://bit.ly/2rIUHZM
+def search_meta_val(ebookmeta, key):
+    val = None
+    lines = ebookmeta.splitlines()
+    for line in lines:
+        match = re.match('^({})( +):'.format(key), ebookmeta)
+        if match:
+            val = line.split(match.end - 1)[-1]
+            return val
+    return val
+
+
+# Splits the `text` into alpha or numeric tokens with length at least
+# `lenr` (or $TOKEN_MIN_LENGTH), converts them to lowercase, optionally
+# deduplicates them (if `dedup` is true or not specified) and finally concatenates
+# them with `separator` (or ' ' if not specified)
+# ref.: https://bit.ly/2ImdPHW
+def tokenize(text, separator=' ', dedup=True, lenr=None):
+    if lenr is None:
+        token_min_length = config.config_dict['general-options']['token_min_length']
+    tokens_to_ignore = config.config_dict['general-options']['tokens_to_ignore']
+
+
 # TODO: place it (and other path-related functions) in the path module
 def remove_file(file_path):
     # TODO add reference: https://stackoverflow.com/a/42641792
