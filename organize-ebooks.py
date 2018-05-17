@@ -13,7 +13,7 @@ from config import check_comma_options, expand_folder_paths, init_config, update
 from lib import check_file_for_corruption, fetch_metadata, find_isbns, get_ebook_metadata, get_file_size, \
     get_mime_type, get_pages_in_pdf, get_without_isbn_ignore, handle_script_arg, move_or_link_ebook_file_and_metadata, \
     move_or_link_file, remove_file, search_file_for_isbns, search_meta_val, unique_filename, \
-    BOLD, GREEN, NC, RED, VERSION
+    GREEN, NC, RED, VERSION
 from utils.gen import get_full_exception, setup_logging
 
 
