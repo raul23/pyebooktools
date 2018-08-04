@@ -1,5 +1,5 @@
-# ebook-tools [WORK-IN-PROGRESS]
+# python-ebook-tools [WORK-IN-PROGRESS]
 Python scripts for organizing and managing ebook collections
 
-Porting ebook-tools' shell scripts to Python  
+This is a Python port ebook-tools' shell scripts
 ref.: https://github.com/na--/ebook-tools
