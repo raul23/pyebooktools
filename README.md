@@ -1,3 +1,3 @@
 # python-ebook-tools
 
-Ref: [ebook-tools](https://github.com/na--/ebook-tools)
+**Reference:** [ebook-tools](https://github.com/na--/ebook-tools)
