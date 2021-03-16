@@ -134,7 +134,8 @@ semi-automated organization and management of large ebook collections.
 
 See subcommands below for a list of the scripts that can be run.
 ''',
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        # formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     # ===============
     # General options
     # ===============
@@ -163,7 +164,8 @@ See subcommands below for a list of the scripts that can be run.
     # ==========
     # create the parser for the "edit" command
     parser_edit = subparsers.add_parser(
-        'edit', help='''Edit a configuration file.''')
+        'edit', formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        help='''Edit a configuration file.''')
     parser_edit.add_argument(
         'filename',
         help='''Name of a file to edit which can either be the main
@@ -180,25 +182,28 @@ See subcommands below for a list of the scripts that can be run.
     # split-into-folders
     # ==================
     # create the parser for the "split-into-folders" command
-    parser_split_into_folders = subparsers.add_parser('split',
+    parser_split_into_folders = subparsers.add_parser(
+        'split', formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         help='''Split the supplied ebook files (and the accompanying metadata
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
     parser_split_into_folders.add_argument(
-        "-o", "--output-folder", dest="output_folder",
+        '-o', '--output-folder', dest='output_folder', metavar='PATH',
+        default='current_working_directory',
         help='''The output folder in which all the new consecutively named
         folders will be created.''')
     parser_split_into_folders.add_argument(
-        "-s", "--start-number", dest="start_number",
+        '-s', '--start-number', dest='start_number', type=int, default=0,
         help='''The number of the first folder.''')
     parser_split_into_folders.add_argument(
-        "-f", "--folder-pattern", dest="folder_pattern",
+        '-f', '--folder-pattern', dest='folder_pattern', metavar='PATTERN',
+        default='%05d000',
         help='''The print format string that specifies the pattern with which
         new folders will be created. By default it creates folders like
         00000000, 00001000, 00002000, .....''')
     parser_split_into_folders.add_argument(
-        "--fpf", "--files-per-folder",
-        help='''How many files should be moved to each folder.''')
+        '--fpf', '--files-per-folder', dest='files_per_folder', type=int,
+        default=1000, help='''How many files should be moved to each folder.''')
     parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
     return parser
 
