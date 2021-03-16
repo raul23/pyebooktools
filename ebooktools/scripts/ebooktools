@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""TODO
+"""This program is a Python port of ebook-tools by na-- (See
+https://github.com/na--/ebook-tools).
 """
 import argparse
 import platform
@@ -9,9 +10,104 @@ import sys
 import ipdb
 
 import ebooktools
-from ebooktools.utils.genutils import init_log
+from ebooktools.utils.genutils import init_log, run_cmd
 
 logger = init_log(__name__, __file__)
+
+
+# NOTE: https://stackoverflow.com/a/27163648 [launch PyCharm from terminal]
+def edit_file(filepath, app=None, create_if_not=False):
+    """Edit a file.
+
+    TODO: remove config
+
+    The user chooses the config file (`cfg_filepath`) to edit: the
+    `logging config file`_, `main config file`_ or a particular model
+    configuration file (e.g. LogisticRegression)
+
+    The configuration file can be opened by a user-specified application (`app`)
+    or a default program associated with this type of file (when `app` is
+    :obj:`None`).
+
+    Parameters
+    ----------
+    filepath : str
+        The configuration file to edit. The `logging config file`_,
+        `main config file`_ or a particular model configuration file (e.g.
+        LogisticRegression).
+    app : str, optional
+        Name of the application to use for opening the config file, e.g.
+        `TextEdit` (the default value is :obj:`None` which implies that the
+        default application will be used to open the config file).
+
+    Returns
+    -------
+    retcode : int
+        If there is a `subprocess
+        <https://docs.python.org/3/library/subprocess.html#subprocess.CalledProcessError>`_
+        -related error, the return code is non-zero. Otherwise, it is 0 if the
+        file can be successfully opened with an external program.
+
+    """
+    # Check if file exists
+    file_exists = os.path.exists(filepath)
+    if not file_exists and not create_if_not:
+        logger.error(f"The file doesn't exists: {filepath}")
+        return 1
+    # Command to open the config file with the default application in the
+    # OS or the user-specified app, e.g. `open filepath` in macOS opens the
+    # file with the default app (e.g. atom)
+    default_cmd_dict = {'Darwin': 'open {filepath}',
+                        'Linux': 'xdg-open {filepath}',
+                        'Windows': 'cmd /c start "" "{filepath}"'}
+    # NOTE: check https://bit.ly/31htaOT (pymotw) for output from
+    # platform.system on three OSes
+    default_cmd = default_cmd_dict.get(platform.system())
+    # NOTES:
+    # - `app is None` implies that the default app will be used
+    # - Otherwise, the user-specified app will be used
+    cmd = default_cmd if app is None else app + " " + filepath
+    retcode = 1
+    result = None
+    try:
+        # IMPORTANT: if the user provided the name of an app, it will be used as
+        # a command along with the file path, e.g. ``$ atom {filepath}``.
+        # However, this case might not work if the user provided an app name
+        # that doesn't refer to an executable, e.g. ``$ TextEdit {filepath}``
+        # won't work. The failed case is further processed in the except block.
+        result = run_cmd(cmd.format(filepath=filepath))
+        retcode = result.returncode
+    except FileNotFoundError:
+        # This error happens if the name of the app can't be called as an
+        # executable in the terminal
+        # e.g. `TextEdit` can't be run in the terminal but `atom` can since the
+        # latter refers to an executable.
+        # To open `TextEdit` from the terminal, the command ``open -a TextEdit``
+        # must be used on macOS.
+        # TODO: IMPORTANT add the open commands for the other OSes
+        specific_cmd_dict = {'Darwin': 'open -a {app}'.format(app=app)}
+        # Get the command to open the file with the user-specified app
+        cmd = specific_cmd_dict.get(platform.system(), app) + " " + filepath
+        # TODO: explain DEVNULL, suppress stderr since we will display the error
+        # TODO: IMPORTANT you might get a FileNotFoundError again?
+        result = run_cmd(cmd)  # stderr=subprocess.DEVNULL)
+        retcode = result.returncode
+    if retcode == 0:
+        if create_if_not:
+            logger.warning(f"The file doesn't exists but will be created: "
+                           f"{filepath}'")
+        logger.info("Opening the file {}...".format(
+            os.path.basename(filepath)))
+        logger.debug(f"Filepath: {filepath}")
+    else:
+        if result:
+            err = result.stderr.decode().strip()
+            logger.error(err)
+    return retcode
+
+
+def parse_edit_args():
+    pass
 
 
 def parse_split_into_folders_args():
@@ -34,12 +130,13 @@ This program is a Python port of ebook-tools by na-- (See
 https://github.com/na--/ebook-tools).
 
 This program can perform the following tasks:
+* edit a config file (edit)
 * automatically organize folders (organize-ebooks)
 * interactively and manually organize ebook files quickly (interactive-organizer)
 * find valid ISBNs inside a file or in stdin (find-isbns)
 * convert the supplied file to a text file (convert-to-txt)
 * rename all the book files in a Calibre library folder (rename-calibre-library) 
-* splits the supplied ebook files into folders (split-into-folders)
+* split the supplied ebook files into folders (split-into-folders)
 
 Each of these tasks is associated with a subcommand (name within
 parentheses).
@@ -48,7 +145,7 @@ parentheses).
     # ===============
     # General options
     # ===============
-    # TODO: package name too? instead of program name (e.g. train_models.py)
+    # TODO: package name too? instead of program name
     parser.add_argument('-v', '--version', action='version',
                         version='%(prog)s v{}'.format(ebooktools.__version__))
     # TODO: add help for the following options
@@ -63,6 +160,24 @@ parentheses).
     subparsers = parser.add_subparsers(
         title='subcommands', description=None, dest='subparser_name',
         help=None)
+    # ==========
+    # Edit files
+    # ==========
+    # create the parser for the "edit" command
+    parser_edit = subparsers.add_parser(
+        'edit', help='''Edit a configuration file or module''')
+    parser_edit.add_argument(
+        'filename',
+        help='''Name of a file to edit which can either be the main
+            configuration file ('config') or the logging configuration file 
+            ('log').''')
+    parser_edit.add_argument(
+        '-a', '--app', metavar='NAME',
+        required='-e' in sys.argv or '--edit' in sys.argv,
+        help='''Name of the application to use for editing the file. If no name
+            is given, then the default application for opening this type of file
+            will be used.''')
+    parser_edit.set_defaults(func=parse_edit_args)
     # ==================
     # split-into-folders
     # ==================
@@ -71,6 +186,7 @@ parentheses).
         help='''Splits the supplied ebook files (and the accompanying metadata 
         files if present) into folders with consecutive names that each contain 
         the specified number of files.''')
+
     parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
     return parser
 
