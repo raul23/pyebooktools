@@ -129,17 +129,10 @@ def setup_argparser():
 This program is a Python port of ebook-tools by na-- (See
 https://github.com/na--/ebook-tools).
 
-This program can perform the following tasks:
-* edit a config file (edit)
-* automatically organize folders (organize-ebooks)
-* interactively and manually organize ebook files quickly (interactive-organizer)
-* find valid ISBNs inside a file or in stdin (find-isbns)
-* convert the supplied file to a text file (convert-to-txt)
-* rename all the book files in a Calibre library folder (rename-calibre-library) 
-* split the supplied ebook files into folders (split-into-folders)
+This program is a collection of Python scripts for automated and
+semi-automated organization and management of large ebook collections.
 
-Each of these tasks is associated with a subcommand (name within
-parentheses).
+See subcommands below for a list of the scripts that can be run.
 ''',
         formatter_class=argparse.RawDescriptionHelpFormatter)
     # ===============
@@ -170,11 +163,11 @@ parentheses).
     # ==========
     # create the parser for the "edit" command
     parser_edit = subparsers.add_parser(
-        'edit', help='''Edit a configuration file or module.''')
+        'edit', help='''Edit a configuration file.''')
     parser_edit.add_argument(
         'filename',
         help='''Name of a file to edit which can either be the main
-            configuration file ('config') or the logging configuration file 
+            configuration file ('config') or the logging configuration file
             ('log').''')
     parser_edit.add_argument(
         '-a', '--app', metavar='NAME',
@@ -187,10 +180,25 @@ parentheses).
     # split-into-folders
     # ==================
     # create the parser for the "split-into-folders" command
-    parser_split_into_folders = subparsers.add_parser('split-into-folders',
+    parser_split_into_folders = subparsers.add_parser('split',
         help='''Split the supplied ebook files (and the accompanying metadata
-        files if present) into folders with consecutive names that each contain 
+        files if present) into folders with consecutive names that each contain
         the specified number of files.''')
+    parser_split_into_folders.add_argument(
+        "-o", "--output-folder", dest="output_folder",
+        help='''The output folder in which all the new consecutively named
+        folders will be created.''')
+    parser_split_into_folders.add_argument(
+        "-s", "--start-number", dest="start_number",
+        help='''The number of the first folder.''')
+    parser_split_into_folders.add_argument(
+        "-f", "--folder-pattern", dest="folder_pattern",
+        help='''The print format string that specifies the pattern with which
+        new folders will be created. By default it creates folders like
+        00000000, 00001000, 00002000, .....''')
+    parser_split_into_folders.add_argument(
+        "--fpf", "--files-per-folder",
+        help='''How many files should be moved to each folder.''')
     parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
     return parser
 
