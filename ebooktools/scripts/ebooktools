@@ -146,8 +146,13 @@ parentheses).
     # General options
     # ===============
     # TODO: package name too? instead of program name
-    parser.add_argument('-v', '--version', action='version',
+    parser.add_argument('--version', action='version',
                         version='%(prog)s v{}'.format(ebooktools.__version__))
+    parser.add_argument("-q", "--quiet", action="store_true",
+                        help="Enable quiet mode, i.e. nothing will be printed.")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                        help="Print various debugging information, e.g. print "
+                             "traceback when there is an exception.")
     # TODO: add help for the following options
     parser.add_argument(
         '--loglvl', dest='logging_level', default='INFO',
@@ -165,7 +170,7 @@ parentheses).
     # ==========
     # create the parser for the "edit" command
     parser_edit = subparsers.add_parser(
-        'edit', help='''Edit a configuration file or module''')
+        'edit', help='''Edit a configuration file or module.''')
     parser_edit.add_argument(
         'filename',
         help='''Name of a file to edit which can either be the main
@@ -183,10 +188,9 @@ parentheses).
     # ==================
     # create the parser for the "split-into-folders" command
     parser_split_into_folders = subparsers.add_parser('split-into-folders',
-        help='''Splits the supplied ebook files (and the accompanying metadata 
+        help='''Split the supplied ebook files (and the accompanying metadata
         files if present) into folders with consecutive names that each contain 
         the specified number of files.''')
-
     parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
     return parser
 
