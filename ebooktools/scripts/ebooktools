@@ -10,7 +10,8 @@ import sys
 import ipdb
 
 import ebooktools
-from ebooktools.utils.genutils import init_log, run_cmd
+from ebooktools.utils.genutils import (dict_to_bunch, get_config_dict,
+                                       init_log, run_cmd, setup_log)
 
 logger = init_log(__name__, __file__)
 
@@ -106,6 +107,19 @@ def edit_file(filepath, app=None, create_if_not=False):
     return retcode
 
 
+def get_main_config(args):
+    # -------------------------------------
+    # Get config filepath and setup logging
+    # -------------------------------------
+    # Get config dict
+    main_cfg_dict = get_config_dict('main')
+    main_cfg = dict_to_bunch(main_cfg_dict)
+    setup_log(main_cfg.quiet, main_cfg.verbose,
+              logging_level=args.logging_level,
+              logging_formatter=args.logging_formatter)
+    return main_cfg
+
+
 def parse_edit_args():
     pass
 
@@ -167,16 +181,19 @@ See subcommands below for a list of the scripts that can be run.
         'edit', formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         help='''Edit a configuration file.''')
     parser_edit.add_argument(
-        'filename',
+        'filename', choices=[],
         help='''Name of a file to edit which can either be the main
-            configuration file ('config') or the logging configuration file
-            ('log').''')
+        configuration file ('config') or the logging configuration file
+        ('log').''')
     parser_edit.add_argument(
         '-a', '--app', metavar='NAME',
-        required='-e' in sys.argv or '--edit' in sys.argv,
         help='''Name of the application to use for editing the file. If no name
-            is given, then the default application for opening this type of file
-            will be used.''')
+        is given, then the default application for opening this type of file
+        will be used.''')
+    parser_edit.add_argument(
+        "-r", "--reset", choices=[],
+        help='''Reset a configuration file ('config' or 'log') with factory 
+        default values.''')
     parser_edit.set_defaults(func=parse_edit_args)
     # ==================
     # split-into-folders
@@ -209,10 +226,23 @@ See subcommands below for a list of the scripts that can be run.
 
 
 def main():
-    parser = setup_argparser()
-    args = parser.parse_args()
-    ipdb.set_trace()
+    try:
+        parser = setup_argparser()
+        args = parser.parse_args()
+        ipdb.set_trace()
+        main_cfg, cwd_ready = get_main_config(args)
+        return args.func(args, main_cfg)
+    except AssertionError as e:
+        # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
+        # TODO: add KeyboardInterruptError
+        logger.error(e)
+        return 1
 
 
 if __name__ == '__main__':
-    main()
+    retcode = main()
+    msg = "Program exited with {}".format(retcode)
+    if retcode == 1:
+        logger.error(msg)
+    else:
+        logger.info(msg)
