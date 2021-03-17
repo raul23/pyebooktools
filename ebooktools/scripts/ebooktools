@@ -17,6 +17,7 @@ logger = init_log(__name__, __file__)
 _LOG_CFG = "log"
 _MAIN_CFG = "config"
 
+
 # NOTE: https://stackoverflow.com/a/27163648 [launch PyCharm from terminal]
 def edit_file(filepath, app=None, create_if_not=False):
     """Edit a file.
@@ -121,12 +122,12 @@ def get_main_config(args):
     return main_cfg
 
 
-def parse_edit_args():
+def parse_edit_args(args):
     pass
 
 
-def parse_split_into_folders_args():
-    pass
+def parse_split_into_folders_args(args):
+    ipdb.set_trace()
 
 
 def setup_argparser():
@@ -171,6 +172,28 @@ See subcommands below for a list of the scripts that can be run.
         '--logfmt', dest='logging_formatter', default='only_msg',
         choices=['console', 'simple', 'only_msg'],
         help='')
+    # =============================================
+    # Options related to the input and output files
+    # =============================================
+    parser_input_output_group = parser.add_argument_group(
+        title='Options related to the input and output files')
+    parser_input_output_group.add_argument(
+        '--oft', '--output-filename-template', dest='output_filename_template',
+        default="${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }"
+                "${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}"
+                "${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}",
+        metavar='TEMPLATE',
+        help='This specifies how the filenames of the organized files will '
+             'look. It is a bash string that is evaluated so it can be very '
+             'flexible (and also potentially unsafe).')
+    parser_input_output_group.add_argument(
+        '--ome', '--output-metadata-extension', dest='output_metadata_extension',
+        default='meta', metavar='EXTENSION',
+        help='''If KEEP_METADATA is enabled, this is the extension of the
+        additional metadata file that is saved next to each newly renamed file.''')
+    # ===========
+    # Subcommands
+    # ===========
     subparsers = parser.add_subparsers(
         title='subcommands', description=None, dest='subparser_name',
         help=None)
@@ -194,7 +217,7 @@ See subcommands below for a list of the scripts that can be run.
         will be used.''')
     group_edit.add_argument(
         "-r", "--reset", action="store_true",
-        help='''Reset a configuration file ('config' or 'log') with factory 
+        help='''Reset a configuration file ('config' or 'log') with factory
         default values.''')
     parser_edit.set_defaults(func=parse_edit_args)
     # ==================
@@ -208,9 +231,10 @@ See subcommands below for a list of the scripts that can be run.
         the specified number of files.''')
     parser_split_into_folders.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        default='current_working_directory',
+        default=os.getcwd(),
         help='''The output folder in which all the new consecutively named
-        folders will be created.''')
+        folders will be created. The default is the current working
+        directory.''')
     parser_split_into_folders.add_argument(
         '-s', '--start-number', dest='start_number', type=int, default=0,
         help='''The number of the first folder.''')
@@ -233,8 +257,10 @@ def main():
         args = parser.parse_args()
         test = args
         ipdb.set_trace()
-        main_cfg, cwd_ready = get_main_config(args)
-        return args.func(args, main_cfg)
+        # main_cfg, cwd_ready = get_main_config(args)
+        # return args.func(args, main_cfg)
+        return args.func(args)
+
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
