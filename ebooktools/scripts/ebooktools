@@ -14,7 +14,8 @@ from ebooktools.utils.genutils import (dict_to_bunch, get_config_dict,
                                        init_log, run_cmd, setup_log)
 
 logger = init_log(__name__, __file__)
-
+_LOG_CFG = "log"
+_MAIN_CFG = "config"
 
 # NOTE: https://stackoverflow.com/a/27163648 [launch PyCharm from terminal]
 def edit_file(filepath, app=None, create_if_not=False):
@@ -181,17 +182,18 @@ See subcommands below for a list of the scripts that can be run.
         'edit', formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         help='''Edit a configuration file.''')
     parser_edit.add_argument(
-        'filename', choices=[],
+        'filename', choices=[_MAIN_CFG, _LOG_CFG],
         help='''Name of a file to edit which can either be the main
-        configuration file ('config') or the logging configuration file
-        ('log').''')
-    parser_edit.add_argument(
-        '-a', '--app', metavar='NAME',
+            configuration file ('config') or the logging configuration file
+            ('log').''')
+    group_edit = parser_edit.add_mutually_exclusive_group()
+    group_edit.add_argument(
+        '-a', '--app', metavar='NAME', nargs='*',
         help='''Name of the application to use for editing the file. If no name
         is given, then the default application for opening this type of file
         will be used.''')
-    parser_edit.add_argument(
-        "-r", "--reset", choices=[],
+    group_edit.add_argument(
+        "-r", "--reset", action="store_true",
         help='''Reset a configuration file ('config' or 'log') with factory 
         default values.''')
     parser_edit.set_defaults(func=parse_edit_args)
@@ -229,6 +231,7 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
+        test = args
         ipdb.set_trace()
         main_cfg, cwd_ready = get_main_config(args)
         return args.func(args, main_cfg)
