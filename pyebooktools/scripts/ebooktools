@@ -6,15 +6,13 @@ https://github.com/na--/ebook-tools).
 import argparse
 import platform
 import os
-import sys
 
 import ipdb
 
 import pyebooktools
 from pyebooktools import lib, split_into_folders
-from pyebooktools.utils.genutils import (dict_to_bunch, get_config_dict,
-                                         init_log, namespace_to_dict, run_cmd,
-                                         setup_log)
+from pyebooktools.utils.genutils import (get_config_dict, init_log,
+                                         namespace_to_dict, run_cmd, setup_log)
 
 logger = init_log(__name__, __file__)
 
@@ -122,7 +120,7 @@ def get_main_config(args):
     # -------------------------------------
     # Get config dict
     main_cfg_dict = get_config_dict('main')
-    main_cfg = dict_to_bunch(main_cfg_dict)
+    main_cfg = argparse.Namespace(**main_cfg_dict)
     setup_log(main_cfg.quiet, main_cfg.verbose,
               logging_level=args.logging_level,
               logging_formatter=args.logging_formatter)
@@ -135,6 +133,7 @@ def parse_edit_args(args):
 
 def parse_split_into_folders_args(args):
     split_into_folders.split(**namespace_to_dict(args))
+    return 0
 
 
 # Ref.: https://stackoverflow.com/a/14117511/14664104
@@ -285,15 +284,14 @@ def main():
         args = parser.parse_args()
         test = args
         # ipdb.set_trace()
-        # main_cfg, cwd_ready = get_main_config(args)
-        # return args.func(args, main_cfg)
-        return args.func(args)
-
+        main_cfg = get_main_config(args)
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
         logger.error(e)
         return 1
+    else:
+        return args.func(args)
 
 
 if __name__ == '__main__':
