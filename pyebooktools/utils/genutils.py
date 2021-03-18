@@ -8,11 +8,13 @@ import shlex
 import shutil
 import subprocess
 import sys
+import warnings
 from argparse import Namespace
 from collections import OrderedDict
 from logging import NullHandler
 from runpy import run_path
 from types import SimpleNamespace
+from warnings import warn
 
 import pyebooktools
 from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
@@ -20,6 +22,14 @@ from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
 
 logger = init_log(__name__, __file__)
 logger.addHandler(NullHandler())
+
+
+# Ref.: https://stackoverflow.com/a/26433913/14664104
+def warning_on_one_line(message, category, filename, lineno, line=None):
+    return '%s:%s: %s: %s\n' % (filename, lineno, category.__name__, message)
+
+
+warnings.formatwarning = warning_on_one_line
 
 CFG_TYPES = ['main', 'log']
 CONFIGS_DIRNAME = 'configs'
@@ -55,24 +65,34 @@ def get_settings(conf, cfg_type):
 
 
 def load_cfg_dict(cfg_filepath, cfg_type):
-    assert cfg_type in CFG_TYPES, f"Invalid cfg_type: {cfg_type}"
-    _, file_ext = os.path.splitext(cfg_filepath)
-    try:
+
+    def _load_cfg_dict(cfg_filepath, cfg_type):
         if file_ext == '.py':
             cfg_dict = run_path(cfg_filepath)
             cfg_dict = get_settings(cfg_dict, cfg_type)
         elif file_ext == '.json':
             cfg_dict = load_json(cfg_filepath)
         else:
-            # TODO: this else should not be reached and shouldn't be a
-            # FileNotFoundError
-            raise FileNotFoundError(
-                f"[Errno 2] No such file or directory: "
-                f"{cfg_filepath}")
-    except FileNotFoundError as e:
-        raise e
-    else:
+            raise TypeError("Config file extension not supported: "
+                            f"{cfg_filepath}")
         return cfg_dict
+
+    assert cfg_type in CFG_TYPES, f"Invalid cfg_type: {cfg_type}"
+    _, file_ext = os.path.splitext(cfg_filepath)
+    try:
+        cfg_dict = _load_cfg_dict(cfg_filepath, cfg_type)
+    except FileNotFoundError as e:
+        print(f"WARNING: Config file '{os.path.basename(cfg_filepath)}' will "
+              "be created")
+        # Copy it from the default one
+        # TODO: IMPORTANT destination with default?
+        if cfg_type == 'main':
+            src = get_main_config_filepath(default_config=True)
+        else:
+            src = get_logging_filepath(default_config=True)
+        shutil.copy(src, cfg_filepath)
+        cfg_dict = _load_cfg_dict(cfg_filepath, cfg_type)
+    return cfg_dict
 
 
 def load_json(filepath, encoding='utf8'):
@@ -248,6 +268,7 @@ def get_configs_dirpath():
 
 
 def get_logging_filepath(default_config=False):
+    # TODO: add names of logging files as global
     if default_config:
         return os.path.join(get_configs_dirpath(), 'default_logging.py')
     else:
@@ -255,6 +276,7 @@ def get_logging_filepath(default_config=False):
 
 
 def get_main_config_filepath(default_config=False):
+    # TODO: add names of config files as global
     if default_config:
         return os.path.join(get_configs_dirpath(), 'default_config.py')
     else:
