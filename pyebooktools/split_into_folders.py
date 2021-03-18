@@ -13,7 +13,9 @@ import ipdb
 from pathlib import Path
 
 from pyebooktools.lib import FILE_SORT_FLAGS, OUTPUT_METADATA_EXTENSION
-from pyebooktools.utils.genutils import mkdir, move
+from pyebooktools.utils.genutils import init_log, mkdir, move
+
+logger = init_log(__name__, __file__)
 
 # ==============
 # Default values
@@ -50,23 +52,20 @@ def split(folder_with_books, folder_pattern=FOLDER_PATTERN,
     left, right = folder_pattern.split('%')[-1].split('d')
     width = int(left) + len(right)
     total_files = len(files)
-    # TODO: logging
-    print(f"Total number of files to be split into folders: {total_files}")
-    # TODO: logging
-    print(f"Number of files per folder: {files_per_folder}")
+    logger.info(f"Total number of files to be split into folders: {total_files}")
+    logger.info(f"Number of files per folder: {files_per_folder}")
     number_splits = math.ceil(total_files / files_per_folder)
-    # TODO: logging
-    print(f"Number of splits: {number_splits}")
+    logger.info(f"Number of splits: {number_splits}")
+    logger.info("Starting splits...")
     while True:
         if start_index >= len(files):
             # TODO: debug logging
-            print(f"End of splits!")
+            logger.info(f"End of splits!")
             break
         chunk = files[start_index:start_index+files_per_folder]
         start_index += files_per_folder
 
-        # TODO: debug logging
-        print(f"Found {len(chunk)} number of files...")
+        logger.debug(f"Found {len(chunk)} number of files...")
 
         current_folder_basename = '{0:0{width}}'.format(
             current_folder_num, width=width)
@@ -80,12 +79,12 @@ def split(folder_with_books, folder_pattern=FOLDER_PATTERN,
         current_folder_metadata = os.path.join(
             output_folder, current_folder_basename + '.' + output_metadata_extension)
         current_folder_num += 1
-        # TODO: debug logging
-        print(f"Creating folders '{current_folder}' and "
-              f"'{current_folder_metadata}'...")
+        logger.debug(f"Creating folders '{current_folder}' and "
+                     f"'{current_folder_metadata}'...")
         mkdir(current_folder)
         mkdir(current_folder_metadata)
 
+        logger.debug(f"Moving files...")
         for file_to_move in chunk:
             file_dest = os.path.join(current_folder, file_to_move.name)
             move(file_to_move, file_dest)
