@@ -31,18 +31,6 @@ logging = {
 
     "handlers":
     {
-        # --------------------
-        # User-defined handler
-        # --------------------
-        "console_for_users":
-        {
-          "level": "INFO",
-          "class": "logging.StreamHandler",
-          "formatter": "only_msg"
-        },
-        # ------------------
-        # Debugging handlers
-        # ------------------
         "console":
         {
           "level": "WARNING",
@@ -68,25 +56,31 @@ logging = {
 
     "loggers":
     {
-        # ---------------------------------------
-        # Loggers using console_for_users handler
-        # ---------------------------------------
-        "scripts.ebooktools":
-        {
-          "level": "DEBUG",
-          "handlers": ["console_for_users"],
-          "propagate": False
-        },
-        # ---------------------------------------------------
-        # Loggers using console and console_only_msg handlers
-        # ---------------------------------------------------
+        # --------------------------------------
+        # Loggers using console_only_msg handler
+        # --------------------------------------
         "data":
         {
           "level": "INFO",
           "handlers": ["console_only_msg"],
           "propagate": False
         },
-        "ebooktools.genutils":
+        # -----------------------------
+        # Loggers using console handler
+        # -----------------------------
+        "pyebooktools.split_into_folders":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
+        "scripts.ebooktools":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
+        "utils.genutils":
         {
           "level": "DEBUG",
           "handlers": ["console"],
