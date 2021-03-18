@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-"""This program is a Python port of ebook-tools by na-- (See
+"""This script is a Python port of ebook-tools by na-- (See
 https://github.com/na--/ebook-tools).
 """
+# NOTE: since ebooktools is a script (no py extension), it can't be imported
 import argparse
 import platform
 import os
@@ -9,11 +10,17 @@ import sys
 
 import ipdb
 
-import ebooktools
-from ebooktools.utils.genutils import (dict_to_bunch, get_config_dict,
-                                       init_log, run_cmd, setup_log)
+import pyebooktools
+from pyebooktools import lib, split_into_folders
+from pyebooktools.utils.genutils import (dict_to_bunch, get_config_dict,
+                                         init_log, namespace_to_dict, run_cmd,
+                                         setup_log)
 
 logger = init_log(__name__, __file__)
+
+# ==============
+# Default values
+# ==============
 _LOG_CFG = "log"
 _MAIN_CFG = "config"
 
@@ -127,7 +134,22 @@ def parse_edit_args(args):
 
 
 def parse_split_into_folders_args(args):
-    ipdb.set_trace()
+    split_into_folders.split(**namespace_to_dict(args))
+
+
+# Ref.: https://stackoverflow.com/a/14117511/14664104
+def check_positive(value):
+    try:
+        # TODO: 2.0 rejected
+        ivalue = int(value)
+        if ivalue <= 0:
+            raise argparse.ArgumentTypeError(
+                f"{value} is an invalid positive int value")
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"{value} is an invalid positive int value")
+    else:
+        return ivalue
 
 
 def setup_argparser():
@@ -157,7 +179,7 @@ See subcommands below for a list of the scripts that can be run.
     # ===============
     # TODO: package name too? instead of program name
     parser.add_argument('--version', action='version',
-                        version='%(prog)s v{}'.format(ebooktools.__version__))
+                        version='%(prog)s v{}'.format(pyebooktools.__version__))
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="Enable quiet mode, i.e. nothing will be printed.")
     parser.add_argument("-v", "--verbose", action="store_true",
@@ -179,16 +201,14 @@ See subcommands below for a list of the scripts that can be run.
         title='Options related to the input and output files')
     parser_input_output_group.add_argument(
         '--oft', '--output-filename-template', dest='output_filename_template',
-        default="${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }"
-                "${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}"
-                "${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}",
+        default=lib.OUTPUT_FILENAME_TEMPLATE,
         metavar='TEMPLATE',
         help='This specifies how the filenames of the organized files will '
              'look. It is a bash string that is evaluated so it can be very '
              'flexible (and also potentially unsafe).')
     parser_input_output_group.add_argument(
         '--ome', '--output-metadata-extension', dest='output_metadata_extension',
-        default='meta', metavar='EXTENSION',
+        default=lib.OUTPUT_METADATA_EXTENSION, metavar='EXTENSION',
         help='''If KEEP_METADATA is enabled, this is the extension of the
         additional metadata file that is saved next to each newly renamed file.''')
     # ===========
@@ -211,7 +231,7 @@ See subcommands below for a list of the scripts that can be run.
             ('log').''')
     group_edit = parser_edit.add_mutually_exclusive_group()
     group_edit.add_argument(
-        '-a', '--app', metavar='NAME', nargs='*',
+        '-a', '--app', metavar='NAME', nargs='?', default='default_editor',
         help='''Name of the application to use for editing the file. If no name
         is given, then the default application for opening this type of file
         will be used.''')
@@ -230,23 +250,31 @@ See subcommands below for a list of the scripts that can be run.
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
     parser_split_into_folders.add_argument(
+        'folder_with_books', metavar='FOLDER_WITH_BOOKS',
+        help='''Folder with books which will be recursively scanned for files.
+        The found files (and the accompanying metadata files if present) will 
+        be split into folders with consecutive names that each contain the 
+        specified number of files.''')
+    parser_split_into_folders.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        default=os.getcwd(),
+        default=split_into_folders.OUTPUT_FOLDER,
         help='''The output folder in which all the new consecutively named
         folders will be created. The default is the current working
         directory.''')
     parser_split_into_folders.add_argument(
-        '-s', '--start-number', dest='start_number', type=int, default=0,
+        '-s', '--start-number', dest='start_number', type=int,
+        default=split_into_folders.START_NUMBER,
         help='''The number of the first folder.''')
     parser_split_into_folders.add_argument(
         '-f', '--folder-pattern', dest='folder_pattern', metavar='PATTERN',
-        default='%05d000',
+        default=split_into_folders.FOLDER_PATTERN,
         help='''The print format string that specifies the pattern with which
         new folders will be created. By default it creates folders like
         00000000, 00001000, 00002000, .....''')
     parser_split_into_folders.add_argument(
-        '--fpf', '--files-per-folder', dest='files_per_folder', type=int,
-        default=1000, help='''How many files should be moved to each folder.''')
+        '--fpf', '--files-per-folder', dest='files_per_folder', type=check_positive,
+        default=split_into_folders.FILES_PER_FOLDER,
+        help='''How many files should be moved to each folder.''')
     parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
     return parser
 
@@ -256,7 +284,7 @@ def main():
         parser = setup_argparser()
         args = parser.parse_args()
         test = args
-        ipdb.set_trace()
+        # ipdb.set_trace()
         # main_cfg, cwd_ready = get_main_config(args)
         # return args.func(args, main_cfg)
         return args.func(args)

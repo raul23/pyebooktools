@@ -5,13 +5,16 @@ import json
 import logging.config
 import os
 import shlex
+import shutil
 import subprocess
 import sys
+from argparse import Namespace
 from collections import OrderedDict
 from logging import NullHandler
 from runpy import run_path
+from types import SimpleNamespace
 
-import ebooktools
+import pyebooktools
 
 logger = logging.getLogger(__name__)
 logger.addHandler(NullHandler())
@@ -163,6 +166,56 @@ def load_json(filepath, encoding='utf8'):
         return data
 
 
+def mkdir(path):
+    # Since path can be relative to the cwd
+    path = os.path.abspath(path)
+    dirname = os.path.basename(path)
+    if os.path.exists(path):
+        # TODO: logging
+        # logger.info(f"'{dirname}' folder already exits: {path}")
+        # logger.info(f"Skipping it!")
+        print(f"'{dirname}' folder already exits: {path}")
+    else:
+        # TODO: logging
+        # logger.info(f"Creating folder '{dirname}': {path}")
+        print(f"Creating folder '{dirname}': {path}")
+        os.mkdir(path)
+
+
+def move(src, dest):
+    # Since path can be relative to the cwd
+    src = os.path.abspath(src)
+    filename = os.path.basename(src)
+    if os.path.exists(dest):
+        # TODO: logging
+        # logger.info(f"'{filename}' already exits: {dest}")
+        # logger.info(f"Skipping it!")
+        print(f"'{filename}' already exits: {dest}")
+    else:
+        # TODO: logging
+        # logger.info(f"Moving '{filename}': {dest}")
+        print(f"Moving '{filename}': {dest}")
+        shutil.move(src, dest)
+
+
+def namespace_to_dict(ns):
+    namspace_classes = [Namespace, SimpleNamespace]
+    # TODO: check why not working anymore
+    # if isinstance(ns, SimpleNamespace):
+    if type(ns) in namspace_classes:
+        adict = vars(ns)
+    else:
+        adict = ns
+    for k, v in adict.items():
+        # if isinstance(v, SimpleNamespace):
+        if type(v) in namspace_classes:
+            v = vars(v)
+            adict[k] = v
+        if isinstance(v, dict):
+            namespace_to_dict(v)
+    return adict
+
+
 def run_cmd(cmd):
     """Run a shell command with arguments.
 
@@ -219,7 +272,6 @@ def set_logging_field_width(log_dict):
             continue
 
 
-
 def set_logging_formatter(log_dict, handler_names, formatter='simple'):
     # TODO: assert hander_names and formatter
     for handler_name in handler_names:
@@ -271,8 +323,8 @@ def setup_log(use_default_log=False, quiet=False, verbose=False,
     # =============
     # Start logging
     # =============
-    logger.info("Running {} v{}".format(ebooktools.__name__,
-                                        ebooktools.__version__))
+    logger.info("Running {} v{}".format(pyebooktools.__name__,
+                                        pyebooktools.__version__))
     logger.info("Verbose option {}".format(
         "enabled" if verbose else "disabled"))
     logger.debug("Working directory: {}".format(package_path))
