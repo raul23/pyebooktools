@@ -15,6 +15,7 @@ from runpy import run_path
 from types import SimpleNamespace
 
 import pyebooktools
+from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
                                          set_logging_formatter, set_logging_level)
 
@@ -179,36 +180,31 @@ def override_config_with_args(config, parser):
     # If config is Namespace
     config = vars(config)
     args = parser.parse_args().__dict__
-    parser_actions_dict = dict([(action.dest, action)
-                                for action in parser.__dict__['_actions']])
     args_not_found_in_config = []
     default_args_overriden = []
     config_opts_overridden = []
-    import ipdb
-    ipdb.set_trace()
     for arg_name, arg_val in args.items():
         if arg_name in ignored_args:
             continue
         config_val = config.get(arg_name)
-        if config_val is None:
-            # TODO: config[arg_name] = arg_val
-            args_not_found_in_config.append(arg_name)
+        # No value was specified, use default value
+        default_val = getattr(default_cfg, arg_name, None)
+        if arg_val is not None:
+            # User specified a value in the command-line
+            if arg_val != config_val:
+                config[arg_name] = arg_val
+                config_opts_overridden.append((arg_name, config_val, arg_val))
+            # else: command-line arg and config option same value, nothing to do
+        elif config_val is not None:
+            # User provided a value from the config file
+            if config_val != default_val:
+                default_args_overriden.append((arg_name, default_val, config_val))
         else:
-            if parser_actions_dict.get(arg_name):
-                # TODO: can't get the default values for other options (e.g. start_number)
-                if arg_val != parser_actions_dict[arg_name].default and \
-                        arg_val != config_val:
-                    config[arg_name] = arg_val
-                    config_opts_overridden.append((arg_name, config_val, arg_val))
-            elif config_val != arg_val:
-                if arg_name not in sys.argv:
-                    import ipdb
-                    ipdb.set_trace()
-                    default_args_overriden.append((arg_name, arg_val, config_val))
-                else:
-                    config[arg_name] = arg_val
-                    config_opts_overridden.append((arg_name, config_val, arg_val))
-            # else:
+            if default_val:
+                config[arg_name] = default_val
+            else:
+                raise AttributeError("No value could be found for the "
+                                     f"argument {arg_name}")
 
     # ================================
     # Process previous returned values
@@ -222,21 +218,21 @@ def override_config_with_args(config, parser):
                 msg += "\n"
         logger.debug(msg)
 
-    import ipdb
     # Process 1st returned values: default args overriden by config options
     if default_args_overriden:
-        msg = "Default command-line arguments overridden by config options:\n"
+        msg = "Default arguments overridden by config options:\n"
         log_opts_overriden(default_args_overriden, msg)
     # Process 2nd returned values: config options overriden by args
     if config_opts_overridden:
         msg = "Config options overridden by command-line arguments:\n"
         log_opts_overriden(config_opts_overridden, msg)
     # Process 3rd returned values: arguments not found in config file
+    """
     if args_not_found_in_config:
         msg = "Command-line arguments not found in config file: " \
               "\n\t{}".format(args_not_found_in_config)
         logger.debug(msg)
-    ipdb.set_trace()
+    """
 
 
 def run_cmd(cmd):
