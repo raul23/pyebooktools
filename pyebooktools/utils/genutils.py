@@ -8,13 +8,11 @@ import shlex
 import shutil
 import subprocess
 import sys
-import warnings
 from argparse import Namespace
-from collections import namedtuple, OrderedDict
+from collections import OrderedDict
 from logging import NullHandler
 from runpy import run_path
 from types import SimpleNamespace
-from warnings import warn
 
 import pyebooktools
 from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
@@ -22,14 +20,6 @@ from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
 
 logger = init_log(__name__, __file__)
 logger.addHandler(NullHandler())
-
-
-# Ref.: https://stackoverflow.com/a/26433913/14664104
-def warning_on_one_line(message, category, filename, lineno, line=None):
-    return '%s:%s: %s: %s\n' % (filename, lineno, category.__name__, message)
-
-
-warnings.formatwarning = warning_on_one_line
 
 CFG_TYPES = ['main', 'log']
 CONFIGS_DIRNAME = 'configs'
