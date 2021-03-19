@@ -210,13 +210,13 @@ def override_config_with_args(config, parser):
     # Process previous returned values
     # ================================
 
-    def log_opts_overriden(opts_overriden, msg):
+    def log_opts_overriden(opts_overriden, msg, log_level='info'):
         nb_items = len(opts_overriden)
         for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
             msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
             if i + 1 < nb_items:
                 msg += "\n"
-        logger.debug(msg)
+        getattr(logger, log_level)(msg)
 
     # Process 1st returned values: default args overriden by config options
     if default_args_overriden:
@@ -225,7 +225,7 @@ def override_config_with_args(config, parser):
     # Process 2nd returned values: config options overriden by args
     if config_opts_overridden:
         msg = "Config options overridden by command-line arguments:\n"
-        log_opts_overriden(config_opts_overridden, msg)
+        log_opts_overriden(config_opts_overridden, msg, 'debug')
     # Process 3rd returned values: arguments not found in config file
     """
     if args_not_found_in_config:
