@@ -12,26 +12,19 @@ import os
 import ipdb
 from pathlib import Path
 
-from pyebooktools.lib import FILE_SORT_FLAGS, OUTPUT_METADATA_EXTENSION
+from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.utils.genutils import init_log, mkdir, move
 
 logger = init_log(__name__, __file__)
 
-# ==============
-# Default values
-# ==============
-FOLDER_WITH_BOOKS = os.getcwd()
-FOLDER_PATTERN = '%05d000'
-START_NUMBER = 0
-OUTPUT_FOLDER = os.getcwd()
-FILES_PER_FOLDER = 1000
 
-
-def split(folder_with_books=FOLDER_WITH_BOOKS, folder_pattern=FOLDER_PATTERN,
-          start_number=START_NUMBER, output_folder=OUTPUT_FOLDER,
-          files_per_folder=FILES_PER_FOLDER,
-          output_metadata_extension=OUTPUT_METADATA_EXTENSION,
-          file_sort_flags=FILE_SORT_FLAGS, **kwargs):
+def split(folder_with_books=Path.cwd(),
+          folder_pattern=default_cfg.folder_pattern,
+          start_number=default_cfg.start_number,
+          output_folder=default_cfg.output_folder,
+          files_per_folder=default_cfg.files_per_folder,
+          output_metadata_extension=default_cfg.output_metadata_extension,
+          **kwargs):
     # TODO: ignore hidden files
     files = []
     for fp in Path(folder_with_books).rglob('*'):
