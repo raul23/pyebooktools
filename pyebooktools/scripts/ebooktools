@@ -233,8 +233,8 @@ See subcommands below for a list of the tools that can be used.
     group_edit = parser_edit.add_mutually_exclusive_group()
     group_edit.add_argument(
         '-a', '--app', metavar='NAME', nargs='?',
-        help='''Name of the application to use for editing the config file. If 
-        no name is given, then the default application for opening this type of 
+        help='''Name of the application to use for editing the config file. If
+        no name is given, then the default application for opening this type of
         file will be used.''')
     group_edit.add_argument(
         "-r", "--reset", action="store_true",
