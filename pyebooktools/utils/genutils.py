@@ -9,7 +9,7 @@ import shutil
 import subprocess
 import sys
 from argparse import Namespace
-from collections import OrderedDict
+from collections import namedtuple, OrderedDict
 from logging import NullHandler
 from runpy import run_path
 from types import SimpleNamespace
@@ -27,13 +27,17 @@ CONFIGS_DIRNAME = 'configs'
 
 
 def get_config_dict(cfg_type='main'):
+    return load_cfg_dict(get_config_filepath(cfg_type), cfg_type)
+
+
+def get_config_filepath(cfg_type='main'):
     if cfg_type == 'main':
         cfg_filepath = get_main_config_filepath()
     elif cfg_type == 'log':
         cfg_filepath = get_logging_filepath()
     else:
         raise ValueError(f"Invalid cfg_type: {cfg_type}")
-    return load_cfg_dict(cfg_filepath, cfg_type)
+    return cfg_filepath
 
 
 def get_settings(conf, cfg_type):
@@ -180,59 +184,37 @@ def override_config_with_args(config, parser):
     # If config is Namespace
     config = vars(config)
     args = parser.parse_args().__dict__
-    args_not_found_in_config = []
-    default_args_overriden = []
-    config_opts_overridden = []
+    # args_not_found_in_config = []
+    results = namedtuple("results", "config_opts_overridden default_args_overriden")
+    results.config_opts_overridden = []
+    results.default_args_overriden = []
     for arg_name, arg_val in args.items():
         if arg_name in ignored_args:
             continue
         config_val = config.get(arg_name)
         # No value was specified, use default value
-        default_val = getattr(default_cfg, arg_name, None)
+        default_val = getattr(default_cfg, arg_name, 'not_found')
         if arg_val is not None:
             # User specified a value in the command-line
             if arg_val != config_val:
                 config[arg_name] = arg_val
-                config_opts_overridden.append((arg_name, config_val, arg_val))
+                results.config_opts_overridden.append(
+                    (arg_name, config_val, arg_val))
             # else: command-line arg and config option same value, nothing to do
         elif config_val is not None:
             # User provided a value from the config file
             if config_val != default_val:
-                default_args_overriden.append((arg_name, default_val, config_val))
+                results.default_args_overriden.append(
+                    (arg_name, default_val, config_val))
         else:
-            if default_val:
+            if default_val != 'not_found':
                 config[arg_name] = default_val
             else:
+                import ipdb
+                ipdb.set_trace()
                 raise AttributeError("No value could be found for the "
                                      f"argument {arg_name}")
-
-    # ================================
-    # Process previous returned values
-    # ================================
-
-    def log_opts_overriden(opts_overriden, msg, log_level='info'):
-        nb_items = len(opts_overriden)
-        for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
-            msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
-            if i + 1 < nb_items:
-                msg += "\n"
-        getattr(logger, log_level)(msg)
-
-    # Process 1st returned values: default args overriden by config options
-    if default_args_overriden:
-        msg = "Default arguments overridden by config options:\n"
-        log_opts_overriden(default_args_overriden, msg)
-    # Process 2nd returned values: config options overriden by args
-    if config_opts_overridden:
-        msg = "Config options overridden by command-line arguments:\n"
-        log_opts_overriden(config_opts_overridden, msg, 'debug')
-    # Process 3rd returned values: arguments not found in config file
-    """
-    if args_not_found_in_config:
-        msg = "Command-line arguments not found in config file: " \
-              "\n\t{}".format(args_not_found_in_config)
-        logger.debug(msg)
-    """
+    return results
 
 
 def run_cmd(cmd):
@@ -279,7 +261,6 @@ def run_cmd(cmd):
 
 def setup_log(quiet=False, verbose=False, logging_level=None,
               logging_formatter=None):
-    logging_level = logging_level.upper()
     package_path = os.getcwd()
     log_filepath = get_logging_filepath()
     main_cfg_msg = f"Main config path: {get_main_config_filepath()}"
@@ -292,6 +273,7 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
         if verbose:
             set_logging_level(log_dict, level='DEBUG')
         if logging_level:
+            logging_level = logging_level.upper()
             # TODO: add console_for_users at the top
             set_logging_level(log_dict, level=logging_level)
         if logging_formatter:
