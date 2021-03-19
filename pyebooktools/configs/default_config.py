@@ -7,7 +7,7 @@ The options are described in full detail in the project's README @
 https://github.com/raul23/python-ebook-tools
 
 IMPORTANT: these options can also be passed to the script ebooktools via
-command-line parameters (Run `ebooktools -h` for a detail list of the options).
+command-line parameters (Run `ebooktools -h` for a detailed list of the options).
 Also, command-line parameters supersede the variables defined in this
 configuration file. Most parameters are not required and if nothing is
 specified, the default value will be used.
