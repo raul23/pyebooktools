@@ -10,7 +10,8 @@ import os
 import ipdb
 
 import pyebooktools
-from pyebooktools import lib, split_into_folders
+from pyebooktools import split_into_folders
+from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.utils.genutils import (get_config_dict, init_log,
                                          namespace_to_dict, override_config_with_args,
                                          run_cmd, setup_log)
@@ -26,13 +27,10 @@ _MAIN_CFG = "config"
 
 # NOTE: https://stackoverflow.com/a/27163648 [launch PyCharm from terminal]
 def edit_file(filepath, app=None, create_if_not=False):
-    """Edit a file.
-
-    TODO: remove config
+    """Edit a configuration file.
 
     The user chooses the config file (`cfg_filepath`) to edit: the
-    `logging config file`_, `main config file`_ or a particular model
-    configuration file (e.g. LogisticRegression)
+    `logging config file`_ or the `main config file`_.
 
     The configuration file can be opened by a user-specified application (`app`)
     or a default program associated with this type of file (when `app` is
@@ -41,9 +39,8 @@ def edit_file(filepath, app=None, create_if_not=False):
     Parameters
     ----------
     filepath : str
-        The configuration file to edit. The `logging config file`_,
-        `main config file`_ or a particular model configuration file (e.g.
-        LogisticRegression).
+        The configuration file to edit. The `logging config file`_ or the
+        `main config file`_.
     app : str, optional
         Name of the application to use for opening the config file, e.g.
         `TextEdit` (the default value is :obj:`None` which implies that the
@@ -167,13 +164,14 @@ def setup_argparser():
 This program is a Python port of ebook-tools by na-- (See
 https://github.com/na--/ebook-tools).
 
-This program is a collection of Python scripts for automated and
+This program is a collection of tools for automated and
 semi-automated organization and management of large ebook collections.
 
-See subcommands below for a list of the scripts that can be run.
+See subcommands below for a list of the tools that can be used.
 ''',
-        # formatter_class=argparse.RawDescriptionHelpFormatter)
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+        # formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    default_msg = " (default: {})"
     # ===============
     # General options
     # ===============
@@ -187,13 +185,15 @@ See subcommands below for a list of the scripts that can be run.
                         traceback when there is an exception.''')
     # TODO: add help for the following options
     parser.add_argument(
-        '--loglvl', dest='logging_level', default='info',
+        '--loglvl', dest='logging_level',
         choices=['debug', 'info', 'warning', 'error'],
-        help='')
+        help='Set logging level for all loggers.'
+             + default_msg.format(default_cfg.logging_level))
     parser.add_argument(
-        '--logfmt', dest='logging_formatter', default='only_msg',
+        '--logfmt', dest='logging_formatter',
         choices=['console', 'simple', 'only_msg'],
-        help='')
+        help='Set logging formatter for all loggers.'
+             + default_msg.format(default_cfg.logging_formatter))
     # =============================================
     # Options related to the input and output files
     # =============================================
@@ -201,16 +201,17 @@ See subcommands below for a list of the scripts that can be run.
         title='Options related to the input and output files')
     parser_input_output_group.add_argument(
         '--oft', '--output-filename-template', dest='output_filename_template',
-        default=lib.OUTPUT_FILENAME_TEMPLATE,
         metavar='TEMPLATE',
         help='''This specifies how the filenames of the organized files will
         look. It is a bash string that is evaluated so it can be very flexible
-        (and also potentially unsafe).''')
+        (and also potentially unsafe).''' +
+             default_msg.format(default_cfg.output_filename_template))
     parser_input_output_group.add_argument(
         '--ome', '--output-metadata-extension', dest='output_metadata_extension',
-        default=lib.OUTPUT_METADATA_EXTENSION, metavar='EXTENSION',
-        help='''If KEEP_METADATA is enabled, this is the extension of the
-        additional metadata file that is saved next to each newly renamed file.''')
+        metavar='EXTENSION',
+        help='''If keep_metadata is enabled, this is the extension of the
+        additional metadata file that is saved next to each newly renamed file.'''
+             + default_msg.format(default_cfg.output_metadata_extension))
     # ===========
     # Subcommands
     # ===========
@@ -222,7 +223,7 @@ See subcommands below for a list of the scripts that can be run.
     # ==========
     # create the parser for the "edit" command
     parser_edit = subparsers.add_parser(
-        'edit', formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        'edit',  # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         help='''Edit a configuration file.''')
     parser_edit.add_argument(
         'filename', choices=[_MAIN_CFG, _LOG_CFG],
@@ -231,10 +232,10 @@ See subcommands below for a list of the scripts that can be run.
             ('log').''')
     group_edit = parser_edit.add_mutually_exclusive_group()
     group_edit.add_argument(
-        '-a', '--app', metavar='NAME', nargs='?', default='default_editor',
-        help='''Name of the application to use for editing the file. If no name
-        is given, then the default application for opening this type of file
-        will be used.''')
+        '-a', '--app', metavar='NAME', nargs='?',
+        help='''Name of the application to use for editing the config file. If 
+        no name is given, then the default application for opening this type of 
+        file will be used.''')
     group_edit.add_argument(
         "-r", "--reset", action="store_true",
         help='''Reset a configuration file ('config' or 'log') with factory
@@ -245,13 +246,12 @@ See subcommands below for a list of the scripts that can be run.
     # ==================
     # create the parser for the "split-into-folders" command
     parser_split_into_folders = subparsers.add_parser(
-        'split', formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        'split',  # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         help='''Split the supplied ebook files (and the accompanying metadata
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
     parser_split_into_folders.add_argument(
         'folder-with-books',
-        default=split_into_folders.FOLDER_WITH_BOOKS,
         help='''Folder with books which will be recursively scanned for files.
         The found files (and the accompanying metadata files if present) will
         be split into folders with consecutive names that each contain the
@@ -259,24 +259,23 @@ See subcommands below for a list of the scripts that can be run.
         directory.''')
     parser_split_into_folders.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        default=split_into_folders.OUTPUT_FOLDER,
         help='''The output folder in which all the new consecutively named
         folders will be created. The default is the current working
-        directory.''')
+        directory.''' + default_msg.format(default_cfg.output_folder))
     parser_split_into_folders.add_argument(
         '-s', '--start-number', dest='start_number', type=int,
-        default=split_into_folders.START_NUMBER,
-        help='''The number of the first folder.''')
+        help='''The number of the first folder.'''
+             + default_msg.format(default_cfg.start_number))
     parser_split_into_folders.add_argument(
         '-f', '--folder-pattern', dest='folder_pattern', metavar='PATTERN',
-        default=split_into_folders.FOLDER_PATTERN,
         help='''The print format string that specifies the pattern with which
         new folders will be created. By default it creates folders like
-        00000000, 00001000, 00002000, .....''')
+        00000000, 00001000, 00002000, .....'''
+             + default_msg.format(default_cfg.folder_pattern).replace('%', '%%'))
     parser_split_into_folders.add_argument(
         '--fpf', '--files-per-folder', dest='files_per_folder', type=check_positive,
-        default=split_into_folders.FILES_PER_FOLDER,
-        help='''How many files should be moved to each folder.''')
+        help='''How many files should be moved to each folder.'''
+             + default_msg.format(default_cfg.files_per_folder))
     parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
     return parser
 
@@ -285,7 +284,8 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
-        # ipdb.set_trace()
+        ipdb.set_trace()
+        test = args
         main_cfg = get_main_config(args)
         # Override main configuration from file with command-line arguments
         override_config_with_args(main_cfg, parser)
