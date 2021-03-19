@@ -55,7 +55,7 @@ logging_formatter = 'only_msg'
 # reorder-files-for-grep = (isbn_grep_reorder_files, isbn_grep_rf_scan_first, isbn_grep_rf_reverse
 # NOTE: If you use Calibre versions that are older than 2.84, it's required to
 # manually set the following option to an empty string.
-# metadata_fetch_order = ['Goodreads', 'Amazon.com', 'Google', 'ISBNDB', 'WorldCat', 'xISBN', 'OZON.ru']
+# metadata_fetch_order = ['Goodreads', 'Amazon.com', 'Google', 'ISBNDB', 'WorldCat xISBN', 'OZON.ru']
 
 # 1.3 Options for OCR
 # ===================
