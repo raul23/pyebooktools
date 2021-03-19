@@ -20,13 +20,14 @@ logger = init_log(__name__, __file__)
 # ==============
 # Default values
 # ==============
+FOLDER_WITH_BOOKS = os.getcwd()
 FOLDER_PATTERN = '%05d000'
 START_NUMBER = 0
-OUTPUT_FOLDER = Path.cwd()
+OUTPUT_FOLDER = os.getcwd()
 FILES_PER_FOLDER = 1000
 
 
-def split(folder_with_books, folder_pattern=FOLDER_PATTERN,
+def split(folder_with_books=FOLDER_WITH_BOOKS, folder_pattern=FOLDER_PATTERN,
           start_number=START_NUMBER, output_folder=OUTPUT_FOLDER,
           files_per_folder=FILES_PER_FOLDER,
           output_metadata_extension=OUTPUT_METADATA_EXTENSION,
