@@ -1,7 +1,7 @@
 """Options for the script ebooktools
 
 The script ebooktools is a Python port of the collection of shell scripts
-by the same name and developed by na--. See https://github.com/na--/ebook-tools.
+ebooktools developed by na--. See https://github.com/na--/ebook-tools.
 
 The options are described in full detail in the project's README @
 https://github.com/raul23/python-ebook-tools
