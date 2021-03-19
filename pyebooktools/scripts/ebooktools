@@ -12,7 +12,8 @@ import ipdb
 import pyebooktools
 from pyebooktools import lib, split_into_folders
 from pyebooktools.utils.genutils import (get_config_dict, init_log,
-                                         namespace_to_dict, run_cmd, setup_log)
+                                         namespace_to_dict, override_config_with_args,
+                                         run_cmd, setup_log)
 
 logger = init_log(__name__, __file__)
 
@@ -186,7 +187,7 @@ See subcommands below for a list of the scripts that can be run.
                              "traceback when there is an exception.")
     # TODO: add help for the following options
     parser.add_argument(
-        '--loglvl', dest='logging_level', default='INFO',
+        '--loglvl', dest='logging_level', default='info',
         choices=['debug', 'info', 'warning', 'error'],
         help='')
     parser.add_argument(
@@ -249,11 +250,13 @@ See subcommands below for a list of the scripts that can be run.
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
     parser_split_into_folders.add_argument(
-        'folder_with_books', metavar='FOLDER_WITH_BOOKS',
+        'folder-with-books', dest='folder_with_books',
+        default=split_into_folders.FOLDER_WITH_BOOKS,
         help='''Folder with books which will be recursively scanned for files.
         The found files (and the accompanying metadata files if present) will 
         be split into folders with consecutive names that each contain the 
-        specified number of files.''')
+        specified number of files. The default is the current working 
+        directory''')
     parser_split_into_folders.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         default=split_into_folders.OUTPUT_FOLDER,
@@ -282,9 +285,11 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
-        test = args
-        # ipdb.set_trace()
+        ipdb.set_trace()
         main_cfg = get_main_config(args)
+        # Override main configuration from file with command-line arguments
+        override_config_with_args(main_cfg, parser)
+        ipdb.set_trace()
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
@@ -295,6 +300,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # ebooktools --loglvl debug --logfmt simple split --fpf 3
     retcode = main()
     msg = "Program exited with {}".format(retcode)
     if retcode == 1:
