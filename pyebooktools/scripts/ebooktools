@@ -183,8 +183,8 @@ See subcommands below for a list of the scripts that can be run.
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="Enable quiet mode, i.e. nothing will be printed.")
     parser.add_argument("-v", "--verbose", action="store_true",
-                        help="Print various debugging information, e.g. print "
-                             "traceback when there is an exception.")
+                        help='''Print various debugging information, e.g. print
+                        traceback when there is an exception.''')
     # TODO: add help for the following options
     parser.add_argument(
         '--loglvl', dest='logging_level', default='info',
@@ -203,9 +203,9 @@ See subcommands below for a list of the scripts that can be run.
         '--oft', '--output-filename-template', dest='output_filename_template',
         default=lib.OUTPUT_FILENAME_TEMPLATE,
         metavar='TEMPLATE',
-        help='This specifies how the filenames of the organized files will '
-             'look. It is a bash string that is evaluated so it can be very '
-             'flexible (and also potentially unsafe).')
+        help='''This specifies how the filenames of the organized files will
+        look. It is a bash string that is evaluated so it can be very flexible
+        (and also potentially unsafe).''')
     parser_input_output_group.add_argument(
         '--ome', '--output-metadata-extension', dest='output_metadata_extension',
         default=lib.OUTPUT_METADATA_EXTENSION, metavar='EXTENSION',
@@ -250,13 +250,13 @@ See subcommands below for a list of the scripts that can be run.
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
     parser_split_into_folders.add_argument(
-        'folder-with-books', dest='folder_with_books',
+        'folder-with-books',
         default=split_into_folders.FOLDER_WITH_BOOKS,
         help='''Folder with books which will be recursively scanned for files.
-        The found files (and the accompanying metadata files if present) will 
-        be split into folders with consecutive names that each contain the 
-        specified number of files. The default is the current working 
-        directory''')
+        The found files (and the accompanying metadata files if present) will
+        be split into folders with consecutive names that each contain the
+        specified number of files. The default value is the current working
+        directory.''')
     parser_split_into_folders.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         default=split_into_folders.OUTPUT_FOLDER,
@@ -285,11 +285,10 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
-        ipdb.set_trace()
+        # ipdb.set_trace()
         main_cfg = get_main_config(args)
         # Override main configuration from file with command-line arguments
         override_config_with_args(main_cfg, parser)
-        ipdb.set_trace()
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
