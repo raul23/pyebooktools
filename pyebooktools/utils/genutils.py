@@ -10,7 +10,7 @@ import subprocess
 import sys
 import warnings
 from argparse import Namespace
-from collections import OrderedDict
+from collections import namedtuple, OrderedDict
 from logging import NullHandler
 from runpy import run_path
 from types import SimpleNamespace
@@ -182,6 +182,54 @@ def namespace_to_dict(ns):
         if isinstance(v, dict):
             namespace_to_dict(v)
     return adict
+
+
+def override_config_with_args(config, parser):
+    ignored_args = ['func', 'subparser_name']
+    # If config is Namespace
+    config = vars(config)
+    args = parser.parse_args().__dict__
+    parser_actions_dict = dict([(action.dest, action)
+                                for action in parser.__dict__['_actions']])
+    args_not_found = []
+    config_opts_overridden = []
+    import ipdb
+    ipdb.set_trace()
+    for arg_name, arg_val in args.items():
+        if arg_name in ignored_args:
+            continue
+        config_val = config.get(arg_name)
+        if config_val is None:
+            args_not_found.append(arg_name)
+        else:
+            if parser_actions_dict.get(arg_name):
+                if arg_val != parser_actions_dict[arg_name].default and \
+                        arg_val != config_val:
+                    config[arg_name] = arg_val
+                    config_opts_overridden.append((arg_name, config_val, arg_val))
+            else:
+                if config_val != arg_val:
+                    config[arg_name] = arg_val
+                    config_opts_overridden.append((arg_name, config_val, arg_val))
+    ipdb.set_trace()
+    # ================================
+    # Process previous returned values
+    # ================================
+    # Process 1st returned values: overridden config options
+    if config_opts_overridden:
+        msg = "Config options overridden by command-line arguments:\n"
+        config_opts_overridden = config_opts_overridden
+        nb_items = len(config_opts_overridden)
+        for i, (cfg_name, old_v, new_v) in enumerate(config_opts_overridden):
+            msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
+            if i + 1 < nb_items:
+                msg += "\n"
+        logger.debug(msg)
+    # Process second returned values: arguments not found in cfg file
+    if args_not_found:
+        msg = "Command-line arguments not found in config file: " \
+              "\n\t{}".format(args_not_found)
+        logger.debug(msg)
 
 
 def run_cmd(cmd):
