@@ -191,7 +191,8 @@ def override_config_with_args(config, parser):
     args = parser.parse_args().__dict__
     parser_actions_dict = dict([(action.dest, action)
                                 for action in parser.__dict__['_actions']])
-    args_not_found = []
+    args_not_found_in_config = []
+    default_args_overriden = []
     config_opts_overridden = []
     import ipdb
     ipdb.set_trace()
@@ -200,36 +201,52 @@ def override_config_with_args(config, parser):
             continue
         config_val = config.get(arg_name)
         if config_val is None:
-            args_not_found.append(arg_name)
+            # TODO: config[arg_name] = arg_val
+            args_not_found_in_config.append(arg_name)
         else:
             if parser_actions_dict.get(arg_name):
+                # TODO: can't get the default values for other options (e.g. start_number)
                 if arg_val != parser_actions_dict[arg_name].default and \
                         arg_val != config_val:
                     config[arg_name] = arg_val
                     config_opts_overridden.append((arg_name, config_val, arg_val))
-            else:
-                if config_val != arg_val:
+            elif config_val != arg_val:
+                if arg_name not in sys.argv:
+                    import ipdb
+                    ipdb.set_trace()
+                    default_args_overriden.append((arg_name, arg_val, config_val))
+                else:
                     config[arg_name] = arg_val
                     config_opts_overridden.append((arg_name, config_val, arg_val))
-    ipdb.set_trace()
+            # else:
+
     # ================================
     # Process previous returned values
     # ================================
-    # Process 1st returned values: overridden config options
-    if config_opts_overridden:
-        msg = "Config options overridden by command-line arguments:\n"
-        config_opts_overridden = config_opts_overridden
-        nb_items = len(config_opts_overridden)
-        for i, (cfg_name, old_v, new_v) in enumerate(config_opts_overridden):
+
+    def log_opts_overriden(opts_overriden, msg):
+        nb_items = len(opts_overriden)
+        for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
             msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
             if i + 1 < nb_items:
                 msg += "\n"
         logger.debug(msg)
-    # Process second returned values: arguments not found in cfg file
-    if args_not_found:
+
+    import ipdb
+    # Process 1st returned values: default args overriden by config options
+    if default_args_overriden:
+        msg = "Default command-line arguments overridden by config options:\n"
+        log_opts_overriden(default_args_overriden, msg)
+    # Process 2nd returned values: config options overriden by args
+    if config_opts_overridden:
+        msg = "Config options overridden by command-line arguments:\n"
+        log_opts_overriden(config_opts_overridden, msg)
+    # Process 3rd returned values: arguments not found in config file
+    if args_not_found_in_config:
         msg = "Command-line arguments not found in config file: " \
-              "\n\t{}".format(args_not_found)
+              "\n\t{}".format(args_not_found_in_config)
         logger.debug(msg)
+    ipdb.set_trace()
 
 
 def run_cmd(cmd):
