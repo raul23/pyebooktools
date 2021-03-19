@@ -284,11 +284,11 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
-        ipdb.set_trace()
         test = args
         main_cfg = get_main_config(args)
         # Override main configuration from file with command-line arguments
         override_config_with_args(main_cfg, parser)
+        ipdb.set_trace()
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
