@@ -38,7 +38,7 @@ def split(folder_with_books=Path.cwd(),
             # print(fp)
             files.append(fp)
         # TODO: debug logging skip directory/file
-    # Sort
+    # TODO: sort files
     # files.sort(reverse=True)
     current_folder_num = start_number
     start_index = 0
@@ -58,9 +58,7 @@ def split(folder_with_books=Path.cwd(),
             break
         chunk = files[start_index:start_index+files_per_folder]
         start_index += files_per_folder
-
         logger.debug(f"Found {len(chunk)} number of files...")
-
         current_folder_basename = '{0:0{width}}'.format(
             current_folder_num, width=width)
         # current_folder = Path.joinpath(output_folder, current_folder_basename)
@@ -77,7 +75,6 @@ def split(folder_with_books=Path.cwd(),
                      f"'{current_folder_metadata}'...")
         mkdir(current_folder)
         mkdir(current_folder_metadata)
-
         logger.debug(f"Moving files...")
         for file_to_move in chunk:
             file_dest = os.path.join(current_folder, file_to_move.name)
