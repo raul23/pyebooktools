@@ -1,6 +1,6 @@
 """Options for the script ebooktools
 
-ebooktools is a Python port of the shell scripts of the same name developed 
+ebooktools is a Python port of the shell scripts developed 
 by na--. See https://github.com/na--/ebook-tools.
 
 The options are described in full detail in the project's README @
