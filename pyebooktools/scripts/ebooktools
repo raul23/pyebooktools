@@ -6,15 +6,19 @@ https://github.com/na--/ebook-tools).
 import argparse
 import platform
 import os
+import shutil
 
 import ipdb
 
 import pyebooktools
 from pyebooktools import split_into_folders
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.utils.genutils import (get_config_dict, init_log,
-                                         namespace_to_dict, override_config_with_args,
-                                         run_cmd, setup_log)
+from pyebooktools.utils.genutils import (get_config_dict, get_config_filepath,
+                                         get_logging_filepath,
+                                         get_main_config_filepath, init_log,
+                                         namespace_to_dict,
+                                         override_config_with_args, run_cmd,
+                                         setup_log)
 
 logger = init_log(__name__, __file__)
 
@@ -22,15 +26,29 @@ logger = init_log(__name__, __file__)
 # Default values
 # ==============
 _LOG_CFG = "log"
-_MAIN_CFG = "config"
+_MAIN_CFG = "main"
+
+# Ref.: https://stackoverflow.com/a/14117511/14664104
+def check_positive(value):
+    try:
+        # TODO: 2.0 rejected
+        ivalue = int(value)
+        if ivalue <= 0:
+            raise argparse.ArgumentTypeError(
+                f"{value} is an invalid positive int value")
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"{value} is an invalid positive int value")
+    else:
+        return ivalue
 
 
 # NOTE: https://stackoverflow.com/a/27163648 [launch PyCharm from terminal]
-def edit_file(filepath, app=None, create_if_not=False):
+def edit_file(cfg_type, app=None):
     """Edit a configuration file.
 
-    The user chooses the config file (`cfg_filepath`) to edit: the
-    `logging config file`_ or the `main config file`_.
+    The user chooses what type of config file (`cfg_type`) to edit: 'log' for
+    the `logging config file`_ and 'main' for the `main config file`_.
 
     The configuration file can be opened by a user-specified application (`app`)
     or a default program associated with this type of file (when `app` is
@@ -38,9 +56,9 @@ def edit_file(filepath, app=None, create_if_not=False):
 
     Parameters
     ----------
-    filepath : str
-        The configuration file to edit. The `logging config file`_ or the
-        `main config file`_.
+    cfg_type : str, {'log', 'main'}
+        The type of configuration file to edit. 'log' refers to the
+        `logging config file`_ and 'main' to the `main config file`_.
     app : str, optional
         Name of the application to use for opening the config file, e.g.
         `TextEdit` (the default value is :obj:`None` which implies that the
@@ -55,11 +73,8 @@ def edit_file(filepath, app=None, create_if_not=False):
         file can be successfully opened with an external program.
 
     """
-    # Check if file exists
-    file_exists = os.path.exists(filepath)
-    if not file_exists and not create_if_not:
-        logger.error(f"The file doesn't exists: {filepath}")
-        return 1
+    # Get path to the config file
+    filepath = get_config_filepath(cfg_type)
     # Command to open the config file with the default application in the
     # OS or the user-specified app, e.g. `open filepath` in macOS opens the
     # file with the default app (e.g. atom)
@@ -99,9 +114,6 @@ def edit_file(filepath, app=None, create_if_not=False):
         result = run_cmd(cmd)  # stderr=subprocess.DEVNULL)
         retcode = result.returncode
     if retcode == 0:
-        if create_if_not:
-            logger.warning(f"The file doesn't exists but will be created: "
-                           f"{filepath}'")
         logger.info("Opening the file {}...".format(
             os.path.basename(filepath)))
         logger.debug(f"Filepath: {filepath}")
@@ -112,41 +124,27 @@ def edit_file(filepath, app=None, create_if_not=False):
     return retcode
 
 
-def get_main_config(args):
-    # -------------------------------------
-    # Get config filepath and setup logging
-    # -------------------------------------
-    # Get config dict
-    main_cfg_dict = get_config_dict('main')
-    main_cfg = argparse.Namespace(**main_cfg_dict)
-    setup_log(main_cfg.quiet, main_cfg.verbose,
-              logging_level=args.logging_level,
-              logging_formatter=args.logging_formatter)
-    return main_cfg
-
-
-def parse_edit_args(args):
-    pass
-
-
-def parse_split_into_folders_args(args):
-    split_into_folders.split(**namespace_to_dict(args))
-    return 0
-
-
-# Ref.: https://stackoverflow.com/a/14117511/14664104
-def check_positive(value):
-    try:
-        # TODO: 2.0 rejected
-        ivalue = int(value)
-        if ivalue <= 0:
-            raise argparse.ArgumentTypeError(
-                f"{value} is an invalid positive int value")
-    except ValueError:
-        raise argparse.ArgumentTypeError(
-            f"{value} is an invalid positive int value")
+def parse_edit_args(main_cfg):
+    if main_cfg.reset:
+        return reset_file(main_cfg.cfg_type, main_cfg.app)
     else:
-        return ivalue
+        return edit_file(main_cfg.cfg_type, main_cfg.app)
+
+
+def reset_file(cfg_type, app=None, create_if_not=False):
+    # Get path to the config file
+    filepath = get_config_filepath(cfg_type)
+    logger.info("Resetting the file {}...".format(
+        os.path.basename(filepath)))
+    logger.debug(f"Filepath: {filepath}")
+    # Copy it from the default one
+    if cfg_type == 'main':
+        src = get_main_config_filepath(default_config=True)
+    else:
+        src = get_logging_filepath(default_config=True)
+    shutil.copy(src, filepath)
+    logger.info("File was reset!")
+    return 0
 
 
 def setup_argparser():
@@ -225,10 +223,10 @@ See subcommands below for a list of the tools that can be used.
     parser_edit = subparsers.add_parser(
         'edit', help='''Edit a configuration file.''')
     parser_edit.add_argument(
-        'filename', choices=[_MAIN_CFG, _LOG_CFG],
-        help='''Name of a file to edit which can either be the main
-            configuration file ('config') or the logging configuration file
-            ('log').''')
+        'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
+        help='''The config file to edit which can either be the main
+            configuration file ('{}') or the logging configuration file
+            ('{}').'''.format(_MAIN_CFG, _LOG_CFG))
     group_edit = parser_edit.add_mutually_exclusive_group()
     group_edit.add_argument(
         '-a', '--app', metavar='NAME', nargs='?',
@@ -275,8 +273,38 @@ See subcommands below for a list of the tools that can be used.
         '--fpf', '--files-per-folder', dest='files_per_folder', type=check_positive,
         help='''How many files should be moved to each folder.'''
              + default_msg.format(default_cfg.files_per_folder))
-    parser_split_into_folders.set_defaults(func=parse_split_into_folders_args)
+    parser_split_into_folders.set_defaults(func=split_into_folders.split)
     return parser
+
+
+def process_returned_values(returned_values):
+    # ================================
+    # Process previous returned values
+    # ================================
+
+    def log_opts_overriden(opts_overriden, msg, log_level='info'):
+        nb_items = len(opts_overriden)
+        for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
+            msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
+            if i + 1 < nb_items:
+                msg += "\n"
+        getattr(logger, log_level)(msg)
+
+    # Process 1st returned values: default args overriden by config options
+    if returned_values.default_args_overriden:
+        msg = "Default arguments overridden by config options:\n"
+        log_opts_overriden(returned_values.default_args_overriden, msg)
+    # Process 2nd returned values: config options overriden by args
+    if returned_values.config_opts_overridden:
+        msg = "Config options overridden by command-line arguments:\n"
+        log_opts_overriden(returned_values.config_opts_overridden, msg, 'debug')
+    # Process 3rd returned values: arguments not found in config file
+    """
+    if args_not_found_in_config:
+        msg = "Command-line arguments not found in config file: " \
+              "\n\t{}".format(args_not_found_in_config)
+        logger.debug(msg)
+    """
 
 
 def main():
@@ -284,16 +312,24 @@ def main():
         parser = setup_argparser()
         args = parser.parse_args()
         # test = args
-        main_cfg = get_main_config(args)
+        # ipdb.set_trace()
+        # Get main cfg dict
+        main_cfg = argparse.Namespace(**get_config_dict('main'))
+        setup_log(main_cfg.quiet, main_cfg.verbose,
+                  logging_level=main_cfg.logging_level,
+                  logging_formatter=main_cfg.logging_formatter)
         # Override main configuration from file with command-line arguments
-        override_config_with_args(main_cfg, parser)
+        process_returned_values(override_config_with_args(main_cfg, parser))
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
         logger.error(e)
         return 1
     else:
-        return args.func(main_cfg)
+        if args.subparser_name == 'edit':
+            return args.func(main_cfg)
+        else:
+            return args.func(**namespace_to_dict(main_cfg))
 
 
 if __name__ == '__main__':
