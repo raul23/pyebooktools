@@ -95,7 +95,7 @@ output_metadata_extension = 'meta'
 
 # 2.1 Edit files
 # ==============
-app = 'atom'
+app = None
 
 # 2.2 organize-ebooks
 # ===================
