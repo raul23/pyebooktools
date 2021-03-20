@@ -31,30 +31,30 @@ if nothing is specified, the default value defined in the default config file
 
 General options
 ---------------
-**General control flags**
-^^^^^^^^^^^^^^^^^^^^^^^^^
+General control flags
+^^^^^^^^^^^^^^^^^^^^^
 * ``-v``, ``--verbose``; config variable ``verbose``; default value ``False``
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
 * ``--sl``, ``--symlink-only``; config variable ``symlink_only``; default value ``False``
 
-**Options related to extracting ISBNs from files and finding metadata by ISBN**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Options related to extracting ISBNs from files and finding metadata by ISBN
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``-i=<value>``, ``--isbn-regex=<value>``; config variable isbn_regex; see default value in `lib.py`_
 
-**Options for OCR**
-^^^^^^^^^^^^^^^^^^^
+Options for OCR
+^^^^^^^^^^^^^^^
 * ``--ocr=<value>``, ``--ocr-enabled=<value>``; config variable ``ocr_enabled``; default value ``False``
 * ``--ocrop=<value>``, ``--ocr-only-first-last-pages=<value>``; config variable 
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for `convert-to-txt.py`_ where it's ``False``)
 
-**Options related to extracting and searching for non-ISBN metadata**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Options related to extracting and searching for non-ISBN metadata
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Options related to the input and output files**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Options related to the input and output files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Miscellaneous options**
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Miscellaneous options
+^^^^^^^^^^^^^^^^^^^^^
 
 Script usage and options
 ------------------------
