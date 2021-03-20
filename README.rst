@@ -1,7 +1,7 @@
 =========================
 README [Work-In-Progress]
 =========================
-Python port of `ebook-tools`_ by na--
+This project is a Python port of `ebook-tools`_ by na--. `ebook-tools` is 
 
 .. contents:: **Contents**
    :depth: 3
