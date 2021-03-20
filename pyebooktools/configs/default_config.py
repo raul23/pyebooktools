@@ -88,6 +88,7 @@ output_metadata_extension = 'meta'
 # 1.6 Miscellaneous options
 # =========================
 # file_sort_flags = []
+file_sort_reverse = False
 # debug_prefix_length = 40
 
 # =================
