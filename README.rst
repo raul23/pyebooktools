@@ -27,7 +27,7 @@ All of the options documented below can either be passed to the `ebooktools`_ sc
 command-line parameters or via the configuration file ``config.py``. Command-line parameters 
 supersede variables defined in the configuration file. Most parameters are not required and 
 if nothing is specified, the default value defined in the default config file 
-`default_config.py` will be used.
+`default_config.py`_ will be used.
 
 .. URLs
 .. _`default_config.py`: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
