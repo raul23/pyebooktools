@@ -24,7 +24,8 @@ def split(folder_with_books=Path.cwd(),
           output_folder=default_cfg.output_folder,
           files_per_folder=default_cfg.files_per_folder,
           output_metadata_extension=default_cfg.output_metadata_extension,
-          dry_run=default_cfg, **kwargs):
+          dry_run=default_cfg.dry_run,
+          reverse=default_cfg.file_sort_reverse, **kwargs):
     files = []
     for fp in Path(folder_with_books).rglob('*'):
         # File extension
@@ -35,10 +36,10 @@ def split(folder_with_books=Path.cwd(),
                 not fp.name.startswith('.'):
             # TODO: debug logging
             # print(fp)
-            files.append(fp)
+            files.append((fp))
         # TODO: debug logging skip directory/file
-    # TODO: sort files
-    # files.sort(reverse=True)
+    logger.info("Files sorted {}".format("in desc" if reverse else "in asc"))
+    files.sort(key=lambda x: x.name, reverse=reverse)
     current_folder_num = start_number
     start_index = 0
     # Get width of zeros for folder format pattern
