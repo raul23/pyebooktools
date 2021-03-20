@@ -1,7 +1,7 @@
 =========================
 README [Work-In-Progress]
 =========================
-This project is a Python port of `ebook-tools`_ written in shell by na--.
+This project is a Python port of `ebook-tools`_ which is written in shell by na--.
 The Python script `ebooktools`_ is a collection of tools for automated and 
 semi-automated organization and management of large ebook collections.
 
