@@ -210,8 +210,6 @@ def override_config_with_args(config, parser):
             if default_val != 'not_found':
                 config[arg_name] = default_val
             else:
-                import ipdb
-                ipdb.set_trace()
                 raise AttributeError("No value could be found for the "
                                      f"argument {arg_name}")
     return results
@@ -271,11 +269,13 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
     # TODO: get first cfg_dict to setup log (same in train_models.py)
     if not quiet:
         if verbose:
+            # verbose supercedes logging_level
             set_logging_level(log_dict, level='DEBUG')
-        if logging_level:
-            logging_level = logging_level.upper()
-            # TODO: add console_for_users at the top
-            set_logging_level(log_dict, level=logging_level)
+        else:
+            if logging_level:
+                logging_level = logging_level.upper()
+                # TODO: add console_for_users at the top
+                set_logging_level(log_dict, level=logging_level)
         if logging_formatter:
             set_logging_formatter(log_dict, formatter=logging_formatter)
         # Load logging config dict
