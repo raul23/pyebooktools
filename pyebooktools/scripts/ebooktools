@@ -216,6 +216,10 @@ See subcommands below for a list of the tools that can be used.
         help='''If this is enabled, no file rename/move/symlink/etc.
         operations will actually be executed.''')
     parser.add_argument(
+        "-r", "--reverse", dest='file_sort_reverse', action="store_true",
+        help='''If this is enabled, the files will be sorted in reverse
+        (i.e. descending) order.''')
+    parser.add_argument(
         '--loglvl', dest='logging_level',
         choices=['debug', 'info', 'warning', 'error'],
         help='Set logging level for all loggers.'
@@ -314,15 +318,14 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
-        # test = args
-        # ipdb.set_trace()
         # Get main cfg dict
         main_cfg = argparse.Namespace(**get_config_dict('main'))
+        returned_values = override_config_with_args(main_cfg, parser)
         setup_log(main_cfg.quiet, main_cfg.verbose,
                   logging_level=main_cfg.logging_level,
                   logging_formatter=main_cfg.logging_formatter)
         # Override main configuration from file with command-line arguments
-        process_returned_values(override_config_with_args(main_cfg, parser))
+        process_returned_values(returned_values)
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
