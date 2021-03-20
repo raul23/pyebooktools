@@ -7,9 +7,9 @@ organization and management of large ebook collections.
 
 The Python script `ebooktools`_ makes us of the following tools:
 
-* edit: to edit a configuration file which can either be the main config
+- **edit**: to edit a configuration file which can either be the main config
   that contains all the options defined below or the logging config file.
-* split: to split the supplied ebook files (and the accompanying metadata 
+- **split**: to split the supplied ebook files (and the accompanying metadata 
   files if present) into folders with consecutive names that each contain the specified
   number of files.
 
