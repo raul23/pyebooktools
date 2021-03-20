@@ -47,9 +47,39 @@ General options
 * ``--ocrop=<value>``, ``--ocr-only-first-last-pages=<value>``; config variable 
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for `convert-to-txt.py`_ where it's ``False``)
 
+**Options related to extracting and searching for non-ISBN metadata:**
+
+**Options related to the input and output files:**
+
+**Miscellaneous options:**
+
+Script usage and options
+------------------------
+edit [<OPTIONS>] cfg_type [...]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+organize [<OPTIONS>] folder_to_organize [...]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Description
+"""""""""""
+Specific options for organizing files
+"""""""""""""""""""""""""""""""""""""
+Output options
+""""""""""""""
+split [<OPTIONS>] folder_with_books [...]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Roadmap
+=======
+
+License
+=======
+This program is licensed under the GNU General Public License v3.0. For more details see the 
+`LICENSE`_ file in the repository.
+
 .. URLs
 .. _convert-to-txt.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
 .. _lib.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/lib.py
+.. _LICENSE: https://github.com/raul23/python-ebook-tools/blob/master/LICENSE
