@@ -213,7 +213,7 @@ See subcommands below for a list of the tools that can be used.
                         traceback when there is an exception.''')
     parser.add_argument(
         "-d", "--dry-run", dest='dry_run', action="store_true",
-        help='''If this is enabled, no file rename/move/symlink/etc. 
+        help='''If this is enabled, no file rename/move/symlink/etc.
         operations will actually be executed.''')
     parser.add_argument(
         '--loglvl', dest='logging_level',
