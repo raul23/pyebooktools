@@ -24,8 +24,7 @@ def split(folder_with_books=Path.cwd(),
           output_folder=default_cfg.output_folder,
           files_per_folder=default_cfg.files_per_folder,
           output_metadata_extension=default_cfg.output_metadata_extension,
-          **kwargs):
-    # TODO: ignore hidden files
+          dry_run=default_cfg, **kwargs):
     files = []
     for fp in Path(folder_with_books).rglob('*'):
         # File extension
@@ -73,9 +72,12 @@ def split(folder_with_books=Path.cwd(),
         current_folder_num += 1
         logger.debug(f"Creating folders '{current_folder}' and "
                      f"'{current_folder_metadata}'...")
-        mkdir(current_folder)
-        mkdir(current_folder_metadata)
+        if not dry_run:
+            mkdir(current_folder)
+            mkdir(current_folder_metadata)
         logger.debug(f"Moving files...")
-        for file_to_move in chunk:
-            file_dest = os.path.join(current_folder, file_to_move.name)
-            move(file_to_move, file_dest)
+        if not dry_run:
+            for file_to_move in chunk:
+                file_dest = os.path.join(current_folder, file_to_move.name)
+                move(file_to_move, file_dest)
+    return 0
