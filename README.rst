@@ -42,7 +42,7 @@ General options
 * ``-i=<value>``, ``--isbn-regex=<value>``; config variable isbn_regex; see default value in `lib.py`_
 
 .. URLs
-.. _`default_config.py`: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
+.. _default_config.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
 .. _lib.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/lib.py
