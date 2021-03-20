@@ -14,7 +14,7 @@ semi-automated organization and management of large ebook collections.
   number of files.
 
 .. contents:: **Contents**
-   :depth: 3
+   :depth: 4
    :local:
    :backlinks: top
 
