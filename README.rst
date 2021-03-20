@@ -18,6 +18,18 @@ semi-automated organization and management of large ebook collections.
    :local:
    :backlinks: top
 
+Installation
+============
+
+Usage, options and configuration
+================================
+All of the options documented below can either be passed to the script `ebooktools`_ via 
+command-line parameters or via the configuration file ``config.py``. Command-line parameters 
+supersede variables defined in the configuration file. Most parameters are not required and 
+if nothing is specified, the default value defined in the default config file 
+`default_config.py` will be used.
+
 .. URLs
+.. _`default_config.py`: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
