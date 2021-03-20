@@ -29,7 +29,20 @@ supersede variables defined in the configuration file. Most parameters are not r
 if nothing is specified, the default value defined in the default config file 
 `default_config.py`_ will be used.
 
+General options
+---------------
+**General control flags:**
+
+* ``-v``, ``--verbose``; config variable verbose; default value False
+* ``-d``, ``--dry-run``; config variable ``dry_run``; default value False
+* ``-sl``, ``--symlink-only``; config variable symlink_only; default value False
+
+**Options related to extracting ISBNs from files and finding metadata by ISBN:**
+
+* ``-i=<value>``, ``--isbn-regex=<value>``; config variable isbn_regex; see default value in `lib.py`_
+
 .. URLs
 .. _`default_config.py`: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
+.. _lib.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/lib.py
