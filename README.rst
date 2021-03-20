@@ -1,7 +1,14 @@
 =========================
 README [Work-In-Progress]
 =========================
-This project is a Python port of `ebook-tools`_ by na--. ``ebook-tools`` is a collection of tools for
+This project is a Python port of `ebook-tools`_ written in shell by na--.
+``ebook-tools`` is a collection of tools for automated and semi-automated
+organization and management of large ebook collections.
+
+The Python script `ebooktools`_ makes us of the following tools:
+* edit: for editing a configuration file which can either be the main config
+  that contains all .
+* split:
 
 
 .. contents:: **Contents**
@@ -11,3 +18,4 @@ This project is a Python port of `ebook-tools`_ by na--. ``ebook-tools`` is a co
 
 .. URLs
 .. _ebook-tools: https://github.com/na--/ebook-tools
+.. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
