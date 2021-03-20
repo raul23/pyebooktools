@@ -131,6 +131,36 @@ def parse_edit_args(main_cfg):
         return edit_file(main_cfg.cfg_type, main_cfg.app)
 
 
+def process_returned_values(returned_values):
+    # ================================
+    # Process previous returned values
+    # ================================
+
+    def log_opts_overriden(opts_overriden, msg, log_level='info'):
+        nb_items = len(opts_overriden)
+        for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
+            msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
+            if i + 1 < nb_items:
+                msg += "\n"
+        getattr(logger, log_level)(msg)
+
+    # Process 1st returned values: default args overriden by config options
+    if returned_values.default_args_overriden:
+        msg = "Default arguments overridden by config options:\n"
+        log_opts_overriden(returned_values.default_args_overriden, msg)
+    # Process 2nd returned values: config options overriden by args
+    if returned_values.config_opts_overridden:
+        msg = "Config options overridden by command-line arguments:\n"
+        log_opts_overriden(returned_values.config_opts_overridden, msg, 'debug')
+    # Process 3rd returned values: arguments not found in config file
+    """
+    if args_not_found_in_config:
+        msg = "Command-line arguments not found in config file: " \
+              "\n\t{}".format(args_not_found_in_config)
+        logger.debug(msg)
+    """
+
+
 def reset_file(cfg_type, app=None, create_if_not=False):
     # Get path to the config file
     filepath = get_config_filepath(cfg_type)
@@ -181,7 +211,10 @@ See subcommands below for a list of the tools that can be used.
     parser.add_argument("-v", "--verbose", action="store_true",
                         help='''Print various debugging information, e.g. print
                         traceback when there is an exception.''')
-    # TODO: add help for the following options
+    parser.add_argument(
+        "-d", "--dry-run", dest='dry_run', action="store_true",
+        help='''If this is enabled, no file rename/move/symlink/etc. 
+        operations will actually be executed.''')
     parser.add_argument(
         '--loglvl', dest='logging_level',
         choices=['debug', 'info', 'warning', 'error'],
@@ -275,36 +308,6 @@ See subcommands below for a list of the tools that can be used.
              + default_msg.format(default_cfg.files_per_folder))
     parser_split_into_folders.set_defaults(func=split_into_folders.split)
     return parser
-
-
-def process_returned_values(returned_values):
-    # ================================
-    # Process previous returned values
-    # ================================
-
-    def log_opts_overriden(opts_overriden, msg, log_level='info'):
-        nb_items = len(opts_overriden)
-        for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
-            msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
-            if i + 1 < nb_items:
-                msg += "\n"
-        getattr(logger, log_level)(msg)
-
-    # Process 1st returned values: default args overriden by config options
-    if returned_values.default_args_overriden:
-        msg = "Default arguments overridden by config options:\n"
-        log_opts_overriden(returned_values.default_args_overriden, msg)
-    # Process 2nd returned values: config options overriden by args
-    if returned_values.config_opts_overridden:
-        msg = "Config options overridden by command-line arguments:\n"
-        log_opts_overriden(returned_values.config_opts_overridden, msg, 'debug')
-    # Process 3rd returned values: arguments not found in config file
-    """
-    if args_not_found_in_config:
-        msg = "Command-line arguments not found in config file: " \
-              "\n\t{}".format(args_not_found_in_config)
-        logger.debug(msg)
-    """
 
 
 def main():
