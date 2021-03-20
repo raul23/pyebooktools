@@ -22,7 +22,7 @@ The options are separated based on sections:
   1.5 Options related to the input and output files
   1.6 Miscellaneous options
 2. Script options
-  2.1 Edit files
+  2.1 edit-config-files
   2.2 organize-ebooks
     2.2.1 Specific options for organizing files
     2.2.2 Output options
@@ -44,7 +44,7 @@ import os
 # =========================
 quiet = False
 verbose = False
-# dry_run = False
+dry_run = False
 # symlink_only = False
 # keep_metadata = False
 logging_level = 'info'
@@ -94,8 +94,11 @@ output_metadata_extension = 'meta'
 # 2. Script options
 # =================
 
-# 2.1 Edit files
-# ==============
+# 2.1 edit-config-files
+# =====================
+# Name of the application to use for editing the config file.
+# If no name is given, then the default application for opening this type of
+# file will be used.
 app = None
 
 # 2.2 organize-ebooks
