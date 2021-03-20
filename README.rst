@@ -33,15 +33,22 @@ General options
 ---------------
 **General control flags:**
 
-* ``-v``, ``--verbose``; config variable verbose; default value False
-* ``-d``, ``--dry-run``; config variable ``dry_run``; default value False
-* ``-sl``, ``--symlink-only``; config variable symlink_only; default value False
+* ``-v``, ``--verbose``; config variable ``verbose``; default value ``False``
+* ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
+* ``--sl``, ``--symlink-only``; config variable ``symlink_only``; default value ``False``
 
 **Options related to extracting ISBNs from files and finding metadata by ISBN:**
 
 * ``-i=<value>``, ``--isbn-regex=<value>``; config variable isbn_regex; see default value in `lib.py`_
 
+**Options for OCR:**
+
+* ``--ocr=<value>``, ``--ocr-enabled=<value>``; config variable ``ocr_enabled``; default value ``False``
+* ``--ocrop=<value>``, ``--ocr-only-first-last-pages=<value>``; config variable 
+  ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for `convert-to-txt.py`_ where it's ``False``)
+
 .. URLs
+.. _convert-to-txt.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
