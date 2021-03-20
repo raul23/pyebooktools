@@ -2,10 +2,10 @@
 README [Work-In-Progress]
 =========================
 This project is a Python port of `ebook-tools`_ written in shell by na--.
-`ebooktools`_ is a collection of tools for automated and semi-automated
-organization and management of large ebook collections.
+The Python script `ebooktools`_ is a collection of tools for automated and 
+semi-automated organization and management of large ebook collections.
 
-The Python script `ebooktools`_ makes us of the following tools:
+`ebooktools`_ makes use of the following tools:
 
 - **edit**: to edit a configuration file which can either be the main config
   that contains all the options defined below or the logging config file.
