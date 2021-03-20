@@ -39,7 +39,7 @@ General control flags
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* ``-i=<value>``, ``--isbn-regex=<value>``; config variable isbn_regex; see default value in `lib.py`_
+* ``-i=<value>``, ``--isbn-regex=<value>``; config variable ``isbn_regex``; see default value in `lib.py`_
 
 Options for OCR
 ^^^^^^^^^^^^^^^
