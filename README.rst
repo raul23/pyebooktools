@@ -64,14 +64,6 @@ Script usage and options
 ------------------------
 edit [<OPTIONS>] cfg_type [...]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-organize [<OPTIONS>] folder_to_organize [...]
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Description
-"""""""""""
-Specific options for organizing files
-"""""""""""""""""""""""""""""""""""""
-Output options
-""""""""""""""
 split [<OPTIONS>] folder_with_books [...]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
