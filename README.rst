@@ -62,10 +62,10 @@ Miscellaneous options
 
 Script usage and options
 ------------------------
-edit [<OPTIONS>] cfg_type [...]
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-split [<OPTIONS>] folder_with_books [...]
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+edit [<OPTIONS>] cfg_type
+^^^^^^^^^^^^^^^^^^^^^^^^^
+split [<OPTIONS>] folder_with_books
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Roadmap
 =======
