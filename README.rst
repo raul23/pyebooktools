@@ -69,9 +69,9 @@ split [<OPTIONS>] folder_with_books
 
 Roadmap
 =======
-- Implement all of `ebook-tools`_' scripts
+- Implement all of `ebook-tools`_ scripts
 - Add tests
-- Eventually add documentation on `readthedocs`
+- Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
 License
 =======
