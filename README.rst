@@ -94,7 +94,7 @@ Options
   The output folder in which all the new consecutively named folders will be created.
   
 * ``-s <value>``, ``--start-number <value>``; config variable ``start_number``; 
-  default value 0
+  default value ``0``
   
   The number of the first folder. 
   
@@ -104,8 +104,8 @@ Options
   The print format string that specifies the pattern with which new folders will be 
   created. By default it creates folders like 00000000, 00001000, 00002000, ..... 
   
-* ``--fpf <value>`, ``--files-per-folder <value>; env. variable files_per_folder; 
-  default value 1000
+* ``--fpf <value>``, ``--files-per-folder <value>``; env. variable 
+  ``files_per_folder``; default value 1000
 
   How many files should be moved to each folder.
 
