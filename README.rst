@@ -64,6 +64,15 @@ Script usage and options
 ------------------------
 edit [<OPTIONS>] cfg_type
 ^^^^^^^^^^^^^^^^^^^^^^^^^
+Description
+"""""""""""
+Edit a configuration file, either the main configuration file or the logging configuration file.
+The configuration file can be opened by a user-specified application (``app``) or a default 
+program associated with this type of file (when ``app`` is ``None``).
+
+Options
+"""""""
+
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
