@@ -105,7 +105,7 @@ Options
   created. By default it creates folders like 00000000, 00001000, 00002000, ..... 
   
 * ``--fpf <value>``, ``--files-per-folder <value>``; env. variable 
-  ``files_per_folder``; default value 1000
+  ``files_per_folder``; default value ``1000``
 
   How many files should be moved to each folder.
 
