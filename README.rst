@@ -40,14 +40,14 @@ General control flags
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* ``-i=<value>``, ``--isbn-regex=<value>``; config variable ``isbn_regex``; see
+* ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
   default value in `lib.py`_
 
 Options for OCR
 ^^^^^^^^^^^^^^^
-* ``--ocr=<value>``, ``--ocr-enabled=<value>``; config variable ``ocr_enabled``;
+* ``--ocr <value>``, ``--ocr-enabled <value>``; config variable ``ocr_enabled``;
   default value ``False``
-* ``--ocrop=<value>``, ``--ocr-only-first-last-pages=<value>``; config variable 
+* ``--ocrop <value>``, ``--ocr-only-first-last-pages <value>``; config variable 
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for
   `convert-to-txt.py`_ where it's ``False``)
 
@@ -62,19 +62,36 @@ Miscellaneous options
 
 Script usage and options
 ------------------------
-edit [<OPTIONS>] cfg_type
-^^^^^^^^^^^^^^^^^^^^^^^^^
+edit [<OPTIONS>] cfg_type {main,log}
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Description
 """""""""""
-Edit a configuration file, either the main configuration file or the logging configuration file.
-The configuration file can be opened by a user-specified application (``app``) or a default 
-program associated with this type of file (when ``app`` is ``None``).
+Edit a configuration file, either the main configuration file (``main``) or the 
+logging configuration file (``log``). The configuration file can be opened by a 
+user-specified application (``app``) or a default program associated with this
+type of file (when ``app`` is ``None``).
 
 Options
 """""""
+* ``-a <value>``, ``--app <value>``; config variable; config variable ``app``; 
+  default value ``None``
+* ``-r``, ``--reset``; no config variable; default value ``None``; default value 
+  ``False``
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Description
+"""""""""""
+Split the supplied ebook files (and the accompanying metadata files if present)
+into folders with consecutive names that each contain the specified number of
+files.
+
+Options
+"""""""
+* ``-o <value>``, ``--output-folder <value>``; env. variable ``output_folder``; 
+  the default value is the current working directory (check with pwd)
+  
+  The output folder in which all the new consecutively named folders will be created.
 
 Roadmap
 =======
