@@ -5,8 +5,8 @@ README [Work-In-Progress]
 .. raw:: html
 
   <p align="center">
-   <br> 🚧 &nbsp;&nbsp;&nbsp;<b>Work-In-Progress</b>
-   </p>
+    <br> 🚧 &nbsp;&nbsp;&nbsp;<b>Work-In-Progress</b>
+  </p>
 
 This project is a Python port of `ebook-tools`_ which is written in shell by
 na--. The Python script `ebooktools`_ is a collection of tools for automated
@@ -78,7 +78,7 @@ edit [<OPTIONS>] cfg_type {main,log}
 Description
 """""""""""
 Edit a configuration file, either the main configuration file (``main``) or the 
-logging configuration file (``log``). The configuration file can be opened by a 
+logging configuration file (``log``). The configuration file can be opened by a
 user-specified application (``app``) or a default program associated with this
 type of file (when ``app`` is ``None``).
 
@@ -98,21 +98,23 @@ files.
 
 Options
 """""""
-* ``-o <value>``, ``--output-folder <value>``; config variable ``output_folder``; 
+* ``-o <value>``, ``--output-folder <value>``; config variable ``output_folder``;
   the default value is the current working directory (check with pwd)
   
-  The output folder in which all the new consecutively named folders will be created.
+  The output folder in which all the new consecutively named folders will be
+  created.
   
-* ``-s <value>``, ``--start-number <value>``; config variable ``start_number``; 
+* ``-s <value>``, ``--start-number <value>``; config variable ``start_number``;
   default value ``0``
-  
+
   The number of the first folder. 
-  
+
 * ``-f <value>``, ``--folder-pattern <value>``; config variable
   ``folder_pattern``; default value ``%05d000``
   
-  The print format string that specifies the pattern with which new folders will be 
-  created. By default it creates folders like ``00000000, 00001000, 00002000, ...``. 
+  The print format string that specifies the pattern with which new folders
+  will be created. By default it creates folders like
+  ``00000000, 00001000, 00002000, ...``.
   
 * ``--fpf <value>``, ``--files-per-folder <value>``; env. variable 
   ``files_per_folder``; default value ``1000``
