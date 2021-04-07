@@ -121,8 +121,8 @@ Roadmap
   - ``interactive-organizer.sh`` 
   - ``find-isbns.sh``: **working on it**
   - ``convert-to-txt.sh``: **working on it**
-  - ``rename-calibre-library``.sh
-  - ``split-into-folders.sh``: done!
+  - ``rename-calibre-library.sh``
+  - ``split-into-folders.sh``: *done!**
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
