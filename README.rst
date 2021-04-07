@@ -150,4 +150,4 @@ details see the `LICENSE`_ file in the repository.
 .. _LICENSE: https://github.com/raul23/python-ebook-tools/blob/master/LICENSE
 .. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
 .. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
-.. _split-into-folders.sh:https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
+.. _split-into-folders.sh: https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
