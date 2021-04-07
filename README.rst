@@ -86,8 +86,7 @@ Options
 """""""
 * ``-a <value>``, ``--app <value>``; config variable; config variable ``app``; 
   default value ``None``
-* ``-r``, ``--reset``; no config variable; default value ``None``; default value 
-  ``False``
+* ``-r``, ``--reset``; no config variable; default value ``False``
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
