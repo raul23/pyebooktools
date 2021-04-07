@@ -129,7 +129,7 @@ Roadmap
   - `find-isbns.sh`_: **working on it**
   - `convert-to-txt.sh`_: **working on it**
   - `rename-calibre-library.sh`_
-  - `split-into-folders.sh`_: **`done! <https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/split_into_folders.py>`_**
+  - `split-into-folders.sh`_: **done!**, check `split_into_folders.py`_
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
@@ -151,3 +151,4 @@ details see the `LICENSE`_ file in the repository.
 .. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
 .. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
 .. _split-into-folders.sh: https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
+.. _split_into_folders.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/split_into_folders.py
