@@ -84,4 +84,12 @@ def split(folder_with_books=Path.cwd(),
             for file_to_move in chunk:
                 file_dest = os.path.join(current_folder, file_to_move.name)
                 move(file_to_move, file_dest)
+                # Move metadata file if found
+                metadata_name = f'{file_to_move.stem}.{output_metadata_extension}'
+                metada_file_to_move = file_to_move.parent.joinpath(metadata_name)
+                if metada_file_to_move.exists():
+                    logger.debug(f"Found metadata file: {metada_file_to_move}")
+                    metadata_dest = os.path.join(current_folder_metadata,
+                                                 metadata_name)
+                    move(metada_file_to_move, metadata_dest)
     return 0
