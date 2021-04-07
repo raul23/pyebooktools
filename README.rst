@@ -8,7 +8,7 @@ README [Work-In-Progress]
     <br> 🚧 &nbsp;&nbsp;&nbsp;<b>Work-In-Progress</b>
   </p>
 
-This project is a Python port of `ebook-tools`_ which is written in shell by
+This project is a Python port of `ebook-tools`_ which is written in Shell by
 na--. The Python script `ebooktools`_ is a collection of tools for automated
 and semi-automated organization and management of large ebook collections.
 
@@ -70,6 +70,11 @@ Options related to the input and output files
 
 Miscellaneous options
 ^^^^^^^^^^^^^^^^^^^^^
+* ``-r``, ``--reverse``; config variable ``file_sort_reverse``; default value
+  ``False``
+
+If this is enabled, the files will be sorted in reverse (i.e. descending) order.
+By default, they are sorted in ascending order.
 
 Script usage and options
 ------------------------
