@@ -84,7 +84,7 @@ type of file (when ``app`` is ``None``).
 
 Options
 """""""
-* ``-a <value>``, ``--app <value>``; config variable; config variable ``app``; 
+* ``-a <value>``, ``--app <value>``; config variable ``app``; 
   default value ``None``
 * ``-r``, ``--reset``; no config variable; default value ``False``
 
