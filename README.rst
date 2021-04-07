@@ -73,8 +73,8 @@ Miscellaneous options
 * ``-r``, ``--reverse``; config variable ``file_sort_reverse``; default value
   ``False``
 
-If this is enabled, the files will be sorted in reverse (i.e. descending) order.
-By default, they are sorted in ascending order.
+  If this is enabled, the files will be sorted in reverse (i.e. descending) order. 
+  By default, they are sorted in ascending order.
 
 Script usage and options
 ------------------------
