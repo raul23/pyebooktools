@@ -1,11 +1,20 @@
-"""Splits the supplied ebook files (and the accompanying metadata files if
+"""Split the supplied ebook files (and the accompanying metadata files if
 present) into folders with consecutive names that each contain the specified
 number of files.
 
-This is a Python port of split-into-folders.sh from ebook-tools by na--. See
-https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
+This is a Python port of `split-into-folders.sh`_ from `ebook-tools`_ written
+in shell by `na--`_.
 
-Ref.: https://github.com/na--/ebook-tools
+References
+----------
+* `ebook-tools`_
+
+.. URLs
+
+.. external links
+.. _ebook-tools: https://github.com/na--/ebook-tools
+.. _na--: https://github.com/na--
+.. _split-into-folders.sh: https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
 """
 import math
 import os
@@ -61,13 +70,7 @@ def split(folder_with_books=Path.cwd(),
         logger.debug(f"Found {len(chunk)} number of files...")
         current_folder_basename = '{0:0{width}}'.format(
             current_folder_num, width=width)
-        # current_folder = Path.joinpath(output_folder, current_folder_basename)
         current_folder = os.path.join(output_folder, current_folder_basename)
-        # TODO: not working with Path.joinpath if output_folder is not absolute
-        """
-        current_folder_metadata = Path.joinpath(
-            output_folder, current_folder_basename+'.'+output_metadata_extension)
-        """
         current_folder_metadata = os.path.join(
             output_folder, current_folder_basename + '.' + output_metadata_extension)
         current_folder_num += 1
