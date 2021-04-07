@@ -3,7 +3,7 @@ present) into folders with consecutive names that each contain the specified
 number of files.
 
 This is a Python port of `split-into-folders.sh`_ from `ebook-tools`_ written
-in shell by `na--`_.
+in Shell by `na--`_.
 
 References
 ----------
