@@ -121,7 +121,7 @@ Options
 
 Roadmap
 =======
-- Port all of `ebook-tools`_ scripts into Python
+- Port all of `ebook-tools`_ shell scripts into Python
 
   - ``organize-ebooks.sh``
   - ``interactive-organizer.sh``
