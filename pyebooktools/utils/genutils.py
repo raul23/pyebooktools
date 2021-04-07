@@ -152,11 +152,11 @@ def move(src, dest):
     filename = os.path.basename(src)
     if os.path.exists(dest):
         logger.debug(f"File already exits: '{filename}'")
-        logger.debug(f"Folder path: {os.path.dirname(dest)}")
+        logger.debug(f"Destination folder path: {os.path.dirname(dest)}")
         logger.debug(f"Skipping it!")
     else:
         logger.debug(f"Moving '{filename}'")
-        logger.debug(f"Folder path: {os.path.dirname(dest)}")
+        logger.debug(f"Destination folder path: {os.path.dirname(dest)}")
         shutil.move(src, dest)
         logger.debug("File moved!")
 
