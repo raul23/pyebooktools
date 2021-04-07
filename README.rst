@@ -114,6 +114,12 @@ Options
 Roadmap
 =======
 - Implement all of `ebook-tools`_ scripts
+  - organize-ebooks.sh
+  - interactive-organizer.sh 
+  - find-isbns.sh: **working on it**
+  - convert-to-txt.sh: **working on it**
+  - rename-calibre-library.sh
+  - split-into-folders.sh: done
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
