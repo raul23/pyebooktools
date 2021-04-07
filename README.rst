@@ -115,12 +115,12 @@ Roadmap
 =======
 - Implement all of `ebook-tools`_ scripts
 
-  - organize-ebooks.sh
-  - interactive-organizer.sh 
-  - find-isbns.sh: **working on it**
-  - convert-to-txt.sh: **working on it**
-  - rename-calibre-library.sh
-  - split-into-folders.sh: done
+  - ``organize-ebooks.sh``
+  - ``interactive-organizer.sh`` 
+  - ``find-isbns.sh``: **working on it**
+  - ``convert-to-txt.sh``: **working on it**
+  - ``rename-calibre-library``.sh
+  - ``split-into-folders.sh``: done!
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
@@ -131,8 +131,14 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs
 .. _convert-to-txt.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/convert_to_txt.py
+.. _convert-to-txt.sh: https://github.com/na--/ebook-tools/blob/master/convert-to-txt.sh
 .. _default_config.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
+.. _find-isbns.sh: https://github.com/na--/ebook-tools/blob/master/find-isbns.sh
+.. _interactive-organizer.sh: https://github.com/na--/ebook-tools/blob/master/interactive-organizer.sh
 .. _lib.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/python-ebook-tools/blob/master/LICENSE
+.. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
+.. _rename-calibre-library: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
+.. _split-into-folders.sh:https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
