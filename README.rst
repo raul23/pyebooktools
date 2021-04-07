@@ -13,7 +13,7 @@ and semi-automated organization and management of large ebook collections.
   files if present) into folders with consecutive names that each contain the
   specified number of files.
   
-**More to come!**
+**More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming.
 
 .. contents:: **Contents**
    :depth: 4
