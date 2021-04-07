@@ -9,7 +9,7 @@ README [Work-In-Progress]
   </p>
 
 This project is a Python port of `ebook-tools`_ which is written in Shell by
-na--. The Python script `ebooktools`_ is a collection of tools for automated
+`na--`_. The Python script `ebooktools`_ is a collection of tools for automated
 and semi-automated organization and management of large ebook collections.
 
 `ebooktools`_ makes use of the following tools:
@@ -154,6 +154,7 @@ details see the `LICENSE`_ file in the repository.
 .. _interactive-organizer.sh: https://github.com/na--/ebook-tools/blob/master/interactive-organizer.sh
 .. _lib.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/python-ebook-tools/blob/master/LICENSE
+.. _na--: https://github.com/na--
 .. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
 .. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
 .. _split-into-folders.sh: https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
