@@ -129,7 +129,7 @@ Roadmap
   - `find-isbns.sh`_: **working on it**
   - `convert-to-txt.sh`_: **working on it**
   - `rename-calibre-library.sh`_
-  - `split-into-folders.sh`_: **done!**, check `split_into_folders.py`_
+  - `split-into-folders.sh`_: **done**, see `split_into_folders.py`_
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
