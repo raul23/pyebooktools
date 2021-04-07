@@ -31,6 +31,27 @@ and semi-automated organization and management of large ebook collections.
 
 Installation
 ============
+1. It is highly recommended to install ``pyebooktools`` in a virtual
+   environment using for example `venv`_ or `conda`_.
+
+2. Make sure to update *pip*::
+
+   $ pip install --upgrade pip
+
+3. Install the package ``pyebooktools`` (**bleeding-edge version**) with *pip*::
+
+   $ pip install git+https://github.com/raul23/python-ebook-tools#egg=python-ebook-tools
+
+`:warning:`
+
+   Make sure that *pip* is working with the correct Python version. It might be
+   the case that *pip* is using Python 2.x You can find what Python version
+   *pip* uses with the following::
+
+      $ pip -V
+
+   If *pip* is working with the wrong Python version, then try to use *pip3*
+   which works with Python 3.x
 
 Usage, options and configuration
 ================================
