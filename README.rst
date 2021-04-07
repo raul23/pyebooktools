@@ -127,7 +127,7 @@ Roadmap
   - `organize-ebooks.sh`_
   - `interactive-organizer.sh`_
   - `find-isbns.sh`_: **working on it**
-  - `convert-to-txt.sh``: **working on it**
+  - `convert-to-txt.sh`_: **working on it**
   - `rename-calibre-library.sh`_
   - `split-into-folders.sh`_: *done!**
 - Add tests
@@ -149,5 +149,5 @@ details see the `LICENSE`_ file in the repository.
 .. _lib.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/python-ebook-tools/blob/master/LICENSE
 .. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
-.. _rename-calibre-library: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
+.. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
 .. _split-into-folders.sh:https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
