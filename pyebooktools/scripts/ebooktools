@@ -124,7 +124,8 @@ See subcommands below for a list of the tools that can be used.
     parser.add_argument(
         "-r", "--reverse", dest='file_sort_reverse', action="store_true",
         help='''If this is enabled, the files will be sorted in reverse
-        (i.e. descending) order.''')
+        (i.e. descending) order. By default, they are sorted in ascending
+        order.''')
     parser.add_argument(
         '--loglvl', dest='logging_level',
         choices=['debug', 'info', 'warning', 'error'],
@@ -181,6 +182,14 @@ See subcommands below for a list of the tools that can be used.
         help='''Reset a configuration file ('config' or 'log') with factory
         default values.''')
     parser_edit.set_defaults(func=parse_edit_args)
+    # ==============
+    # Convert to txt
+    # ==============
+    # create the parser for the "convert" command
+    parser_convert = subparsers.add_parser(
+        'convert',
+        help='''Convert the supplied file to a text file. It can optionally
+        also use *OCR* for `.pdf`, `.djvu` and image files.''')
     # ==================
     # split-into-folders
     # ==================
