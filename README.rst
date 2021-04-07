@@ -112,7 +112,7 @@ Options
   ``folder_pattern``; default value ``%05d000``
   
   The print format string that specifies the pattern with which new folders will be 
-  created. By default it creates folders like ``00000000, 00001000, 00002000, .....`` 
+  created. By default it creates folders like ``00000000, 00001000, 00002000, ...``. 
   
 * ``--fpf <value>``, ``--files-per-folder <value>``; env. variable 
   ``files_per_folder``; default value ``1000``
