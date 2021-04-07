@@ -166,6 +166,7 @@ This program is licensed under the GNU General Public License v3.0. For more
 details see the `LICENSE`_ file in the repository.
 
 .. URLs
+.. _conda: https://docs.conda.io/en/latest/
 .. _convert-to-txt.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/convert_to_txt.py
 .. _convert-to-txt.sh: https://github.com/na--/ebook-tools/blob/master/convert-to-txt.sh
 .. _default_config.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/configs/default_config.py
@@ -180,3 +181,4 @@ details see the `LICENSE`_ file in the repository.
 .. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
 .. _split-into-folders.sh: https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
 .. _split_into_folders.py: https://github.com/raul23/python-ebook-tools/blob/master/pyebooktools/split_into_folders.py
+.. _venv: https://docs.python.org/3/library/venv.html#module-venv
