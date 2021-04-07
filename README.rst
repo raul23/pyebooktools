@@ -104,7 +104,7 @@ files.
 Options
 """""""
 * ``-o <value>``, ``--output-folder <value>``; config variable ``output_folder``;
-  the default value is the current working directory (check with pwd)
+  the default value is the current working directory (check with ``pwd``)
   
   The output folder in which all the new consecutively named folders will be
   created.
