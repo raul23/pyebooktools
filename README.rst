@@ -22,7 +22,7 @@ and semi-automated organization and management of large ebook collections.
 
 `:warning:`
 
-  **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming.
+  **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming soon.
 
 .. contents:: **Contents**
    :depth: 4
