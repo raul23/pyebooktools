@@ -31,16 +31,16 @@ and semi-automated organization and management of large ebook collections.
 
 Installation
 ============
-1. It is highly recommended to install the package ``pyebooktools`` in a virtual
+1. It is highly recommended to install the package ``py_ebooktools`` in a virtual
    environment using for example `venv`_ or `conda`_.
 
 2. Make sure to update *pip*::
 
    $ pip install --upgrade pip
 
-3. Install the package ``pyebooktools`` (**bleeding-edge version**) with *pip*::
+3. Install the package ``py_ebooktools`` (**bleeding-edge version**) with *pip*::
 
-   $ pip install git+https://github.com/raul23/py-ebook-tools#egg=py-ebook-tools
+   $ pip install git+https://github.com/raul23/py-ebooktools#egg=py-ebook-tools
 
 `:warning:`
 
@@ -167,18 +167,18 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs
 .. _conda: https://docs.conda.io/en/latest/
-.. _convert-to-txt.py: https://github.com/raul23/py-ebook-tools/blob/master/pyebooktools/convert_to_txt.py
+.. _convert-to-txt.py: https://github.com/raul23/py-ebooktools/blob/master/pyebooktools/convert_to_txt.py
 .. _convert-to-txt.sh: https://github.com/na--/ebook-tools/blob/master/convert-to-txt.sh
-.. _default_config.py: https://github.com/raul23/py-ebook-tools/blob/master/pyebooktools/configs/default_config.py
+.. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/pyebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
-.. _ebooktools: https://github.com/raul23/py-ebook-tools/blob/master/pyebooktools/scripts/ebooktools
+.. _ebooktools: https://github.com/raul23/py-ebooktools/blob/master/pyebooktools/scripts/ebooktools
 .. _find-isbns.sh: https://github.com/na--/ebook-tools/blob/master/find-isbns.sh
 .. _interactive-organizer.sh: https://github.com/na--/ebook-tools/blob/master/interactive-organizer.sh
-.. _lib.py: https://github.com/raul23/py-ebook-tools/blob/master/pyebooktools/lib.py
-.. _LICENSE: https://github.com/raul23/py-ebook-tools/blob/master/LICENSE
+.. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/pyebooktools/lib.py
+.. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
 .. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
 .. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
 .. _split-into-folders.sh: https://github.com/na--/ebook-tools/blob/master/split-into-folders.sh
-.. _split_into_folders.py: https://github.com/raul23/py-ebook-tools/blob/master/pyebooktools/split_into_folders.py
+.. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/pyebooktools/split_into_folders.py
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
