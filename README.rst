@@ -147,6 +147,38 @@ Options
 
   How many files should be moved to each folder.
 
+How to Uninstall
+================
+To uninstall the package ``py_ebooktools``::
+
+   $ pip uninstall py_ebooktools
+   
+`:information_source:`
+
+   When uninstalling the ``py_ebooktools`` package, you might be informed
+   that the configuration files *logging.py* and *config.py* won't be
+   removed by *pip*. You can remove those files manually by noting their paths
+   returned by *pip*. Or you can leave them so your saved settings can be
+   re-used the next time you re-install the package.
+
+   **Example:**
+
+   .. code-block:: console
+
+      $ pip uninstall py_ebooktools
+      Found existing installation: py-ebooktools 0.1.0
+      Uninstalling py-ebooktools-0.1.0:
+        Would remove:
+          /Users/test/miniconda3/envs/ebooktools_py37/bin/ebooktools
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools-0.1.0.dist-info/*
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/*
+        Would not remove (might be manually added):
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/configs/config.py
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/configs/logging.py
+      Proceed (y/n)? y
+        Successfully uninstalled py-ebooktools-0.1.0
+      $ rm -r /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/
+
 Roadmap
 =======
 - Port all of `ebook-tools`_ shell scripts into Python
