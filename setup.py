@@ -24,7 +24,8 @@ else:
 dirpath = os.path.abspath(os.path.dirname(__file__))
 
 # The text of the README file (used on PyPI)
-with open(os.path.join(dirpath, "README.rst"), encoding="utf-8") as f:
+# NOTE: encoding for py3.6 and less, see https://stackoverflow.com/a/49131427
+with open(os.path.join(dirpath, "README_pypi.rst"), encoding="utf-8") as f:
     README = f.read()
 
 # The text of the requirements.txt file
