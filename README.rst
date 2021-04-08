@@ -5,6 +5,7 @@ README [Work-In-Progress]
 .. raw:: html
 
   <p align="center">
+    <img src="https://raw.githubusercontent.com/raul23/py-ebooktools/master/docs/logo/py_ebooktools.png">
     <br> 🚧 &nbsp;&nbsp;&nbsp;<b>Work-In-Progress</b>
   </p>
 
