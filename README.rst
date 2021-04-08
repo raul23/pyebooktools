@@ -31,7 +31,7 @@ and semi-automated organization and management of large ebook collections.
 
 Installation
 ============
-1. It is highly recommended to install ``pyebooktools`` in a virtual
+1. It is highly recommended to install the package ``pyebooktools`` in a virtual
    environment using for example `venv`_ or `conda`_.
 
 2. Make sure to update *pip*::
