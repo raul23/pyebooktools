@@ -157,8 +157,9 @@ See subcommands below for a list of the tools that can be used.
     # Subcommands
     # ===========
     subparsers = parser.add_subparsers(
-        title='subcommands', description=None, dest='subparser_name',
+        title='subcommands', description=None, dest='subcommand', required=True,
         help=None)
+    # TODO: add aliases, see https://bit.ly/3s2fq87
     # ==========
     # Edit files
     # ==========
@@ -246,7 +247,7 @@ def main():
         logger.error(e)
         return 1
     else:
-        if args.subparser_name == 'edit':
+        if args.subcommand == 'edit':
             return args.func(main_cfg)
         else:
             return args.func(**namespace_to_dict(main_cfg))
