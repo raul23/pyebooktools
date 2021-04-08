@@ -147,8 +147,8 @@ Options
 
   How many files should be moved to each folder.
 
-How to Uninstall
-================
+Uninstall
+=========
 To uninstall the package ``py_ebooktools``::
 
    $ pip uninstall py_ebooktools
