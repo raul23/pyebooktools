@@ -161,7 +161,7 @@ To uninstall the package ``py_ebooktools``::
    returned by *pip*. Or you can leave them so your saved settings can be
    re-used the next time you re-install the package.
 
-   **Example:** uninstalling the package and the config files
+   **Example:** uninstalling the package and removing the config files
 
    .. code-block:: console
 
