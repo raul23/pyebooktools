@@ -9,10 +9,10 @@ README [Work-In-Progress]
   </p>
 
 This project is a Python port of `ebook-tools`_ which is written in Shell by
-`na--`_. The Python script `ebooktools`_ is a collection of tools for automated
+`na--`_. The Python script `ebooktools.py`_ is a collection of tools for automated
 and semi-automated organization and management of large ebook collections.
 
-`ebooktools`_ makes use of the following tools:
+`ebooktools.py`_ makes use of the following tools:
 
 - **edit**: to edit a configuration file which can either be the main config
   file that contains all the options defined below or the logging config file.
@@ -206,7 +206,7 @@ details see the `LICENSE`_ file in the repository.
 .. _convert-to-txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
-.. _ebooktools: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools
+.. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
