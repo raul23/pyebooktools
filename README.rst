@@ -60,8 +60,8 @@ Installation
 
    $ python -c "import py_ebooktools; print(py_ebooktools.__version__)"
 
-2. You can also test that the script ``ebooktools.py`` runs by showing the program's 
-   version::
+2. You can also test that you have access to the ``ebooktools.py`` script by showing
+   the program's version::
 
    $ ebooktools --version
 
