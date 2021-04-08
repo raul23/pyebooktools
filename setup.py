@@ -4,12 +4,33 @@ The PyPi project name is ``py-ebooktools`` and the package name is
 ``py_ebooktools``.
 
 """
-
+import fnmatch
 import os
 import sys
 from setuptools import find_packages, setup
+from setuptools.command.build_py import build_py as build_py_orig
 
 from py_ebooktools import __version__, __test_version__
+
+
+excluded = ['py_ebooktools/configs/config.py',
+            'py_ebooktools/configs/logging.py']
+
+
+# IMPORTANT: bdist_wheel behaves differently to sdist
+# - MANIFEST.in works for source distributions, but it's ignored for wheels,
+#   See https://bit.ly/3s2Kt3p
+# - "bdist_wheel would always include stuff that I'd manage to exclude from the sdist"
+#   See https://bit.ly/3t7SsO4
+# Code reference: https://stackoverflow.com/a/56044136/14664104
+class build_py(build_py_orig):
+    def find_package_modules(self, package, package_dir):
+        modules = super().find_package_modules(package, package_dir)
+        return [
+            (pkg, mod, file)
+            for (pkg, mod, file) in modules
+            if not any(fnmatch.fnmatchcase(file, pat=pattern) for pattern in excluded)
+        ]
 
 
 # Choose the correct version based on script's arg
@@ -60,6 +81,7 @@ setup(name='py-ebooktools',
       author_email='rchfe23@gmail.com',
       license='GPLv3',
       packages=find_packages(exclude=['tests']),
+      cmdclass={'build_py': build_py},
       include_package_data=True,
       install_requires=REQUIREMENTS,
       entry_points={
