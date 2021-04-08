@@ -1,3 +1,5 @@
 include README.rst
 include LICENSE
 include py_ebooktools/configs/default*.py
+exclude py_ebooktools/configs/config.py
+exclude py_ebooktools/configs/logging.py
