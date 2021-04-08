@@ -160,6 +160,10 @@ Roadmap
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
+References
+==========
+* `ebook-tools`_: Shell scripts for organizing and managing ebook collections.
+
 License
 =======
 This program is licensed under the GNU General Public License v3.0. For more
