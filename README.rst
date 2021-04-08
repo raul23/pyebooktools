@@ -55,7 +55,7 @@ Installation
 
 Usage, options and configuration
 ================================
-All of the options documented below can either be passed to the `ebooktools`_
+All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``.
 Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
