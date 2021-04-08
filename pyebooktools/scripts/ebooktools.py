@@ -11,7 +11,6 @@ References
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _na--: https://github.com/na--
 """
-# NOTE: since ebooktools is a script (no py extension), it can't be imported
 import argparse
 
 import ipdb
