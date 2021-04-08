@@ -151,11 +151,11 @@ Roadmap
 =======
 - Port all of `ebook-tools`_ shell scripts into Python
 
-  - ``organize-ebooks.sh``
-  - ``interactive-organizer.sh``
+  - ``organize-ebooks.sh``: **not started yet**
+  - ``interactive-organizer.sh``: **not started yet**
   - ``find-isbns.sh``: **working on it**
   - ``convert-to-txt.sh``: **working on it**
-  - ``rename-calibre-library.sh``
+  - ``rename-calibre-library.sh``: **not started yet**
   - ``split-into-folders.sh``: **done**, see `split_into_folders.py`_
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
