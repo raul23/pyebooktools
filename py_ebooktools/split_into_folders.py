@@ -21,8 +21,8 @@ import os
 # import ipdb
 from pathlib import Path
 
-from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.utils.genutils import init_log, mkdir, move
+from py_ebooktools.configs import default_config as default_cfg
+from py_ebooktools.utils.genutils import init_log, mkdir, move
 
 logger = init_log(__name__, __file__)
 

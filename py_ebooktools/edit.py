@@ -8,10 +8,10 @@ import platform
 import os
 import shutil
 
-from pyebooktools.utils.genutils import (get_config_filepath,
-                                         get_logging_filepath,
-                                         get_main_config_filepath,
-                                         init_log, run_cmd)
+from py_ebooktools.utils.genutils import (get_config_filepath,
+                                          get_logging_filepath,
+                                          get_main_config_filepath,
+                                          init_log, run_cmd)
 
 logger = init_log(__name__, __file__)
 

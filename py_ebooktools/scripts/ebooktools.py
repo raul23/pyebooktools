@@ -15,12 +15,12 @@ import argparse
 
 # import ipdb
 
-import pyebooktools
-from pyebooktools import edit, split_into_folders
-from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.utils.genutils import (get_config_dict, init_log,
-                                         namespace_to_dict,
-                                         override_config_with_args, setup_log)
+import py_ebooktools
+from py_ebooktools import edit, split_into_folders
+from py_ebooktools.configs import default_config as default_cfg
+from py_ebooktools.utils.genutils import (get_config_dict, init_log,
+                                          namespace_to_dict,
+                                          override_config_with_args, setup_log)
 
 logger = init_log(__name__, __file__)
 
@@ -110,7 +110,7 @@ See subcommands below for a list of the tools that can be used.
     # ===============
     # TODO: package name too? instead of program name
     parser.add_argument('--version', action='version',
-                        version='%(prog)s v{}'.format(pyebooktools.__version__))
+                        version='%(prog)s v{}'.format(py_ebooktools.__version__))
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="Enable quiet mode, i.e. nothing will be printed.")
     parser.add_argument("-v", "--verbose", action="store_true",
