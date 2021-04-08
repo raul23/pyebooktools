@@ -52,6 +52,17 @@ Installation
 
    If *pip* is working with the wrong Python version, then try to use *pip3*
    which works with Python 3.x
+   
+**Test installation**
+
+1. Test your installation by importing ``py_ebooktools`` and printing its version::
+
+   $ python -c "import py_ebooktools; print(py_ebooktools.__version__)"
+
+2. You can also test that the script ``ebooktools.py`` runs by showing the help 
+   message::
+
+   $ ebooktools -h
 
 Usage, options and configuration
 ================================
