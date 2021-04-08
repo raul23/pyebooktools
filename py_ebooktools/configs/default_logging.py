@@ -68,13 +68,13 @@ logging = {
         # -----------------------------
         # Loggers using console handler
         # -----------------------------
-        "pyebooktools.edit":
+        "py_ebooktools.edit":
         {
           "level": "DEBUG",
           "handlers": ["console"],
           "propagate": False
         },
-        "pyebooktools.split_into_folders":
+        "py_ebooktools.split_into_folders":
         {
           "level": "DEBUG",
           "handlers": ["console"],
