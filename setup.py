@@ -1,6 +1,6 @@
 """setup.py file for the package ``pyebooktools``.
 
-The PyPi project name is ``python-ebook-tools`` and the package name is
+The PyPi project name is ``py-ebook-tools`` and the package name is
 ``pyebooktools``.
 
 """
@@ -33,7 +33,7 @@ with open(os.path.join(dirpath, "requirements.txt")) as f:
     REQUIREMENTS = f.read().splitlines()
 
 
-setup(name='python-ebook-tools',
+setup(name='py-ebook-tools',
       version=VERSION,
       description='''Program for organizing and managing ebook collections. It 
       is a Python port of ebook-tools (shell scripts).''',
@@ -50,7 +50,7 @@ setup(name='python-ebook-tools',
         'Programming Language :: Python :: 3',
       ],
       keywords='ebook-manager calibre script',
-      url='https://github.com/raul23/python-ebook-tools',
+      url='https://github.com/raul23/py-ebook-tools',
       author='Raul C.',
       author_email='rchfe23@gmail.com',
       license='GPLv3',
@@ -61,8 +61,8 @@ setup(name='python-ebook-tools',
         'console_scripts': ['ebooktools=pyebooktools.scripts.ebooktools:main']
       },
       project_urls={  # Optional
-          'Bug Reports': 'https://github.com/raul23/python-ebook-tools/issues',
+          'Bug Reports': 'https://github.com/raul23/py-ebook-tools/issues',
           # TODO: 'Documentation': 'https://?.readthedocs.io/',
-          'Source': 'https://github.com/raul23/python-ebook-tools',
+          'Source': 'https://github.com/raul23/py-ebook-tools',
       },
       zip_safe=False)
