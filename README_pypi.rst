@@ -7,6 +7,8 @@ README [Work-In-Progress]
    :align: center
    :alt: py-ebooktools logo
 
+🚧 **Work-In-Progress**
+
 This project is a Python port of `ebook-tools`_ which is written in Shell by
 `na--`_. The Python script `ebooktools.py`_ is a collection of tools for automated
 and semi-automated organization and management of large ebook collections.
@@ -21,7 +23,7 @@ and semi-automated organization and management of large ebook collections.
 
 **Warning**
 
-  **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming soon.
+  **More to come!** Check the **Roadmap** to know what is coming soon.
 
 .. contents:: **Contents**
    :depth: 4
@@ -163,7 +165,7 @@ To uninstall the package ``py_ebooktools``::
 
    $ pip uninstall py_ebooktools
    
-`:information_source:`
+**Information**
 
    When uninstalling the ``py_ebooktools`` package, you might be informed
    that the configuration files *logging.py* and *config.py* won't be
