@@ -95,7 +95,7 @@ def setup_argparser():
     # Setup the parser
     parser = argparse.ArgumentParser(
         description='''\
-Test This program is a Python port of ebook-tools written in Shell by na-- (See
+This program is a Python port of ebook-tools written in Shell by na-- (See
 https://github.com/na--/ebook-tools).
 
 This program is a collection of tools for automated and
