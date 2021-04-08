@@ -18,7 +18,7 @@ References
 """
 import math
 import os
-import ipdb
+# import ipdb
 from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg

@@ -13,7 +13,7 @@ References
 """
 import argparse
 
-import ipdb
+# import ipdb
 
 import pyebooktools
 from pyebooktools import edit, split_into_folders
@@ -95,7 +95,7 @@ def setup_argparser():
     # Setup the parser
     parser = argparse.ArgumentParser(
         description='''\
-This program is a Python port of ebook-tools written in Shell by na-- (See
+Test This program is a Python port of ebook-tools written in Shell by na-- (See
 https://github.com/na--/ebook-tools).
 
 This program is a collection of tools for automated and
