@@ -40,7 +40,7 @@ Installation
 
 3. Install the package ``pyebooktools`` (**bleeding-edge version**) with *pip*::
 
-   $ pip install git+https://github.com/raul23/python-ebook-tools#egg=python-ebook-tools
+   $ pip install git+https://github.com/raul23/py-ebook-tools#egg=py-ebook-tools
 
 `:warning:`
 
