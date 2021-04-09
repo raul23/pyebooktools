@@ -16,7 +16,7 @@ import argparse
 # import ipdb
 
 import py_ebooktools
-from py_ebooktools import edit, split_into_folders
+from py_ebooktools import edit, convert_to_txt, split_into_folders
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import (get_config_dict, init_log,
                                           namespace_to_dict,
@@ -190,6 +190,14 @@ See subcommands below for a list of the tools that can be used.
         'convert',
         help='''Convert the supplied file to a text file. It can optionally
         also use *OCR* for `.pdf`, `.djvu` and image files.''')
+    parser_convert.add_argument(
+        'input_file',
+        help='''The input file to be converted to a text file.''')
+    parser_convert.add_argument(
+        '-o', '--output-file', dest='output_file', metavar='OUTPUT',
+        help='''The output file text.''' + default_msg.format(
+            default_cfg.output_file))
+    parser_convert.set_defaults(func=convert_to_txt.convert)
     # ==================
     # split-into-folders
     # ==================
@@ -254,6 +262,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # ebooktools --loglvl debug --logfmt simple split -o output_folder/ folder_with_books/
     # ebooktools --loglvl debug --logfmt simple split --fpf 3
     retcode = main()
     msg = "Program exited with {}".format(retcode)
