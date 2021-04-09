@@ -135,6 +135,22 @@ See subcommands below for a list of the tools that can be used.
         choices=['console', 'simple', 'only_msg'],
         help='Set logging formatter for all loggers.'
              + default_msg.format(default_cfg.logging_formatter))
+    # ===============
+    # Options for OCR
+    # ===============
+    parser_ocr_group = parser.add_argument_group(
+        title='Options for OCR')
+    parser_ocr_group.add_argument(
+        "--ocr", "--ocr-enabled", dest='ocr_enabled',
+        choices=['always', 'true', 'false'],
+        help='''Whether to enable OCR for .pdf, .djvu and image files. It is
+        disabled by default.''')
+    parser_ocr_group.add_argument(
+        "--ocrop", "--ocr-only-first-last-pages",
+        dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
+        help='''Value (n,m) instructs the scripts to convert only the first n
+        and last m pages when OCR-ing ebooks.'''
+             + default_msg.format(default_cfg.ocr_only_first_last_pages))
     # =============================================
     # Options related to the input and output files
     # =============================================
@@ -230,7 +246,8 @@ See subcommands below for a list of the tools that can be used.
         00000000, 00001000, 00002000, .....'''
              + default_msg.format(default_cfg.folder_pattern).replace('%', '%%'))
     parser_split_into_folders.add_argument(
-        '--fpf', '--files-per-folder', dest='files_per_folder', type=check_positive,
+        '--fpf', '--files-per-folder', dest='files_per_folder',
+        type=check_positive,
         help='''How many files should be moved to each folder.'''
              + default_msg.format(default_cfg.files_per_folder))
     parser_split_into_folders.set_defaults(func=split_into_folders.split)
