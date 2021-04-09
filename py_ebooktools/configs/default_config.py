@@ -48,7 +48,7 @@ dry_run = False
 # symlink_only = False
 # keep_metadata = False
 logging_level = 'info'
-logging_formatter = 'only_msg'
+logging_formatter = 'simple'
 
 # 1.2 Options related to extracting ISBNs from files and finding metadata by ISBN
 # ===============================================================================
@@ -141,8 +141,9 @@ app = None
 
 # 2.5 convert-to-txt
 # ==================
-# There are no local options, but some of the general options affect this
-# script's behavior a lot, especially the OCR ones (see '1.3 Options for OCR').
+# Some of the general options affect this script's behavior a lot, especially
+# the OCR ones (see '1.3 Options for OCR').
+output_file = 'output.txt'
 
 # 2.6 rename-calibre-library
 # ==========================
