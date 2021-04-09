@@ -66,9 +66,9 @@ logging_formatter = 'simple'
 
 # 1.3 Options for OCR
 # ===================
-# ocr_enabled = False
-# ocr_only_first_last_pages = (7, 3)
-# ocr_command = 'tesseract_wrapper'
+ocr_enabled = False
+ocr_only_first_last_pages = (7, 3)
+ocr_command = 'tesseract_wrapper'
 
 # 1.4 Options related to extracting and searching for non-ISBN metadata
 # =====================================================================
