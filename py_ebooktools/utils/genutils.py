@@ -11,6 +11,7 @@ import sys
 from argparse import Namespace
 from collections import namedtuple, OrderedDict
 from logging import NullHandler
+from pathlib import Path
 from runpy import run_path
 from types import SimpleNamespace
 
@@ -290,6 +291,12 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
     logger.debug("Working directory: {}".format(package_path))
     logger.debug(main_cfg_msg)
     logger.debug(main_log_msg)
+
+
+def touch(path, mode=0o666, exist_ok=True):
+    logger.debug(f"Creating file: '{path}'")
+    Path(path).touch(mode, exist_ok)
+    logger.debug("File created!")
 
 
 # -------------------------------
