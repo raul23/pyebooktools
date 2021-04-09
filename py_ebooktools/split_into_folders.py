@@ -18,7 +18,6 @@ References
 """
 import math
 import os
-# import ipdb
 from pathlib import Path
 
 from py_ebooktools.configs import default_config as default_cfg
@@ -27,7 +26,7 @@ from py_ebooktools.utils.genutils import init_log, mkdir, move
 logger = init_log(__name__, __file__)
 
 
-def split(folder_with_books=Path.cwd(),
+def split(folder_with_books,
           folder_pattern=default_cfg.folder_pattern,
           start_number=default_cfg.start_number,
           output_folder=default_cfg.output_folder,
