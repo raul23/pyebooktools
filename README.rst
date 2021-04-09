@@ -9,7 +9,7 @@ README [Work-In-Progress]
     <br> 🚧 &nbsp;&nbsp;&nbsp;<b>Work-In-Progress</b>
   </p>
 
-This project is a Python port of `ebook-tools`_ which is written in Shell by
+This project (**version 0.3**) is a Python port of `ebook-tools`_ which is written in Shell by
 `na--`_. The Python script `ebooktools.py`_ is a collection of tools for automated
 and semi-automated organization and management of large ebook collections.
 
