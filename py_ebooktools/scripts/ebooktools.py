@@ -220,9 +220,13 @@ See subcommands below for a list of the tools that can be used.
     # create the parser for the "find" command
     parser_find = subparsers.add_parser(
         'find',
-        help='''Try to find valid ISBNs inside a file or in stdin if no file
+        help='''Try to find valid ISBNs inside a file or in a string if no file
         was specified. Searching for ISBNs in files uses progressively more
         resource-intensive methods until some ISBNs are found.''')
+    parser_find.add_argument(
+        'input_data',
+        help='''Can either be the path to a file or a string. The input will
+        be searched for ISBNs.''')
     parser_find.set_defaults(func=find_isbns.find)
     # ==================
     # split-into-folders
