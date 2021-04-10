@@ -279,6 +279,13 @@ def main():
 
 
 if __name__ == '__main__':
+    # Convert
+    # ebooktools convert -o ~/test/ebooktools/output.txt ~/test/ebooktools/pdf_to_convert.pdf
+    #
+    # Convert with debug and ocr=always
+    # ebooktools --ocr always convert -o ~/test/ebooktools/output.txt ~/test/ebooktools/pdf_to_convert.pdf
+    #
+    # Split
     # ebooktools --loglvl debug --logfmt simple split -o output_folder/ folder_with_books/
     # ebooktools --loglvl debug --logfmt simple split --fpf 3
     retcode = main()
