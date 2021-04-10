@@ -215,7 +215,7 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs
 .. _conda: https://docs.conda.io/en/latest/
-.. _convert-to-txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
+.. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
