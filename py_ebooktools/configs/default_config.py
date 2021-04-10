@@ -137,7 +137,7 @@ app = None
 # ==============
 # Some general options affect this script (especially the ones related to
 # extracting ISBNs from files, see above section 1.4).
-# isbn_return_separator = "$'\n'"
+isbn_return_separator = '\n'
 
 # 2.5 convert-to-txt
 # ==================
