@@ -74,6 +74,12 @@ logging = {
           "handlers": ["console"],
           "propagate": False
         },
+        "py_ebooktools.lib":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
         "py_ebooktools.split_into_folders":
         {
           "level": "DEBUG",
