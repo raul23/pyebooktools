@@ -20,7 +20,7 @@ import os
 from pathlib import Path
 
 # TODO: remove
-import ipdb
+# import ipdb
 
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.lib import (convert_to_txt, get_mime_type, isalnum_in_file,

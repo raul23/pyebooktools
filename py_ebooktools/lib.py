@@ -221,7 +221,7 @@ def ocr_file(input_file, output_file, mime_type,
         return convert_result_from_shell_cmd(result)
 
     # TODO: remove
-    import ipdb
+    # import ipdb
     if mime_type.startswith('application/pdf'):
         # TODO: they are using the `pdfinfo` command but it might not be present;
         # in check_file_for_corruption(), they are testing if this command exists
@@ -268,7 +268,6 @@ def ocr_file(input_file, output_file, mime_type,
     # TODO: ? assert on ocr_only_first_last_pages (should be tuple or False)
     # Pre-compute the list of pages to process based on ocr_first_pages and
     # ocr_last_pages
-    # ipdb.set_trace()
     if ocr_only_first_last_pages:
         ocr_first_pages, ocr_last_pages = \
             [int(i) for i in ocr_only_first_last_pages.split(',')]
