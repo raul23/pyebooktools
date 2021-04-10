@@ -15,7 +15,7 @@ and semi-automated organization and management of large ebook collections.
 
 `ebooktools.py`_ makes use of the following modules:
 
-- **edit_cfg.py**: edits a configuration file which can either be the main config
+- **edit_config.py**: edits a configuration file which can either be the main config
   file that contains all the options defined below or the logging config file.
 - **convert_to_txt.py**: converts the supplied file to a text file. It can optionally also
   use *OCR* for `.pdf`, `.djvu` and image files.
