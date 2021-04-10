@@ -52,7 +52,7 @@ logging_formatter = 'simple'
 
 # 1.2 Options related to extracting ISBNs from files and finding metadata by ISBN
 # ===============================================================================
-# isbn_regex = ?
+isbn_regex = '(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])'
 # isbn_blacklist_regex = '^(0123456789|([0-9xX])\2{9})$'
 # isbn_direct_grep_files = '^text/(plain|xml|html)$'
 # isbn_ignored_files = ?
@@ -136,7 +136,7 @@ app = None
 # 2.4 find-isbns
 # ==============
 # Some general options affect this script (especially the ones related to
-# extracting ISBNs from files, see above section 1.4).
+# extracting ISBNs from files, see above section 1.2).
 isbn_return_separator = '\n'
 
 # 2.5 convert-to-txt
