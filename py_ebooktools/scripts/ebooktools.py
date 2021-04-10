@@ -211,8 +211,8 @@ See subcommands below for a list of the tools that can be used.
         help='''The input file to be converted to a text file.''')
     parser_convert.add_argument(
         '-o', '--output-file', dest='output_file', metavar='OUTPUT',
-        help='''The output file text.''' + default_msg.format(
-            default_cfg.output_file))
+        help='''The output file text. By default, it is saved in the current
+        working directory.''' + default_msg.format(default_cfg.output_file))
     parser_convert.set_defaults(func=convert_to_txt.convert)
     # ==================
     # split-into-folders
