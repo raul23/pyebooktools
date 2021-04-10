@@ -211,8 +211,8 @@ def ocr_file(input_file, output_file, mime_type,
 
     # Convert djvu to tif image
     def convert_djvu_page(page, input_file, output_file):
-        # TODO: not need to specify the full path to djvused if you set
-        # correctly the right env. variables
+        # TODO: IMPORTANT not need to specify the full path to djvused if you
+        # set correctly the right env. variables
         cmd = '/Applications/DjView.app/Contents/bin/ddjvu -page={} ' \
               '-format=tif {} {}'.format(page, input_file, output_file)
         args = shlex.split(cmd)
