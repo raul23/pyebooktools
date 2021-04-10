@@ -74,6 +74,12 @@ logging = {
           "handlers": ["console"],
           "propagate": False
         },
+        "py_ebooktools.find_isbns":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
         "py_ebooktools.lib":
         {
           "level": "DEBUG",
