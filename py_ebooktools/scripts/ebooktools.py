@@ -16,7 +16,7 @@ import argparse
 # import ipdb
 
 import py_ebooktools
-from py_ebooktools import edit, convert_to_txt, split_into_folders
+from py_ebooktools import edit, convert_to_txt, find_isbns, split_into_folders
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import (get_config_dict, init_log,
                                           namespace_to_dict,
@@ -214,6 +214,16 @@ See subcommands below for a list of the tools that can be used.
         help='''The output file text. By default, it is saved in the current
         working directory.''' + default_msg.format(default_cfg.output_file))
     parser_convert.set_defaults(func=convert_to_txt.convert)
+    # ==========
+    # Find ISBNs
+    # ==========
+    # create the parser for the "find" command
+    parser_find = subparsers.add_parser(
+        'find',
+        help='''Try to find valid ISBNs inside a file or in stdin if no file
+        was specified. Searching for ISBNs in files uses progressively more
+        resource-intensive methods until some ISBNs are found.''')
+    parser_find.set_defaults(func=find_isbns.find)
     # ==================
     # split-into-folders
     # ==================
