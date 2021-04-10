@@ -16,7 +16,8 @@ import argparse
 # import ipdb
 
 import py_ebooktools
-from py_ebooktools import edit, convert_to_txt, find_isbns, split_into_folders
+from py_ebooktools import (edit_config, convert_to_txt, find_isbns,
+                           split_into_folders)
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import (get_config_dict, init_log,
                                           namespace_to_dict,
@@ -48,9 +49,9 @@ def check_positive(value):
 
 def parse_edit_args(main_cfg):
     if main_cfg.reset:
-        return edit.reset_file(main_cfg.cfg_type, main_cfg.app)
+        return edit_config.reset_file(main_cfg.cfg_type, main_cfg.app)
     else:
-        return edit.edit_file(main_cfg.cfg_type, main_cfg.app)
+        return edit_config.edit_file(main_cfg.cfg_type, main_cfg.app)
 
 
 def process_returned_values(returned_values):
