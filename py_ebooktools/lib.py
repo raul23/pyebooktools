@@ -13,8 +13,10 @@ This is a Python port of `lib.sh`_ from `ebook-tools`_ written in Shell by
 import ast
 import mimetypes
 import os
+import re
 import shlex
 import shutil
+import string
 import subprocess
 import tempfile
 
@@ -136,6 +138,32 @@ def ebook_convert(input_file, output_file):
     return convert_result_from_shell_cmd(result)
 
 
+# Searches the input string for ISBN-like sequences and removes duplicates and
+# finally validates them using is_isbn_valid() and returns them separated by
+# `isbn_ret_separator`
+# ref.: https://bit.ly/2HyLoSQ
+def find_isbns(input_str, isbn_regex, isbn_ret_separator):
+    isbns = []
+    # TODO: they are using grep -oP
+    # ref.: https://bit.ly/2HUbnIs
+    matches = re.finditer(isbn_regex, input_str)
+    for i, match in enumerate(matches):
+        match = match.group()
+        # Remove everything except numbers [0-9], 'x', and 'X'
+        # NOTE: equivalent to UNIX command `tr -c -d '0-9xX'`
+        # TODO 1: they don't remove \n in their code
+        # TODO 2: put the following in a function
+        del_tab = string.printable[10:].replace('x', '').replace('X', '')
+        tran_tab = str.maketrans('', '', del_tab)
+        match = match.translate(tran_tab)
+        # Only keep unique ISBNs
+        if match not in isbns:
+            # Validate ISBN
+            if is_isbn_valid(match):
+                isbns.append(match)
+    return isbn_ret_separator.join(isbns)
+
+
 # Using Python built-in module mimetypes
 def get_mime_type(file_path):
     return mimetypes.guess_type(file_path)[0]
@@ -178,6 +206,38 @@ def get_pages_in_pdf(file_path):
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
+
+
+# Validates ISBN-10 and ISBN-13 numbers
+# Ref.: https://bit.ly/2HO2lMD
+def is_isbn_valid(isbn):
+    # TODO: there is also a Python package for validating ISBNs (but dependency)
+    # Remove whitespaces (space, tab, newline, and so on), '-', and capitalize all
+    # characters (ISBNs can consist of numbers [0-9] and the letters [xX])
+    isbn = ''.join(isbn.split())
+    isbn = isbn.replace('-', '')
+    isbn = isbn.upper()
+
+    sum = 0
+    # Case 1: ISBN-10
+    if len(isbn) == 10:
+        for i in range(len(isbn)):
+            number = int(isbn[i])
+            if i == 9 and isbn[i] == 'X':
+                number = 10
+            sum += (number * (10 - i))
+        if sum % 11 == 0:
+            return True
+    # Case 2: ISBN-13
+    elif len(isbn) == 13:
+        if isbn[0:3] in ['978', '979']:
+            for i in range(0, len(isbn), 2):
+                sum += int(isbn[i])
+            for i in range(1, len(isbn), 2):
+                sum += (int(isbn[i])*3)
+            if sum % 10 == 0:
+                return True
+    return False
 
 
 def isalnum_in_file(file_path):
