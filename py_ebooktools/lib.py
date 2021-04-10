@@ -18,12 +18,14 @@ import shutil
 import subprocess
 import tempfile
 
+from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import init_log
 
 logger = init_log(__name__, __file__)
 
 
-# For macOS use the built-in textutil, see https://stackoverflow.com/a/44003923/14664104
+# For macOS use the built-in textutil,
+# see https://stackoverflow.com/a/44003923/14664104
 def catdoc(input_file, output_file):
     raise NotImplementedError('catdoc is not implemented')
 
@@ -45,7 +47,8 @@ def convert_result_from_shell_cmd(old_result):
             return self.__str__()
 
         def __str__(self):
-            return 'stdout={}, stderr={}, returncode={}, args={}'.format(self.stdout, self.stderr, self.returncode, self.args)
+            return 'stdout={}, stderr={}, returncode={}, args={}'.format(
+                self.stdout, self.stderr, self.returncode, self.args)
 
     new_result = Result()
 
@@ -53,7 +56,7 @@ def convert_result_from_shell_cmd(old_result):
         old_val = getattr(old_result, attr_name)
         if old_val is None:
             shell_args = getattr(old_result, 'args', None)
-            logger.debug(f'result.{attr_name} is None. Shell args: {shell_args}')
+            # logger.debug(f'result.{attr_name} is None. Shell args: {shell_args}')
         else:
             if isinstance(new_val, str):
                 try:
@@ -73,7 +76,8 @@ def convert_result_from_shell_cmd(old_result):
                     # NOTE: ValueError might happen if value consists of [A-Za-z]
                     # logger.debug('Error evaluating the value: {}'.format(old_val))
                     # logger.debug(e.__repr__())
-                    # logger.debug('Aborting evaluation of string. Will consider the string as it is')
+                    # logger.debug('Aborting evaluation of string. Will consider
+                    # the string as it is')
                     pass
             else:
                 new_val = old_val
@@ -88,26 +92,35 @@ def convert_result_from_shell_cmd(old_result):
 def convert_to_txt(input_file, output_file, mime_type):
     result = None
     if mime_type == 'application/pdf' and command_exists('pdftotext'):
-        logger.info('The file looks like a pdf, using pdftotext to extract the text')
+        logger.info('The file looks like a pdf, using pdftotext to extract '
+                    'the text')
         result = pdftotext(input_file, output_file)
     elif mime_type == 'application/msword' and command_exists('catdoc'):
         logger.info('The file looks like a doc, using catdoc to extract the text')
         result = catdoc(input_file, output_file)
-    # TODO: not need to specify the full path to djvutxt if you set correctly the right env. variables
-    elif mime_type.startswith('image/vnd.djvu') and command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
-        logger.info('The file looks like a djvu, using djvutxt to extract the text')
+    # TODO: not need to specify the full path to djvutxt if you set correctly
+    # the right env. variables
+    elif mime_type.startswith('image/vnd.djvu') and \
+            command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
+        logger.info('The file looks like a djvu, using djvutxt to extract the '
+                    'text')
         result = djvutxt(input_file, output_file)
-    elif (not mime_type.startswith('image/vnd.djvu')) and mime_type.startswith('image/'):
-        logger.info('The file looks like a normal image ({}), skipping ebook-convert usage!'.format(mime_type))
+    elif (not mime_type.startswith('image/vnd.djvu')) \
+            and mime_type.startswith('image/'):
+        logger.info('The file looks like a normal image ({}), skipping '
+                    'ebook-convert usage!'.format(mime_type))
     else:
-        logger.info("Trying to use calibre's ebook-convert to convert the {} file to .txt".format(mime_type))
+        logger.info("Trying to use calibre's ebook-convert to convert the {} "
+                    "file to .txt".format(mime_type))
         result = ebook_convert(input_file, output_file)
     return result
 
 
 def djvutxt(input_file, output_file):
-    # TODO: explain that you need to softlink djvutxt in /user/local/bin (or add in $PATH?)
-    cmd = '/Applications/DjView.app/Contents/bin/djvutxt "{}" "{}"'.format(input_file, output_file)
+    # TODO: explain that you need to softlink djvutxt in /user/local/bin (or
+    # add in $PATH?)
+    cmd = '/Applications/DjView.app/Contents/bin/djvutxt "{}" "{}"'.format(
+        input_file, output_file)
     # TODO: use genutils.run_cmd() [fix problem with 3.<6] and in other places?
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -115,7 +128,8 @@ def djvutxt(input_file, output_file):
 
 
 def ebook_convert(input_file, output_file):
-    # TODO: explain that you need to softlink convert in /user/local/bin (or add in $PATH?)
+    # TODO: explain that you need to softlink convert in /user/local/bin (or
+    # add in $PATH?)
     cmd = 'ebook-convert "{}" "{}"'.format(input_file, output_file)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -141,11 +155,14 @@ def get_mime_type_version2(file_path):
 def get_pages_in_djvu(file_path):
     # TODO: To access the djvu command line utilities and their documentation,
     # you must set the shell variable PATH and MANPATH appropriately. This can
-    # be achieved by invoking a convenient shell script hidden inside the application bundle:
+    # be achieved by invoking a convenient shell script hidden inside the
+    # application bundle:
     #    $ eval `/Applications/DjView.app/Contents/setpath.sh`
     # ref.: ReadMe from DjVuLibre
-    # TODO: not need to specify the full path to djvused if you set correctly the right env. variables
-    cmd = '/Applications/DjView.app/Contents/bin/djvused -e "n" "{}"'.format(file_path)
+    # TODO: not need to specify the full path to djvused if you set correctly
+    # the right env. variables
+    cmd = '/Applications/DjView.app/Contents/bin/djvused -e "n" "{}"'.format(
+        file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -179,39 +196,46 @@ def isalnum_in_file(file_path):
 # OCR on a pdf, djvu document or image
 # NOTE: If pdf or djvu document, then first needs to be converted to image and
 # then OCR
-def ocr_file(input_file, output_file, mime_type, ocr_command, ocr_only_first_last_pages):
+def ocr_file(input_file, output_file, mime_type,
+             ocr_command=default_cfg.ocr_command,
+             ocr_only_first_last_pages=default_cfg.ocr_only_first_last_pages):
     def convert_pdf_page(page, input_file, output_file):
         # Convert pdf to png image
         cmd = 'gs -dSAFER -q -r300 -dFirstPage={} -dLastPage={} -dNOPAUSE ' \
-              '-dINTERPOLATE -sDEVICE=png16m -sOutputFile="{}" "{}" -c quit'.format(page, page, output_file, input_file)
+              '-dINTERPOLATE -sDEVICE=png16m -sOutputFile="{}" "{}" -c quit'.format(
+            page, page, output_file, input_file)
         args = shlex.split(cmd)
-        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(args, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
         return convert_result_from_shell_cmd(result)
 
     # Convert djvu to tif image
     def convert_djvu_page(page, input_file, output_file):
-        # TODO: not need to specify the full path to djvused if you set correctly the right env. variables
+        # TODO: not need to specify the full path to djvused if you set
+        # correctly the right env. variables
         cmd = '/Applications/DjView.app/Contents/bin/ddjvu -page={} ' \
               '-format=tif {} {}'.format(page, input_file, output_file)
         args = shlex.split(cmd)
-        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(args, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
         return convert_result_from_shell_cmd(result)
 
-    num_pages = 1
-    page_convert_cmd = ''
+    # TODO: remove
+    import ipdb
     if mime_type.startswith('application/pdf'):
         # TODO: they are using the `pdfinfo` command but it might not be present;
         # in check_file_for_corruption(), they are testing if this command exists
         # but not in ocr_file()
         result = get_pages_in_pdf(input_file)
         num_pages = result.stdout
-        logger.debug('Result of {} on {}:\n{}'.format(get_pages_in_pdf.__repr__(), input_file, result))
-        logger.debug('{}'.format(result))
+        logger.debug('Result of {} on {}:\n{}'.format(
+            get_pages_in_pdf.__repr__(), input_file, result))
         page_convert_cmd = convert_pdf_page
     elif mime_type.startswith('image/vnd.djvu'):
         result = get_pages_in_djvu(input_file)
         num_pages = result.stdout
-        logger.debug('Result of {} on {}:\n{}'.format(get_pages_in_djvu.__repr__(), input_file, result))
+        logger.debug('Result of {} on {}:\n{}'.format(
+            get_pages_in_djvu.__repr__(), input_file, result))
         page_convert_cmd = convert_djvu_page
     elif mime_type.startswith('image/'):
         # TODO: in their code, they don't initialize num_pages
@@ -219,10 +243,13 @@ def ocr_file(input_file, output_file, mime_type, ocr_command, ocr_only_first_las
                     % (input_file, mime_type))
         # TODO: find out if you can call the ocr_command function without `eval`
         if ocr_command in globals():
-            result = eval('{}("{}", "{}")'.format(ocr_command, input_file, output_file))
-            logger.debug('Result of {}:\n{}'.format(ocr_command.__repr__(), result))
+            result = eval('{}("{}", "{}")'.format(
+                ocr_command, input_file, output_file))
+            logger.debug('Result of {}:\n{}'.format(
+                ocr_command.__repr__(), result))
         else:
-            logger.debug("Function {} doesn't exit. Ending ocr.".format(ocr_command))
+            logger.debug("Function {} doesn't exit. Ending ocr.".format(
+                ocr_command))
             return 1
         # TODO: they don't return anything
         return 0
@@ -234,18 +261,24 @@ def ocr_file(input_file, output_file, mime_type, ocr_command, ocr_only_first_las
         logger.debug("Function {} doesn't exit. Ending ocr.".format(ocr_command))
         return 1
 
-    logger.info('Running OCR on file %s %s pages and with mime type %s...'
-                % (input_file, num_pages, mime_type))
+    logger.info(f"Will run OCR on file '{input_file}' with {num_pages} "
+                f"page{'s' if num_pages > 1 else ''}")
+    logger.debug(f'mime type: {mime_type}')
 
-    ocr_first_pages, ocr_last_pages = [int(i) for i in ocr_only_first_last_pages.split(',')]
-    # Pre-compute the list of pages to process based on ocr_first_pages and ocr_last_pages
+    # TODO: ? assert on ocr_only_first_last_pages (should be tuple or False)
+    # Pre-compute the list of pages to process based on ocr_first_pages and
+    # ocr_last_pages
+    # ipdb.set_trace()
     if ocr_only_first_last_pages:
+        ocr_first_pages, ocr_last_pages = \
+            [int(i) for i in ocr_only_first_last_pages.split(',')]
         pages_to_process = [i for i in range(1, ocr_first_pages+1)]
-        pages_to_process.extend([i for i in range(num_pages+1-ocr_last_pages, num_pages+1)])
+        pages_to_process.extend(
+            [i for i in range(num_pages+1-ocr_last_pages, num_pages+1)])
     else:
         # `ocr_only_first_last_pages` is False
         logger.debug('ocr_only_first_last_pages is False')
-        pages_to_process = [i for i in range(0, num_pages)]
+        pages_to_process = [i for i in range(1, num_pages+1)]
     logger.debug('Pages to process: {}'.format(pages_to_process))
 
     text = ''
@@ -253,26 +286,29 @@ def ocr_file(input_file, output_file, mime_type, ocr_command, ocr_only_first_las
         # Make temporary files
         tmp_file = tempfile.mkstemp()[1]
         tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
-        logger.info('Running OCR of page %s, using tmp files %s and %s ...'
-                    % (page, tmp_file, tmp_file_txt))
+        logger.info(f'Running OCR of page {page} ...')
+        logger.debug(f'Using tmp files {tmp_file} and {tmp_file_txt}')
         # doc(pdf, djvu) --> image(png, tiff)
         result = page_convert_cmd(page, input_file, tmp_file)
-        logger.debug('Result of {}:\n{}'.format(page_convert_cmd.__repr__(), result))
+        logger.debug('Result of {}:\n{}'.format(
+            page_convert_cmd.__repr__(), result))
         # image --> text
-        result = eval('{}("{}", "{}")'.format(ocr_command, tmp_file, tmp_file_txt))
+        logger.debug(f"Running the '{ocr_command}' ...")
+        result = eval('{}("{}", "{}")'.format(
+            ocr_command, tmp_file, tmp_file_txt))
         logger.debug('Result of {}:\n{}'.format(ocr_command.__repr__(), result))
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
             # TODO: remove this debug eventually; too much data printed
-            logger.debug(data)
+            logger.debug(f"Text content of page {page}:\n{data}")
         text += data
         # Remove temporary files
-        logger.info('Cleaning up tmp files %s and %s' % (tmp_file, tmp_file_txt))
+        logger.debug('Cleaning up tmp files')
         remove_file(tmp_file)
         remove_file(tmp_file_txt)
 
     # Everything on the stdout must be copied to the output file
-    logger.info('Writing the reordered text')
+    logger.debug('Saving the text content')
     with open(output_file, 'w') as f:
         f.write(text)
     # TODO: they don't return anything
@@ -302,5 +338,9 @@ def tesseract_wrapper(input_file, output_file):
     # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
     cmd = 'tesseract "{}" stdout --psm 12'.format(input_file)
     args = shlex.split(cmd)
-    result = subprocess.run(args, stdout=open(output_file, 'w'), stderr=subprocess.PIPE, encoding='utf-8', bufsize=4096)
+    result = subprocess.run(args,
+                            stdout=open(output_file, 'w'),
+                            stderr=subprocess.PIPE,
+                            encoding='utf-8',
+                            bufsize=4096)
     return convert_result_from_shell_cmd(result)
