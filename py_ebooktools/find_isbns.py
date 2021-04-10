@@ -18,3 +18,14 @@ References
 .. _find-isbns.sh: https://github.com/na--/ebook-tools/blob/master/find-isbns.sh
 .. _na--: https://github.com/na--
 """
+# TODO: remove
+import ipdb
+
+from py_ebooktools.configs import default_config as default_cfg
+from py_ebooktools.utils.genutils import init_log
+
+logger = init_log(__name__, __file__)
+
+
+def find():
+    pass
