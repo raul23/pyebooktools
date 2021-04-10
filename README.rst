@@ -198,9 +198,9 @@ Roadmap
   - ``organize-ebooks.sh``: **not started yet**
   - ``interactive-organizer.sh``: **not started yet**
   - ``find-isbns.sh``: **working on it**
-  - ``convert-to-txt.sh``: **done**, see `convert_to_txt.py`_
+  - ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_
   - ``rename-calibre-library.sh``: **not started yet**
-  - ``split-into-folders.sh``: **done**, see `split_into_folders.py`_
+  - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
