@@ -13,11 +13,13 @@ This project (**version 0.3**) is a Python port of `ebook-tools`_ which is writt
 `na--`_. The Python script `ebooktools.py`_ is a collection of tools for automated
 and semi-automated organization and management of large ebook collections.
 
-`ebooktools.py`_ makes use of the following tools:
+`ebooktools.py`_ makes use of the following modules:
 
-- **edit**: to edit a configuration file which can either be the main config
+- **edit_cfg.py**: edits a configuration file which can either be the main config
   file that contains all the options defined below or the logging config file.
-- **split**: to split the supplied ebook files (and the accompanying metadata
+- **convert_to_txt.py**: converts the supplied file to a text file. It can optionally also
+  use *OCR* for `.pdf`, `.djvu` and image files.
+- **split_into_folders.py**: splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
 
