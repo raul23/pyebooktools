@@ -28,6 +28,7 @@ from py_ebooktools.lib import (convert_to_txt, get_mime_type, isalnum_in_file,
 from py_ebooktools.utils.genutils import init_log, touch
 
 logger = init_log(__name__, __file__)
+# We want the whole book to be converted
 OCR_ONLY_FIRST_LAST_PAGES = False
 
 
