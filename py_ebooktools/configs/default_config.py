@@ -54,11 +54,11 @@ logging_formatter = 'simple'
 # ===============================================================================
 isbn_regex = '(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])'
 # isbn_blacklist_regex = '^(0123456789|([0-9xX])\2{9})$'
-# isbn_direct_grep_files = '^text/(plain|xml|html)$'
+isbn_direct_grep_files = '^text/(plain|xml|html)$'
 # isbn_ignored_files = ?
 # isbn_grep_reorder_files = True
-# isbn_grep_rf_scan_first = 400
-# isbn_grep_rf_reverse = 50
+isbn_grep_rf_scan_first = 400
+isbn_grep_rf_reverse_last = 50
 # reorder-files-for-grep = (isbn_grep_reorder_files, isbn_grep_rf_scan_first, isbn_grep_rf_reverse
 # NOTE: If you use Calibre versions that are older than 2.84, it's required to
 # manually set the following option to an empty string.
