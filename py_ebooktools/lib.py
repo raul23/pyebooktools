@@ -138,11 +138,19 @@ def ebook_convert(input_file, output_file):
     return convert_result_from_shell_cmd(result)
 
 
+def extract_archive(input_file, output_file):
+    cmd = '7z x -o"{}" {}'.format(output_file, input_file)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
 # Searches the input string for ISBN-like sequences and removes duplicates and
 # finally validates them using is_isbn_valid() and returns them separated by
 # `isbn_ret_separator`
 # ref.: https://bit.ly/2HyLoSQ
-def find_isbns(input_str, isbn_regex, isbn_ret_separator):
+def find_isbns(input_str, isbn_regex=default_cfg.isbn_regex,
+               isbn_ret_separator=default_cfg.isbn_return_separator):
     isbns = []
     # TODO: they are using grep -oP
     # ref.: https://bit.ly/2HUbnIs
@@ -162,6 +170,56 @@ def find_isbns(input_str, isbn_regex, isbn_ret_separator):
             if is_isbn_valid(match):
                 isbns.append(match)
     return isbn_ret_separator.join(isbns)
+
+
+def get_all_isbns_from_archive(file_path):
+    all_isbns = []
+    tmpdir = tempfile.mkdtemp()
+
+    logger.info('Trying to decompress {} into tmp folder {} and recursively scan the contents'.format(file_path, tmpdir))
+    result = extract_archive(file_path, tmpdir)
+    if result.stderr:
+        logger.info('Error extracting the file (probably not an archive)! Removing tmp dir...')
+        logger.debug(result.stderr)
+        remove_tree(tmpdir)
+        return ''
+
+    logger.info('Archive extracted successfully in {}, scanning contents recursively...'.format(tmpdir))
+    # TODO: ref.: https://stackoverflow.com/a/2759553
+    # TODO: ignore .DS_Store
+    for path, dirs, files in os.walk(tmpdir, topdown=False):
+        # TODO: they use flag options for sorting the directory contents
+        # see https://github.com/na--/ebook-tools#miscellaneous-options [FILE_SORT_FLAGS]
+        for file_to_check in files:
+            # TODO: add debug_prefixer
+            file_to_check = os.path.join(path, file_to_check)
+            isbns = search_file_for_isbns(file_to_check)
+            if isbns:
+                logger.info('Found ISBNs {}!'.format(isbns))
+                # TODO: two prints, one for stderror and the other for stdout
+                logger.info(isbns.replace(isbn_ret_separator, '\n'))
+                for isbn in isbns.split(','):
+                    if isbn not in all_isbns:
+                        all_isbns.append(isbn)
+            logger.info('Removing {}...'.format(file_to_check))
+            remove_file(file_to_check)
+        if len(os.listdir(path)) == 0 and path != tmpdir:
+            os.rmdir(path)
+        elif path == tmpdir:
+            if len(os.listdir(tmpdir)) == 1 and '.DS_Store' in tmpdir:
+                remove_file(os.path.join(tmpdir, '.DS_Store'))
+    logger.info('Removing temporary folder {} (should be empty)...'.format(tmpdir))
+    if is_dir_empty(tmpdir):
+        remove_tree(tmpdir)
+    return isbn_ret_separator.join(all_isbns)
+
+
+def get_ebook_metadata(file_path):
+    # TODO: add `ebook-meta` in PATH, right now it is only working for mac
+    cmd = '/Applications/calibre.app/Contents/MacOS/ebook-meta "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
 
 
 # Using Python built-in module mimetypes
@@ -206,6 +264,12 @@ def get_pages_in_pdf(file_path):
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
+
+
+# Checks if directory is empty
+# ref.: https://stackoverflow.com/a/47363995
+def is_dir_empty(path):
+    return next(os.scandir(path), None) is None
 
 
 # Validates ISBN-10 and ISBN-13 numbers
@@ -390,6 +454,178 @@ def remove_file(file_path):
     except OSError as e:
         print("Error: %s - %s." % (e.filename, e.strerror))
         return 1
+
+
+# Recursively delete a directory tree, including the parent directory
+# ref.: https://stackoverflow.com/a/186236
+def remove_tree(file_path):
+    # TODO:
+    try:
+        shutil.rmtree(file_path)
+        return 0
+    except Exception as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+        return 1
+
+
+# If `isbn_grep_reorder_files` is enabled, reorders the specified file according
+# to the values of `isbn_grep_rf_scan_first` and `isbn_grep_rf_reverse_last`
+# ref.: https://bit.ly/2JuaEKw
+def reorder_file_content(
+        file_path,
+        isbn_grep_rf_scan_first=default_cfg.isbn_grep_rf_scan_first,
+        isbn_grep_rf_reverse_last=default_cfg.isbn_grep_rf_reverse_last):
+    if isbn_grep_reorder_files:
+        logger.info('Reordering input file (if possible), read first '
+                    'isbn_grep_rf_scan_first lines normally, then read last '
+                    'isbn_grep_rf_reverse_last lines in reverse and then read '
+                    'the rest')
+        # TODO: try out with big file, more than 800 pages (approx. 73k lines)
+        # TODO: see alternatives for reading big file @ https://stackoverflow.com/a/4999741 (mmap),
+        # https://stackoverflow.com/a/24809292 (linecache), https://stackoverflow.com/a/42733235 (buffer)
+        with open(file_path, 'r') as f:
+            # Read whole file as a list of lines
+            # TODO: do we remove newlines? e.g. with f.read().rstrip("\n")
+            data = f.readlines()
+            # Read the first ISBN_GREP_RF_SCAN_FIRST lines of the file text
+            first_part = data[:isbn_grep_rf_scan_first]
+            del data[:isbn_grep_rf_scan_first]
+            # Read the last part and reverse it
+            last_part = data[-isbn_grep_rf_reverse_last:]
+            if last_part:
+                last_part.reverse()
+                del data[-isbn_grep_rf_reverse_last:]
+            # Read the middle part of the file text
+            middle_part = data
+            # TODO: try out with large lists, if efficiency is a concern then
+            # check itertools.chain
+            # ref.: https://stackoverflow.com/a/4344735
+            # Concatenate the three parts: first, last part (reversed), and middle part
+            data = first_part + last_part + middle_part
+            data = "".join(data)
+    else:
+        logger.info('Since isbn_grep_reorder_files is False, input file will not be reordered')
+        with open(file_path, 'r') as f:
+            # TODO: do we remove newlines? e.g. with f.read().rstrip("\n")
+            # Read whole content of file as a string
+            data = f.read()
+    return data
+
+
+# Tries to find ISBN numbers in the given ebook file by using progressively
+# more "expensive" tactics.
+# These are the steps:
+# 1. Check the supplied file name for ISBNs (the path is ignored)
+# 2. If the MIME type of the file matches `isbn_direct_grep_files`, search the
+#    file contents directly for ISBNs
+# 3. If the MIME type matches `isbn_ignored_files`, the function returns early
+#    with no results
+# 4. Check the file metadata from calibre's `ebook-meta` for ISBNs
+# 5. Try to extract the file as an archive with `7z`; if successful,
+#    recursively call search_file_for_isbns for all the extracted files
+# 6. If the file is not an archive, try to convert it to a .txt file
+#    via convert_to_txt()
+# 7. If OCR is enabled and convert_to_txt() fails or its result is empty,
+#    try OCR-ing the file. If the result is non-empty but does not contain
+#    ISBNs and OCR_ENABLED is set to "always", run OCR as well.
+# ref.: https://bit.ly/2r28US2
+def search_file_for_isbns(file_path, isbn_direct_grep_files=default_cfg.isbn_direct_grep_files):
+    logger.info('Searching file {} for ISBN numbers...'.format(file_path))
+    # Step 1: check the filename for ISBNs
+    basename = os.path.basename(file_path)
+    # TODO: make sure that we return an empty string when we can't find ISBNs
+    isbns = find_isbns(basename)
+    if isbns:
+        logger.info('Extracted ISBNs {} from the file name!'.format(isbns))
+        return isbns
+
+    # Steps 2-3: (2) if valid MIME type, search file contents for isbns and
+    # (3) if invalid MIME type, exit without results
+    mime_type = get_mime_type(file_path)
+    if re.match(isbn_direct_grep_files, mime_type):
+        logger.info('Ebook is in text format, trying to find ISBN directly')
+        data = reorder_file_content(file_path)
+        isbns = find_isbns(data)
+        if isbns:
+            logger.info('Extracted ISBNs {} from the text file contents!'.format(isbns))
+        else:
+            logger.info('Did not find any ISBNs')
+        return isbns
+    elif re.match(isbn_ignored_files, mime_type):
+        logger.info('The file type in the blacklist, ignoring...')
+        return isbns
+
+    # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
+    logger.info('Ebook metadata:')
+    ebookmeta = get_ebook_metadata(file_path)
+    isbns = find_isbns(ebookmeta.stdout)
+    if isbns:
+        logger.info('Extracted ISBNs {} from calibre ebook metadata!'.format(isbns))
+        return isbns
+
+    # Step 5: decompress with 7z
+    isbns = get_all_isbns_from_archive(file_path)
+    if isbns:
+        logger.info('Extracted ISBNs {} from the archive file'.format(isbns))
+        return isbns
+
+    # Step 6: convert file to .txt
+    try_ocr = False
+    tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
+    logger.info('Converting ebook to text format in file {}...'.format(tmp_file_txt))
+
+    result = convert_to_txt(file_path, tmp_file_txt, mime_type)
+    if result.returncode == 0:
+        logger.info('Conversion to text was successful, checking the result...')
+        with open(tmp_file_txt, 'r') as f:
+            data = f.read()
+        # TODO: debug, to remove
+        # data = '*'
+        if not re.search('[A-Za-z0-9]+', data):
+            logger.info('The converted txt with size {} bytes does not seem to '
+                        'contain text'.format(os.stat(tmp_file_txt).st_size))
+            logger.debug('First 1000 characters:\n{}'.format(data[:1000]))
+            try_ocr = True
+        else:
+            data = reorder_file_content(tmp_file_txt)
+            isbns = find_isbns(data)
+            if isbns:
+                logger.info('Text output contains ISBNs {}!'.format(isbns))
+            elif ocr_enabled == 'always':
+                logger.info('We will try OCR because the successfully converted '
+                            'text did not have any ISBNs')
+                try_ocr = True
+            else:
+                logger.info('Did not find any ISBNs and will NOT try OCR')
+    else:
+        logger.info('There was an error converting the book to txt format')
+        try_ocr = True
+
+    # Step 7: OCR the file
+    # TODO: debug, to remove
+    # config.config_dict['general-options']['ocr_enabled'] = True
+    if not isbns and ocr_enabled and try_ocr:
+        logger.info('Trying to run OCR on the file...')
+        if ocr_file(file_path, tmp_file_txt, mime_type) == 0:
+            logger.info('OCR was successful, checking the result...')
+            data = reorder_file_content(tmp_file_txt)
+            isbns = find_isbns(data)
+            if isbns:
+                logger.info('Text output contains ISBNs {}!'.format(isbns))
+            else:
+                logger.info('Did not find any ISBNs in the OCR output')
+        else:
+            logger.info('There was an error while running OCR!')
+
+    logger.info('Removing {}...'.format(tmp_file_txt))
+    remove_file(tmp_file_txt)
+
+    if isbns:
+        logger.info('Returning the found ISBNs {}!'.format(isbns))
+    else:
+        logger.info('Could not find any ISBNs in {} :('.format(file_path))
+
+    return isbns
 
 
 # OCR: convert image to text
