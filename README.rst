@@ -95,7 +95,7 @@ Options for OCR
   default value ``False``
 * ``--ocrop <value>``, ``--ocr-only-first-last-pages <value>``; config variable 
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for
-  `convert-to-txt.py`_ where it's ``False``)
+  `convert_to_txt.py`_ where it's ``False``)
 
 Options related to extracting and searching for non-ISBN metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

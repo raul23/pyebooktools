@@ -28,6 +28,8 @@ from py_ebooktools.lib import (convert_to_txt, get_mime_type, isalnum_in_file,
 from py_ebooktools.utils.genutils import init_log, touch
 
 logger = init_log(__name__, __file__)
+# We want the whole book to be converted
+OCR_ONLY_FIRST_LAST_PAGES = False
 
 
 def convert(input_file, output_file=default_cfg.output_file,
@@ -54,7 +56,7 @@ def convert(input_file, output_file=default_cfg.output_file,
     if ocr_enabled == 'always':
         logger.debug("OCR=always, first try OCR then conversion")
         if ocr_file(input_file, output_file, mime_type,
-                    ocr_only_first_last_pages=False):
+                    ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES):
             logger.warning("OCR failed! Will try conversion...")
             result = convert_to_txt(input_file, output_file, mime_type)
             check_conversion = True
@@ -70,7 +72,7 @@ def convert(input_file, output_file=default_cfg.output_file,
         else:
             logger.warning("Conversion failed! Will try OCR...")
             if ocr_file(input_file, output_file, mime_type,
-                        ocr_only_first_last_pages=False):
+                        ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES):
                 logger.warning("OCR failed!")
                 logger.warning(f"File couldn't be converted to txt: {input_file}")
                 return 1
