@@ -1,15 +1,15 @@
 """Options for the script ebooktools
 
-ebooktools is a Python port of the shell scripts developed by na-- for
+`ebooktools`_ is a Python port of the shell scripts developed by na-- for
 organizing and managing ebook collections. See
-https://github.com/na--/ebook-tools.
+`<https://github.com/na--/ebook-tools>`__.
 
 The options are described in full detail in the project's README @
-https://github.com/raul23/python-ebook-tools
+`<https://github.com/raul23/python-ebook-tools>`__
 
-IMPORTANT: these options can also be passed to the script ebooktools via
-command-line parameters (Run `ebooktools -h` for a detailed list of the options).
-Also, command-line parameters supersede the variables defined in this
+IMPORTANT: these options can also be passed to the Python script `ebooktools`_
+via command-line parameters (Run `ebooktools -h` for a detailed list of the
+options). Also, command-line parameters supersede the variables defined in this
 configuration file. Most parameters are not required and if nothing is
 specified, the default value will be used.
 
@@ -31,6 +31,10 @@ The options are separated based on sections:
   2.5 convert-to-txt
   2.6 rename-calibre-library
   2.7 split-into-folders
+
+References
+----------
+.. _ebooktools: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 """
 import os
 
@@ -45,24 +49,25 @@ import os
 quiet = False
 verbose = False
 dry_run = False
-# symlink_only = False
-# keep_metadata = False
+symlink_only = False
+keep_metadata = False
 logging_level = 'info'
 logging_formatter = 'simple'
 
 # 1.2 Options related to extracting ISBNs from files and finding metadata by ISBN
 # ===============================================================================
 isbn_regex = '(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])'
-# isbn_blacklist_regex = '^(0123456789|([0-9xX])\2{9})$'
+isbn_blacklist_regex = '^(0123456789|([0-9xX])\2{9})$'
 isbn_direct_grep_files = '^text/(plain|xml|html)$'
-# isbn_ignored_files = ?
-# isbn_grep_reorder_files = True
+isbn_ignored_files = '^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$'
+isbn_grep_reorder_files = True
 isbn_grep_rf_scan_first = 400
 isbn_grep_rf_reverse_last = 50
-# reorder-files-for-grep = (isbn_grep_reorder_files, isbn_grep_rf_scan_first, isbn_grep_rf_reverse
+# False to disable the functionality or first_lines,last_lines to enable it
+reorder_files_for_grep = (isbn_grep_rf_scan_first, isbn_grep_rf_reverse_last)
 # NOTE: If you use Calibre versions that are older than 2.84, it's required to
 # manually set the following option to an empty string.
-# metadata_fetch_order = ['Goodreads', 'Amazon.com', 'Google', 'ISBNDB', 'WorldCat xISBN', 'OZON.ru']
+isbn_metadata_fetch_order = ['Goodreads', 'Amazon.com', 'Google', 'ISBNDB', 'WorldCat xISBN', 'OZON.ru']
 
 # 1.3 Options for OCR
 # ===================
@@ -81,7 +86,7 @@ ocr_command = 'tesseract_wrapper'
 output_filename_template = "${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] " \
                            "- }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}" \
                            "${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}"
-# If keep_metadata is enabled, this is the extension of the additional
+# If `keep_metadata` is enabled, this is the extension of the additional
 # metadata file that is saved next to each newly renamed file.
 output_metadata_extension = 'meta'
 
@@ -136,7 +141,7 @@ app = None
 # 2.4 find-isbns
 # ==============
 # Some general options affect this script (especially the ones related to
-# extracting ISBNs from files, see above section 1.2).
+# extracting ISBNs from files, see section 1.2 above).
 isbn_return_separator = '\n'
 
 # 2.5 convert-to-txt
