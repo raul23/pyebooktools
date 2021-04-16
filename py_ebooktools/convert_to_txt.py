@@ -32,14 +32,12 @@ logger = init_log(__name__, __file__)
 # =====================
 # Default config values
 # =====================
-OCR_ENABLED = default_cfg.ocr_enabled
 # We want the whole book to be converted
 OCR_ONLY_FIRST_LAST_PAGES = False
-OUTPUT_FILE = default_cfg.output_file
 
 
-def convert(input_file, output_file=OUTPUT_FILE, ocr_enabled=OCR_ENABLED,
-            **kwargs):
+def convert(input_file, ocr_enabled=default_cfg.ocr_enabled,
+            output_file=default_cfg.output_file, **kwargs):
     # TODO: Path(input_file)
     # TODO: check that input_file exists
     output_file = Path(output_file)
