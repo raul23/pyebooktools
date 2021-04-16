@@ -13,6 +13,7 @@ References
 """
 import argparse
 
+# TODO: remove
 # import ipdb
 
 import py_ebooktools
@@ -25,9 +26,24 @@ from py_ebooktools.utils.genutils import (get_config_dict, init_log,
 
 logger = init_log(__name__, __file__)
 
-# ==============
-# Default values
-# ==============
+# =====================
+# Default config values
+# =====================
+FILES_PER_FOLDER = default_cfg.files_per_folder
+FOLDER_PATTERN = default_cfg.folder_pattern
+ISBN_REGEX = default_cfg.isbn_regex
+LOGGING_FORMATTER = default_cfg.logging_formatter
+LOGGING_LEVEL = default_cfg.logging_level
+OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
+OUTPUT_FILE = default_cfg.output_file
+OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
+OUTPUT_FOLDER = default_cfg.output_folder
+OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
+START_NUMBER = default_cfg.start_number
+
+# ====================
+# Other default values
+# ====================
 _LOG_CFG = "log"
 _MAIN_CFG = "main"
 
@@ -62,7 +78,7 @@ def process_returned_values(returned_values):
     def log_opts_overriden(opts_overriden, msg, log_level='info'):
         nb_items = len(opts_overriden)
         for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
-            msg += "\t {}: {} --> {}".format(cfg_name, old_v, new_v)
+            msg += f'\t {cfg_name}: {old_v} --> {new_v}'
             if i + 1 < nb_items:
                 msg += "\n"
         getattr(logger, log_level)(msg)
@@ -78,8 +94,8 @@ def process_returned_values(returned_values):
     # Process 3rd returned values: arguments not found in config file
     """
     if args_not_found_in_config:
-        msg = "Command-line arguments not found in config file: " \
-              "\n\t{}".format(args_not_found_in_config)
+        msg = 'Command-line arguments not found in config file: ' \
+              f'\n\t{args_not_found_in_config}'
         logger.debug(msg)
     """
 
@@ -111,7 +127,7 @@ See subcommands below for a list of the tools that can be used.
     # ===============
     # TODO: package name too? instead of program name
     parser.add_argument('--version', action='version',
-                        version='%(prog)s v{}'.format(py_ebooktools.__version__))
+                        version=f'%(prog)s v{py_ebooktools.__version__}')
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="Enable quiet mode, i.e. nothing will be printed.")
     parser.add_argument("-v", "--verbose", action="store_true",
@@ -130,12 +146,23 @@ See subcommands below for a list of the tools that can be used.
         '--loglvl', dest='logging_level',
         choices=['debug', 'info', 'warning', 'error'],
         help='Set logging level for all loggers.'
-             + default_msg.format(default_cfg.logging_level))
+             + default_msg.format(LOGGING_LEVEL))
     parser.add_argument(
         '--logfmt', dest='logging_formatter',
         choices=['console', 'simple', 'only_msg'],
         help='Set logging formatter for all loggers.'
-             + default_msg.format(default_cfg.logging_formatter))
+             + default_msg.format(LOGGING_FORMATTER))
+    # ===========================================================================
+    # Options related to extracting ISBNs from files and finding metadata by ISBN
+    # ===========================================================================
+    parser_isbns_group = parser.add_argument_group(
+        title='Options related to extracting ISBNS from files and finding '
+              'metadata by ISBN')
+    # TODO: add look-ahead and look-behind info, see https://bit.ly/2OYsY76
+    parser_isbns_group.add_argument(
+        "-i", "--isbn-regex", dest='isbn_regex',
+        help='''This is the regular expression used to match ISBN-like
+        numbers in the supplied books.''' + default_msg.format(ISBN_REGEX))
     # ===============
     # Options for OCR
     # ===============
@@ -151,7 +178,7 @@ See subcommands below for a list of the tools that can be used.
         dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
         help='''Value (n,m) instructs the scripts to convert only the first n
         and last m pages when OCR-ing ebooks.'''
-             + default_msg.format(default_cfg.ocr_only_first_last_pages))
+             + default_msg.format(OCR_ONLY_FIRST_LAST_PAGES))
     # =============================================
     # Options related to the input and output files
     # =============================================
@@ -163,13 +190,13 @@ See subcommands below for a list of the tools that can be used.
         help='''This specifies how the filenames of the organized files will
         look. It is a bash string that is evaluated so it can be very flexible
         (and also potentially unsafe).''' +
-             default_msg.format(default_cfg.output_filename_template))
+             default_msg.format(OUTPUT_FILENAME_TEMPLATE))
     parser_input_output_group.add_argument(
         '--ome', '--output-metadata-extension', dest='output_metadata_extension',
         metavar='EXTENSION',
         help='''If keep_metadata is enabled, this is the extension of the
         additional metadata file that is saved next to each newly renamed file.'''
-             + default_msg.format(default_cfg.output_metadata_extension))
+             + default_msg.format(OUTPUT_METADATA_EXTENSION))
     # ===========
     # Subcommands
     # ===========
@@ -213,7 +240,7 @@ See subcommands below for a list of the tools that can be used.
     parser_convert.add_argument(
         '-o', '--output-file', dest='output_file', metavar='OUTPUT',
         help='''The output file text. By default, it is saved in the current
-        working directory.''' + default_msg.format(default_cfg.output_file))
+        working directory.''' + default_msg.format(OUTPUT_FILE))
     parser_convert.set_defaults(func=convert_to_txt.convert)
     # ==========
     # Find ISBNs
@@ -249,22 +276,22 @@ See subcommands below for a list of the tools that can be used.
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         help='''The output folder in which all the new consecutively named
         folders will be created. The default is the current working
-        directory.''' + default_msg.format(default_cfg.output_folder))
+        directory.''' + default_msg.format(OUTPUT_FOLDER))
     parser_split_into_folders.add_argument(
         '-s', '--start-number', dest='start_number', type=int,
         help='''The number of the first folder.'''
-             + default_msg.format(default_cfg.start_number))
+             + default_msg.format(START_NUMBER))
     parser_split_into_folders.add_argument(
         '-f', '--folder-pattern', dest='folder_pattern', metavar='PATTERN',
         help='''The print format string that specifies the pattern with which
         new folders will be created. By default it creates folders like
         00000000, 00001000, 00002000, .....'''
-             + default_msg.format(default_cfg.folder_pattern).replace('%', '%%'))
+             + default_msg.format(FOLDER_PATTERN).replace('%', '%%'))
     parser_split_into_folders.add_argument(
         '--fpf', '--files-per-folder', dest='files_per_folder',
         type=check_positive,
         help='''How many files should be moved to each folder.'''
-             + default_msg.format(default_cfg.files_per_folder))
+             + default_msg.format(FILES_PER_FOLDER))
     parser_split_into_folders.set_defaults(func=split_into_folders.split)
     return parser
 
@@ -304,7 +331,7 @@ if __name__ == '__main__':
     # ebooktools --loglvl debug --logfmt simple split -o output_folder/ folder_with_books/
     # ebooktools --loglvl debug --logfmt simple split --fpf 3
     retcode = main()
-    msg = "Program exited with {}".format(retcode)
+    msg = f'Program exited with {retcode}'
     if retcode == 1:
         logger.error(msg)
     else:
