@@ -667,8 +667,6 @@ def search_file_for_isbns(file_path,
         try_ocr = True
 
     # Step 7: OCR the file
-    # TODO: debug, to remove
-    # config.config_dict['general-options']['ocr_enabled'] = True
     if not isbns and ocr_enabled and try_ocr:
         logger.info('Trying to run OCR on the file...')
         if ocr_file(file_path, tmp_file_txt, mime_type, ocr_command,
