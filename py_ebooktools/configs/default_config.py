@@ -57,14 +57,13 @@ logging_formatter = 'simple'
 # 1.2 Options related to extracting ISBNs from files and finding metadata by ISBN
 # ===============================================================================
 isbn_regex = '(?<![0-9])(-?9-?7[789]-?)?((-?[0-9]-?){9}[0-9xX])(?![0-9])'
-isbn_blacklist_regex = '^(0123456789|([0-9xX])\2{9})$'
+isbn_blacklist_regex = '^(0123456789|([0-9xX])\\2{9})$'
 isbn_direct_grep_files = '^text/(plain|xml|html)$'
 isbn_ignored_files = '^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$'
-isbn_grep_reorder_files = True
 isbn_grep_rf_scan_first = 400
 isbn_grep_rf_reverse_last = 50
 # False to disable the functionality or first_lines,last_lines to enable it
-reorder_files_for_grep = (isbn_grep_rf_scan_first, isbn_grep_rf_reverse_last)
+isbn_grep_reorder_files = (isbn_grep_rf_scan_first, isbn_grep_rf_reverse_last)
 # NOTE: If you use Calibre versions that are older than 2.84, it's required to
 # manually set the following option to an empty string.
 isbn_metadata_fetch_order = ['Goodreads', 'Amazon.com', 'Google', 'ISBNDB', 'WorldCat xISBN', 'OZON.ru']
@@ -142,7 +141,7 @@ app = None
 # ==============
 # Some general options affect this script (especially the ones related to
 # extracting ISBNs from files, see section 1.2 above).
-isbn_return_separator = '\n'
+isbn_ret_separator = '\n'
 
 # 2.5 convert-to-txt
 # ==================
