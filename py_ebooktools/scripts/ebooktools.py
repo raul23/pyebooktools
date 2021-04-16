@@ -32,6 +32,8 @@ logger = init_log(__name__, __file__)
 FILES_PER_FOLDER = default_cfg.files_per_folder
 FOLDER_PATTERN = default_cfg.folder_pattern
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
+ISBN_DIRECT_GREP_FILES = default_cfg.isbn_direct_grep_files
+ISBN_IGNORED_FILES = default_cfg.isbn_ignored_files
 ISBN_REGEX = default_cfg.isbn_regex
 LOGGING_FORMATTER = default_cfg.logging_formatter
 LOGGING_LEVEL = default_cfg.logging_level
@@ -144,12 +146,12 @@ See subcommands below for a list of the tools that can be used.
         (i.e. descending) order. By default, they are sorted in ascending
         order.''')
     parser.add_argument(
-        '--loglvl', dest='logging_level',
+        '--log-level', dest='logging_level',
         choices=['debug', 'info', 'warning', 'error'],
         help='Set logging level for all loggers.'
              + default_msg.format(LOGGING_LEVEL))
     parser.add_argument(
-        '--logfmt', dest='logging_formatter',
+        '--log-format', dest='logging_formatter',
         choices=['console', 'simple', 'only_msg'],
         help='Set logging formatter for all loggers.'
              + default_msg.format(LOGGING_FORMATTER))
@@ -172,6 +174,19 @@ See subcommands below for a list of the tools that can be used.
         discarded. The idea is to ignore technically valid but probably wrong
         numbers like 0123456789, 0000000000, 1111111111, etc..'''
              + default_msg.format(ISBN_BLACKLIST_REGEX))
+    parser_isbns_group.add_argument(
+        "--isbn-direct-grep-files", dest='isbn_direct_grep_files',
+        help='''This is a regular expression that is matched against the MIME
+        type of the searched files. Matching files are searched directly for
+        ISBNs, without converting or OCR-ing them to .txt first.'''
+             + default_msg.format(ISBN_DIRECT_GREP_FILES))
+    parser_isbns_group.add_argument(
+        "--isbn-ignored-files", dest='isbn_ignored_files',
+        help='''This is a regular expression that is matched against the MIME
+        type of the searched files. Matching files are not searched for ISBNs
+        beyond their filename. By default, it tries to make the scripts ignore
+        .gif and .svg images, audio, video and executable files and fonts.'''
+             + default_msg.format(ISBN_IGNORED_FILES))
     # ===============
     # Options for OCR
     # ===============
