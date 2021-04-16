@@ -327,6 +327,9 @@ if __name__ == '__main__':
     # Convert with debug and ocr=always
     # ebooktools --ocr always convert -o ~/test/ebooktools/output.txt ~/test/ebooktools/pdf_to_convert.pdf
     #
+    # Find
+    # ebooktools --loglvl debug --logfmt console find "978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111"
+    #
     # Split
     # ebooktools --loglvl debug --logfmt simple split -o output_folder/ folder_with_books/
     # ebooktools --loglvl debug --logfmt simple split --fpf 3
