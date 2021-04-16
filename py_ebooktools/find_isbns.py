@@ -28,31 +28,17 @@ from py_ebooktools.utils.genutils import init_log
 
 logger = init_log(__name__, __file__)
 
-# =====================
-# Default config values
-# =====================
-ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
-ISBN_DIRECT_GREP_FILES = default_cfg.isbn_direct_grep_files
-ISBN_GREP_REORDER_FILES = default_cfg.isbn_grep_reorder_files
-ISBN_GREP_RF_REVERSE_LAST = default_cfg.isbn_grep_rf_reverse_last
-ISBN_GREP_RF_SCAN_FIRST = default_cfg.isbn_grep_rf_scan_first
-ISBN_IGNORED_FILES = default_cfg.isbn_ignored_files
-ISBN_REGEX = default_cfg.isbn_regex
-ISBN_RET_SEPARATOR = default_cfg.isbn_ret_separator
-OCR_COMMAND = default_cfg.ocr_command
-OCR_ENABLED = default_cfg.ocr_enabled
-OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
 
-
-def find(input_data, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
-         isbn_direct_grep_files=ISBN_DIRECT_GREP_FILES,
-         isbn_grep_reorder_files=ISBN_GREP_REORDER_FILES,
-         isbn_grep_rf_reverse_last=ISBN_GREP_RF_REVERSE_LAST,
-         isbn_grep_rf_scan_first=ISBN_GREP_RF_SCAN_FIRST,
-         isbn_ignored_files=ISBN_IGNORED_FILES,
-         isbn_regex=ISBN_REGEX, isbn_ret_separator=ISBN_RET_SEPARATOR,
-         ocr_command=OCR_COMMAND, ocr_enabled=OCR_ENABLED,
-         ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES, **kwargs):
+def find(input_data, isbn_blacklist_regex=default_cfg.isbn_blacklist_regex,
+         isbn_direct_grep_files=default_cfg.isbn_direct_grep_files,
+         isbn_grep_reorder_files=default_cfg.isbn_grep_reorder_files,
+         isbn_grep_rf_reverse_last=default_cfg.isbn_grep_rf_reverse_last,
+         isbn_grep_rf_scan_first=default_cfg.isbn_grep_rf_scan_first,
+         isbn_ignored_files=default_cfg.isbn_ignored_files,
+         isbn_regex=default_cfg.isbn_regex,
+         isbn_ret_separator=default_cfg.isbn_ret_separator,
+         ocr_command=default_cfg.ocr_command, ocr_enabled=default_cfg.ocr_enabled,
+         ocr_only_first_last_pages=default_cfg.ocr_only_first_last_pages, **kwargs):
     # ipdb.set_trace()
     # Check if input data is a file path or a string
     if Path(input_data).is_file():
