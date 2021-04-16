@@ -43,13 +43,19 @@ def find(input_data, isbn_blacklist_regex=default_cfg.isbn_blacklist_regex,
     # Check if input data is a file path or a string
     if Path(input_data).is_file():
         logger.debug(f'The input data is a file path: {input_data}')
-        search_file_for_isbns(input_data, isbn_direct_grep_files,
-                              isbn_grep_reorder_files, isbn_grep_rf_reverse_last,
-                              isbn_grep_rf_scan_first, isbn_ignored_files,
-                              isbn_regex, isbn_ret_separator, ocr_command,
-                              ocr_enabled, ocr_only_first_last_pages)
+        isbns = search_file_for_isbns(input_data, isbn_blacklist_regex,
+                                      isbn_direct_grep_files,
+                                      isbn_grep_reorder_files,
+                                      isbn_grep_rf_reverse_last,
+                                      isbn_grep_rf_scan_first,
+                                      isbn_ignored_files, isbn_regex,
+                                      isbn_ret_separator, ocr_command,
+                                      ocr_enabled, ocr_only_first_last_pages)
     else:
         logger.debug(f'The input data is a string: {input_data}')
         isbns = find_isbns(input_data, isbn_blacklist_regex, isbn_regex,
                            isbn_ret_separator)
-        print(isbns)
+    if isbns:
+        logger.info(f"Extracted ISBNs:\n{isbns}")
+    else:
+        logger.info("No ISBNs could be found!")
