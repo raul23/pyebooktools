@@ -31,6 +31,7 @@ logger = init_log(__name__, __file__)
 # =====================
 FILES_PER_FOLDER = default_cfg.files_per_folder
 FOLDER_PATTERN = default_cfg.folder_pattern
+ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
 ISBN_REGEX = default_cfg.isbn_regex
 LOGGING_FORMATTER = default_cfg.logging_formatter
 LOGGING_LEVEL = default_cfg.logging_level
@@ -163,6 +164,14 @@ See subcommands below for a list of the tools that can be used.
         "-i", "--isbn-regex", dest='isbn_regex',
         help='''This is the regular expression used to match ISBN-like
         numbers in the supplied books.''' + default_msg.format(ISBN_REGEX))
+    parser_isbns_group.add_argument(
+        "--isbn-blacklist-regex", dest='isbn_blacklist_regex',
+        help='''Any ISBNs that were matched by the ISBN_REGEX above and pass
+        the ISBN validation algorithm are normalized and passed through this
+        regular expression. Any ISBNs that successfully match against it are
+        discarded. The idea is to ignore technically valid but probably wrong
+        numbers like 0123456789, 0000000000, 1111111111, etc..'''
+             + default_msg.format(ISBN_BLACKLIST_REGEX))
     # ===============
     # Options for OCR
     # ===============
