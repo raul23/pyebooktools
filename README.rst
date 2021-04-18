@@ -579,14 +579,14 @@ calibre's ``ebook-convert`` is used for the conversion.
 
 Example 5: find ISBNs in a string
 ---------------------------------
-Find ISBNs in the string ``978-3-319-667744 978-1-292-02608-4 0000000000 
-0123456789 1111111111``:
+Find ISBNs in the string ``'978-3-319-667744 978-1-292-02608-4 0000000000 
+0123456789 1111111111'``:
 
 .. code-block:: terminal
 
-   $ ebooktools find "978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111"
+   $ ebooktools find '978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111'
 
-Note the input string enclosed within double quotes.
+Note the input string enclosed within single quotes.
 
 **Output:**
 
