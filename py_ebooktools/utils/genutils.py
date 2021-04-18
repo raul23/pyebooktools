@@ -43,7 +43,7 @@ def get_config_filepath(cfg_type='main'):
 
 def get_settings(conf, cfg_type):
     if cfg_type == 'log':
-        set_logging_field_width(conf['logging'])
+        # set_logging_field_width(conf['logging'])
         return conf['logging']
     elif cfg_type == 'main':
         _settings = {}
@@ -259,7 +259,7 @@ def run_cmd(cmd):
 
 
 def setup_log(quiet=False, verbose=False, logging_level=None,
-              logging_formatter=None):
+              logging_formatter=None, subcommand=None):
     package_path = os.getcwd()
     log_filepath = get_logging_filepath()
     main_cfg_msg = f"Main config path: {get_main_config_filepath()}"
@@ -279,6 +279,14 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
                 set_logging_level(log_dict, level=logging_level)
         if logging_formatter:
             set_logging_formatter(log_dict, formatter=logging_formatter)
+        if subcommand:
+            size_longest_name = len('scripts.ebooktools')
+            for log_name, _ in log_dict['loggers'].items():
+                if log_name.startswith('py_ebooktools') and subcommand in log_name:
+                    size_longest_name = max(size_longest_name, len(log_name))
+        else:
+            size_longest_name = None
+        set_logging_field_width(log_dict, size_longest_name)
         # Load logging config dict
         logging.config.dictConfig(log_dict)
     # =============
