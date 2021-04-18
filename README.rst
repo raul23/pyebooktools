@@ -319,6 +319,15 @@ for running a given subcommand is the following:
 Where ``[<OPTIONS>``] include general options and options specific to the subcommand
 as shown below.
 
+All subcommands are affected by the following global options:
+
+* `-h`_
+* `-v`_
+* `q`_
+* `--verbose`_
+* `--log-level`_
+* `--log-format`_
+
 edit [<OPTIONS>] {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
@@ -475,6 +484,12 @@ details see the `LICENSE`_ file in the repository.
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _Script usage and options: #script-usage-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
+.. _-h: #general-control-flags
+.. _-v: #general-control-flags
+.. _-q: #general-control-flags
+.. _--verbose: #general-control-flags
+.. _--log-level: #miscellaneous-options
+.. _--log-format: #miscellaneous-options
 
 .. TODOs
 .. explain log-level and log-format choices of values
