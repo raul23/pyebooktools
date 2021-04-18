@@ -67,6 +67,11 @@ need recent versions of:
 * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be installed
   for better metadata fetching.
 
+`:warning:`
+
+    For the moment, the script ``ebooktools` is only tested on **macOS**. Eventually,
+    I will test it on linux.
+
 Install ``py_ebooktools``
 -------------------------
 1. It is highly recommended to install the package ``py_ebooktools`` in a virtual
@@ -567,6 +572,7 @@ Roadmap
   - ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_
   - ``rename-calibre-library.sh``: **working on it**
   - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
+- Test on linux
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
