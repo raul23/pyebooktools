@@ -598,7 +598,7 @@ Note the input string enclosed within single quotes.
    9783319667744
    9781292026084
 
-The other sequences ``0000000000 0123456789 1111111111`` are rejected because
+The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
 they are matched with the regular expression ``isbn_blacklist_regex``.
 
 By default, the extracted ISBNs are separated by newlines, ``\n``.
@@ -624,18 +624,20 @@ Find ISBNs in a pdf file:
    INFO     The file looks like a pdf, using pdftotext to extract the text
    INFO     Reordering input file (if possible), read first 400 lines normally, then read last 50 lines in reverse and then read the rest
    INFO     Extracted ISBNs:
-   9783319667744
-   9783319667751
+   9781594201721
    1000100111
 
-The first 2 extracted ISBNs are the correct ones (hardcover and ebook versions,
-respectively). The last sequence ``1000100111`` is not an ISBN even though it is a technically
-valid but wrong ISBN that the regular expression ``isbn_blacklist_regex`` didn't detect; it is a binary
-number that is included in a question about binary-to-hexadecimal conversion from the pdf textbook.
+The first extracted ISBN is the correct one. The last sequence ``1000100111``
+is not an ISBN even though it is a technically valid but wrong ISBN that the
+regular expression ``isbn_blacklist_regex`` didn't catch.
 
 Example 7: split a folder
 -------------------------
 Split a folder:
+
+.. code-block:: terminal
+   
+   $ 
 
 Uninstall
 =========
