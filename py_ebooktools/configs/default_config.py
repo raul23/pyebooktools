@@ -7,11 +7,11 @@ organizing and managing ebook collections. See
 The options are described in full detail in the project's README @
 `<https://github.com/raul23/python-ebook-tools>`__
 
-IMPORTANT: these options can also be passed to the Python script `ebooktools`_
-via command-line parameters (Run `ebooktools -h` for a detailed list of the
-options). Also, command-line parameters supersede the variables defined in this
-configuration file. Most parameters are not required and if nothing is
-specified, the default value will be used.
+IMPORTANT: these options can also be passed to the Python script
+`ebooktools.py`_ via command-line parameters (Run `ebooktools -h` for a
+detailed list of the options). Also, command-line parameters supersede the
+variables defined in this configuration file. Most parameters are not required
+and if nothing is specified, the default value will be used.
 
 The options are separated based on sections:
 1. General options
@@ -34,7 +34,7 @@ The options are separated based on sections:
 
 References
 ----------
-.. _ebooktools: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
+.. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 """
 import os
 
@@ -42,7 +42,7 @@ import os
 # 1. General options
 # ==================
 # All of these options are part of the common library and may affect some or
-# all of the scripts.
+# all of the subcommands.
 
 # 1.1 General control flags
 # =========================
@@ -82,6 +82,7 @@ ocr_command = 'tesseract_wrapper'
 
 # 1.5 Options related to the input and output files
 # =================================================
+output_folder = os.getcwd()
 output_filename_template = "${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] " \
                            "- }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}" \
                            "${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}"
@@ -130,7 +131,7 @@ app = None
 
 # 2.3 interactive-organizer
 # =========================
-# output_folder = []
+# output_folders = []
 # quick_mode = False
 # custom_move_base_dir = None
 # restore_original_base_dir = None
@@ -139,24 +140,24 @@ app = None
 
 # 2.4 find-isbns
 # ==============
-# Some general options affect this script (especially the ones related to
+# Some general options affect this subcommand (especially the ones related to
 # extracting ISBNs from files, see section 1.2 above).
 isbn_ret_separator = '\n'
 
 # 2.5 convert-to-txt
 # ==================
-# Some of the general options affect this script's behavior a lot, especially
+# Some of the general options affect this subcommand's behavior a lot, especially
 # the OCR ones (see '1.3 Options for OCR').
 output_file = 'output.txt'
 
 # 2.6 rename-calibre-library
 # ==========================
 # output_folder = os.getcwd()
-# save_metadata = 'recreate'
+save_metadata = 'recreate'
 
 # 2.7 split-into-folders
 # ======================
-output_folder = os.getcwd()
+# output_folder = os.getcwd()
 start_number = 0
 folder_pattern = '%05d000'
 files_per_folder = 1000
