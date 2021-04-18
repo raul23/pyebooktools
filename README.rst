@@ -227,7 +227,7 @@ Options for OCR
 
 Options related to extracting and searching for non-ISBN metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-*`` --token-min-length <value>``; config variable token_min_length; default value ``3``
+* ``--token-min-length <value>``; config variable token_min_length; default value ``3``
 
   When files and file metadata are parsed, they are split into words (or more precisely,
   either alpha or numeric tokens) and ones shorter than this value are ignored. By default,
