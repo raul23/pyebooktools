@@ -119,6 +119,7 @@ def convert_to_txt(input_file, output_file, mime_type):
     # the right env. variables
     elif mime_type.startswith('image/vnd.djvu') and \
             command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
+        # TODO: important remove path to djvutxt in command_exists()
         logger.info('The file looks like a djvu, using djvutxt to extract the '
                     'text')
         result = djvutxt(input_file, output_file)
