@@ -101,7 +101,7 @@ General control flags
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
-  default value in `lib.py`_
+  default value in `default_config.py <https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59>`__
 
 Options for OCR
 ^^^^^^^^^^^^^^^
