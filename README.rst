@@ -585,7 +585,9 @@ Find ISBNs in the string ``978-3-319-667744 978-1-292-02608-4 0000000000
 .. code-block:: terminal
 
    $ ebooktools find "978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111"
-    
+
+Note the input string enclosed within double quotes.
+
 **Output:**
 
 .. code-block:: terminal
@@ -596,8 +598,8 @@ Find ISBNs in the string ``978-3-319-667744 978-1-292-02608-4 0000000000
    9783319667744
    9781292026084
 
-The other sequences are rejected because they are matched with the regular
-expression ``isbn_blacklist_regex``.
+The other sequences ``0000000000 0123456789 1111111111`` are rejected because
+they are matched with the regular expression ``isbn_blacklist_regex``.
 
 By default, the extracted ISBNs are separated by newlines, ``\n``.
 
