@@ -97,10 +97,10 @@ General control flags
   
 * ``--log-level``; config variable ``logging_level``; default value ``info``
 
-  Set logging level for all loggers.
+  Set logging level for all loggers. Choices are {debug,info,warning,error}.
 * ``--log-format``; config variable ``logging_formatter``; default value ``simple``
 
-  Set logging formatter for all loggers.
+  Set logging formatter for all loggers. Choices are {console,simple,only_msg}.
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
 
   If this is enabled, no file rename/move/symlink/etc. operations will actually
