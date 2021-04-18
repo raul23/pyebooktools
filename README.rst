@@ -21,8 +21,8 @@ and semi-automated organization and management of large ebook collections.
   use *OCR* for ``.pdf``, ``.djvu`` and image files.
 - ``find_isbns.py`` tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
   specified. Searching for ISBNs in files uses progressively more resource-intensive
-  methods until some ISBNs are found, see the `ebook-tools' documentation (shell scripts)`_
-  for more details.
+  methods until some ISBNs are found, see the `ebook-tools' documentation`_ (shell scripts)
+  or `lib.py#L555`_ (python module where the search for ISBNs is implemented) for more details.
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
@@ -320,7 +320,7 @@ details see the `LICENSE`_ file in the repository.
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
-.. _ebook-tools' documentation (shell scripts): https://github.com/na--/ebook-tools#searching-for-isbns-in-files
+.. _ebook-tools' documentation: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
@@ -334,6 +334,7 @@ details see the `LICENSE`_ file in the repository.
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
 .. _default_config.py#L62: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L62
+.. _lib.py#L555: https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
 
 .. TODOs
 .. explain log-level and log-format choices of values
