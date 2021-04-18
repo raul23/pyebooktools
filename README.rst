@@ -80,7 +80,7 @@ All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``
 which is created the first time the script ``ebooktools`` is run along also with
 the logging config file ``logging.py``. The default values for these config files
-are taken from `default_config.py`_ and `default_logging`_, respectively.
+are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
 Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
