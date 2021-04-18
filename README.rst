@@ -149,6 +149,20 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   value is a bit long because it tries to make the scripts ignore ``.gif`` and
   ``.svg`` images, audio, video and executable files and fonts, you can find it in
   `default_config.py#L62`_.
+  
+* ``--reorder-files-for-grep <value>``, config variable ``isbn_grep_reorder_files``, 
+  ``isbn_grep_rf_scan_first``, ``isbn_grep_rf_reverse_last``; default value ``400``,
+  ``50``
+  
+  These options specify if and how we should reorder the ebook text before searching
+  for ISBNs in it. By default, the first 400 lines of the text are searched as they are,
+  then the last 50 are searched in reverse and finally the remainder in the middle. This
+  reordering is done to improve the odds that the first found ISBNs in a book text
+  actually belong to that book (ex. from the copyright section or the back cover),
+  instead of being random ISBNs mentioned in the middle of the book. No part of the text
+  is searched twice, even if these regions overlap. If you use the command-line option,
+  the format for ``<value>`` is ``False`` to disable the functionality or
+  ``first_lines``,``last_lines`` to enable it with the specified values.
 
 Options for OCR
 ^^^^^^^^^^^^^^^
