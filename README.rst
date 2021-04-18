@@ -21,8 +21,10 @@ and semi-automated organization and management of large ebook collections.
   use *OCR* for ``.pdf``, ``.djvu`` and image files.
 - ``find_isbns.py`` tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
   specified. Searching for ISBNs in files uses progressively more resource-intensive
-  methods until some ISBNs are found, see the `ebook-tools' documentation`_ (shell scripts)
-  or `lib.py#L555`_ (python module where the search for ISBNs is implemented) for more details.
+  methods until some ISBNs are found, for more details see 
+  
+  - the `ebook-tools' documentation`_ (shell scripts) or
+  - `lib.py#L555`_ (python module where the search for ISBNs is implemented).
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
