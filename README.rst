@@ -666,9 +666,9 @@ We have a folder containing four ebooks and their corresponding metadata:
    :align: left
    :alt: Example 07: content of folder_with_books/
 
-|
-
 Note that two ebook files don't have metadata files associated with them.
+
+|
 
 We want to split these ebook files into folders containing two files each and
 their numbering should start at 1:
@@ -676,8 +676,6 @@ their numbering should start at 1:
 .. code-block:: terminal
    
    $ ebooktools split -s 1 --fpf 2 ~/folder_with_books/ -o ~/output_folder/
-
-|
 
 **Output:** content of ``output_folder``
 
