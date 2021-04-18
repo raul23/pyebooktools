@@ -19,6 +19,8 @@ and semi-automated organization and management of large ebook collections.
   file that contains all the options defined below or the logging config file.
 - ``convert_to_txt.py`` converts the supplied file to a text file. It can optionally also
   use *OCR* for `.pdf`, `.djvu` and image files.
+- ``find_isbns.py`` tries to find valid ISBNs inside a file or in a string if no file was 
+  specified.
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
