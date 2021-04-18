@@ -84,7 +84,7 @@ Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
 defined in the default config file `default_config.py`_ will be used.
 
-The script ``ebooktools`` consists of various subcommands for the organization and
+The ``ebooktools`` script consists of various subcommands for the organization and
 management of ebook collections. The usage pattern for running one of the subcommands
 is as follows:
 
