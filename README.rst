@@ -81,6 +81,10 @@ need recent versions of:
 
 Install ``py_ebooktools``
 -------------------------
+The package ``py_ebooktools`` contains the script ``ebooktools.py`` which
+consists of various subcommands as explained in the
+`Usage, options and configuration`_ section.
+
 1. It is highly recommended to install the package ``py_ebooktools`` in a
    virtual environment using for example `venv`_ or `conda`_.
 
