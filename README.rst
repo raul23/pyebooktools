@@ -227,6 +227,19 @@ Options for OCR
 
 Options related to extracting and searching for non-ISBN metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*`` --token-min-length <value>``; config variable token_min_length; default value ``3``
+
+  When files and file metadata are parsed, they are split into words (or more precisely,
+  either alpha or numeric tokens) and ones shorter than this value are ignored. By default,
+  single and two character number and words are ignored.
+  
+* ``--tokens-to-ignore <value>``; env. variable ``tokens_to_ignore``; see default value in 
+  `default_config.py#L80`_
+
+  A regular expression that is matched against the filename/author/title tokens and matching
+  tokens are ignored. The default regular expression includes common words that probably hinder
+  online metadata searching like ``book``, ``novel``, ``series``, ``volume`` and others, as
+  well as probable publication years like (so ``1999`` is ignored while ``2033`` is not).
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -371,6 +384,7 @@ details see the `LICENSE`_ file in the repository.
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
 .. _default_config.py#L62: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L62
+.. _default_config.py#L80: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L80
 .. _search_file_for_isbns(): https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
 
 .. TODOs
