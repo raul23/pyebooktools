@@ -370,10 +370,22 @@ Description
 Converts the supplied file to a text file. It can optionally also use OCR for
 ``.pdf``, ``.djvu`` and image files.
 
-Options
-"""""""
-There are no local options, but some of the global options affect this script's
-behavior a lot, especially the `OCR ones`_.
+Global options
+""""""""""""""
+Some of the global options affect this script's behavior a lot, especially the
+`OCR ones`_.
+
+Input and output arguments
+""""""""""""""""""""""""""
+* ``input_file``; no config variable; **required**
+  
+  The input file to be converted to a text file.
+  
+* ``-o <value>``, ``--output-file <value>``; config variable ``output_file``;
+  default values is ``output.txt``
+  
+  The output file text. By default, it is saved in the current working directory.
+
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -392,6 +404,8 @@ Splits the supplied ebook files (and the accompanying metadata files if present)
 into folders with consecutive names that each contain the specified number of
 files.
 
+Global options
+""""""""""""""
 In particular, the following **global options** affect the ``split`` subcommand:
 
 * ``-d``, ``--dry-run`` found in the `General control flags`_ section
@@ -401,8 +415,8 @@ In particular, the following **global options** affect the ``split`` subcommand:
 * ``--ome``, ``--output-metadata-extension`` found in the
   `Options related to the input and output files`_ section
 
-Options
-"""""""
+Local options
+"""""""""""""
 * ``-o <value>``, ``--output-folder <value>``; config variable ``output_folder``;
   **default value is the current working directory** (check with ``pwd``)
   
