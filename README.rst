@@ -56,7 +56,16 @@ need recent versions of:
   searching) and ebook metadata extraction. Versions **2.84** and above are 
   preferred because of their ability to manually specify from which specific online
   source we want to fetch metadata. For earlier versions you have to set
-  ``isbn_metadata_fetch_order`` and ``organize_without_isbn_sources`` to empty strings.
+  ``isbn_metadata_fetch_order`` and ``organize_without_isbn_sources`` to empty strings.  
+* `p7zip`_ for ISBN searching in ebooks that are in archives.
+* `Tesseract`_ for running OCR on books - version 4 gives better results even though
+  it's still in alpha. OCR is disabled by default and another engine can be configured
+  if preferred.
+* **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for faster
+  than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files respectively to
+  ``.txt``.
+* **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be installed
+  for better metadata fetching.
 
 Install ``py_ebooktools``
 -------------------------
@@ -572,21 +581,28 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs
 .. _calibre: https://calibre-ebook.com/
+.. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
 .. _default_logging.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_logging.py
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
+.. _DjVuLibre: http://djvu.sourceforge.net/
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
+.. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
+.. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
+.. _poppler: https://poppler.freedesktop.org/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
+.. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
+.. _WorldCat xISBN: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
 
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
