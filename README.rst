@@ -336,10 +336,13 @@ Split the supplied ebook files (and the accompanying metadata files if present)
 into folders with consecutive names that each contain the specified number of
 files.
 
-The most important global option that affects the ``split`` subcommand is
-``--ome`` which sets the extension of the additional metadata file that is
-saved next to ebook file (found in `Options related to the input and output 
-files`_).
+The most important global options that affect the ``split`` subcommand are:
+
+* ``-d``, ``--dry-run`` found in `General control flags`_
+
+* ``-r``, ``--reverse`` found in `Miscellaneous options`_
+
+* ``--ome``, ``--`` found in ``_
 
 Options
 """""""
@@ -443,6 +446,8 @@ details see the `LICENSE`_ file in the repository.
 .. _search_file_for_isbns(): https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
 
 .. URLs: local
+.. _General control flags: #general-control-flags
+.. _Miscellaneous options: #miscellaneous-options
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 
 .. TODOs
