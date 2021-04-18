@@ -302,7 +302,7 @@ given subcommand is the following:
 
 .. code-block:: terminal
 
-  usage: ebooktools {edit,convert,find,split} [<OPTIONS>]
+  ebooktools {edit,convert,find,split} [<OPTIONS>]
   
 Where ``[<OPTIONS>``] include general options and options specific to the subcommand
 as shown below.
