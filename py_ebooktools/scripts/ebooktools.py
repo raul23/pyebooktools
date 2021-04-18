@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""This script is a Python port of `ebook-tools`_ written in Shell by `na--`_.
+"""This script is a Python port of `ebook-tools`_ which is written in Shell by
+`na--`_.
 
 References
 ----------
@@ -57,6 +58,7 @@ _LOG_CFG = "log"
 _MAIN_CFG = "main"
 _DEFAULT_MSG = " (default: {})"
 
+
 # General options
 def add_general_options_as_group(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
@@ -75,6 +77,7 @@ def add_general_options_as_group(parser, remove_opts=None):
             "-q", "--quiet", action="store_true",
             help="Enable quiet mode, i.e. nothing will be printed.")
     if not remove_opts.count('verbose'):
+        # TODO: important test traceback
         parser_general_group.add_argument(
             "--verbose", action="store_true",
             help='''Print various debugging information, e.g. print
@@ -405,8 +408,7 @@ See subcommands below for a list of the tools that can be used.
         help='''Folder with books which will be recursively scanned for files.
         The found files (and the accompanying metadata files if present) will
         be split into folders with consecutive names that each contain the
-        specified number of files. The default value is the current working
-        directory.''')
+        specified number of files.''')
     add_general_options_as_group(parser_split_into_folders)
     add_input_output_opts(parser_split_into_folders,
                           remove_opts=['output-filename-template'])
