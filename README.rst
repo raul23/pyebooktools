@@ -262,8 +262,7 @@ Options related to the input and output files
 * ``--oft <value>``, ``--output-filename-template <value>``; config variable
   ``output_filename_template``; default value:
   
-  ``"${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ 
-  (${d[PUBLISHED]%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}"``
+  ``"${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}"``
   
   By default the organized files start with the comma-separated author name(s), followed by
   the book series name and number in square brackets (if present), followed by the book title,
