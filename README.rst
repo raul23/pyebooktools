@@ -24,7 +24,7 @@ and semi-automated organization and management of large ebook collections.
   methods until some ISBNs are found, for more details see 
   
   - the `ebook-tools' documentation`_ (shell scripts) or
-  - `lib.py#L555`_ (python module where the search for ISBNs is implemented).
+  - `line 555 of lib.py`_ (python module where the search for ISBNs is implemented).
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
@@ -336,7 +336,7 @@ details see the `LICENSE`_ file in the repository.
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
 .. _default_config.py#L62: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L62
-.. _lib.py#L555: https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
+.. _line 555 of lib.py: https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
 
 .. TODOs
 .. explain log-level and log-format choices of values
