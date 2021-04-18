@@ -554,7 +554,16 @@ To reset the **main** config file with factory settings:
 
 Example 3: convert a pdf file to text with OCR
 ----------------------------------------------
-To convert a pdf file to text **with OCR**:
+To convert a pdf file ``pdf_to_convert.pdf`` to text
+``converted.txt`` **with OCR**:
+
+.. code-block:: terminal
+
+   ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
+   
+By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
+trying the simple conversion tools (``pdftotext`` or ``ebook-convert`` if the
+latter command is not found).
 
 Example 4: convert a pdf file to text without OCR
 -------------------------------------------------
@@ -564,6 +573,9 @@ To convert a pdf file ``pdf_to_convert.pdf`` to text
 .. code-block:: terminal
 
     ebooktools convert -o converted.txt pdf_to_convert.pdf
+    
+If ``pdftotext`` is present, it is used to convert the pdf file to text. Otherwise,
+``ebook-convert`` is used for the conversion.
 
 Example 5: find ISBNs in a string
 ---------------------------------
