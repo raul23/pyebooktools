@@ -313,7 +313,7 @@ Miscellaneous options
 Script usage and options
 ------------------------
 As explained in the `Usage, options and configuration`_ section, the usage pattern
-for running a given subcommand is the following:
+for running a given **subcommand** is the following:
 
 .. code-block:: terminal
 
