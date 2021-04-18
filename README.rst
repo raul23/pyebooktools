@@ -133,6 +133,13 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   Any ISBNs that successfully match against it are discarded. The idea is to
   ignore technically valid but probably wrong numbers like ``0123456789``, 
   ``0000000000``, ``1111111111``, etc.
+  
+* ``--isbn-direct-grep-files <value>``, config variable ``isbn_direct_grep_files``;
+  default value ``^text/(plain|xml|html)$``
+  
+  This is a regular expression that is matched against the MIME type of the searched
+  files. Matching files are searched directly for ISBNs, without converting or
+  OCR-ing them to ``.txt`` first.
 
 Options for OCR
 ^^^^^^^^^^^^^^^
