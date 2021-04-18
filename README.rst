@@ -627,9 +627,9 @@ Find ISBNs in a pdf file:
    1000100111
 
 The first 2 extracted ISBNs are the correct ones (hardcover and ebook versions,
-respectively). The last sequence ``1000100111`` is not an ISBN even though it is a
-valid ISBN; it is a binary number that is included in a question about
-binary-to-hexadecimal conversion.
+respectively). The last sequence ``1000100111`` is not an ISBN even though it is a technically
+valid but wrong ISBN that the regular expression ``isbn_blacklist_regex`` didn't detect; it is a binary
+number that is included in a question about binary-to-hexadecimal conversion.
 
 Example 7: split a folder
 -------------------------
