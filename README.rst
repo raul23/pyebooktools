@@ -358,7 +358,7 @@ Input argument
 * ``{main,log}``; no config variable; **required**
   
   The config file to edit which can either be the main configuration file
-  ('main') or the logging configuration file ('log').
+  (``main``) or the logging configuration file (``log``).
 
 convert [<OPTIONS>] input_file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
