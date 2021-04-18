@@ -131,93 +131,104 @@ def add_input_output_opts(parser, remove_opts=None):
 
 
 # Options related to extracting ISBNs from files and finding metadata by ISBN
-def add_isbns_options(parser):
+def add_isbns_options(parser, remove_opts=None):
+    remove_opts = init_list(remove_opts)
     parser_isbns_group = parser.add_argument_group(
         title='arguments related to extracting ISBNS from files and finding '
               'metadata by ISBN')
-    # TODO: add look-ahead and look-behind info, see https://bit.ly/2OYsY76
-    parser_isbns_group.add_argument(
-        "-i", "--isbn-regex", dest='isbn_regex',
-        help='''This is the regular expression used to match ISBN-like
-        numbers in the supplied books.''' + _DEFAULT_MSG.format(ISBN_REGEX))
-    parser_isbns_group.add_argument(
-        "--isbn-blacklist-regex", dest='isbn_blacklist_regex', metavar='REGEX',
-        help='''Any ISBNs that were matched by the ISBN_REGEX above and pass
-        the ISBN validation algorithm are normalized and passed through this
-        regular expression. Any ISBNs that successfully match against it are
-        discarded. The idea is to ignore technically valid but probably wrong
-        numbers like 0123456789, 0000000000, 1111111111, etc..'''
-             + _DEFAULT_MSG.format(ISBN_BLACKLIST_REGEX))
-    # TODO: important don't use grep in name of option
-    parser_isbns_group.add_argument(
-        "--isbn-direct-grep-files", dest='isbn_direct_grep_files',
-        metavar='REGEX',
-        help='''This is a regular expression that is matched against the MIME
-        type of the searched files. Matching files are searched directly for
-        ISBNs, without converting or OCR-ing them to .txt first.'''
-             + _DEFAULT_MSG.format(ISBN_DIRECT_GREP_FILES))
-    parser_isbns_group.add_argument(
-        "--isbn-ignored-files", dest='isbn_ignored_files', metavar='REGEX',
-        help='''This is a regular expression that is matched against the MIME
-        type of the searched files. Matching files are not searched for ISBNs
-        beyond their filename. By default, it tries to make the scripts ignore
-        .gif and .svg images, audio, video and executable files and fonts.'''
-             + _DEFAULT_MSG.format(ISBN_IGNORED_FILES))
-    # TODO: important don't use grep in name of option since we are searching w/o it
-    # TODO: test this option (1 or 2 args)
-    parser_isbns_group.add_argument(
-        "--reorder-files-for-grep", dest='isbn_grep_reorder_files', nargs='+',
-        action=required_length(1, 2), metavar='LINES',
-        help='''These options specify if and how we should reorder the ebook
-        text before searching for ISBNs in it. By default, the first 400 lines
-        of the text are searched as they are, then the last 50 are searched in
-        reverse and finally the remainder in the middle. This reordering is
-        done to improve the odds that the first found ISBNs in a book text
-        actually belong to that book (ex. from the copyright section or the
-        back cover), instead of being random ISBNs mentioned in the middle of
-        the book. No part of the text is searched twice, even if these regions
-        overlap. Set it to False to disable the functionality of
-        first_lines,last_lines to enable it with the specified values.'''
-             + _DEFAULT_MSG.format(ISBN_GREP_REORDER_FILES))
-    parser_isbns_group.add_argument(
-        "---mfo", "---metadata-fetch-order", dest='isbn_metadata_fetch_order',
-        metavar='METADATA_SOURCES',
-        help='''This option allows you to specify the online metadata sources
-        and order in which the scripts will try searching in them for books by
-        their ISBN. The actual search is done by calibre's fetch-ebook-metadata
-        command-line application, so any custom calibre metadata plugins can
-        also be used. To see the currently available options, run
-        fetch-ebook-metadata --help and check the description for the
-        --allowed-plugin option. If you use Calibre versions that are older than
-        2.84, it's required to manually set this option to an empty string.'''
-             + _DEFAULT_MSG.format(ISBN_METADATA_FETCH_ORDER))
+    if not remove_opts.count('isbn-regex'):
+        # TODO: add look-ahead and look-behind info, see https://bit.ly/2OYsY76
+        parser_isbns_group.add_argument(
+            "-i", "--isbn-regex", dest='isbn_regex',
+            help='''This is the regular expression used to match ISBN-like
+            numbers in the supplied books.''' + _DEFAULT_MSG.format(ISBN_REGEX))
+    if not remove_opts.count('isbn-blacklist-regex'):
+        parser_isbns_group.add_argument(
+            "--isbn-blacklist-regex", dest='isbn_blacklist_regex', metavar='REGEX',
+            help='''Any ISBNs that were matched by the ISBN_REGEX above and pass
+            the ISBN validation algorithm are normalized and passed through this
+            regular expression. Any ISBNs that successfully match against it are
+            discarded. The idea is to ignore technically valid but probably wrong
+            numbers like 0123456789, 0000000000, 1111111111, etc..'''
+                 + _DEFAULT_MSG.format(ISBN_BLACKLIST_REGEX))
+    if not remove_opts.count('isbn-direct-grep-files'):
+        # TODO: important don't use grep in name of option
+        parser_isbns_group.add_argument(
+            "--isbn-direct-grep-files", dest='isbn_direct_grep_files',
+            metavar='REGEX',
+            help='''This is a regular expression that is matched against the MIME
+            type of the searched files. Matching files are searched directly for
+            ISBNs, without converting or OCR-ing them to .txt first.'''
+                 + _DEFAULT_MSG.format(ISBN_DIRECT_GREP_FILES))
+    if not remove_opts.count('isbn-ignored-files'):
+        parser_isbns_group.add_argument(
+            "--isbn-ignored-files", dest='isbn_ignored_files', metavar='REGEX',
+            help='''This is a regular expression that is matched against the MIME
+            type of the searched files. Matching files are not searched for ISBNs
+            beyond their filename. By default, it tries to make the scripts ignore
+            .gif and .svg images, audio, video and executable files and fonts.'''
+                 + _DEFAULT_MSG.format(ISBN_IGNORED_FILES))
+    if not remove_opts.count('reorder-files-for-grep'):
+        # TODO: important don't use grep in name of option since we are searching w/o it
+        # TODO: test this option (1 or 2 args)
+        parser_isbns_group.add_argument(
+            "--reorder-files-for-grep", dest='isbn_grep_reorder_files', nargs='+',
+            action=required_length(1, 2), metavar='LINES',
+            help='''These options specify if and how we should reorder the ebook
+            text before searching for ISBNs in it. By default, the first 400 lines
+            of the text are searched as they are, then the last 50 are searched in
+            reverse and finally the remainder in the middle. This reordering is
+            done to improve the odds that the first found ISBNs in a book text
+            actually belong to that book (ex. from the copyright section or the
+            back cover), instead of being random ISBNs mentioned in the middle of
+            the book. No part of the text is searched twice, even if these regions
+            overlap. Set it to False to disable the functionality of
+            first_lines,last_lines to enable it with the specified values.'''
+                 + _DEFAULT_MSG.format(ISBN_GREP_REORDER_FILES))
+    if not remove_opts.count('metadata-fetch-order'):
+        parser_isbns_group.add_argument(
+            "---mfo", "---metadata-fetch-order", dest='isbn_metadata_fetch_order',
+            metavar='METADATA_SOURCES',
+            help='''This option allows you to specify the online metadata sources
+            and order in which the scripts will try searching in them for books by
+            their ISBN. The actual search is done by calibre's fetch-ebook-metadata
+            command-line application, so any custom calibre metadata plugins can
+            also be used. To see the currently available options, run
+            fetch-ebook-metadata --help and check the description for the
+            --allowed-plugin option. If you use Calibre versions that are older than
+            2.84, it's required to manually set this option to an empty string.'''
+                 + _DEFAULT_MSG.format(ISBN_METADATA_FETCH_ORDER))
 
 
 # Options for OCR
-def add_ocr_options_as_group(parser):
+def add_ocr_options_as_group(parser, remove_opts=None):
+    remove_opts = init_list(remove_opts)
     parser_convert_group = parser.add_argument_group(title='arguments for OCR')
-    parser_convert_group.add_argument(
-        "--ocr", "--ocr-enabled", dest='ocr_enabled',
-        choices=['always', 'true', 'false'],
-        help='''Whether to enable OCR for .pdf, .djvu and image files. It is
-            disabled by default.''')
-    parser_convert_group.add_argument(
-        "--ocrop", "--ocr-only-first-last-pages",
-        dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
-        help='''Value n,m instructs the scripts to convert only the first n
-            and last m pages when OCR-ing ebooks.'''
-             + _DEFAULT_MSG.format(OCR_ONLY_FIRST_LAST_PAGES))
-    # TODO: test ocrc option or drop it
-    parser_convert_group.add_argument(
-        "--ocrc", "--ocr-command",
-        dest='ocr_command', metavar='CMD',
-        help='''This allows us to define a hook for using custom OCR settings
-        or software. The default value is just a wrapper that allows us to use
-        both tesseract 3 and 4 with some predefined settings. You can use a
-        custom bash function or shell script - the first argument is the input
-        image (books are OCR-ed page by page) and the second argument is the
-        file you have to write the output text to.'''
-             + _DEFAULT_MSG.format(OCR_COMMAND))
+    if not remove_opts.count('ocr-enabled'):
+        parser_convert_group.add_argument(
+            "--ocr", "--ocr-enabled", dest='ocr_enabled',
+            choices=['always', 'true', 'false'],
+            help='''Whether to enable OCR for .pdf, .djvu and image files. It is
+                disabled by default.''')
+    if not remove_opts.count('ocr-only-first-last-pages'):
+        parser_convert_group.add_argument(
+            "--ocrop", "--ocr-only-first-last-pages",
+            dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
+            help='''Value n,m instructs the scripts to convert only the first n
+                and last m pages when OCR-ing ebooks.'''
+                 + _DEFAULT_MSG.format(OCR_ONLY_FIRST_LAST_PAGES))
+    if not remove_opts.count('ocr-command'):
+        # TODO: test ocrc option or drop it
+        parser_convert_group.add_argument(
+            "--ocrc", "--ocr-command",
+            dest='ocr_command', metavar='CMD',
+            help='''This allows us to define a hook for using custom OCR settings
+            or software. The default value is just a wrapper that allows us to use
+            both tesseract 3 and 4 with some predefined settings. You can use a
+            custom bash function or shell script - the first argument is the input
+            image (books are OCR-ed page by page) and the second argument is the
+            file you have to write the output text to.'''
+                 + _DEFAULT_MSG.format(OCR_COMMAND))
 
 
 # Ref.: https://stackoverflow.com/a/14117511/14664104
@@ -375,7 +386,8 @@ See subcommands below for a list of the tools that can be used.
         was specified. Searching for ISBNs in files uses progressively more
         resource-intensive methods until some ISBNs are found.''')
     add_general_options_as_group(parser_find, remove_opts=['dry-run', 'reverse'])
-    add_isbns_options(parser_find)
+    add_isbns_options(parser_find, remove_opts=['metadata-fetch-order'])
+    add_ocr_options_as_group(parser_find)
     parser_find.add_argument(
         'input_data',
         help='''Can either be the path to a file or a string. The input will
