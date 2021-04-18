@@ -531,6 +531,21 @@ Input and output arguments
   
   The output folder in which all the new consecutively named folders will be
   created.
+  
+Examples
+========
+Example 1: edit the main config file
+------------------------------------
+Example 2: convert a pdf file to text with OCR
+----------------------------------------------
+Example 3: convert a pdf file to text without OCR
+-------------------------------------------------
+Example 4: find ISBNs in a string
+---------------------------------
+Example 5: find ISBNs in a pdf file
+-----------------------------------
+Example 6: split a folder
+-------------------------
 
 Uninstall
 =========
