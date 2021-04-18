@@ -353,6 +353,13 @@ Options
   default value ``None``
 * ``-r``, ``--reset``; no config variable; default value ``False``
 
+Input argument
+""""""""""""""
+* ``{main,log}``; no config variable; **required**
+  
+  The config file to edit which can either be the main configuration file
+  ('main') or the logging configuration file ('log').
+
 convert [<OPTIONS>] input_file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
