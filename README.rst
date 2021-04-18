@@ -404,9 +404,10 @@ find [<OPTIONS>] input_data
                           [--isbn-direct-grep-files REGEX]
                           [--isbn-ignored-files REGEX]
                           [--reorder-files-for-grep LINES [LINES ...]]
-                          [---mfo METADATA_SOURCES] [--irs SEPARATOR]
+                          [--ocr {always,true,false}] [--ocrop PAGES PAGES]
+                          [--ocrc CMD] [--irs SEPARATOR]
                           input_data
-
+                         
 Description
 """""""""""                       
 Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
