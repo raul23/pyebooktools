@@ -36,8 +36,9 @@ logger = init_log(__name__, __file__)
 OCR_ONLY_FIRST_LAST_PAGES = False
 
 
-def convert(input_file, ocr_enabled=default_cfg.ocr_enabled,
-            output_file=default_cfg.output_file, **kwargs):
+def convert(input_file, output_file=default_cfg.output_file,
+            ocr_command=default_cfg.ocr_command,
+            ocr_enabled=default_cfg.ocr_enabled, **kwargs):
     # TODO: Path(input_file)
     # TODO: check that input_file exists
     output_file = Path(output_file)
@@ -59,8 +60,8 @@ def convert(input_file, ocr_enabled=default_cfg.ocr_enabled,
     check_conversion = False
     if ocr_enabled == 'always':
         logger.debug("OCR=always, first try OCR then conversion")
-        if ocr_file(input_file, output_file, mime_type,
-                    ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES):
+        if ocr_file(input_file, output_file, mime_type, ocr_command,
+                    OCR_ONLY_FIRST_LAST_PAGES):
             logger.warning("OCR failed! Will try conversion...")
             result = convert_to_txt(input_file, output_file, mime_type)
             check_conversion = True
@@ -75,8 +76,8 @@ def convert(input_file, ocr_enabled=default_cfg.ocr_enabled,
             logger.info("Conversion successful, will not try OCR")
         else:
             logger.warning("Conversion failed! Will try OCR...")
-            if ocr_file(input_file, output_file, mime_type,
-                        ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES):
+            if ocr_file(input_file, output_file, mime_type, ocr_command,
+                        OCR_ONLY_FIRST_LAST_PAGES):
                 logger.warning("OCR failed!")
                 logger.warning(f"File couldn't be converted to txt: {input_file}")
                 return 1
