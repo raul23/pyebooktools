@@ -626,9 +626,10 @@ Find ISBNs in a pdf file:
    9783319667751
    1000100111
 
-The first 2 ISBNs are the correct ones (hardcover and ebook versions). The last
-sequence ``1000100111`` is not an ISBN even though it is a valid ISBN; it is a
-binary number that is included in a question about binary-to-hexadecimal conversion.
+The first 2 extracted ISBNs are the correct ones (hardcover and ebook versions,
+respectively). The last sequence ``1000100111`` is not an ISBN even though it is a
+valid ISBN; it is a binary number that is included in a question about
+binary-to-hexadecimal conversion.
 
 Example 7: split a folder
 -------------------------
