@@ -73,21 +73,29 @@ def split(folder_with_books,
         current_folder_metadata = os.path.join(
             output_folder, current_folder_basename + '.' + output_metadata_extension)
         current_folder_num += 1
-        logger.debug(f"Creating folders '{current_folder}' and "
-                     f"'{current_folder_metadata}'...")
-        if not dry_run:
+        if dry_run:
+            logger.debug(f"Creating folder '{current_folder}'...")
+        else:
             mkdir(current_folder)
-            mkdir(current_folder_metadata)
-        logger.debug(f"Moving files...")
-        if not dry_run:
-            for file_to_move in chunk:
-                file_dest = os.path.join(current_folder, file_to_move.name)
+        for file_to_move in chunk:
+            # TODO: important, explain that files skipped if already exist (not overwritten)
+            file_dest = os.path.join(current_folder, file_to_move.name)
+            if dry_run:
+                logger.debug(f"Moving file '{file_to_move}'...")
+            else:
                 move(file_to_move, file_dest)
-                # Move metadata file if found
-                metadata_name = f'{file_to_move.stem}.{output_metadata_extension}'
-                metada_file_to_move = file_to_move.parent.joinpath(metadata_name)
-                if metada_file_to_move.exists():
-                    logger.debug(f"Found metadata file: {metada_file_to_move}")
+            # Move metadata file if found
+            metadata_name = f'{file_to_move.stem}.{output_metadata_extension}'
+            metada_file_to_move = file_to_move.parent.joinpath(metadata_name)
+            if metada_file_to_move.exists():
+                logger.debug(f"Found metadata file: {metada_file_to_move}")
+                # Create metadata folder only if there is at least a
+                # metadata file
+                if dry_run:
+                    logger.debug(f"Creating folder '{current_folder_metadata}'...")
+                    logger.debug(f"Moving file '{metadata_name}'...")
+                else:
+                    mkdir(current_folder_metadata)
                     metadata_dest = os.path.join(current_folder_metadata,
                                                  metadata_name)
                     move(metada_file_to_move, metadata_dest)
