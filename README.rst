@@ -252,6 +252,10 @@ Options related to extracting and searching for non-ISBN metadata
   *Because Calibre versions older than 2.84 don't support the --allowed-plugin option, if you
   want to use such an old Calibre version you should manually set ORGANIZE_WITHOUT_ISBN_SOURCES
   to an empty string.*
+  
+  In contrast to searching by ISBNs, searching by author and title is done concurrently in all of
+  the allowed online metadata sources. The number of sources is smaller because some metadata sources
+  can be searched only by ISBN or return many false-positives when searching by title and author.
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
