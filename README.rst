@@ -48,7 +48,8 @@ To install and use the script ``ebooktools``, follow these steps:
 
 Install dependencies
 --------------------
-As explained in the documentation for `ebook-tools`_ (shell scripts), you
+As explained in the documentation for `ebook-tools 
+<https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
 need recent versions of:
 
 * `calibre`_ for fetching metadata from online sources, conversion to txt (for ISBN 
