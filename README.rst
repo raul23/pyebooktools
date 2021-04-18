@@ -422,4 +422,4 @@ details see the `LICENSE`_ file in the repository.
 .. TODOs
 .. explain log-level and log-format choices of values
 .. check ocr-command option (including description)
-
+.. add more to description (+ examples of ouput filenames) for the output-filename-template option
