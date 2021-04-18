@@ -41,8 +41,14 @@ and semi-automated organization and management of large ebook collections.
 
 Installation and dependencies
 =============================
+To install and use the script ``ebooktools``, follow these steps:
+
+1. Install the dependencies `below <#install-dependencies>`__. 
+2. Install the package ``py_ebooktools`` `below <#install-py-ebooktools>`__.
+
 Install dependencies
 --------------------
+
 
 Install ``py_ebooktools``
 -------------------------
