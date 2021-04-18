@@ -642,11 +642,13 @@ We have a folder containing four ebooks and their corresponding metadata:
 
 |
 
-We want to split this folder into folders containing only one file each:
+Note that two ebook files don't have metadata files associated with them.
+
+We want to split this folder into folders containing two files each:
 
 .. code-block:: terminal
    
-   $ ebooktools split --fpf 1 ~/folder_with_books/ -o ~/output_folder/
+   $ ebooktools split --fpf 2 ~/folder_with_books/ -o ~/output_folder/
 
 **Output:** content of ``output_folder``
 
@@ -654,6 +656,8 @@ We want to split this folder into folders containing only one file each:
    :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
    :align: left
    :alt: Example 07: content of output_folder/
+
+Note that the metadata folders contain only one file each as expected.
 
 Uninstall
 =========
