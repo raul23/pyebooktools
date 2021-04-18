@@ -82,6 +82,7 @@ General options
 General control flags
 ^^^^^^^^^^^^^^^^^^^^^
 * ``-h``; ``--help``; no config variable; default value ``False``
+
   Show the help message and exit.
 * ``-v``; ``--version``; no config variable; default value ``False``
 
