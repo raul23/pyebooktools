@@ -558,7 +558,7 @@ To convert a pdf file to text **with OCR**:
 
 Example 4: convert a pdf file to text without OCR
 -------------------------------------------------
-To convert a pdf ``pdf_to_convert.pdf`` file to text
+To convert a pdf file ``pdf_to_convert.pdf`` to text
 ``converted.txt`` **without OCR**:
 
 .. code-block:: terminal
