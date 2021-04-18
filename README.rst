@@ -206,6 +206,12 @@ Options for OCR
 * ``--ocrop <value>``, ``--ocr-only-first-last-pages <value>``; config variable 
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for
   `convert_to_txt.py`_ where it's ``False``)
+  
+  Value ``n,m`` instructs the scripts to convert only the first ``n`` and last ``m`` pages
+  when OCR-ing ebooks. This is done because OCR is a slow resource-intensive process and
+  ISBN numbers are usually at the beginning or at the end of books. Setting the value to 
+  ``False`` disables this optimization and is the default for ``convert_to_txt.sh``, where
+  we probably want the whole book to be converted.
 
 Options related to extracting and searching for non-ISBN metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
