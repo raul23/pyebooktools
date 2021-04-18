@@ -633,11 +633,19 @@ regular expression ``isbn_blacklist_regex`` didn't catch.
 
 Example 7: split a folder
 -------------------------
-Split a folder:
+Split a folder containing ebook files and their corresponding metadata files into
+folders containing only one file:
 
 .. code-block:: terminal
    
-   $ 
+   $ ebooktools split --fpf 1 ~/folder_with_books/ -o ~/output_folder/
+
+**Output:**
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+   :align: left
+   :alt: Example 07: contents of output_folder/
 
 Uninstall
 =========
