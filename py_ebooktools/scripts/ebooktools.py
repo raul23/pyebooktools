@@ -256,7 +256,7 @@ def init_list(list_):
 
 def parse_edit_args(main_cfg):
     if main_cfg.reset:
-        return edit_config.reset_file(main_cfg.cfg_type, main_cfg.app)
+        return edit_config.reset_file(main_cfg.cfg_type)
     else:
         return edit_config.edit_file(main_cfg.cfg_type, main_cfg.app)
 
