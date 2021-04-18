@@ -84,10 +84,13 @@ General control flags
 * ``-h``; ``--help``; no config variable; default value ``False``
   Show the help message and exit.
 * ``-v``; ``--version``; no config variable; default value ``False``
+
   Show program's version number and exit.
 * ``-q``; ``--quiet``; config variable ``quiet``; default value ``False``
+
   Enable quiet mode, i.e. nothing will be printed.
 * ``--verbose``; config variable ``verbose``; default value ``False``
+
   Print various debugging information, e.g. print traceback when there is an
   exception.
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
