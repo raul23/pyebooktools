@@ -84,23 +84,20 @@ General control flags
 * ``-h``; ``--help``; no config variable; default value ``False``
 
   Show the help message and exit.
+
 * ``-v``; ``--version``; no config variable; default value ``False``
 
   Show program's version number and exit.
+
 * ``-q``; ``--quiet``; config variable ``quiet``; default value ``False``
 
   Enable quiet mode, i.e. nothing will be printed.
+
 * ``--verbose``; config variable ``verbose``; default value ``False``
 
   Print various debugging information, e.g. print traceback when there is an
   exception.
-  
-* ``--log-level``; config variable ``logging_level``; default value ``info``
 
-  Set logging level for all loggers. Choices are ``{debug,info,warning,error}``.
-* ``--log-format``; config variable ``logging_formatter``; default value ``simple``
-
-  Set logging formatter for all loggers. Choices are ``{console,simple,only_msg}``.
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
 
   If this is enabled, no file rename/move/symlink/etc. operations will actually
@@ -124,6 +121,18 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
   default value in `default_config.py#L59`_
+  
+  This is the regular expression used to match ISBN-like numbers in the supplied
+  books.
+
+``--isbn-blacklist-regex <value>``, config variable ``isbn_blacklist_regex``;
+  default value ``^(0123456789|([0-9xX])\2{9})$``
+  
+  Any ISBNs that were matched by the ``isbn_regex`` above and pass the ISBN
+  validation algorithm are normalized and passed through this regular expression.
+  Any ISBNs that successfully match against it are discarded. The idea is to
+  ignore technically valid but probably wrong numbers like ``0123456789``, 
+  ``0000000000``, ``1111111111``, etc.
 
 Options for OCR
 ^^^^^^^^^^^^^^^
@@ -141,6 +150,15 @@ Options related to the input and output files
 
 Miscellaneous options
 ^^^^^^^^^^^^^^^^^^^^^
+* ``--log-level <value>``; config variable ``logging_level``; default value ``info``
+
+  Set logging level for all loggers. Choices are ``{debug,info,warning,error}``.
+
+* ``--log-format <value>``; config variable ``logging_formatter``; default value 
+  ``simple``
+
+  Set logging formatter for all loggers. Choices are ``{console,simple,only_msg}``.
+
 * ``-r``, ``--reverse``; config variable ``file_sort_reverse``; default value
   ``False``
 
@@ -192,7 +210,7 @@ Options
   will be created. By default it creates folders like
   ``00000000, 00001000, 00002000, ...``.
   
-* ``--fpf <value>``, ``--files-per-folder <value>``; env. variable 
+* ``--fpf <value>``, ``--files-per-folder <value>``; config variable 
   ``files_per_folder``; default value ``1000``
 
   How many files should be moved to each folder.
