@@ -353,6 +353,28 @@ Options
   default value ``None``
 * ``-r``, ``--reset``; no config variable; default value ``False``
 
+convert [<OPTIONS>] input_file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools convert [-h] [-v] [-q] [--verbose]
+                          [--log-level {debug,info,warning,error}]
+                          [--log-format {console,simple,only_msg}] [-o OUTPUT]
+                          [--ocr {always,true,false}] [--ocrop PAGES PAGES]
+                          [--ocrc CMD]
+                          input_file
+
+
+Description
+"""""""""""
+Convert the supplied file to a text file. It can optionally also use OCR for
+``.pdf``, ``.djvu`` and image files.
+
+Options
+"""""""
+There are no local options, but a some of the global options affect this script's
+behavior a lot, especially the `OCR ones`_.
+
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
@@ -486,6 +508,7 @@ details see the `LICENSE`_ file in the repository.
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
 .. _Miscellaneous options: #miscellaneous-options
+.. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _Script usage and options: #script-usage-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
