@@ -418,6 +418,11 @@ methods until some ISBNs are found, for more details see
 - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search in files is
   implemented).
 
+Global options
+""""""""""""""
+Some global options affect this script (especially the ones `related to extracting
+ISBNs from files`_ and `OCR ones`_).
+
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
@@ -561,6 +566,7 @@ details see the `LICENSE`_ file in the repository.
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
+.. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Script usage and options: #script-usage-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
