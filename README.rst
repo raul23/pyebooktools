@@ -41,7 +41,7 @@ and semi-automated organization and management of large ebook collections.
 
 Installation and dependencies
 =============================
-To install and use the script ``ebooktools``, follow these steps:
+To install and use the script ``ebooktools.py``, follow these steps:
 
 1. Install the dependencies `below <#install-dependencies>`__. 
 2. Install the package ``py_ebooktools`` `below <#install-py-ebooktools>`__.
@@ -69,7 +69,7 @@ need recent versions of:
 
 `:warning:`
 
-    For the moment, the script ``ebooktools`` is only tested on **macOS**. Eventually,
+    For the moment, the script ``ebooktools.py`` is only tested on **macOS**. Eventually,
     I will test it on linux.
 
 Install ``py_ebooktools``
@@ -112,7 +112,7 @@ Usage, options and configuration
 All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``
 which is created along with the logging config file ``logging.py`` when the script
-``ebooktools`` is run the first time with any of the subcommands defined `below`_.
+``ebooktools.py`` is run the first time with any of the subcommands defined `below`_.
 The default values for these config files are taken from `default_config.py`_ and
 `default_logging.py`_, respectively.
 
@@ -120,7 +120,7 @@ Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
 defined in the default config file `default_config.py`_ will be used.
 
-The ``ebooktools`` script consists of various subcommands for the organization and
+The ``ebooktools.py`` script consists of various subcommands for the organization and
 management of ebook collections. The usage pattern for running one of the subcommands
 is as follows:
 
