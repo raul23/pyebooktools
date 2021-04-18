@@ -247,7 +247,7 @@ Options related to extracting and searching for non-ISBN metadata
   This option allows you to specify the online metadata sources in which the scripts will try
   searching for books by non-ISBN metadata (i.e. author and title). The actual search is done by
   calibre's ``fetch-ebook-metadata`` command-line application, so any custom calibre metadata
-  `plugins_ can also be used. To see the currently available options, run
+  `plugins`_ can also be used. To see the currently available options, run
   ``fetch-ebook-metadata --help`` and check the description for the ``--allowed-plugin`` option. 
   *Because Calibre versions older than 2.84 don't support the ``--allowed-plugin`` option, if you
   want to use such an old Calibre version you should manually set ``ORGANIZE_WITHOUT_ISBN_SOURCES``
