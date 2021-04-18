@@ -605,6 +605,31 @@ Example 6: find ISBNs in a pdf file
 -----------------------------------
 Find ISBNs in a pdf file:
 
+.. code-block:: terminal
+
+   $ ebooktools find pdf_file.pdf
+   
+**Output:**
+
+.. code-block:: terminal
+
+   INFO     Running py_ebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
+   INFO     Trying to decompress 'pdf_file.pdf' and recursively scan the contents
+   INFO     Error extracting the file (probably not an archive)! Removing tmp dir...
+   INFO     Converting ebook to text format...
+   INFO     The file looks like a pdf, using pdftotext to extract the text
+   INFO     Reordering input file (if possible), read first 400 lines normally, then read last 50 lines in reverse and then read the rest
+   INFO     Extracted ISBNs:
+   9783319667744
+   9783319667751
+   1000100111
+
+The first 2 ISBNs are the correct ones (hardcover and ebook versions). The last
+sequence ``1000100111`` is not an ISBN even though it is a valid ISBN; it is a
+binary number that is included in a question about binary-to-hexadecimal conversion.
+
 Example 7: split a folder
 -------------------------
 Split a folder:
