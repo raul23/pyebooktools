@@ -1,8 +1,8 @@
-"""Edit a configuration file, either the main configuration file (`main`) or the
-logging configuration file (`log`).
+"""Edits a configuration file, either the main configuration file (`main`) or
+the logging configuration file (`log`).
 
-The configuration file can be opened by a user-specified application (``app``) or
-a default program associated with this type of file (when ``app`` is `None`).
+The configuration file can be opened by a user-specified application (``app``)
+or a default program associated with this type of file (when ``app`` is `None`).
 """
 import platform
 import os
@@ -97,7 +97,7 @@ def edit_file(cfg_type, app=None):
     return retcode
 
 
-def reset_file(cfg_type, app=None, create_if_not=False):
+def reset_file(cfg_type):
     # Get path to the config file
     filepath = get_config_filepath(cfg_type)
     logger.info("Resetting the file {}...".format(
