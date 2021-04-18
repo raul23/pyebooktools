@@ -48,7 +48,14 @@ To install and use the script ``ebooktools``, follow these steps:
 
 Install dependencies
 --------------------
+As explained in the documentation for `ebook-tools`_ (shell scripts), you
+need recent versions of:
 
+* `calibre`_ for fetching metadata from online sources, conversion to txt (for ISBN 
+  searching) and ebook metadata extraction. Versions **2.84** and above are 
+  preferred because of their ability to manually specify from which specific online
+  source we want to fetch metadata. For earlier versions you have to set
+  ``isbn_metadata_fetch_order`` and ``organize_without_isbn_sources`` to empty strings.
 
 Install ``py_ebooktools``
 -------------------------
@@ -563,6 +570,7 @@ This program is licensed under the GNU General Public License v3.0. For more
 details see the `LICENSE`_ file in the repository.
 
 .. URLs
+.. _calibre: https://calibre-ebook.com/
 .. _conda: https://docs.conda.io/en/latest/
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
