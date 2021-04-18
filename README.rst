@@ -423,6 +423,21 @@ Global options
 The global options that especially affect this script are the ones `related to extracting
 ISBNs from files`_ and `OCR ones`_.
 
+Local options
+"""""""""""""
+The only subcommand-specific option is:
+
+* ``--irs <value>``, ``--isbn-return-separator <value>``; config variable
+  ``isbn_ret_separator``; default value ``\n`` (a new line)
+  
+  This specifies the separator that will be used when returning any found ISBNs.
+
+Input argument
+""""""""""""""
+* ``input_data``; no config variable; **required**
+
+  Can either be the path to a file or a string. The input will be searched for ISBNs.
+
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
