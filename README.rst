@@ -393,6 +393,10 @@ All subcommands are affected by the following global options:
 * `--log-level`_
 * `--log-format`_
 
+In the subsections below, you will find a definition for each of the
+supported subcommand for automated and semi-automated organization and
+management of large ebook collections.
+
 edit [<OPTIONS>] {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
