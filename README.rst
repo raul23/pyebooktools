@@ -536,15 +536,21 @@ Examples
 ========
 Example 1: edit the main config file
 ------------------------------------
-To edit the main config file with Pycharm:
+To edit the **main** config file with PyCharm:
 
 .. code-block:: terminal
 
    $ ebooktools edit -a charm main
+   
+A tab with the main config file will be opened.
 
 Example 2: reset the main config file
 -------------------------------------
-To rest the main config file to factory settings:
+To reset the **main** config file with factory settings:
+
+.. code-block:: terminal
+   
+   $ ebooktools edit -r main
 
 Example 3: convert a pdf file to text with OCR
 ----------------------------------------------
