@@ -174,6 +174,9 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   metadata `plugins`_ can also be used. To see the currently available options, run
   ``fetch-ebook-metadata --help`` and check the description for the ``--allowed-plugin``
   option.
+  
+  *If you use Calibre versions that are older than 2.84, it's required to manually set
+  this option to an empty string.*
 
 Options for OCR
 ^^^^^^^^^^^^^^^
