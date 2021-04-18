@@ -321,6 +321,15 @@ Options
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools split [-h] [-v] [-q] [--verbose] [-d] [-r]
+                        [--log-level {debug,info,warning,error}]
+                        [--log-format {console,simple,only_msg}]
+                        [--ome EXTENSION] [-o PATH] [-s START_NUMBER]
+                        [-f PATTERN] [--fpf FILES_PER_FOLDER]
+                        folder_with_books
+
 Description
 """""""""""
 Split the supplied ebook files (and the accompanying metadata files if present)
