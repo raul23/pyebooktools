@@ -365,12 +365,11 @@ convert [<OPTIONS>] input_file
 .. code-block:: terminal
 
    usage: ebooktools convert [-h] [-v] [-q] [--verbose]
-                          [--log-level {debug,info,warning,error}]
-                          [--log-format {console,simple,only_msg}] [-o OUTPUT]
-                          [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                          [--ocrc CMD]
-                          input_file
-
+                             [--log-level {debug,info,warning,error}]
+                             [--log-format {console,simple,only_msg}] [-o OUTPUT]
+                             [--ocr {always,true,false}] [--ocrop PAGES PAGES]
+                             [--ocrc CMD]
+                             input_file
 
 Description
 """""""""""
@@ -399,14 +398,14 @@ find [<OPTIONS>] input_data
 .. code-block:: terminal
 
    usage: ebooktools find [-h] [-v] [-q] [--verbose]
-                       [--log-level {debug,info,warning,error}]
-                       [--log-format {console,simple,only_msg}]
-                       [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
-                       [--isbn-direct-grep-files REGEX]
-                       [--isbn-ignored-files REGEX]
-                       [--reorder-files-for-grep LINES [LINES ...]]
-                       [---mfo METADATA_SOURCES] [--irs SEPARATOR]
-                       input_data
+                          [--log-level {debug,info,warning,error}]
+                          [--log-format {console,simple,only_msg}]
+                          [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
+                          [--isbn-direct-grep-files REGEX]
+                          [--isbn-ignored-files REGEX]
+                          [--reorder-files-for-grep LINES [LINES ...]]
+                          [---mfo METADATA_SOURCES] [--irs SEPARATOR]
+                          input_data
 
 Description
 """""""""""                       
@@ -423,11 +422,11 @@ split [<OPTIONS>] folder_with_books
 .. code-block:: terminal
 
    usage: ebooktools split [-h] [-v] [-q] [--verbose] [-d] [-r]
-                        [--log-level {debug,info,warning,error}]
-                        [--log-format {console,simple,only_msg}]
-                        [--ome EXTENSION] [-o PATH] [-s START_NUMBER]
-                        [-f PATTERN] [--fpf FILES_PER_FOLDER]
-                        folder_with_books
+                           [--log-level {debug,info,warning,error}]
+                           [--log-format {console,simple,only_msg}]
+                           [--ome EXTENSION] [-o PATH] [-s START_NUMBER]
+                           [-f PATTERN] [--fpf FILES_PER_FOLDER]
+                           folder_with_books
 
 Description
 """""""""""
