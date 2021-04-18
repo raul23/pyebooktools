@@ -295,8 +295,8 @@ Miscellaneous options
 
 Script usage and options
 ------------------------
-edit [<OPTIONS>] cfg_type {main,log}
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+edit [<OPTIONS>] {main,log}
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
 
    usage: ebooktools edit [-h] [-v] [-q] [--verbose]
