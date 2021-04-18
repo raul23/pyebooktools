@@ -1,7 +1,8 @@
-"""Try to find valid ISBNs inside a file or in a string if no file was specified.
+"""Tries to find valid ISBNs inside a file or in a string if no file was
+specified.
 
 Searching for ISBNs in files uses progressively more resource-intensive methods
-until some ISBNs are found. See the `documentation`_.
+until some ISBNs are found, see the `documentation`_ for more details.
 
 This is a Python port of `find-isbns.sh`_ from `ebook-tools`_ written in Shell
 by `na--`_.
