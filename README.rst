@@ -644,7 +644,7 @@ We have a folder containing four ebooks and their corresponding metadata:
 
 Note that two ebook files don't have metadata files associated with them.
 
-We want to split this folder into folders containing two files each and their numbering
+We want to split these ebook files into folders containing two files each and their numbering
 should start at 1:
 
 .. code-block:: terminal
