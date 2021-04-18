@@ -342,7 +342,7 @@ edit [<OPTIONS>] {main,log}
 
 Description
 """""""""""
-Edit a configuration file, either the main configuration file (``main``) or the 
+Edits a configuration file, either the main configuration file (``main``) or the 
 logging configuration file (``log``). The configuration file can be opened by a
 user-specified application (``app``) or a default program associated with this
 type of file (when ``app`` is ``None``).
@@ -367,7 +367,7 @@ convert [<OPTIONS>] input_file
 
 Description
 """""""""""
-Convert the supplied file to a text file. It can optionally also use OCR for
+Converts the supplied file to a text file. It can optionally also use OCR for
 ``.pdf``, ``.djvu`` and image files.
 
 Options
@@ -388,7 +388,7 @@ split [<OPTIONS>] folder_with_books
 
 Description
 """""""""""
-Split the supplied ebook files (and the accompanying metadata files if present)
+Splits the supplied ebook files (and the accompanying metadata files if present)
 into folders with consecutive names that each contain the specified number of
 files.
 
