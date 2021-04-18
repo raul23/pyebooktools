@@ -78,7 +78,9 @@ Usage, options and configuration
 ================================
 All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``
-which is created .
+which is created the first time the script ``ebooktools`` is run along also with
+the logging config file ``logging.py``. The default values for these config files
+are taken from `default_config.py`_ and `default_logging`_, respectively.
 
 Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
@@ -459,6 +461,7 @@ details see the `LICENSE`_ file in the repository.
 .. _conda: https://docs.conda.io/en/latest/
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
+.. _default_logging.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_logging.py
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
