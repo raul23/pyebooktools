@@ -94,6 +94,13 @@ General control flags
 
   Print various debugging information, e.g. print traceback when there is an
   exception.
+  
+* ``--log-level``; config variable ``logging_level``; default value ``info``
+
+  Set logging level for all loggers.
+* ``--log-format``; config variable ``logging_formatter``; default value ``simple``
+
+  Set logging formatter for all loggers.
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
 
   If this is enabled, no file rename/move/symlink/etc. operations will actually
@@ -259,3 +266,7 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
+
+.. TODOs
+.. explain log-level and log-format choices of values
+
