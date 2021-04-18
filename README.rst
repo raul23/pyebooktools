@@ -79,7 +79,7 @@ Usage, options and configuration
 All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``
 which is created along with the logging config file ``logging.py`` when the script
-``ebooktools`` is run the first time with any of the subcommands defined below.
+``ebooktools`` is run the first time with any of the subcommands defined `below`_.
 The default values for these config files are taken from `default_config.py`_ and
 `default_logging.py`_, respectively.
 
@@ -482,6 +482,7 @@ details see the `LICENSE`_ file in the repository.
 .. _search_file_for_isbns(): https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
 
 .. URLs: local
+.. _below: #script-usage-and-options
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
 .. _Miscellaneous options: #miscellaneous-options
