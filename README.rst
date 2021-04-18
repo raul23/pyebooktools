@@ -297,7 +297,7 @@ Script usage and options
 ------------------------
 edit [<OPTIONS>] {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. code-block:: bash
+.. code-block:: terminal
 
    usage: ebooktools edit [-h] [-v] [-q] [--verbose]
                           [--log-level {debug,info,warning,error}]
