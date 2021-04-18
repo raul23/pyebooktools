@@ -44,11 +44,13 @@ def init_log(module__name__, module___file__=None, package_name=None):
 
 
 # TODO: specify log_dict change inline
-def set_logging_field_width(log_dict):
-    names = log_dict['loggers'].keys()
-    if sys.argv and os.path.basename(sys.argv[0]) == 'ebooktools':
-        names = [n for n in names if not n.startswith('default_')]
-    size_longest_name = len(max(names, key=len))
+def set_logging_field_width(log_dict, size_longest_name=None):
+    if not size_longest_name:
+        names = log_dict['loggers'].keys()
+        if sys.argv and os.path.basename(sys.argv[0]) == 'ebooktools':
+            # TODO: why default_?
+            names = [n for n in names if not n.startswith('default_')]
+        size_longest_name = len(max(names, key=len))
     for k, v in log_dict['formatters'].items():
         try:
             # TODO: add auto_field_width at the top
