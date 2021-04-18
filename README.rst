@@ -239,7 +239,19 @@ Options related to extracting and searching for non-ISBN metadata
   A regular expression that is matched against the filename/author/title tokens and matching
   tokens are ignored. The default regular expression includes common words that probably hinder
   online metadata searching like ``book``, ``novel``, ``series``, ``volume`` and others, as
-  well as probable publication years like (so ``1999`` is ignored while ``2033`` is not).
+  well as probable publication years (so ``1999`` is ignored while ``2033`` is not).
+  
+* ``--owis <value>``, ``--organize-without-isbn-sources <value>``; config variable
+  ``organize_without_isbn_sources``; default value ``Goodreads,Amazon.com,Google``
+  
+  This option allows you to specify the online metadata sources in which the scripts will try
+  searching for books by non-ISBN metadata (i.e. author and title). The actual search is done by
+  calibre's ``fetch-ebook-metadata`` command-line application, so any custom calibre metadata
+  `plugins_ can also be used. To see the currently available options, run
+  ``fetch-ebook-metadata --help`` and check the description for the ``--allowed-plugin`` option. 
+  *Because Calibre versions older than 2.84 don't support the ``--allowed-plugin`` option, if you
+  want to use such an old Calibre version you should manually set ``ORGANIZE_WITHOUT_ISBN_SOURCES``
+  to an empty string.*
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
