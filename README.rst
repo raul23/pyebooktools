@@ -323,7 +323,7 @@ All subcommands are affected by the following global options:
 
 * `-h`_
 * `-v`_
-* `q`_
+* `-q`_
 * `--verbose`_
 * `--log-level`_
 * `--log-format`_
