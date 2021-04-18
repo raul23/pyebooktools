@@ -84,6 +84,9 @@ defined in the default config file `default_config.py`_ will be used.
 
 General options
 ---------------
+Most of these options are part of the common library `lib.py`_ and may affect some
+or all of the scripts.
+
 General control flags
 ^^^^^^^^^^^^^^^^^^^^^
 * ``-h``, ``--help``; no config variable; default value ``False``
