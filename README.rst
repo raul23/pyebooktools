@@ -372,7 +372,7 @@ Convert the supplied file to a text file. It can optionally also use OCR for
 
 Options
 """""""
-There are no local options, but a some of the global options affect this script's
+There are no local options, but some of the global options affect this script's
 behavior a lot, especially the `OCR ones`_.
 
 split [<OPTIONS>] folder_with_books
