@@ -633,7 +633,7 @@ regular expression ``isbn_blacklist_regex`` didn't catch.
 
 Example 7: split a folder
 -------------------------
-We have folder containing four ebooks and their corresponding metadata:
+We have a folder containing four ebooks and their corresponding metadata:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
    :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
