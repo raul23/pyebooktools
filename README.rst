@@ -32,7 +32,9 @@ and semi-automated organization and management of large ebook collections.
 
 `:warning:`
 
-  **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming soon.
+  * For the moment, the script ``ebooktools.py`` is only tested on **macOS**. Eventually,
+    I will test it on linux.
+  * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming soon.
 
 .. contents:: **Contents**
    :depth: 4
@@ -66,11 +68,6 @@ need recent versions of:
   ``.txt``.
 * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be installed
   for better metadata fetching.
-
-`:warning:`
-
-    For the moment, the script ``ebooktools.py`` is only tested on **macOS**. Eventually,
-    I will test it on linux.
 
 Install ``py_ebooktools``
 -------------------------
