@@ -297,8 +297,8 @@ Miscellaneous options
 
 Script usage and options
 ------------------------
-As explained in `Usage, options and configuration`_, the usage pattern for running a
-given subcommand is the following:
+As explained in the `Usage, options and configuration`_ section, the usage pattern
+for running a given subcommand is the following:
 
 .. code-block:: terminal
 
@@ -348,12 +348,12 @@ files.
 
 The most important global options that affect the ``split`` subcommand are:
 
-* ``-d``, ``--dry-run`` found in `General control flags`_
+* ``-d``, ``--dry-run`` found in the `General control flags`_ section
 
-* ``-r``, ``--reverse`` found in `Miscellaneous options`_
+* ``-r``, ``--reverse`` found in the `Miscellaneous options`_ section
 
-* ``--ome``, ``--output-metadata-extension`` found in
-  `Options related to the input and output files`_
+* ``--ome``, ``--output-metadata-extension`` found in the
+  `Options related to the input and output files`_ section
 
 Options
 """""""
