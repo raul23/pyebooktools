@@ -23,7 +23,7 @@ and semi-automated organization and management of large ebook collections.
   specified. Searching for ISBNs in files uses progressively more resource-intensive
   methods until some ISBNs are found, for more details see 
   
-  - the `ebook-tools' documentation`_ (shell scripts) or
+  - the `documentation for ebook-tools`_ (shell scripts) or
   - `line 555 of lib.py`_ (python function where the search for ISBNs is implemented).
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
@@ -321,8 +321,8 @@ details see the `LICENSE`_ file in the repository.
 .. _conda: https://docs.conda.io/en/latest/
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
+.. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebook-tools: https://github.com/na--/ebook-tools
-.. _ebook-tools' documentation: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
