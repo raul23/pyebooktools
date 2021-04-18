@@ -69,7 +69,7 @@ need recent versions of:
 
 `:warning:`
 
-    For the moment, the script ``ebooktools` is only tested on **macOS**. Eventually,
+    For the moment, the script ``ebooktools`` is only tested on **macOS**. Eventually,
     I will test it on linux.
 
 Install ``py_ebooktools``
