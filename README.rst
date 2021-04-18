@@ -19,7 +19,7 @@ and semi-automated organization and management of large ebook collections.
   file that contains all the options defined below or the logging config file.
 - ``convert_to_txt.py`` converts the supplied file to a text file. It can optionally also
   use *OCR* for `.pdf`, `.djvu` and image files.
-- ``find_isbns.py`` tries to find valid ISBNs inside a file or in a string if no file was 
+- ``find_isbns.py`` tries to find `valid ISBNs`_ inside a file or in a string if no file was 
   specified. Searching for ISBNs in files uses progressively more resource-intensive
   methods until some ISBNs are found, see the `documentation for ebook-tools`_ for more
   details.
@@ -328,6 +328,7 @@ details see the `LICENSE`_ file in the repository.
 .. _na--: https://github.com/na--
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
+.. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
 
 .. URLs: default values
