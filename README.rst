@@ -542,7 +542,7 @@ To edit the **main** config file with PyCharm:
 
    $ ebooktools edit -a charm main
    
-A tab with the main config file will be opened.
+A tab with the main config file will be opened in the Editor window.
 
 Example 2: reset the main config file
 -------------------------------------
@@ -554,11 +554,16 @@ To reset the **main** config file with factory settings:
 
 Example 3: convert a pdf file to text with OCR
 ----------------------------------------------
-To convert a pdf file to text with OCR:
+To convert a pdf file to text **with OCR**:
 
 Example 4: convert a pdf file to text without OCR
 -------------------------------------------------
-To convert a pdf file to text with OCR:
+To convert a pdf ``pdf_to_convert.pdf`` file to text
+``converted.txt`` **without OCR**:
+
+.. code-block:: terminal
+
+    ebooktools convert -o converted.txt pdf_to_convert.pdf
 
 Example 5: find ISBNs in a string
 ---------------------------------
