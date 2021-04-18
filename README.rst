@@ -367,8 +367,7 @@ Split the supplied ebook files (and the accompanying metadata files if present)
 into folders with consecutive names that each contain the specified number of
 files.
 
-In particular, the following global options affect the ``split`` subcommand
-are:
+In particular, the following global options affect the ``split`` subcommand:
 
 * ``-d``, ``--dry-run`` found in the `General control flags`_ section
 
