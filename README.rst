@@ -297,6 +297,16 @@ Miscellaneous options
 
 Script usage and options
 ------------------------
+As explained in `Usage, options and configuration`_, the usage pattern for running a
+given subcommand is the following:
+
+.. code-block:: terminal
+
+  usage: ebooktools {edit,convert,find,split} [<OPTIONS>]
+  
+Where ``[<OPTIONS>``] include general options and options specific to the subcommand
+as shown below.
+
 edit [<OPTIONS>] {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
@@ -450,6 +460,7 @@ details see the `LICENSE`_ file in the repository.
 .. _General control flags: #general-control-flags
 .. _Miscellaneous options: #miscellaneous-options
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
+.. _Usage, options and configuration: #usage-options-and-configuration
 
 .. TODOs
 .. explain log-level and log-format choices of values
