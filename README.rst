@@ -342,7 +342,8 @@ The most important global options that affect the ``split`` subcommand are:
 
 * ``-r``, ``--reverse`` found in `Miscellaneous options`_
 
-* ``--ome``, ``--`` found in ``_
+* ``--ome``, ``--output-metadata-extension`` found in
+  `Options related to the input and output files`_
 
 Options
 """""""
