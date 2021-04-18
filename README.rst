@@ -640,6 +640,8 @@ We have a folder containing four ebooks and their corresponding metadata:
    :align: left
    :alt: Example 07: content of folder_with_books/
 
+|
+
 We want to split this folder into folders containing only one file each:
 
 .. code-block:: terminal
