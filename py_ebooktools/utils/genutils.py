@@ -156,7 +156,7 @@ def move(src, dest):
         logger.debug(f"Destination folder path: {os.path.dirname(dest)}")
         logger.debug(f"Skipping it!")
     else:
-        logger.debug(f"Moving '{filename}'")
+        logger.debug(f"Moving '{filename}'...")
         logger.debug(f"Destination folder path: {os.path.dirname(dest)}")
         shutil.move(src, dest)
         logger.debug("File moved!")
