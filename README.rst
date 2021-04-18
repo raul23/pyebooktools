@@ -84,6 +84,18 @@ Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
 defined in the default config file `default_config.py`_ will be used.
 
+The script ``ebooktools`` consists of various subcommands for the organization and
+management of ebook collections. The usage pattern for running one of the subcommands
+is as follows:
+
+.. code-block:: terminal
+
+  ebooktools {edit,convert,find,split} [<OPTIONS>]
+  
+Where ``[<OPTIONS>``] include general options (as defined in the `General options`_
+section and options specific to the subcommand (as defined in the
+`Script usage and options`_ section).
+
 General options
 ---------------
 Most of these options are part of the common library `lib.py`_ and may affect some
@@ -458,8 +470,10 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs: local
 .. _General control flags: #general-control-flags
+.. _General options: #general-options
 .. _Miscellaneous options: #miscellaneous-options
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
+.. _Script usage and options: #script-usage-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 
 .. TODOs
