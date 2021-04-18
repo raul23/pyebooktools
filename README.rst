@@ -657,6 +657,8 @@ We want to split this folder into folders containing two files each:
    :align: left
    :alt: Example 07: content of output_folder/
 
+|
+
 Note that the metadata folders contain only one file each as expected.
 
 Uninstall
