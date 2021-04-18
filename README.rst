@@ -640,12 +640,17 @@ folders containing only one file:
    
    $ ebooktools split --fpf 1 ~/folder_with_books/ -o ~/output_folder/
 
-**Output:**
-
 .. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
    :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
    :align: left
-   :alt: Example 07: contents of output_folder/
+   :alt: Example 07: content of folder_with_books/
+
+**Output:**
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
+   :align: left
+   :alt: Example 07: content of output_folder/
 
 Uninstall
 =========
