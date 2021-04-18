@@ -644,11 +644,12 @@ We have a folder containing four ebooks and their corresponding metadata:
 
 Note that two ebook files don't have metadata files associated with them.
 
-We want to split this folder into folders containing two files each:
+We want to split this folder into folders containing two files each and their numbering
+should start at 1:
 
 .. code-block:: terminal
    
-   $ ebooktools split --fpf 2 ~/folder_with_books/ -o ~/output_folder/
+   $ ebooktools split -s 1 --fpf 2 ~/folder_with_books/ -o ~/output_folder/
 
 |
 
