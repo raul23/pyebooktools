@@ -32,15 +32,50 @@ and semi-automated organization and management of large ebook collections.
 
 `:warning:`
 
-  **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming soon.
+  * For the moment, the script ``ebooktools.py`` is only tested on **macOS**. Eventually,
+    I will test it on linux.
+  * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming soon.
 
 .. contents:: **Contents**
    :depth: 4
    :local:
    :backlinks: top
 
-Installation
-============
+Installation and dependencies
+=============================
+To install and use the script ``ebooktools.py``, follow these steps:
+
+1. Install the dependencies `below <#install-dependencies>`__. 
+2. Install the package ``py_ebooktools`` `below <#install-py-ebooktools>`__.
+
+Install dependencies
+--------------------
+As explained in the documentation for `ebook-tools 
+<https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
+need recent versions of:
+
+* `calibre`_ for fetching metadata from online sources, conversion to txt (for ISBN 
+  searching) and ebook metadata extraction. Versions **2.84** and above are 
+  preferred because of their ability to manually specify from which specific online
+  source we want to fetch metadata. For earlier versions you have to set
+  ``isbn_metadata_fetch_order`` and ``organize_without_isbn_sources`` to empty strings.  
+* `p7zip`_ for ISBN searching in ebooks that are in archives.
+* `Tesseract`_ for running OCR on books - version 4 gives better results even though
+  it's still in alpha. OCR is disabled by default and another engine can be configured
+  if preferred.
+* **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for faster
+  than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files respectively to
+  ``.txt``.
+* **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be installed
+  for better metadata fetching.
+  
+`:warning:`
+
+  For the moment, the script ``ebooktools.py`` is only tested on **macOS**. Eventually,
+  I will test it on linux.
+
+Install ``py_ebooktools``
+-------------------------
 1. It is highly recommended to install the package ``py_ebooktools`` in a virtual
    environment using for example `venv`_ or `conda`_.
 
@@ -79,7 +114,7 @@ Usage, options and configuration
 All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``
 which is created along with the logging config file ``logging.py`` when the script
-``ebooktools`` is run the first time with any of the subcommands defined `below`_.
+``ebooktools.py`` is run the first time with any of the subcommands defined `below`_.
 The default values for these config files are taken from `default_config.py`_ and
 `default_logging.py`_, respectively.
 
@@ -87,7 +122,7 @@ Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
 defined in the default config file `default_config.py`_ will be used.
 
-The ``ebooktools`` script consists of various subcommands for the organization and
+The ``ebooktools.py`` script consists of various subcommands for the organization and
 management of ebook collections. The usage pattern for running one of the subcommands
 is as follows:
 
@@ -365,12 +400,11 @@ convert [<OPTIONS>] input_file
 .. code-block:: terminal
 
    usage: ebooktools convert [-h] [-v] [-q] [--verbose]
-                          [--log-level {debug,info,warning,error}]
-                          [--log-format {console,simple,only_msg}] [-o OUTPUT]
-                          [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                          [--ocrc CMD]
-                          input_file
-
+                             [--log-level {debug,info,warning,error}]
+                             [--log-format {console,simple,only_msg}] [-o OUTPUT]
+                             [--ocr {always,true,false}] [--ocrop PAGES PAGES]
+                             [--ocrc CMD]
+                             input_file
 
 Description
 """""""""""
@@ -394,16 +428,61 @@ Input and output arguments
   The output file text. By default, it is saved in the current working directory.
 
 
+find [<OPTIONS>] input_data
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools find [-h] [-v] [-q] [--verbose]
+                          [--log-level {debug,info,warning,error}]
+                          [--log-format {console,simple,only_msg}]
+                          [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
+                          [--isbn-direct-grep-files REGEX]
+                          [--isbn-ignored-files REGEX]
+                          [--reorder-files-for-grep LINES [LINES ...]]
+                          [--ocr {always,true,false}] [--ocrop PAGES PAGES]
+                          [--ocrc CMD] [--irs SEPARATOR]
+                          input_data
+                         
+Description
+"""""""""""                       
+Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
+specified. Searching for ISBNs in files uses progressively more resource-intensive 
+methods until some ISBNs are found, for more details see 
+
+- the `documentation for ebook-tools`_ (shell scripts) or
+- `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search in files is
+  implemented).
+
+Global options
+""""""""""""""
+The global options that especially affect this script are the ones `related to extracting
+ISBNs from files`_ and the `OCR ones`_.
+
+Local options
+"""""""""""""
+The only subcommand-specific option is:
+
+* ``--irs <value>``, ``--isbn-return-separator <value>``; config variable
+  ``isbn_ret_separator``; default value ``\n`` (a new line)
+  
+  This specifies the separator that will be used when returning any found ISBNs.
+
+Input argument
+""""""""""""""
+* ``input_data``; no config variable; **required**
+
+  Can either be the path to a file or a string. The input will be searched for ISBNs.
+
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
    usage: ebooktools split [-h] [-v] [-q] [--verbose] [-d] [-r]
-                        [--log-level {debug,info,warning,error}]
-                        [--log-format {console,simple,only_msg}]
-                        [--ome EXTENSION] [-o PATH] [-s START_NUMBER]
-                        [-f PATTERN] [--fpf FILES_PER_FOLDER]
-                        folder_with_books
+                           [--log-level {debug,info,warning,error}]
+                           [--log-format {console,simple,only_msg}]
+                           [--ome EXTENSION] [-o PATH] [-s START_NUMBER]
+                           [-f PATTERN] [--fpf FILES_PER_FOLDER]
+                           folder_with_books
 
 Description
 """""""""""
@@ -452,6 +531,138 @@ Input and output arguments
   
   The output folder in which all the new consecutively named folders will be
   created.
+  
+Examples
+========
+Example 1: edit the main config file
+------------------------------------
+To edit the **main** config file with PyCharm:
+
+.. code-block:: terminal
+
+   $ ebooktools edit -a charm main
+   
+A tab with the main config file will be opened in the Editor window.
+
+Example 2: reset the main config file
+-------------------------------------
+To reset the **main** config file with factory settings:
+
+.. code-block:: terminal
+   
+   $ ebooktools edit -r main
+
+Example 3: convert a pdf file to text with OCR
+----------------------------------------------
+To convert a pdf file ``pdf_to_convert.pdf`` to text
+``converted.txt`` **with OCR**:
+
+.. code-block:: terminal
+
+   $ ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
+   
+By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
+trying the simple conversion tools (``pdftotext`` or calibre's 
+``ebook-convert`` if the latter command is not found).
+
+Example 4: convert a pdf file to text without OCR
+-------------------------------------------------
+To convert a pdf file ``pdf_to_convert.pdf`` to text
+``converted.txt`` **without OCR**:
+
+.. code-block:: terminal
+
+   $ ebooktools convert -o converted.txt pdf_to_convert.pdf
+    
+If ``pdftotext`` is present, it is used to convert the pdf file to text. Otherwise,
+calibre's ``ebook-convert`` is used for the conversion.
+
+Example 5: find ISBNs in a string
+---------------------------------
+Find ISBNs in the string ``'978-3-319-667744 978-1-292-02608-4 0000000000 
+0123456789 1111111111'``:
+
+.. code-block:: terminal
+
+   $ ebooktools find '978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111'
+
+Note the input string enclosed within single quotes.
+
+**Output:**
+
+.. code-block:: terminal
+
+   INFO     Running py_ebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     Extracted ISBNs:
+   9783319667744
+   9781292026084
+
+The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
+they are matched with the regular expression ``isbn_blacklist_regex``.
+
+By default, the extracted ISBNs are separated by newlines, ``\n``.
+
+Example 6: find ISBNs in a pdf file
+-----------------------------------
+Find ISBNs in a pdf file:
+
+.. code-block:: terminal
+
+   $ ebooktools find pdf_file.pdf
+   
+**Output:**
+
+.. code-block:: terminal
+
+   INFO     Running py_ebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
+   INFO     Trying to decompress 'pdf_file.pdf' and recursively scan the contents
+   INFO     Error extracting the file (probably not an archive)! Removing tmp dir...
+   INFO     Converting ebook to text format...
+   INFO     The file looks like a pdf, using pdftotext to extract the text
+   INFO     Reordering input file (if possible), read first 400 lines normally, then read last 50 lines in reverse and then read the rest
+   INFO     Extracted ISBNs:
+   9781594201721
+   1000100111
+
+The first extracted ISBN is the correct one. The last sequence ``1000100111``
+is not an ISBN even though it is a technically valid but wrong ISBN that the
+regular expression ``isbn_blacklist_regex`` didn't catch.
+
+Example 7: split a folder
+-------------------------
+We have a folder containing four ebooks and their corresponding metadata:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+   :align: left
+   :alt: Example 07: content of folder_with_books/
+
+|
+
+Note that two ebook files don't have metadata files associated with them.
+
+We want to split these ebook files into folders containing two files each and their numbering
+should start at 1:
+
+.. code-block:: terminal
+   
+   $ ebooktools split -s 1 --fpf 2 ~/folder_with_books/ -o ~/output_folder/
+
+|
+
+**Output:** content of ``output_folder``
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
+   :align: left
+   :alt: Example 07: content of output_folder/
+
+|
+
+Note that the metadata folders contain only one file each as expected.
 
 Uninstall
 =========
@@ -495,6 +706,7 @@ Roadmap
   - ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_
   - ``rename-calibre-library.sh``: **working on it**
   - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
+- Test on linux
 - Add tests
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
@@ -508,21 +720,29 @@ This program is licensed under the GNU General Public License v3.0. For more
 details see the `LICENSE`_ file in the repository.
 
 .. URLs
+.. _calibre: https://calibre-ebook.com/
+.. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
 .. _default_logging.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_logging.py
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
+.. _DjVuLibre: http://djvu.sourceforge.net/
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
+.. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
+.. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
+.. _poppler: https://poppler.freedesktop.org/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
+.. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
+.. _WorldCat xISBN: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
 
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
@@ -537,6 +757,7 @@ details see the `LICENSE`_ file in the repository.
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
+.. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Script usage and options: #script-usage-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
