@@ -39,8 +39,13 @@ and semi-automated organization and management of large ebook collections.
    :local:
    :backlinks: top
 
-Installation
-============
+Installation and dependencies
+=============================
+Install dependencies
+--------------------
+
+Install ``py_ebooktools``
+-------------------------
 1. It is highly recommended to install the package ``py_ebooktools`` in a virtual
    environment using for example `venv`_ or `conda`_.
 
