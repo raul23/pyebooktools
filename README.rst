@@ -78,8 +78,8 @@ Usage, options and configuration
 ================================
 All of the options documented below can either be passed to the `ebooktools.py`_
 script via command-line parameters or via the configuration file ``config.py``
-which is created along also with the logging config file ``logging.py`` the first
-time the script ``ebooktools`` . The default values for these config files
+which is created along with the logging config file ``logging.py`` when the script
+``ebooktools`` is run the first time. The default values for these config files
 are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
 Command-line parameters supersede variables defined in the configuration file.
