@@ -77,7 +77,7 @@ ocr_command = 'tesseract_wrapper'
 # 1.4 Options related to extracting and searching for non-ISBN metadata
 # =====================================================================
 # token_min_length = 3
-# tokens_to_ignore = ?
+# tokens_to_ignore = 'ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}'
 # organize_without_isbn_sources = ['Goodreads' ,'Amazon.com', 'Google']
 
 # 1.5 Options related to the input and output files
