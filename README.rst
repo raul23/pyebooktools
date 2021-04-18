@@ -260,7 +260,7 @@ Options related to extracting and searching for non-ISBN metadata
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``--oft <value>``, ``--output-filename-template <value>``; config variable
-  ``output_filename_template``; default value::
+  ``output_filename_template``; default value:: bash
   
   "${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] - }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}"
   
