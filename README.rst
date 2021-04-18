@@ -199,9 +199,9 @@ Options for OCR
     were no ISBNs in it.
     
   * ``convert_to_txt.py`` can use OCR for the conversion to ``.txt``. Setting the value to
-  ``True`` will cause it to use OCR for books that failed to be converted to ``.txt`` or
-  were converted to empty files by the simple conversion tools. Setting it to ``always``
-  will cause it to first try OCR-ing the books before trying the simple conversion tools.
+    ``True`` will cause it to use OCR for books that failed to be converted to ``.txt`` or
+    were converted to empty files by the simple conversion tools. Setting it to ``always``
+    will cause it to first try OCR-ing the books before trying the simple conversion tools.
   
 * ``--ocrop <value>``, ``--ocr-only-first-last-pages <value>``; config variable 
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for
