@@ -648,7 +648,7 @@ We want to split this folder into folders containing only one file each:
    
    $ ebooktools split --fpf 1 ~/folder_with_books/ -o ~/output_folder/
 
-**Output:**
+**Output:** content of ``output_folder``
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
