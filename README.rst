@@ -95,8 +95,23 @@ General control flags
   Print various debugging information, e.g. print traceback when there is an
   exception.
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
+
+  If this is enabled, no file rename/move/symlink/etc. operations will actually
+  be executed.
+
 * ``--sl``, ``--symlink-only``; config variable ``symlink_only``; default value
   ``False``
+  
+  Instead of moving the ebook files, create symbolic links to them.
+
+* ``--km``, ``--keep-metadata``; config variable ``keep_metadata``; default value
+  ``False``
+  
+  Do not delete the gathered metadata for the organized ebooks, instead save it
+  in an accompanying file together with each renamed book. It is very useful for
+  semi-automatic verification of the organized files with
+  ``interactive_organizer.py`` or for additional verification, indexing or
+  processing at a later date.
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
