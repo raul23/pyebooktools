@@ -249,9 +249,9 @@ Options related to extracting and searching for non-ISBN metadata
   calibre's ``fetch-ebook-metadata`` command-line application, so any custom calibre metadata
   `plugins`_ can also be used. To see the currently available options, run
   ``fetch-ebook-metadata --help`` and check the description for the ``--allowed-plugin`` option. 
-  `Because Calibre versions older than 2.84 don't support the ``--allowed-plugin`` option, if you
-  want to use such an old Calibre version you should manually set ``ORGANIZE_WITHOUT_ISBN_SOURCES``
-  to an empty string.`
+  *Because Calibre versions older than 2.84 don't support the **--allowed-plugin** option, if you
+  want to use such an old Calibre version you should manually set **ORGANIZE_WITHOUT_ISBN_SOURCES**
+  to an empty string.*
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
