@@ -146,8 +146,8 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   
   This is a regular expression that is matched against the MIME type of the searched
   files. Matching files are not searched for ISBNs beyond their filename. The default
-  value is a bit long because it tries to make the scripts ignore .gif and .svg images,
-  audio, video and executable files and fonts, you can find it in
+  value is a bit long because it tries to make the scripts ignore ``.gif`` and
+  ``.svg`` images, audio, video and executable files and fonts, you can find it in
   `default_config.py#L62`_.
 
 Options for OCR
