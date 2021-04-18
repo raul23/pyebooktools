@@ -68,7 +68,7 @@ logging = {
         # -----------------------------
         # Loggers using console handler
         # -----------------------------
-        "py_ebooktools.edit":
+        "py_ebooktools.edit_config":
         {
           "level": "DEBUG",
           "handlers": ["console"],
