@@ -414,9 +414,9 @@ Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was
 specified. Searching for ISBNs in files uses progressively more resource-intensive 
 methods until some ISBNs are found, for more details see 
 
-  - the `documentation for ebook-tools`_ (shell scripts) or
-  - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search in files is
-    implemented).
+- the `documentation for ebook-tools`_ (shell scripts) or
+- `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search in files is
+  implemented).
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
