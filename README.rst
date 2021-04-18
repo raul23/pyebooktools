@@ -554,8 +554,8 @@ To reset the **main** config file with factory settings:
 
 Example 3: convert a pdf file to text **with** OCR
 --------------------------------------------------
-To convert a pdf file ``pdf_to_convert.pdf`` to text
-``converted.txt`` **with OCR**:
+To convert a pdf file (``pdf_to_convert.pdf``) to text
+(``converted.txt``) **with OCR**:
 
 .. code-block:: terminal
 
@@ -586,7 +586,7 @@ Find ISBNs in the string ``'978-159420172-1 978-1892391810 0000000000
 
    $ ebooktools find '978-159420172-1 978-1892391810 0000000000 0123456789 1111111111'
 
-Note the input string enclosed within single quotes.
+Note the input string is enclosed within single quotes.
 
 **Output:**
 
