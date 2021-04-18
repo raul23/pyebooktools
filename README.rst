@@ -21,8 +21,8 @@ and semi-automated organization and management of large ebook collections.
   use *OCR* for ``.pdf``, ``.djvu`` and image files.
 - ``find_isbns.py`` tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
   specified. Searching for ISBNs in files uses progressively more resource-intensive
-  methods until some ISBNs are found, see the `documentation for ebook-tools`_ for more
-  details.
+  methods until some ISBNs are found, see the `ebook-tools' documentation (shell scripts)`_
+  for more details.
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
@@ -319,8 +319,8 @@ details see the `LICENSE`_ file in the repository.
 .. _conda: https://docs.conda.io/en/latest/
 .. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
-.. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebook-tools: https://github.com/na--/ebook-tools
+.. _ebook-tools' documentation (shell scripts): https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
