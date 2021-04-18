@@ -140,6 +140,15 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   This is a regular expression that is matched against the MIME type of the searched
   files. Matching files are searched directly for ISBNs, without converting or
   OCR-ing them to ``.txt`` first.
+  
+* ``--isbn-ignored-files <value>``, config variable ``isbn_ignored_files``; see
+  default value in `default_config.py#L62`_
+  
+  This is a regular expression that is matched against the MIME type of the searched
+  files. Matching files are not searched for ISBNs beyond their filename. The default
+  value is a bit long because it tries to make the scripts ignore .gif and .svg images,
+  audio, video and executable files and fonts, you can find it in
+  `default_config.py#L62`_.
 
 Options for OCR
 ^^^^^^^^^^^^^^^
@@ -291,6 +300,7 @@ details see the `LICENSE`_ file in the repository.
 
 .. URLs: default values
 .. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
+.. _default_config.py#L62: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L62
 
 .. TODOs
 .. explain log-level and log-format choices of values
