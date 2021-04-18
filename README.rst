@@ -321,9 +321,9 @@ as shown below.
 
 All subcommands are affected by the following global options:
 
-* `-h`_
-* `-v`_
-* `-q`_
+* `-h, --help`_
+* `-v, --verbose`_
+* `-q, --quiet`_
 * `--verbose`_
 * `--log-level`_
 * `--log-format`_
@@ -484,9 +484,9 @@ details see the `LICENSE`_ file in the repository.
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _Script usage and options: #script-usage-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
-.. _-h: #general-control-flags
-.. _-v: #general-control-flags
-.. _-q: #general-control-flags
+.. _-h, --help: #general-control-flags
+.. _-v, --verbose: #general-control-flags
+.. _-q, --quiet: #general-control-flags
 .. _--verbose: #general-control-flags
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
