@@ -62,7 +62,7 @@ isbn_direct_grep_files = '^text/(plain|xml|html)$'
 isbn_ignored_files = '^(image/(gif|svg.+)|application/(x-shockwave-flash|CDFV2|vnd.ms-opentype|x-font-ttf|x-dosexec|vnd.ms-excel|x-java-applet)|audio/.+|video/.+)$'
 isbn_grep_rf_scan_first = 400
 isbn_grep_rf_reverse_last = 50
-# False to disable the functionality or first_lines,last_lines to enable it
+# False to disable the functionality or (first_lines,last_lines) to enable it
 isbn_grep_reorder_files = (isbn_grep_rf_scan_first, isbn_grep_rf_reverse_last)
 # NOTE: If you use Calibre versions that are older than 2.84, it's required to
 # manually set the following option to an empty string.
