@@ -559,7 +559,7 @@ To convert a pdf file ``pdf_to_convert.pdf`` to text
 
 .. code-block:: terminal
 
-   ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
+   $ ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
    
 By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
@@ -572,14 +572,34 @@ To convert a pdf file ``pdf_to_convert.pdf`` to text
 
 .. code-block:: terminal
 
-    ebooktools convert -o converted.txt pdf_to_convert.pdf
+   $ ebooktools convert -o converted.txt pdf_to_convert.pdf
     
 If ``pdftotext`` is present, it is used to convert the pdf file to text. Otherwise,
 calibre's ``ebook-convert`` is used for the conversion.
 
 Example 5: find ISBNs in a string
 ---------------------------------
-Find ISBNs in the string ````:
+Find ISBNs in the string ``978-3-319-667744 978-1-292-02608-4 0000000000 
+0123456789 1111111111``:
+
+.. code-block:: terminal
+
+   $ ebooktools find "978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111"
+    
+**Output:**
+
+.. code-block:: terminal
+
+   INFO     Running py_ebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     Extracted ISBNs:
+   9783319667744
+   9781292026084
+
+The other sequences are rejected because they are matched with the regular
+expression ``isbn_blacklist_regex``.
+
+By default, the extracted ISBNs are separated by newlines, ``\n``.
 
 Example 6: find ISBNs in a pdf file
 -----------------------------------
