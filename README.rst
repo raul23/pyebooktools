@@ -536,16 +536,35 @@ Examples
 ========
 Example 1: edit the main config file
 ------------------------------------
-Example 2: convert a pdf file to text with OCR
+To edit the main config file with Pycharm:
+
+.. code-block:: terminal
+
+   $ ebooktools edit -a charm main
+
+Example 2: reset the main config file
+-------------------------------------
+To rest the main config file to factory settings:
+
+Example 3: convert a pdf file to text with OCR
 ----------------------------------------------
-Example 3: convert a pdf file to text without OCR
+To convert a pdf file to text with OCR:
+
+Example 4: convert a pdf file to text without OCR
 -------------------------------------------------
-Example 4: find ISBNs in a string
+To convert a pdf file to text with OCR:
+
+Example 5: find ISBNs in a string
 ---------------------------------
-Example 5: find ISBNs in a pdf file
+Find ISBNs in the string ````:
+
+Example 6: find ISBNs in a pdf file
 -----------------------------------
-Example 6: split a folder
+Find ISBNs in a pdf file:
+
+Example 7: split a folder
 -------------------------
+Split a folder:
 
 Uninstall
 =========
