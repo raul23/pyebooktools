@@ -37,8 +37,10 @@ def find(input_data, isbn_blacklist_regex=default_cfg.isbn_blacklist_regex,
          isbn_ignored_files=default_cfg.isbn_ignored_files,
          isbn_regex=default_cfg.isbn_regex,
          isbn_ret_separator=default_cfg.isbn_ret_separator,
-         ocr_command=default_cfg.ocr_command, ocr_enabled=default_cfg.ocr_enabled,
-         ocr_only_first_last_pages=default_cfg.ocr_only_first_last_pages, **kwargs):
+         ocr_command=default_cfg.ocr_command,
+         ocr_enabled=default_cfg.ocr_enabled,
+         ocr_only_first_last_pages=default_cfg.ocr_only_first_last_pages,
+         **kwargs):
     # ipdb.set_trace()
     # Check if input data is a file path or a string
     if Path(input_data).is_file():
