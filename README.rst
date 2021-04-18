@@ -125,7 +125,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
 
-``--isbn-blacklist-regex <value>``, config variable ``isbn_blacklist_regex``;
+* ``--isbn-blacklist-regex <value>``, config variable ``isbn_blacklist_regex``;
   default value ``^(0123456789|([0-9xX])\2{9})$``
   
   Any ISBNs that were matched by the ``isbn_regex`` above and pass the ISBN
