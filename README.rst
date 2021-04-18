@@ -421,7 +421,7 @@ methods until some ISBNs are found, for more details see
 Global options
 """"""""""""""
 The global options that especially affect this script are the ones `related to extracting
-ISBNs from files`_ and `OCR ones`_.
+ISBNs from files`_ and the `OCR ones`_.
 
 Local options
 """""""""""""
