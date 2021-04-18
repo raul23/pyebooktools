@@ -338,7 +338,8 @@ files.
 
 The most important global option that affects the ``split`` subcommand is
 ``--ome`` which sets the extension of the additional metadata file that is
-saved next to ebook file (found in `Options related to the input and output files`_)
+saved next to ebook file (found in `Options related to the input and output 
+files`_).
 
 Options
 """""""
