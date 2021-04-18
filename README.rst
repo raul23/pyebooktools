@@ -415,18 +415,6 @@ In particular, the following **global options** affect the ``split`` subcommand:
 * ``--ome``, ``--output-metadata-extension`` found in the
   `Options related to the input and output files`_ section
 
-Input and output arguments
-""""""""""""""""""""""""""
-* ``input_file``; no config variable; **required**
-  
-  Folder with books which will be recursively scanned for files.
-
-* ``-o <value>``, ``--output-folder <value>``; config variable ``output_folder``;
-  **default value is the current working directory** (check with ``pwd``)
-  
-  The output folder in which all the new consecutively named folders will be
-  created.
-
 Local options
 """""""""""""
 * ``-s <value>``, ``--start-number <value>``; config variable ``start_number``;
@@ -445,6 +433,18 @@ Local options
   ``files_per_folder``; default value ``1000``
 
   How many files should be moved to each folder.
+  
+Input and output arguments
+""""""""""""""""""""""""""
+* ``input_file``; no config variable; **required**
+  
+  Folder with books which will be recursively scanned for files.
+
+* ``-o <value>``, ``--output-folder <value>``; config variable ``output_folder``;
+  **default value is the current working directory** (check with ``pwd``)
+  
+  The output folder in which all the new consecutively named folders will be
+  created.
 
 Uninstall
 =========
