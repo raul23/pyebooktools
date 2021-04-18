@@ -297,6 +297,13 @@ Script usage and options
 ------------------------
 edit [<OPTIONS>] cfg_type {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: bash
+
+   usage: ebooktools edit [-h] [-v] [-q] [--verbose]
+                          [--log-level {debug,info,warning,error}]
+                          [--log-format {console,simple,only_msg}] [-a [NAME] | -r]
+                          {main,log}
+
 Description
 """""""""""
 Edit a configuration file, either the main configuration file (``main``) or the 
