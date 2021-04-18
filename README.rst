@@ -81,15 +81,15 @@ General options
 ---------------
 General control flags
 ^^^^^^^^^^^^^^^^^^^^^
-* ``-h``; ``--help``; no config variable; default value ``False``
+* ``-h``, ``--help``; no config variable; default value ``False``
 
   Show the help message and exit.
 
-* ``-v``; ``--version``; no config variable; default value ``False``
+* ``-v``, ``--version``; no config variable; default value ``False``
 
   Show program's version number and exit.
 
-* ``-q``; ``--quiet``; config variable ``quiet``; default value ``False``
+* ``-q``, ``--quiet``; config variable ``quiet``; default value ``False``
 
   Enable quiet mode, i.e. nothing will be printed.
 
@@ -125,7 +125,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
 
-* ``--isbn-blacklist-regex <value>``, config variable ``isbn_blacklist_regex``;
+* ``--isbn-blacklist-regex <value>``; config variable ``isbn_blacklist_regex``;
   default value ``^(0123456789|([0-9xX])\2{9})$``
   
   Any ISBNs that were matched by the ``isbn_regex`` above and pass the ISBN
@@ -134,14 +134,14 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   ignore technically valid but probably wrong numbers like ``0123456789``, 
   ``0000000000``, ``1111111111``, etc.
   
-* ``--isbn-direct-grep-files <value>``, config variable ``isbn_direct_grep_files``;
+* ``--isbn-direct-grep-files <value>``; config variable ``isbn_direct_grep_files``;
   default value ``^text/(plain|xml|html)$``
   
   This is a regular expression that is matched against the MIME type of the searched
   files. Matching files are searched directly for ISBNs, without converting or
   OCR-ing them to ``.txt`` first.
   
-* ``--isbn-ignored-files <value>``, config variable ``isbn_ignored_files``; see
+* ``--isbn-ignored-files <value>``; config variable ``isbn_ignored_files``; see
   default value in `default_config.py#L62`_
   
   This is a regular expression that is matched against the MIME type of the searched
@@ -150,7 +150,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   ``.svg`` images, audio, video and executable files and fonts, you can find it in
   `default_config.py#L62`_.
   
-* ``--reorder-files-for-grep <value>``, config variable ``isbn_grep_reorder_files``, 
+* ``--reorder-files-for-grep <value>``; config variable ``isbn_grep_reorder_files``, 
   ``isbn_grep_rf_scan_first``, ``isbn_grep_rf_reverse_last``; default value ``400``,
   ``50``
   
@@ -163,6 +163,17 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   is searched twice, even if these regions overlap. If you use the command-line option,
   the format for ``<value>`` is ``False`` to disable the functionality or
   ``first_lines,last_lines`` to enable it with the specified values.
+  
+* ``--mfo <value>``, ``--metadata-fetch-order <value>``; config variable
+  ``isbn_metadata_fetch_order``; default value ``Goodreads,Amazon.com,Google,ISBNDB,
+  WorldCat xISBN,OZON.ru``
+  
+  This option allows you to specify the online metadata sources and order in which the
+  scripts will try searching in them for books by their ISBN. The actual search is done
+  by calibre's ``fetch-ebook-metadata`` command-line application, so any custom calibre
+  metadata `plugins`_ can also be used. To see the currently available options, run
+  ``fetch-ebook-metadata --help`` and check the description for the ``--allowed-plugin``
+  option.
 
 Options for OCR
 ^^^^^^^^^^^^^^^
@@ -309,6 +320,7 @@ details see the `LICENSE`_ file in the repository.
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
+.. _plugins: https://plugins.calibre-ebook.com/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
 
