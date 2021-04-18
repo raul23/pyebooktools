@@ -487,7 +487,7 @@ if __name__ == '__main__':
     # ebooktools edit -a charm --log-level info --log-format console log
     #
     # Find
-    # ebooktools find "978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111" --log-level debug --log-format console
+    # ebooktools find "978-159420172-1 978-1892391810 0000000000 0123456789 1111111111" --log-level debug --log-format console
     # ebooktools find ~/test/_ebooktools/find_isbns/Title --log-level debug --log-format console
     #
     # Split
