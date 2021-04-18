@@ -201,7 +201,7 @@ Roadmap
 
   - ``organize-ebooks.sh``: **not started yet**
   - ``interactive-organizer.sh``: **not started yet**
-  - ``find-isbns.sh``: **working on it**
+  - ``find-isbns.sh``: **done**, *see* `find_isbns.py`_
   - ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_
   - ``rename-calibre-library.sh``: **not started yet**
   - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
@@ -223,6 +223,7 @@ details see the `LICENSE`_ file in the repository.
 .. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
+.. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
 .. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
 .. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
