@@ -212,6 +212,15 @@ Options for OCR
   ISBN numbers are usually at the beginning or at the end of books. Setting the value to 
   ``False`` disables this optimization and is the default for ``convert_to_txt.sh``, where
   we probably want the whole book to be converted.
+  
+* ``--ocrc <value>``, ``--ocr-command <value>``; config variable ``ocr_command``;
+  default value ``tesseract_wrapper``
+  
+  This allows us to define a hook for using custom OCR settings or software. The default
+  value is just a wrapper that allows us to use both tesseract 3 and 4 with some predefined
+  settings. You can use a custom bash function or shell script - the first argument is the
+  input image (books are OCR-ed page by page) and the second argument is the file you have
+  to write the output text to.
 
 Options related to extracting and searching for non-ISBN metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -363,4 +372,5 @@ details see the `LICENSE`_ file in the repository.
 
 .. TODOs
 .. explain log-level and log-format choices of values
+.. check ocr-command option (including description)
 
