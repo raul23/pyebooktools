@@ -394,6 +394,30 @@ Input and output arguments
   The output file text. By default, it is saved in the current working directory.
 
 
+find [<OPTIONS>] input_data
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools find [-h] [-v] [-q] [--verbose]
+                       [--log-level {debug,info,warning,error}]
+                       [--log-format {console,simple,only_msg}]
+                       [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
+                       [--isbn-direct-grep-files REGEX]
+                       [--isbn-ignored-files REGEX]
+                       [--reorder-files-for-grep LINES [LINES ...]]
+                       [---mfo METADATA_SOURCES] [--irs SEPARATOR]
+                       input_data
+
+Description
+"""""""""""                       
+Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
+specified. Searching for ISBNs in files uses progressively more resource-intensive 
+methods until some ISBNs are found, for more details see 
+
+  - the `documentation for ebook-tools`_ (shell scripts) or
+  - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search in files is
+    implemented).
+
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
