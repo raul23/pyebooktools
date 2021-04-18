@@ -93,7 +93,7 @@ is as follows:
   ebooktools {edit,convert,find,split} [<OPTIONS>]
   
 Where ``[<OPTIONS>``] include general options (as defined in the `General options`_
-section and options specific to the subcommand (as defined in the
+section) and options specific to the subcommand (as defined in the
 `Script usage and options`_ section).
 
 General options
