@@ -81,6 +81,11 @@ need recent versions of:
 
 Install ``py_ebooktools``
 -------------------------
+The package ``py_ebooktools`` contains the script ``ebooktools.py`` which
+consists of various subcommands (e.g. ``find`` and ``organize``) for
+automated and semi-automated organization and management of large ebook
+collections as explained in the `Usage, options and configuration`_ section.
+
 1. It is highly recommended to install the package ``py_ebooktools`` in a
    virtual environment using for example `venv`_ or `conda`_.
 
@@ -388,6 +393,10 @@ All subcommands are affected by the following global options:
 * `--log-level`_
 * `--log-format`_
 
+In the subsections below, you will find a definition for each of the
+supported subcommand for automated and semi-automated organization and
+management of large ebook collections.
+
 edit [<OPTIONS>] {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
@@ -666,9 +675,9 @@ We have a folder containing four ebooks and their corresponding metadata:
    :align: left
    :alt: Example 07: content of folder_with_books/
 
-|
-
 Note that two ebook files don't have metadata files associated with them.
+
+|
 
 We want to split these ebook files into folders containing two files each and
 their numbering should start at 1:
@@ -676,8 +685,6 @@ their numbering should start at 1:
 .. code-block:: terminal
    
    $ ebooktools split -s 1 --fpf 2 ~/folder_with_books/ -o ~/output_folder/
-
-|
 
 **Output:** content of ``output_folder``
 
