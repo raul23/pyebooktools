@@ -24,7 +24,8 @@ and semi-automated organization and management of large ebook collections.
   methods until some ISBNs are found, for more details see 
   
   - the `documentation for ebook-tools`_ (shell scripts) or
-  - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search is implemented).
+  - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs search in files is
+    implemented).
 - ``split_into_folders.py`` splits the supplied ebook files (and the accompanying metadata
   files if present) into folders with consecutive names that each contain the
   specified number of files.
