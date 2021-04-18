@@ -579,12 +579,12 @@ calibre's ``ebook-convert`` is used for the conversion.
 
 Example 5: find ISBNs in a string
 ---------------------------------
-Find ISBNs in the string ``'978-3-319-667744 978-1-292-02608-4 0000000000 
+Find ISBNs in the string ``'978-159420172-1 978-1892391810 0000000000 
 0123456789 1111111111'``:
 
 .. code-block:: terminal
 
-   $ ebooktools find '978-3-319-667744 978-1-292-02608-4 0000000000 0123456789 1111111111'
+   $ ebooktools find '978-159420172-1 978-1892391810 0000000000 0123456789 1111111111'
 
 Note the input string enclosed within single quotes.
 
@@ -595,8 +595,8 @@ Note the input string enclosed within single quotes.
    INFO     Running py_ebooktools v0.1.0a3
    INFO     Verbose option disabled
    INFO     Extracted ISBNs:
-   9783319667744
-   9781292026084
+   9781594201721
+   9781892391810
 
 The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
 they are matched with the regular expression ``isbn_blacklist_regex``.
