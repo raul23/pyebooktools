@@ -27,13 +27,13 @@ logger = init_log(__name__, __file__)
 
 
 def split(folder_with_books,
-          folder_pattern=default_cfg.folder_pattern,
-          start_number=default_cfg.start_number,
           output_folder=default_cfg.output_folder,
-          files_per_folder=default_cfg.files_per_folder,
-          output_metadata_extension=default_cfg.output_metadata_extension,
           dry_run=default_cfg.dry_run,
-          reverse=default_cfg.file_sort_reverse, **kwargs):
+          files_per_folder=default_cfg.files_per_folder,
+          folder_pattern=default_cfg.folder_pattern,
+          output_metadata_extension=default_cfg.output_metadata_extension,
+          reverse=default_cfg.file_sort_reverse,
+          start_number=default_cfg.start_number, **kwargs):
     files = []
     for fp in Path(folder_with_books).rglob('*'):
         # File extension
