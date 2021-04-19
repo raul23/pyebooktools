@@ -268,6 +268,7 @@ def get_mime_type(file_path):
 
 
 # Run shell command
+# TODO: change function name
 def get_mime_type_version2(file_path):
     # TODO: get MIME type with a python package, see the magic package
     # but dependency, ref.: https://stackoverflow.com/a/2753385
@@ -506,6 +507,7 @@ def remove_tree(file_path):
 # according to the values of `isbn_grep_rf_scan_first` and
 # `isbn_grep_rf_reverse_last`
 # ref.: https://bit.ly/2JuaEKw
+# TODO: order params and other places
 def reorder_file_content(
         file_path,
         isbn_grep_reorder_files=ISBN_GREP_REORDER_FILES,
