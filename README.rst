@@ -741,7 +741,7 @@ Roadmap
   - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
 - Test on linux
 - Add tests on `Travis CI`_
-- Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
+- Eventually add documentation on `Read the Docs`_
 
 References
 ==========
@@ -771,6 +771,7 @@ details see the `LICENSE`_ file in the repository.
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _poppler: https://poppler.freedesktop.org/
+.. _Read the Docs: https://readthedocs.org/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _Travis CI: https://travis-ci.com/
