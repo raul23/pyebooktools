@@ -86,6 +86,12 @@ logging = {
           "handlers": ["console"],
           "propagate": False
         },
+        "py_ebooktools.rename_calibre_library":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
         "py_ebooktools.split_into_folders":
         {
           "level": "DEBUG",
