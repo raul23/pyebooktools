@@ -740,7 +740,7 @@ Roadmap
   - ``rename-calibre-library.sh``: **working on it**
   - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
 - Test on linux
-- Add tests
+- Add tests on `Travis CI`_
 - Eventually add documentation on `readthedocs <https://readthedocs.org/>`__
 
 References
@@ -773,6 +773,7 @@ details see the `LICENSE`_ file in the repository.
 .. _poppler: https://poppler.freedesktop.org/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
+.. _Travis CI: https://travis-ci.com/
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
 .. _WorldCat xISBN: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
