@@ -16,3 +16,13 @@ References
 .. _na--: https://github.com/na--
 .. _rename-calibre-library.sh: https://github.com/na--/ebook-tools/blob/master/rename-calibre-library.sh
 """
+from py_ebooktools.configs import default_config as default_cfg
+from py_ebooktools.utils.genutils import init_log
+
+logger = init_log(__name__, __file__)
+
+
+def rename(calibre_folder, output_folder=default_cfg.output_folder,
+           dry_run=default_cfg.dry_run, reverse=default_cfg.file_sort_reverse,
+           **kwargs):
+    logger.info('test')
