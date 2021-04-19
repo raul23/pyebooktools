@@ -446,7 +446,7 @@ See subcommands below for a list of the tools that can be used.
         symlinked (if the flag `--symlink-only` is enabled) within the folder
         `output-folder`. NOTE: activate the flag `--dry-run` if you just want
         to test without moving or symlinking files.''')
-    add_general_options_as_group(parser_rename)
+    add_general_options_as_group(parser_rename, remove_opts=['keep-metadata'])
     parser_rename_group = parser_rename.add_argument_group(
         title='specific arguments for the subcommand `rename`')
     parser_rename_group.add_argument(
