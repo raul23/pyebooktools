@@ -605,8 +605,8 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
 Example 4: convert a pdf file to text **without** OCR
 -----------------------------------------------------
-To convert a pdf file ``pdf_to_convert.pdf`` to text
-``converted.txt`` **without OCR**:
+To convert a pdf file (``pdf_to_convert.pdf``) to text
+(``converted.txt``) **without OCR**:
 
 .. code-block:: terminal
 
