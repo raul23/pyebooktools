@@ -601,7 +601,7 @@ To convert a pdf file (``pdf_to_convert.pdf``) to text
    
 By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
-``ebook-convert`` if the latter command is not found).
+``ebook-convert`` if the former command is not found).
 
 Example 4: convert a pdf file to text **without** OCR
 -----------------------------------------------------
