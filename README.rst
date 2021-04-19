@@ -441,7 +441,7 @@ convert [<OPTIONS>] input_file
 
 Description
 """""""""""
-Converts the supplied file to a text file. It can optionally also use OCR for
+Converts the supplied file to a **text** file. It can optionally also use OCR for
 ``.pdf``, ``.djvu`` and image files.
 
 Global options
