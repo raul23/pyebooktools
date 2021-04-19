@@ -60,20 +60,21 @@ _MAIN_CFG = 'main'
 _DEFAULT_MSG = ' (default: {})'
 
 
+# TODO: important mention options are grouped in each function
 # TODO: important should be called general control flags
 # General options
-def add_general_options_as_group(parser, remove_opts=None):
+def add_general_options(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
-    parser_general_group = parser.add_argument_group()
+    parser_general_group = parser.add_argument_group(title='general arguments')
+    if not remove_opts.count('help'):
+        parser_general_group.add_argument('-h', '--help', action='help',
+                            help='Show this help message and exit.')
     # TODO: package name too? instead of program name
     if not remove_opts.count('version'):
         parser_general_group.add_argument(
             '-v', '--version', action='version',
-            version=f'%(prog)s v{py_ebooktools.__version__}')
-        """
-        parser.add_argument('-h', '--help', action='help',
-                            help='Show this help message and exit.')
-        """
+            version=f'%(prog)s v{py_ebooktools.__version__}',
+            help="Show program's version number and exit.")
     if not remove_opts.count('quiet'):
         parser_general_group.add_argument(
             "-q", "--quiet", action="store_true",
@@ -108,7 +109,7 @@ def add_general_options_as_group(parser, remove_opts=None):
     # TODO: implement more sort options, e.g. random sort
     if not remove_opts.count('reverse'):
         parser_general_group.add_argument(
-            "-r", "--reverse", dest='file_sort_reverse', action="store_true",
+            "-r", "--reverse", dest='reverse', action="store_true",
             help='''If this is enabled, the files will be sorted in reverse
                 (i.e. descending) order. By default, they are sorted in ascending
                 order.''')
@@ -125,15 +126,19 @@ def add_general_options_as_group(parser, remove_opts=None):
             choices=['console', 'simple', 'only_msg'],
             help='Set logging formatter for all loggers.'
                  + _DEFAULT_MSG.format(LOGGING_FORMATTER))
+    return parser_general_group
 
 
 # Options related to the input and output files
-def add_input_output_opts(parser, remove_opts=None):
+def add_input_output_options(parser, remove_opts=None, add_as_group=True):
     remove_opts = init_list(remove_opts)
-    parser_input_output_group = parser.add_argument_group(
-        title='arguments related to the input and output files')
+    if add_as_group:
+        parser_input_output = parser.add_argument_group(
+            title='arguments related to the input and output files')
+    else:
+        parser_input_output = parser
     if not remove_opts.count('output-filename-template'):
-        parser_input_output_group.add_argument(
+        parser_input_output.add_argument(
             '--oft', '--output-filename-template', dest='output_filename_template',
             metavar='TEMPLATE',
             help='''This specifies how the filenames of the organized files will
@@ -141,12 +146,27 @@ def add_input_output_opts(parser, remove_opts=None):
             (and also potentially unsafe).''' +
                  _DEFAULT_MSG.format(OUTPUT_FILENAME_TEMPLATE))
     if not remove_opts.count('output-metadata-extension'):
-        parser_input_output_group.add_argument(
+        parser_input_output.add_argument(
             '--ome', '--output-metadata-extension', dest='output_metadata_extension',
             metavar='EXTENSION',
             help='''If keep_metadata is enabled, this is the extension of the
             additional metadata file that is saved next to each newly renamed file.'''
                  + _DEFAULT_MSG.format(OUTPUT_METADATA_EXTENSION))
+    return parser_input_output
+
+
+def add_isbn_return_separator(parser):
+    # TODO: note down that escape other characters in ISBN_RET_SEPARATOR,
+    # e.g. \r, \t, \a, \f, \v, \b, \n
+    # TODO: see https://stackoverflow.com/a/31624058/14664104 for repr() [print '\n']
+    # TODO: problems with \x and \u
+    # codecs.decode(value, 'unicode_escape')
+    parser.add_argument(
+        '--irs', '--isbn-return-separator', dest='isbn_ret_separator',
+        metavar='SEPARATOR', type=decode,
+        help='''This specifies the separator that will be used when returning
+            any found ISBNs.''' +
+             _DEFAULT_MSG.format(repr(codecs.encode(ISBN_RET_SEPARATOR).decode('utf-8'))))
 
 
 # Options related to extracting ISBNs from files and finding metadata by ISBN
@@ -217,10 +237,12 @@ def add_isbns_options(parser, remove_opts=None):
             --allowed-plugin option. If you use Calibre versions that are older than
             2.84, it's required to manually set this option to an empty string.'''
                  + _DEFAULT_MSG.format(ISBN_METADATA_FETCH_ORDER))
+    # TODO: return parser for other functions too?
+    return parser_isbns_group
 
 
 # Options for OCR
-def add_ocr_options_as_group(parser, remove_opts=None):
+def add_ocr_options(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
     parser_convert_group = parser.add_argument_group(title='arguments for OCR')
     if not remove_opts.count('ocr-enabled'):
@@ -355,16 +377,11 @@ See subcommands below for a list of the tools that can be used.
     # ==========
     # create the parser for the "edit" command
     parser_edit = subparsers.add_parser(
-        'edit', help='''Edit a configuration file, either the main
+        'edit', add_help=False, help='''Edit a configuration file, either the main
         configuration file (`{}`) or the logging configuration file
         (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
-    add_general_options_as_group(parser_edit,
-                                 remove_opts=['dry-run', 'reverse'])
-    parser_edit.add_argument(
-        'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
-        help='''The config file to edit which can either be the main
-            configuration file (`{}`) or the logging configuration file
-            (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
+    add_general_options(parser_edit, remove_opts=['dry-run', 'keep-metadata',
+                                                  'reverse', 'symlink-only'])
     parser_edit_group = parser_edit.add_argument_group(
         title='specific arguments for the subcommand `test`')
     parser_edit_mutual_group = parser_edit_group.add_mutually_exclusive_group()
@@ -377,76 +394,77 @@ See subcommands below for a list of the tools that can be used.
         "-r", "--reset", action="store_true",
         help='''Reset a configuration file (`{}` or `{}`) with factory
         default values.'''.format(_MAIN_CFG, _LOG_CFG))
+    parser_edit_input_group = parser_edit.add_argument_group(
+        title='input argument')
+    parser_edit_input_group.add_argument(
+        'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
+        help='''The config file to edit which can either be the main
+                configuration file (`{}`) or the logging configuration file
+                (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
     parser_edit.set_defaults(func=parse_edit_args)
     # ==============
     # Convert to txt
     # ==============
     # create the parser for the "convert" command
     parser_convert = subparsers.add_parser(
-        'convert',
+        'convert', add_help=False,
         help='''Convert the supplied file to a text file. It can optionally
         also use *OCR* for .pdf, .djvu and image files.''')
-    add_general_options_as_group(parser_convert,
-                                 remove_opts=['dry-run', 'reverse'])
-    parser_convert.add_argument(
+    add_general_options(parser_convert, remove_opts=['dry-run', 'keep-metadata',
+                                                     'reverse', 'symlink-only'])
+    add_ocr_options(parser_convert)
+    parser_convert_group = parser_convert.add_argument_group(
+        title='input and output arguments')
+    parser_convert_group.add_argument(
         'input_file',
         help='''The input file to be converted to a text file.''')
-    parser_convert.add_argument(
+    parser_convert_group.add_argument(
         '-o', '--output-file', dest='output_file', metavar='OUTPUT',
         help='''The output file text. By default, it is saved in the current
-        working directory.''' + _DEFAULT_MSG.format(OUTPUT_FILE))
-    add_ocr_options_as_group(parser_convert)
+            working directory.''' + _DEFAULT_MSG.format(OUTPUT_FILE))
     parser_convert.set_defaults(func=convert_to_txt.convert)
     # ==========
     # Find ISBNs
     # ==========
     # create the parser for the "find" command
     parser_find = subparsers.add_parser(
-        'find',
+        'find', add_help=False,
         help='''Find valid ISBNs inside a file or in a string if no file
         was specified. Searching for ISBNs in files uses progressively more
         resource-intensive methods until some ISBNs are found.''')
-    add_general_options_as_group(parser_find, remove_opts=['dry-run', 'reverse'])
+    add_general_options(parser_find, remove_opts=['dry-run', 'keep-metadata',
+                                                  'reverse', 'symlink-only'])
     add_isbns_options(parser_find, remove_opts=['metadata-fetch-order'])
-    add_ocr_options_as_group(parser_find)
-    parser_find.add_argument(
-        'input_data',
-        help='''Can either be the path to a file or a string. The input will
-        be searched for ISBNs.''')
+    add_ocr_options(parser_find)
     parser_find_group = parser_find.add_argument_group(
         title='specific arguments for the subcommand `find`')
-    # TODO: note down that escape other characters in ISBN_RET_SEPARATOR,
-    # e.g. \r, \t, \a, \f, \v, \b, \n
-    # TODO: see https://stackoverflow.com/a/31624058/14664104 for repr() [print '\n']
-    # TODO: problems with \x and \u
-    # codecs.decode(value, 'unicode_escape')
-    parser_find_group.add_argument(
-        '--irs', '--isbn-return-separator', dest='isbn_ret_separator',
-        metavar='SEPARATOR', type=decode,
-        help='''This specifies the separator that will be used when returning
-        any found ISBNs.''' +
-             _DEFAULT_MSG.format(repr(codecs.encode(ISBN_RET_SEPARATOR).decode('utf-8'))))
+    add_isbn_return_separator(parser_find_group)
+    parser_find_input_group = parser_find.add_argument_group(
+        title='input argument')
+    parser_find_input_group.add_argument(
+        'input_data',
+        help='''Can either be the path to a file or a string. The input will
+            be searched for ISBNs.''')
     parser_find.set_defaults(func=find_isbns.find)
     # ======================
     # rename-calibre-library
     # ======================
     # create the parser for the "rename-calibre-library" command
     parser_rename = subparsers.add_parser(
-        'rename',
+        'rename', add_help=False,
         help='''Traverses a calibre library folder and renames all the book
         files in it by reading their metadata from calibre's metadata.opf
         files. The book files along with their corresponding metadata can
         either be moved or symlinked (if the flag `--symlink-only` is enabled).
         Also, activate the flag `--dry-run` for testing purposes since no file
         rename/move/symlink/etc. operations will actually be executed.''')
-    parser_rename.add_argument(
-        'calibre_folder',
-        help='''Calibre library folder which will be traversed and all its book
-        files will be renamed. The renamed files will either be moved or
-        symlinked (if the flag `--symlink-only` is enabled) within the folder
-        `output-folder`. NOTE: activate the flag `--dry-run` if you just want
-        to test without moving or symlinking files.''')
-    add_general_options_as_group(parser_rename, remove_opts=['keep-metadata'])
+    add_general_options(parser_rename, remove_opts=['keep-metadata'])
+    parser_isbns_group = add_isbns_options(parser_rename,
+                                           remove_opts=['isbn-direct-grep-files',
+                                                        'isbn-ignored-files',
+                                                        'reorder-files-for-grep',
+                                                        'metadata-fetch-order'])
+    add_isbn_return_separator(parser_isbns_group)
     parser_rename_group = parser_rename.add_argument_group(
         title='specific arguments for the subcommand `rename`')
     parser_rename_group.add_argument(
@@ -459,7 +477,16 @@ See subcommands below for a list of the tools that can be used.
         file that is similar to the one organize_ebooks.py creates. `disable`
         disables this function.'''
              + _DEFAULT_MSG.format(SAVE_METADATA))
-    parser_rename_group.add_argument(
+    parser_rename_input_output_group = parser_rename.add_argument_group(
+        title='input and output arguments')
+    parser_rename_input_output_group.add_argument(
+        'calibre_folder',
+        help='''Calibre library folder which will be traversed and all its book
+            files will be renamed. The renamed files will either be moved or
+            symlinked (if the flag `--symlink-only` is enabled) within the folder
+            `output-folder`. NOTE: activate the flag `--dry-run` if you just want
+            to test without moving or symlinking files.''')
+    parser_rename_input_output_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         help='''This is the output folder the renamed books will be moved to.
         The default value is the current working directory.''' +
@@ -470,27 +497,18 @@ See subcommands below for a list of the tools that can be used.
     # ==================
     # create the parser for the "split-into-folders" command
     parser_split = subparsers.add_parser(
-        'split',
+        'split', add_help=False,
         help='''Split the supplied ebook files (and the accompanying metadata
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
-    parser_split.add_argument(
-        'folder_with_books',
-        help='''Folder with books which will be recursively scanned for files.
-        The found files (and the accompanying metadata files if present) will
-        be split into folders with consecutive names that each contain the
-        specified number of files.''')
-    add_general_options_as_group(parser_split)
-    add_input_output_opts(parser_split,
-                          remove_opts=['output-filename-template'])
+    parser_general = add_general_options(parser_split,
+                                         remove_opts=['symlink-only',
+                                                      'keep-metadata'])
+    add_input_output_options(parser_general,
+                             remove_opts=['output-filename-template'],
+                             add_as_group=False)
     parser_split_group = parser_split.add_argument_group(
         title='specific arguments for the subcommand `split`')
-    # TODO: important add output-folder at the end and update README
-    parser_split_group.add_argument(
-        '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        help='''The output folder in which all the new consecutively named
-        folders will be created. The default value is the current working
-        directory.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_split_group.add_argument(
         '-s', '--start-number', dest='start_number', type=int,
         help='''The number of the first folder.'''
@@ -507,6 +525,20 @@ See subcommands below for a list of the tools that can be used.
         type=check_positive,
         help='''How many files should be moved to each folder.'''
              + _DEFAULT_MSG.format(FILES_PER_FOLDER))
+    parser_split_input_output_group = parser_split.add_argument_group(
+        title='input and output arguments')
+    parser_split_input_output_group.add_argument(
+        'folder_with_books',
+        help='''Folder with books which will be recursively scanned for files.
+            The found files (and the accompanying metadata files if present) will
+            be split into folders with consecutive names that each contain the
+            specified number of files.''')
+    # TODO: important update README because args moved from places
+    parser_split_input_output_group.add_argument(
+        '-o', '--output-folder', dest='output_folder', metavar='PATH',
+        help='''The output folder in which all the new consecutively named
+            folders will be created. The default value is the current working
+            directory.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_split.set_defaults(func=split_into_folders.split)
     return parser
 
