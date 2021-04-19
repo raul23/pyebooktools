@@ -19,8 +19,8 @@ import codecs
 # import ipdb
 
 import py_ebooktools
-from py_ebooktools import (edit_config, convert_to_txt, find_isbns,
-                           split_into_folders)
+from py_ebooktools import (convert_to_txt, edit_config, find_isbns,
+                           rename_calibre_library, split_into_folders)
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import (get_config_dict, init_log,
                                           namespace_to_dict,
@@ -49,16 +49,18 @@ OUTPUT_FILE = default_cfg.output_file
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 OUTPUT_FOLDER = default_cfg.output_folder
 OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
+SAVE_METADATA = default_cfg.save_metadata
 START_NUMBER = default_cfg.start_number
 
 # ====================
 # Other default values
 # ====================
-_LOG_CFG = "log"
-_MAIN_CFG = "main"
-_DEFAULT_MSG = " (default: {})"
+_LOG_CFG = 'log'
+_MAIN_CFG = 'main'
+_DEFAULT_MSG = ' (default: {})'
 
 
+# TODO: important should be called general control flags
 # General options
 def add_general_options_as_group(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
@@ -87,6 +89,23 @@ def add_general_options_as_group(parser, remove_opts=None):
             "-d", "--dry-run", dest='dry_run', action="store_true",
             help='''If this is enabled, no file rename/move/symlink/etc.
                 operations will actually be executed.''')
+    # TODO: important remove symlink-only and other options for some subcommands
+    if not remove_opts.count('symlink-only'):
+        parser_general_group.add_argument(
+            "--sl", "--symlink-only", dest='symlink_only', action="store_true",
+            help='''Instead of moving the ebook files, create symbolic links
+            to them.''')
+    if not remove_opts.count('keep-metadata'):
+        parser_general_group.add_argument(
+            "--km", "--keep-metadata", dest='keep_metadata',
+            action="store_true",
+            help='''Do not delete the gathered metadata for the organized
+            ebooks, instead save it in an accompanying file together with each
+            renamed book. It is very useful for semi-automatic verification of
+            the organized files with interactive-organizer.sh or for additional
+            verification, indexing or processing at a later date.''')
+    # TODO: important move reverse and 2 others after into misc
+    # TODO: implement more sort options, e.g. random sort
     if not remove_opts.count('reverse'):
         parser_general_group.add_argument(
             "-r", "--reverse", dest='file_sort_reverse', action="store_true",
@@ -245,6 +264,7 @@ def check_positive(value):
     else:
         return ivalue
 
+
 # Ref.: https://stackoverflow.com/a/5187097/14664104
 def decode(value):
     return codecs.decode(value, 'unicode_escape')
@@ -272,11 +292,11 @@ def process_returned_values(returned_values):
 
     # Process 1st returned values: default args overriden by config options
     if returned_values.default_args_overriden:
-        msg = "Default arguments overridden by config options:\n"
+        msg = 'Default arguments overridden by config options:\n'
         log_opts_overriden(returned_values.default_args_overriden, msg)
     # Process 2nd returned values: config options overriden by args
     if returned_values.config_opts_overridden:
-        msg = "Config options overridden by command-line arguments:\n"
+        msg = 'Config options overridden by command-line arguments:\n'
         log_opts_overriden(returned_values.config_opts_overridden, msg, 'debug')
     # Process 3rd returned values: arguments not found in config file
     """
@@ -292,8 +312,8 @@ def required_length(nmin,nmax):
     class RequiredLength(argparse.Action):
         def __call__(self, parser, args, values, option_string=None):
             if not nmin <= len(values) <= nmax:
-                msg='argument "{f}" requires between {nmin} and {nmax} arguments'.format(
-                    f=self.dest, nmin=nmin, nmax=nmax)
+                msg='argument "{f}" requires between {nmin} and {nmax}' \
+                    'arguments'.format(f=self.dest, nmin=nmin, nmax=nmax)
                 raise argparse.ArgumentTypeError(msg)
             setattr(args, self.dest, values)
     return RequiredLength
@@ -336,14 +356,15 @@ See subcommands below for a list of the tools that can be used.
     # create the parser for the "edit" command
     parser_edit = subparsers.add_parser(
         'edit', help='''Edit a configuration file, either the main
-        configuration file ('main') or the logging configuration file ('log').''')
+        configuration file (`{}`) or the logging configuration file
+        (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
     add_general_options_as_group(parser_edit,
                                  remove_opts=['dry-run', 'reverse'])
     parser_edit.add_argument(
         'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
         help='''The config file to edit which can either be the main
-            configuration file ('{}') or the logging configuration file
-            ('{}').'''.format(_MAIN_CFG, _LOG_CFG))
+            configuration file (`{}`) or the logging configuration file
+            (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
     parser_edit_group = parser_edit.add_argument_group(
         title='specific arguments for the subcommand `test`')
     parser_edit_mutual_group = parser_edit_group.add_mutually_exclusive_group()
@@ -354,8 +375,8 @@ See subcommands below for a list of the tools that can be used.
         file will be used.''')
     parser_edit_mutual_group.add_argument(
         "-r", "--reset", action="store_true",
-        help='''Reset a configuration file ('main' or 'log') with factory
-        default values.''')
+        help='''Reset a configuration file (`{}` or `{}`) with factory
+        default values.'''.format(_MAIN_CFG, _LOG_CFG))
     parser_edit.set_defaults(func=parse_edit_args)
     # ==============
     # Convert to txt
@@ -364,7 +385,7 @@ See subcommands below for a list of the tools that can be used.
     parser_convert = subparsers.add_parser(
         'convert',
         help='''Convert the supplied file to a text file. It can optionally
-        also use *OCR* for `.pdf`, `.djvu` and image files.''')
+        also use *OCR* for .pdf, .djvu and image files.''')
     add_general_options_as_group(parser_convert,
                                  remove_opts=['dry-run', 'reverse'])
     parser_convert.add_argument(
@@ -406,30 +427,69 @@ See subcommands below for a list of the tools that can be used.
         any found ISBNs.''' +
              _DEFAULT_MSG.format(repr(codecs.encode(ISBN_RET_SEPARATOR).decode('utf-8'))))
     parser_find.set_defaults(func=find_isbns.find)
+    # ======================
+    # rename-calibre-library
+    # ======================
+    # create the parser for the "rename-calibre-library" command
+    parser_rename = subparsers.add_parser(
+        'rename',
+        help='''Traverses a calibre library folder and renames all the book
+        files in it by reading their metadata from calibre's metadata.opf
+        files. The book files along with their corresponding metadata can
+        either be moved or symlinked (if the flag `--symlink-only` is enabled).
+        Also, activate the flag `--dry-run` for testing purposes since no file
+        rename/move/symlink/etc. operations will actually be executed.''')
+    parser_rename.add_argument(
+        'calibre_folder',
+        help='''Calibre library folder which will be traversed and all its book
+        files will be renamed. The renamed files will either be moved or
+        symlinked (if the flag `--symlink-only` is enabled) within the folder
+        `output-folder`. NOTE: activate the flag `--dry-run` if you just want
+        to test without moving or symlinking files.''')
+    add_general_options_as_group(parser_rename)
+    parser_rename_group = parser_rename.add_argument_group(
+        title='specific arguments for the subcommand `rename`')
+    parser_rename_group.add_argument(
+        '--sm', '--save-metadata', dest='save_metadata',
+        choices=['disable', 'opfcopy', 'recreate'],
+        help='''This specifies whether metadata files will be saved together
+        with the renamed ebooks. Value `opfcopy` just copies calibre's
+        metadata.opf next to each renamed file with a
+        OUTPUT_METADATA_EXTENSION extension, while `recreate` saves a metadata
+        file that is similar to the one organize_ebooks.py creates. `disable`
+        disables this function.'''
+             + _DEFAULT_MSG.format(SAVE_METADATA))
+    parser_rename_group.add_argument(
+        '-o', '--output-folder', dest='output_folder', metavar='PATH',
+        help='''This is the output folder the renamed books will be moved to.
+        The default value is the current working directory.''' +
+             _DEFAULT_MSG.format(OUTPUT_FOLDER))
+    parser_rename.set_defaults(func=rename_calibre_library.rename)
     # ==================
     # split-into-folders
     # ==================
     # create the parser for the "split-into-folders" command
-    parser_split_into_folders = subparsers.add_parser(
+    parser_split = subparsers.add_parser(
         'split',
         help='''Split the supplied ebook files (and the accompanying metadata
         files if present) into folders with consecutive names that each contain
         the specified number of files.''')
-    parser_split_into_folders.add_argument(
+    parser_split.add_argument(
         'folder_with_books',
         help='''Folder with books which will be recursively scanned for files.
         The found files (and the accompanying metadata files if present) will
         be split into folders with consecutive names that each contain the
         specified number of files.''')
-    add_general_options_as_group(parser_split_into_folders)
-    add_input_output_opts(parser_split_into_folders,
+    add_general_options_as_group(parser_split)
+    add_input_output_opts(parser_split,
                           remove_opts=['output-filename-template'])
-    parser_split_group = parser_split_into_folders.add_argument_group(
+    parser_split_group = parser_split.add_argument_group(
         title='specific arguments for the subcommand `split`')
+    # TODO: important add output-folder at the end and update README
     parser_split_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         help='''The output folder in which all the new consecutively named
-        folders will be created. The default is the current working
+        folders will be created. The default value is the current working
         directory.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_split_group.add_argument(
         '-s', '--start-number', dest='start_number', type=int,
@@ -447,7 +507,7 @@ See subcommands below for a list of the tools that can be used.
         type=check_positive,
         help='''How many files should be moved to each folder.'''
              + _DEFAULT_MSG.format(FILES_PER_FOLDER))
-    parser_split_into_folders.set_defaults(func=split_into_folders.split)
+    parser_split.set_defaults(func=split_into_folders.split)
     return parser
 
 
