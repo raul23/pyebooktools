@@ -367,8 +367,7 @@ Miscellaneous options
   Set logging formatter for all loggers. Choices are
   ``{console,simple,only_msg}``.
 
-* ``-r``, ``--reverse``; config variable ``file_sort_reverse``; default value
-  ``False``
+* ``-r``, ``--reverse``; config variable ``reverse``; default value ``False``
 
   If this is enabled, the files will be sorted in reverse (i.e. descending)
   order. By default, they are sorted in ascending order.
