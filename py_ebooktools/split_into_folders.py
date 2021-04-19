@@ -32,7 +32,7 @@ def split(folder_with_books,
           files_per_folder=default_cfg.files_per_folder,
           folder_pattern=default_cfg.folder_pattern,
           output_metadata_extension=default_cfg.output_metadata_extension,
-          reverse=default_cfg.file_sort_reverse,
+          reverse=default_cfg.reverse,
           start_number=default_cfg.start_number, **kwargs):
     files = []
     for fp in Path(folder_with_books).rglob('*'):
@@ -45,6 +45,7 @@ def split(folder_with_books,
             # print(fp)
             files.append((fp))
         # TODO: debug logging skip directory/file
+    # TODO: important sort within glob?
     logger.info("Files sorted {}".format("in desc" if reverse else "in asc"))
     files.sort(key=lambda x: x.name, reverse=reverse)
     current_folder_num = start_number
