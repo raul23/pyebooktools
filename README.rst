@@ -528,7 +528,8 @@ number of files.
 
 Global options
 """"""""""""""
-In particular, the following global options affect the ``split`` subcommand:
+In particular, the following global options are especially important for the
+``split`` subcommand:
 
 * ``-d``, ``--dry-run`` found in the `General control flags`_ section
 
