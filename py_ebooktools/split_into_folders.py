@@ -37,7 +37,6 @@ def split(folder_with_books,
     files = []
     for fp in Path(folder_with_books).rglob('*'):
         # File extension
-        # ipdb.set_trace()
         ext = fp.suffix.split('.')[-1]
         # Ignore directory, metadata and hidden files
         if Path.is_file(fp) and ext != output_metadata_extension and \
