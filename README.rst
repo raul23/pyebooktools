@@ -367,8 +367,7 @@ Miscellaneous options
   Set logging formatter for all loggers. Choices are
   ``{console,simple,only_msg}``.
 
-* ``-r``, ``--reverse``; config variable ``file_sort_reverse``; default value
-  ``False``
+* ``-r``, ``--reverse``; config variable ``reverse``; default value ``False``
 
   If this is enabled, the files will be sorted in reverse (i.e. descending)
   order. By default, they are sorted in ascending order.
@@ -435,14 +434,14 @@ convert [<OPTIONS>] input_file
 
    usage: ebooktools convert [-h] [-v] [-q] [--verbose]
                              [--log-level {debug,info,warning,error}]
-                             [--log-format {console,simple,only_msg}] [-o OUTPUT]
+                             [--log-format {console,simple,only_msg}]
                              [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                             [--ocrc CMD]
+                             [--ocrc CMD] [-o OUTPUT]
                              input_file
 
 Description
 """""""""""
-Converts the supplied file to a text file. It can optionally also use OCR for
+Converts the supplied file to a **text** file. It can optionally also use OCR for
 ``.pdf``, ``.djvu`` and image files.
 
 Global options
@@ -517,8 +516,8 @@ split [<OPTIONS>] folder_with_books
    usage: ebooktools split [-h] [-v] [-q] [--verbose] [-d] [-r]
                            [--log-level {debug,info,warning,error}]
                            [--log-format {console,simple,only_msg}]
-                           [--ome EXTENSION] [-o PATH] [-s START_NUMBER]
-                           [-f PATTERN] [--fpf FILES_PER_FOLDER]
+                           [--ome EXTENSION] [-s START_NUMBER] [-f PATTERN]
+                           [--fpf FILES_PER_FOLDER] [-o PATH]
                            folder_with_books
 
 Description
@@ -529,7 +528,8 @@ number of files.
 
 Global options
 """"""""""""""
-In particular, the following global options affect the ``split`` subcommand:
+In particular, the following global options are especially important for the
+``split`` subcommand:
 
 * ``-d``, ``--dry-run`` found in the `General control flags`_ section
 
