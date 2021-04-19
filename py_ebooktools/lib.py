@@ -19,6 +19,7 @@ import shutil
 import string
 import subprocess
 import tempfile
+from lxml.etree import parse
 
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import init_log
@@ -260,6 +261,11 @@ def get_ebook_metadata(file_path):
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
+
+
+# Ref.: https://bit.ly/3txo53J
+def get_metadata(source_data, xpath):
+    return (u'\\n'.join(parse(source_data).xpath(xpath))).encode('utf-8')
 
 
 # Using Python built-in module mimetypes
