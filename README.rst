@@ -434,9 +434,9 @@ convert [<OPTIONS>] input_file
 
    usage: ebooktools convert [-h] [-v] [-q] [--verbose]
                              [--log-level {debug,info,warning,error}]
-                             [--log-format {console,simple,only_msg}] [-o OUTPUT]
+                             [--log-format {console,simple,only_msg}]
                              [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                             [--ocrc CMD]
+                             [--ocrc CMD] [-o OUTPUT]
                              input_file
 
 Description
