@@ -580,7 +580,7 @@ To edit the **main** config file with PyCharm:
 
    $ ebooktools edit -a charm main
    
-A tab with the main config file will be opened in the Editor window.
+A tab with the main config file will be opened in PyCharm's Editor window.
 
 Example 2: reset the main config file
 -------------------------------------
