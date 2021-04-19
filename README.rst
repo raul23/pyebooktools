@@ -372,6 +372,8 @@ Miscellaneous options
 
   If this is enabled, the files will be sorted in reverse (i.e. descending)
   order. By default, they are sorted in ascending order.
+  
+  *NOTE: more sort options will eventually be implemented, such as random sort.*
 
 Script usage and options
 ------------------------
