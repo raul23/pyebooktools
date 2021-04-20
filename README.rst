@@ -150,8 +150,9 @@ in the `Script usage and options`_ section).
 `:warning:`
  
    In order to avoid data loss, use the option ``dry-run`` or ``symlink-only`` when
-   running some of the subcommands to make sure that they would do what you expect
-   them to do, as explained in the `Security and safety`_ section.
+   running some of the subcommands (e.g. ``rename`` and ``split``) to make sure that
+   they would do what you expect them to do, as explained in the
+   `Security and safety`_ section.
 
 General options
 ---------------
