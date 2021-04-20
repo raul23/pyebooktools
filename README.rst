@@ -439,6 +439,8 @@ And if you want the help message for the whole ``ebooktools`` script:
 which will show you the project description and description
 of each subcommand without showing the subcommand options.
 
+|
+
 In the subsections below, you will find a definition for each of the
 supported subcommand for automated and semi-automated organization and
 management of large ebook collections.
