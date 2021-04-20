@@ -746,6 +746,15 @@ Roadmap
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
 
+Security and safety
+===================
+From `ebook-tools documentation`_:
+
+  Please keep in mind that this is beta-quality software. To avoid data loss, make
+  sure that you have a backup of any files you want to organize. You may also want
+  to run the scripts with the ``--dry-run`` or ``--symlink-only`` option the first
+  time to make sure that they would do what you expect them to do.
+
 References
 ==========
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
@@ -771,6 +780,7 @@ details see the `LICENSE`_ file in the repository.
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _DjVuLibre: http://djvu.sourceforge.net/
 .. _ebook-tools: https://github.com/na--/ebook-tools
+.. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
 .. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
 .. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
