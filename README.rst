@@ -387,7 +387,7 @@ Miscellaneous options
   
   *NOTE: more sort options will eventually be implemented, such as random sort.*
 
-Script usage, subcommads and options
+Script usage, subcommands and options
 ------------------------------------
 As explained in the `Usage, options and configuration`_ section, the usage
 pattern for running a given **subcommand** is the following:
