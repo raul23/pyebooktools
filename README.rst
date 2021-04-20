@@ -411,14 +411,15 @@ subcommand as shown below.
 
 All subcommands are affected by the following global options:
 
+* `-h, --help`_
 * `-v, --verbose`_
 * `-q, --quiet`_
 * `--verbose`_
 * `--log-level`_
 * `--log-format`_
 
-The `-h, --help`_ option is specific to each subcommand and to the 
-``ebooktools`` script (when called without the subcommand). Thus when
+The `-h, --help`_ option can be applied specifically to each subcommand or
+to the  ``ebooktools`` script (when called without the subcommand). Thus when
 you want the help message for a specific subcommand, you do:
 
 .. code-block:: terminal
