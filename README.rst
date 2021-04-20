@@ -71,21 +71,21 @@ As explained in the documentation for `ebook-tools
 <https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
 need recent versions of:
 
-* `calibre`_ for fetching metadata from online sources, conversion to txt (for
-  ISBN searching) and ebook metadata extraction. Versions **2.84** and above
-  are preferred because of their ability to manually specify from which
-  specific online source we want to fetch metadata. For earlier versions you
-  have to set ``isbn_metadata_fetch_order`` and
-  ``organize_without_isbn_sources`` to empty strings.
-* `p7zip`_ for ISBN searching in ebooks that are in archives.
-* `Tesseract`_ for running OCR on books - version 4 gives better results even
-  though it's still in alpha. OCR is disabled by default and another engine can
-  be configured if preferred.
-* **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for
-  faster than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files
-  respectively to ``.txt``.
-* **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be
-  installed for better metadata fetching.
+  * `calibre`_ for fetching metadata from online sources, conversion to txt (for
+    ISBN searching) and ebook metadata extraction. Versions **2.84** and above
+    are preferred because of their ability to manually specify from which
+    specific online source we want to fetch metadata. For earlier versions you
+    have to set ``isbn_metadata_fetch_order`` and
+    ``organize_without_isbn_sources`` to empty strings.
+  * `p7zip`_ for ISBN searching in ebooks that are in archives.
+  * `Tesseract`_ for running OCR on books - version 4 gives better results even
+    though it's still in alpha. OCR is disabled by default and another engine can
+    be configured if preferred.
+  * **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for
+    faster than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files
+    respectively to ``.txt``.
+  * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be
+    installed for better metadata fetching.
   
 `:warning:`
 
