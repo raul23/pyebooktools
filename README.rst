@@ -145,7 +145,7 @@ are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
 Command-line parameters supersede variables defined in the configuration file.
 Most parameters are not required and if nothing is specified, the default value
-defined in the default config file `default_config.py`_ will be used.
+defined in the default config file ``default_config.py`` will be used.
 
 The ``ebooktools.py`` script consists of various subcommands for the
 organization and management of ebook collections. The usage pattern for running
