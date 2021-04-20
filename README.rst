@@ -840,8 +840,8 @@ Important security and safety tips from the `ebook-tools documentation`_:
 
 References
 ==========
-.. [KM] https://github.com/na--/ebook-tools#general-control-flags
 .. [IBR] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [KM] https://github.com/na--/ebook-tools#general-control-flags
 
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
   the **original** project I ported to Python. I referenced its documentation a lot here since
