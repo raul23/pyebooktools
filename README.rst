@@ -404,6 +404,10 @@ The usage pattern for running a given **subcommand** is the following:
 Where ``[<OPTIONS>``] include general options and options specific to the
 subcommand as shown below.
 
+`:information_source:`
+
+  Don't forget the name of the script ``ebooktools`` before the subcommand.
+
 All subcommands are affected by the following global options:
 
 * `-h, --help`_
