@@ -748,7 +748,7 @@ Roadmap
 
 Security and safety
 ===================
-From `ebook-tools documentation`_:
+From the `ebook-tools documentation`_:
 
   Please keep in mind that this is beta-quality software. To avoid data loss, make
   sure that you have a backup of any files you want to organize. You may also want
