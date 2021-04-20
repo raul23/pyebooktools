@@ -807,7 +807,7 @@ Roadmap
 
   - ``organize-ebooks.sh``: **working on it**
   - ``interactive-organizer.sh``: **not started yet**
-  - ``find-isbns.sh``: **done**, *see* `find_isbns.py`_
+  - |ss| ``find-isbns.sh``: **done**, *see* `find_isbns.py`_ |se|
   - ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_
   - ``rename-calibre-library.sh``: **working on it**
   - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
@@ -933,6 +933,14 @@ details see the `LICENSE`_ file in the repository.
 .. _--verbose: #general-control-flags
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
+
+.. |ss| raw:: html
+
+   <strike>
+
+.. |se| raw:: html
+
+   </strike>
 
 .. TODOs
 .. explain log-level and log-format choices of values
