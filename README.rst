@@ -411,12 +411,30 @@ subcommand as shown below.
 
 All subcommands are affected by the following global options:
 
-* `-h, --help`_
 * `-v, --verbose`_
 * `-q, --quiet`_
 * `--verbose`_
 * `--log-level`_
 * `--log-format`_
+
+The `-h, --help`__ option is specific to each subcommand and to the 
+``ebooktools`` script (when called without the subcommand). Thus when
+you want the help message for a specific subcommand, you do:
+
+.. code-block:: terminal
+
+  ebooktools {edit,convert,find,split} -h
+ 
+which will show you the options that affect the choosen subcommand. 
+ 
+And if you want the help message for the whole ``ebooktools` script:
+
+.. code-block:: terminal
+
+  ebooktools -h
+  
+which will show you the description of the project and general description
+of each subcommand without showing the subcommand options.
 
 In the subsections below, you will find a definition for each of the
 supported subcommand for automated and semi-automated organization and
