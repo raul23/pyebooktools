@@ -124,4 +124,3 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
         ipdb.set_trace()
         move_or_link_file(book_path, new_path, dry_run, symlink_only)
     ipdb.set_trace()
-
