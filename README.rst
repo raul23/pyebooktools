@@ -780,7 +780,7 @@ From the `ebook-tools documentation`_:
 * ``interact``
 * ``organize``
 * ``rename``
-* ``split``: only ``dry-run`` is applicable
+* `split`_: only ``dry-run`` is applicable
 
 References
 ==========
@@ -843,6 +843,7 @@ details see the `LICENSE`_ file in the repository.
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Script usage and options: #script-usage-and-options
 .. _Security and safety: #security-and-safety
+.. _split: #split-options-folder-with-books
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
 .. _-v, --verbose: #general-control-flags
