@@ -48,6 +48,10 @@ The Python script `ebooktools.py`_ makes use of the following modules:
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files.
 
+Each of these modules are associated to a subcommand within the
+``ebooktools.py`` script, as shown in the `Script usage, subcommands and 
+options`_ section.
+
 Installation and dependencies
 =============================
 To install and use the script ``ebooktools.py``, follow these steps:
@@ -147,7 +151,7 @@ one of the subcommands is as follows:
   
 Where ``[<OPTIONS>``] include general options (as defined in the
 `General options`_ section) and options specific to the subcommand (as defined
-in the `Script usage and options`_ section).
+in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
@@ -848,7 +852,7 @@ details see the `LICENSE`_ file in the repository.
 .. _organize: #security-and-safety
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #security-and-safety
-.. _Script usage and options: #script-usage-and-options
+.. _Script usage, subcommands and options: #script-usage-subcommands-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
 .. _Usage, options and configuration: #usage-options-and-configuration
