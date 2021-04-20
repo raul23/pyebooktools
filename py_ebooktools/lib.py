@@ -20,6 +20,7 @@ import string
 import subprocess
 import tempfile
 from lxml.etree import parse
+from pathlib import Path
 
 from py_ebooktools.configs import default_config as default_cfg
 from py_ebooktools.utils.genutils import init_log
@@ -29,6 +30,7 @@ logger = init_log(__name__, __file__)
 # =====================
 # Default config values
 # =====================
+DRY_RUN = default_cfg.dry_run
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
 ISBN_DIRECT_GREP_FILES = default_cfg.isbn_direct_grep_files
 ISBN_GREP_REORDER_FILES = default_cfg.isbn_grep_reorder_files
@@ -40,6 +42,8 @@ ISBN_RET_SEPARATOR = default_cfg.isbn_ret_separator
 OCR_COMMAND = default_cfg.ocr_command
 OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
+OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
+SYMLINK_ONLY = default_cfg.symlink_only
 
 
 # For macOS use the built-in textutil,
@@ -200,7 +204,8 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
         else:
             logger.debug(f'Non-unique ISBN found: {match}')
     if not isbns:
-        logger.debug(f'No ISBN found in the input string: {input_str}')
+        msg = ': ' + input_str if len(input_str) < 100 else ''
+        logger.debug(f'No ISBN found in the input string {msg}')
     return isbn_ret_separator.join(isbns)
 
 
@@ -361,6 +366,33 @@ def isalnum_in_file(file_path):
             if isalnum:
                 break
     return isalnum
+
+
+def move_or_link_file(current_path, new_path, dry_run=DRY_RUN,
+                      symlink_only=SYMLINK_ONLY):
+    new_folder = Path(new_path).parent
+    if dry_run:
+        logger.debug('DRY RUN! No file rename/move/symlink/etc. operations '
+                     'will actually be executed')
+
+    # Create folder
+    if not new_folder.exists():
+        logger.debug(f'Creating folder {new_folder}')
+        if not dry_run:
+            new_folder.mkdir()
+
+    # Symlink or move file
+    if symlink_only:
+        logger.debug(f"Symlinking file '{current_path}' to '{new_path}'...")
+        if not dry_run:
+            Path(new_path).symlink_to(current_path)
+    else:
+        logger.debug(f"Moving file '{current_path}' to '{new_path}'...")
+        if not dry_run:
+            if not Path(new_path).exists():
+                shutil.move(current_path, new_path)
+            else:
+                logger.debug(f'File already exists: {new_path}')
 
 
 # OCR on a pdf, djvu document or image
@@ -704,6 +736,39 @@ def search_file_for_isbns(file_path,
     return isbns
 
 
+def substitute_params(hashmap, output_filename_template=OUTPUT_FILENAME_TEMPLATE):
+    array = ''
+    for k, v in hashmap.items():
+        if isinstance(v, bytes):
+            v = v.decode('UTF-8')
+        # logger.debug(f'{hashmap[k]}')
+        array += ' ["{}"]="{}" '.format(k, v)
+
+    cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
+    cmd = cmd.format(array)
+    # TODO: make it safer; maybe by removing single/double quotes marks from
+    # OUTPUT_FILENAME_TEMPLATE
+    # TODO: explain what's going
+    cmd += f'; OUTPUT_FILENAME_TEMPLATE=\'"{output_filename_template}"\'; ' \
+           'eval echo "$OUTPUT_FILENAME_TEMPLATE"'
+    result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd],
+                              stdout=subprocess.PIPE)
+    return result.stdout.read().decode('UTF-8').strip()
+
+
+def substitute_with_sed(regex, replacement, text):
+    # Remove trailing whitespace, including tab
+    text = text.strip()
+    p1 = subprocess.Popen(['echo', text], stdout=subprocess.PIPE)
+    # TODO: explain what's going on with this replacement code
+    cmd = f"sed -e 's/{regex}/{replacement}/g'"
+    args = shlex.split(cmd)
+    p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
+    replaced_text = p2.communicate()[0].decode('UTF-8').strip()
+    # Get only the first 100 characters
+    return replaced_text[:100]
+
+
 # OCR: convert image to text
 def tesseract_wrapper(input_file, output_file):
     # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
@@ -715,3 +780,21 @@ def tesseract_wrapper(input_file, output_file):
                             encoding='utf-8',
                             bufsize=4096)
     return convert_result_from_shell_cmd(result)
+
+
+# Return "folder_path/basename" if no file exists at this path. Otherwise,
+# sequentially insert " ($n)" before the extension of `basename` and return the
+# first path for which no file is present.
+# ref.: https://bit.ly/3n1JNuk
+def unique_filename(folder_path, basename):
+    stem = Path(basename).stem
+    ext = Path(basename).suffix
+    new_path = os.path.join(folder_path, basename)
+    counter = 0
+    while os.path.isfile(new_path):
+        counter += 1
+        logger.info(f'File {new_path} already exists in destination '
+                    f'{folder_path}, trying with counter {counter}!')
+        new_stem = '{} {}'.format(stem, counter)
+        new_path = os.path.join(folder_path, new_stem) + ext
+    return new_path
