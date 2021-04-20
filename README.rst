@@ -843,10 +843,10 @@ References
 .. [KM] https://github.com/na--/ebook-tools#general-control-flags
 
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
-the **original** project I ported to Python. I referenced its documentation a lot here since
-I tried to follow the shell script options as much as possible (such as their names) so
-that if you used the shell scripts, you will easily know how to run the corresponding
-Python script.
+  the **original** project I ported to Python. I referenced its documentation a lot here since
+  I tried to follow the shell script options as much as possible (such as their names) so
+  that if you used the shell scripts, you will easily know how to run the corresponding
+  Python script.
 
 Credits
 =======
