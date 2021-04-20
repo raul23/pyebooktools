@@ -790,7 +790,9 @@ References
   that if you used the shell scripts, you will easily know how to run the corresponding
   Python script.
 
-  Special thanks to `na--`_, ``ebook-tools`` developer, for having developed these very
+Credits
+=======
+* Special thanks to `na--`_, ``ebook-tools`` developer, for having made these very
   useful tools. I learned a lot (specially ``bash``) while porting them to Python.
 
 License
