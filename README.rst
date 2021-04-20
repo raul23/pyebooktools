@@ -321,7 +321,7 @@ Options related to extracting and searching for non-ISBN metadata
   When files and file metadata are parsed, they are split into words (or more
   precisely, either alpha or numeric tokens) and ones shorter than this value
   are ignored. By default, single and two character number and words are
-  ignored.
+  ignored. [TML]_
   
 * ``--tokens-to-ignore <value>``; env. variable ``tokens_to_ignore``; see
   default value in `default_config.py#L80`_
@@ -330,7 +330,7 @@ Options related to extracting and searching for non-ISBN metadata
   and matching tokens are ignored. The default regular expression includes
   common words that probably hinder online metadata searching like ``book``,
   ``novel``, ``series``, ``volume`` and others, as well as probable publication
-  years (so ``1999`` is ignored while ``2033`` is not).
+  years (so ``1999`` is ignored while ``2033`` is not). [TI]_
   
 * ``--owis <value>``, ``--organize-without-isbn-sources <value>``; config
   variable ``organize_without_isbn_sources``; default value
@@ -350,7 +350,7 @@ Options related to extracting and searching for non-ISBN metadata
   In contrast to searching by ISBNs, searching by author and title is done
   concurrently in all of the allowed online metadata sources. The number of
   sources is smaller because some metadata sources can be searched only by ISBN
-  or return many false-positives when searching by title and author.
+  or return many false-positives when searching by title and author. [OWIS]_
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -364,13 +364,13 @@ Options related to the input and output files
   By default the organized files start with the comma-separated author name(s),
   followed by the book series name and number in square brackets (if present),
   followed by the book title, the year of publication (if present), the ISBN(s)
-  (if present) and the original extension.
+  (if present) and the original extension. [OFT]_
   
 * ``--ome <value>``, ``--output-metadata-extension <value>``; config variable
   ``output_metadata_extension``; default value ``meta``
   
   If ``keep_metadata`` is enabled, this is the extension of the additional
-  metadata file that is saved next to each newly renamed file.
+  metadata file that is saved next to each newly renamed file. [OME]
 
 Miscellaneous options
 ^^^^^^^^^^^^^^^^^^^^^
@@ -848,7 +848,12 @@ References
 .. [OCR] https://github.com/na--/ebook-tools#options-for-ocr
 .. [OCRC] https://github.com/na--/ebook-tools#options-for-ocr
 .. [OCROP] https://github.com/na--/ebook-tools#options-for-ocr
+.. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
+.. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
+.. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
+.. [TML] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 
 * `ebook-tools`_: This is the **original** Shell scripts I ported to Python. I referenced
   its documentation a lot here since I tried to follow the shell script options as much
