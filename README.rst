@@ -793,9 +793,9 @@ Same limitations as for `ebook-tools`_ apply to this project too:
     concurrently. This is intentional so that the execution can be easily
     traced and so that the online services are not hammered by requests.
     If you want to optimize the performance, run multiple copies of the
-    script on different folders.
+    script **on different folders**.
     
-  * The default setting for ISBN_METADATA_FETCH_ORDER includes two
+  * The default setting for ``ISBN_METADATA_FETCH_ORDER`` includes two
     non-standard metadata sources: Goodreads and WorldCat xISBN. For
     best results, install the plugins (`1`_, `2`_) for them in calibre and
     fine-tune the settings for metadata sources in the calibre GUI.
