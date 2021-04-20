@@ -777,9 +777,9 @@ From the `ebook-tools documentation`_:
 
 **NOTE:** the subcommands that you can use ``--dry-run`` or ``--symlink-only`` are:
 
-* ``interact``
-* ``organize``
-* ``rename``
+* `interact`_
+* `organize`_
+* `rename`_
 * `split`_: only ``dry-run`` is applicable
 
 References
@@ -837,10 +837,13 @@ details see the `LICENSE`_ file in the repository.
 .. _below: #script-usage-and-options
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
+.. _interact: #
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
+.. _organize: #
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _rename: #
 .. _Script usage and options: #script-usage-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
