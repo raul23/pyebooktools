@@ -792,7 +792,7 @@ References
 
 Credits
 =======
-* Special thanks to `na--`_, `ebook-tools`_ developer, for having made these very
+* Special thanks to `na--`_, the developer of `ebook-tools`_, for having made these very
   useful tools. I learned a lot (specially ``bash``) while porting them to Python.
 
 License
