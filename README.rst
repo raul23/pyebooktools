@@ -370,7 +370,7 @@ Options related to the input and output files
   ``output_metadata_extension``; default value ``meta``
   
   If ``keep_metadata`` is enabled, this is the extension of the additional
-  metadata file that is saved next to each newly renamed file. [OME]
+  metadata file that is saved next to each newly renamed file. [OME]_
 
 Miscellaneous options
 ^^^^^^^^^^^^^^^^^^^^^
