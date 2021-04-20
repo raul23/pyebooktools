@@ -28,7 +28,7 @@ ebook collections.
    
 Project description
 ===================
-`ebooktools.py`_ makes use of the following modules:
+The Python script `ebooktools.py`_ makes use of the following modules:
 
 - ``edit_config.py`` edits a configuration file which can either be the main
   config file that contains all the options defined
