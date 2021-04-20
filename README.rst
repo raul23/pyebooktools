@@ -427,7 +427,9 @@ you want the help message for a specific subcommand, you do:
   ebooktools {edit,convert,find,split} -h
  
 which will show you the options that affect the choosen subcommand. 
- 
+
+|
+
 And if you want the help message for the whole ``ebooktools`` script:
 
 .. code-block:: terminal
