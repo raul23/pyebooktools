@@ -401,7 +401,7 @@ The usage pattern for running a given **subcommand** is the following:
 
   ebooktools {edit,convert,find,split} [<OPTIONS>]
   
-Where ``[<OPTIONS>``] include general options and options specific to the
+Where ``[<OPTIONS>]`` include general options and options specific to the
 subcommand as shown below.
 
 `:information_source:`
@@ -417,7 +417,7 @@ All subcommands are affected by the following global options:
 * `--log-level`_
 * `--log-format`_
 
-The `-h, --help`__ option is specific to each subcommand and to the 
+The `-h, --help`_ option is specific to each subcommand and to the 
 ``ebooktools`` script (when called without the subcommand). Thus when
 you want the help message for a specific subcommand, you do:
 
