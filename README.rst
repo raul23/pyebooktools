@@ -754,13 +754,21 @@ From `ebook-tools documentation`_:
   sure that you have a backup of any files you want to organize. You may also want
   to run the scripts with the ``--dry-run`` or ``--symlink-only`` option the first
   time to make sure that they would do what you expect them to do.
+  
+  Also keep in mind that these shell scripts parse and extract complex arbitrary
+  media and archive files and pass them to other external programs written in
+  memory-unsafe languages. This is not very safe and specially-crafted malicious ebook
+  files can probably compromise your system when you use these scripts. If you are
+  cautious and want to organize untrusted or unknown ebook files, use something like
+  `QubesOS`_ or at least do it in a separate VM/jail/container/etc.
 
 References
 ==========
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
   the **original** project I ported to Python. I referenced its documentation a lot here since
   I tried to follow the shell script options as much as possible (such as their names) so
-  that if you used the shell scripts, you will easily know how to run the Python scripts.
+  that if you used the shell scripts, you will easily know how to run the corresponding
+  Python scripts.
 
   Special thanks to `na--`_, ``ebook-tools`` developer, for having developed these very
   useful tools. I learned a lot (specially ``bash``) while porting them to Python.
@@ -790,6 +798,7 @@ details see the `LICENSE`_ file in the repository.
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _poppler: https://poppler.freedesktop.org/
+.. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
