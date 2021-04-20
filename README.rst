@@ -784,6 +784,23 @@ To uninstall the package ``py_ebooktools``::
         Successfully uninstalled py-ebooktools-0.1.0
       $ rm -r /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/
 
+Limitations
+===========
+Same limitations as for `ebook-tools`_ apply to this project too:
+
+  * Automatic organization can be slow - all the scripts are synchronous
+    and single-threaded and metadata lookup by ISBN is not done
+    concurrently. This is intentional so that the execution can be easily
+    traced and so that the online services are not hammered by requests.
+    If you want to optimize the performance, run multiple copies of the
+    script on different folders.
+    
+  * The default setting for ISBN_METADATA_FETCH_ORDER includes two
+    non-standard metadata sources: Goodreads and WorldCat xISBN. For
+    best results, install the plugins (`1`_, `2`_) for them in calibre and
+    fine-tune the settings for metadata sources in the calibre GUI.
+
+
 Roadmap
 =======
 - Port all of `ebook-tools`_ shell scripts into Python
@@ -840,6 +857,8 @@ This program is licensed under the GNU General Public License v3.0. For more
 details see the `LICENSE`_ file in the repository.
 
 .. URLs
+.. _1: https://www.mobileread.com/forums/showthread.php?t=130638
+.. _2: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
