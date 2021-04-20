@@ -64,8 +64,8 @@ Thus, from within the ``ebooktools.py`` script, you have access to various
     tried to follow the shell script options as much as possible (such as their
     names) so that if you used the shell scripts, you will easily know how to run
     the corresponding Python script.
-  * To differentiate between this project and the original collection of shell
-    scripts ``ebook-tools``, I used for the Python script the name 
+  * To differentiate between this project's script and the original collection of
+    shell scripts ``ebook-tools``, I used for the Python script the name 
     ``ebooktools.py`` without hyphen and ending with the ``.py`` file extension.
 
 Installation and dependencies
