@@ -28,7 +28,8 @@ ebook collections.
    
 Project description
 ===================
-The Python script `ebooktools.py`_ makes use of the following modules:
+The script `ebooktools.py`_ is a Python port of the `shell scripts`_ from
+``ebook-tools` and makes use of the following modules:
 
 - ``edit_config.py`` edits a configuration file which can either be the main
   config file that contains all the options defined
@@ -827,6 +828,7 @@ details see the `LICENSE`_ file in the repository.
 .. _poppler: https://poppler.freedesktop.org/
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
+.. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
 .. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _Travis CI: https://travis-ci.com/
