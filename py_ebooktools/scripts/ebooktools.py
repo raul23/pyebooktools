@@ -459,12 +459,11 @@ See subcommands below for a list of the tools that can be used.
         Also, activate the flag `--dry-run` for testing purposes since no file
         rename/move/symlink/etc. operations will actually be executed.''')
     add_general_options(parser_rename, remove_opts=['keep-metadata'])
-    parser_isbns_group = add_isbns_options(parser_rename,
-                                           remove_opts=['isbn-direct-grep-files',
-                                                        'isbn-ignored-files',
-                                                        'reorder-files-for-grep',
-                                                        'metadata-fetch-order'])
-    add_isbn_return_separator(parser_isbns_group)
+    add_isbns_options(parser_rename, remove_opts=['isbn-direct-grep-files',
+                                                  'isbn-ignored-files',
+                                                  'reorder-files-for-grep',
+                                                  'metadata-fetch-order'])
+    add_input_output_options(parser_rename)
     parser_rename_group = parser_rename.add_argument_group(
         title='specific arguments for the subcommand `rename`')
     parser_rename_group.add_argument(
