@@ -14,6 +14,20 @@ written in Shell by `na--`_. The Python script `ebooktools.py`_ is a collection
 of tools for automated and semi-automated organization and management of large
 ebook collections.
 
+`:warning:`
+
+  * For the moment, the script ``ebooktools.py`` is only tested on **macOS**.
+    Eventually, I will test it on linux.
+  * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming
+    soon.
+
+.. contents:: **Contents**
+   :depth: 4
+   :local:
+   :backlinks: top
+   
+Project description
+===================
 `ebooktools.py`_ makes use of the following modules:
 
 - ``edit_config.py`` edits a configuration file which can either be the main
@@ -33,18 +47,6 @@ ebook collections.
 - ``split_into_folders.py`` splits the supplied ebook files (and the
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files.
-
-`:warning:`
-
-  * For the moment, the script ``ebooktools.py`` is only tested on **macOS**.
-    Eventually, I will test it on linux.
-  * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming
-    soon.
-
-.. contents:: **Contents**
-   :depth: 4
-   :local:
-   :backlinks: top
 
 Installation and dependencies
 =============================
