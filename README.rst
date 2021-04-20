@@ -427,7 +427,7 @@ you want the help message for a specific subcommand, you do:
  
 which will show you the options that affect the choosen subcommand. 
  
-And if you want the help message for the whole ``ebooktools` script:
+And if you want the help message for the whole ``ebooktools`` script:
 
 .. code-block:: terminal
 
