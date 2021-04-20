@@ -277,7 +277,7 @@ Options for OCR
   ``ocr_enabled``; default value ``False``
   
   Whether to enable OCR for ``.pdf``, ``.djvu`` and image files. It is disabled
-  by default and can be used differently in two scripts:
+  by default and can be used differently in two scripts [OCR]_:
   
   * ``organize_ebooks.py`` can use OCR for finding ISBNs in scanned books.
     Setting the value to ``True`` will cause it to use OCR for books that
@@ -301,7 +301,7 @@ Options for OCR
   resource-intensive process and ISBN numbers are usually at the beginning or
   at the end of books. Setting the value to ``False`` disables this
   optimization and is the default for ``convert_to_txt.sh``, where we probably
-  want the whole book to be converted.
+  want the whole book to be converted. [OCROP]_
   
 * ``--ocrc <value>``, ``--ocr-command <value>``; config variable
   ``ocr_command``; default value ``tesseract_wrapper``
@@ -311,7 +311,7 @@ Options for OCR
   and 4 with some predefined settings. You can use a custom bash function or
   shell script - the first argument is the input image (books are OCR-ed page
   by page) and the second argument is the file you have to write the output
-  text to.
+  text to. [OCRC]_
 
 Options related to extracting and searching for non-ISBN metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -845,6 +845,9 @@ References
 .. [IIF] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. [KM] https://github.com/na--/ebook-tools#general-control-flags
 .. [MFO] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [OCR] https://github.com/na--/ebook-tools#options-for-ocr
+.. [OCRC] https://github.com/na--/ebook-tools#options-for-ocr
+.. [OCROP] https://github.com/na--/ebook-tools#options-for-ocr
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 
 * `ebook-tools`_: This is the **original** Shell scripts I ported to Python. I referenced
