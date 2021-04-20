@@ -28,7 +28,7 @@ ebook collections.
    
 Project description
 ===================
-The script `ebooktools.py`_ is a Python port of the `shell scripts`_ from
+The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
 ``ebook-tools` and makes use of the following modules:
 
 - ``edit_config.py`` edits a configuration file which can either be the main
