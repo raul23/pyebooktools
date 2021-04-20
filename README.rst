@@ -837,13 +837,13 @@ details see the `LICENSE`_ file in the repository.
 .. _below: #script-usage-and-options
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
-.. _interact: #
+.. _interact: #security-and-safety
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
-.. _organize: #
+.. _organize: #security-and-safety
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _rename: #
+.. _rename: #security-and-safety
 .. _Script usage and options: #script-usage-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
