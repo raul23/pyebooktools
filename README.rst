@@ -149,7 +149,7 @@ in the `Script usage and options`_ section).
 
 `:warning:`
  
-   In order to avoid data loss, use the options ``dry-run`` or ``symlink-only`` when
+   In order to avoid data loss, use the option ``dry-run`` or ``symlink-only`` when
    running some of the subcommands to make sure that they would do what you expect
    them to do, as explained in the `Security and safety`_ section.
 
@@ -705,6 +705,12 @@ their numbering should start at 1:
 |
 
 Note that the metadata folders contain only one file each as expected.
+
+`:warning:`
+ 
+   In order to avoid data loss, use the option ``dry-run`` to test that
+   ``split`` would do what you expect it to do, as explained in the
+   `Security and safety`_ section.
 
 Uninstall
 =========
