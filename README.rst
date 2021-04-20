@@ -55,6 +55,9 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
   that each contain the specified number of files. The `split`_ subcommand
   from the ``ebook-tools.py`` script uses this module.
 
+Thus, from within the ``ebooktools.py`` script, you have access to various
+`subcommands`_.
+
 Installation and dependencies
 =============================
 To install and use the script ``ebooktools.py``, follow these steps:
@@ -861,6 +864,7 @@ details see the `LICENSE`_ file in the repository.
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
+.. _subcommands: #script-usage-subcommands-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
 .. _-v, --verbose: #general-control-flags
