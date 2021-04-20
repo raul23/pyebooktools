@@ -207,7 +207,7 @@ General control flags
   in an accompanying file together with each renamed book. It is very useful
   for semi-automatic verification of the organized files with
   ``interactive_organizer.py`` or for additional verification, indexing or
-  processing at a later date [KM]_.
+  processing at a later date. [KM]_
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -224,14 +224,14 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   validation algorithm are normalized and passed through this regular
   expression. Any ISBNs that successfully match against it are discarded. The
   idea is to ignore technically valid but probably wrong numbers like
-  ``0123456789``, ``0000000000``, ``1111111111``, etc [IBR]_.
+  ``0123456789``, ``0000000000``, ``1111111111``, etc. [IBR]_
   
 * ``--isbn-direct-grep-files <value>``; config variable
   ``isbn_direct_grep_files``; default value ``^text/(plain|xml|html)$``
   
   This is a regular expression that is matched against the MIME type of the
   searched files. Matching files are searched directly for ISBNs, without
-  converting or OCR-ing them to ``.txt`` first.
+  converting or OCR-ing them to ``.txt`` first. [IDGF]_
   
 * ``--isbn-ignored-files <value>``; config variable ``isbn_ignored_files``; see
   default value in `default_config.py#L62`_
@@ -240,7 +240,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   searched files. Matching files are not searched for ISBNs beyond their
   filename. The default value is a bit long because it tries to make the
   scripts ignore ``.gif`` and ``.svg`` images, audio, video and executable
-  files and fonts.
+  files and fonts. [IIF]_
   
 * ``--reorder-files-for-grep <value>``; config variable
   ``isbn_grep_reorder_files``, ``isbn_grep_rf_scan_first``,
@@ -255,7 +255,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   mentioned in the middle of the book. No part of the text is searched twice,
   even if these regions overlap. If you use the command-line option, the format
   for ``<value>`` is ``False`` to disable the functionality or
-  ``first_lines,last_lines`` to enable it with the specified values.
+  ``first_lines,last_lines`` to enable it with the specified values. [RFFG]_
   
 * ``--mfo <value>``, ``--metadata-fetch-order <value>``; config variable
   ``isbn_metadata_fetch_order``; default value
@@ -266,7 +266,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   actual search is done by calibre's ``fetch-ebook-metadata`` command-line
   application, so any custom calibre metadata `plugins`_ can also be used. To
   see the currently available options, run ``fetch-ebook-metadata --help`` and
-  check the description for the ``--allowed-plugin`` option.
+  check the description for the ``--allowed-plugin`` option. [MFO]_
   
   *If you use Calibre versions that are older than 2.84, it's required to
   manually set this option to an empty string.*
@@ -841,7 +841,11 @@ Important security and safety tips from the `ebook-tools documentation`_:
 References
 ==========
 .. [IBR] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [IDGF] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [IIF] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. [KM] https://github.com/na--/ebook-tools#general-control-flags
+.. [MFO] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
   the **original** project I ported to Python. I referenced its documentation a lot here since
