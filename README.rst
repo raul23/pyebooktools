@@ -240,7 +240,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   searched files. Matching files are not searched for ISBNs beyond their
   filename. The default value is a bit long because it tries to make the
   scripts ignore ``.gif`` and ``.svg`` images, audio, video and executable
-  files and fonts, you can find it in `default_config.py#L62`_.
+  files and fonts.
   
 * ``--reorder-files-for-grep <value>``; config variable
   ``isbn_grep_reorder_files``, ``isbn_grep_rf_scan_first``,
