@@ -419,8 +419,8 @@ All subcommands are affected by the following global options:
 * `--log-format`_
 
 The `-h, --help`_ option can be applied specifically to each subcommand or
-to the  ``ebooktools`` script (when called without the subcommand). Thus when
-you want the help message for a specific subcommand, you do:
+to the  ``ebooktools.py`` script (when called without the subcommand). Thus
+when you want the help message for a specific subcommand, you do:
 
 .. code-block:: terminal
 
@@ -430,7 +430,7 @@ which will show you the options that affect the choosen subcommand.
 
 |
 
-And if you want the help message for the whole ``ebooktools`` script:
+And if you want the help message for the whole ``ebooktools.py`` script:
 
 .. code-block:: terminal
 
