@@ -224,7 +224,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   validation algorithm are normalized and passed through this regular
   expression. Any ISBNs that successfully match against it are discarded. The
   idea is to ignore technically valid but probably wrong numbers like
-  ``0123456789``, ``0000000000``, ``1111111111``, etc.
+  ``0123456789``, ``0000000000``, ``1111111111``, etc [IBR]_.
   
 * ``--isbn-direct-grep-files <value>``; config variable
   ``isbn_direct_grep_files``; default value ``^text/(plain|xml|html)$``
@@ -841,6 +841,7 @@ Important security and safety tips from the `ebook-tools documentation`_:
 References
 ==========
 .. [KM] https://github.com/na--/ebook-tools#general-control-flags
+.. [IBR] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
   the **original** project I ported to Python. I referenced its documentation a lot here since
@@ -925,5 +926,6 @@ details see the `LICENSE`_ file in the repository.
 .. TODOs
 .. explain log-level and log-format choices of values
 .. check ocr-command option (including description)
-.. add more to description (+ examples of ouput filenames) for the output-filename-template option
+.. add more to description (+ examples of output filenames) for the output-filename-template option
+.. add more to description for isbn-regex option
 .. IMPORTANT: change internal url for subcommands in #security-and-safety
