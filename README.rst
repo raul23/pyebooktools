@@ -207,7 +207,7 @@ General control flags
   in an accompanying file together with each renamed book. It is very useful
   for semi-automatic verification of the organized files with
   ``interactive_organizer.py`` or for additional verification, indexing or
-  processing at a later date.
+  processing at a later date [KM]_.
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -845,6 +845,8 @@ References
   I tried to follow the shell script options as much as possible (such as their names) so
   that if you used the shell scripts, you will easily know how to run the corresponding
   Python script.
+
+.. [KM] https://github.com/na--/ebook-tools#general-control-flags
 
 Credits
 =======
