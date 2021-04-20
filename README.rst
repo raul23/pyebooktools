@@ -442,7 +442,7 @@ of each subcommand without showing the subcommand options.
 |
 
 In the subsections below, you will find a definition for each of the
-supported subcommand for automated and semi-automated organization and
+supported subcommands for automated and semi-automated organization and
 management of large ebook collections.
 
 edit [<OPTIONS>] {main,log}
