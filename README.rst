@@ -775,6 +775,13 @@ From the `ebook-tools documentation`_:
   cautious and want to organize untrusted or unknown ebook files, use something like
   `QubesOS`_ or at least do it in a separate VM/jail/container/etc.
 
+**NOTE:** the subcommands that you can use ``--dry-run`` or ``--symlink-only`` are:
+
+* ``interact``
+* ``organize``
+* ``rename``
+* ``split``: only ``dry-run`` is applicable
+
 References
 ==========
 * `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
