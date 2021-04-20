@@ -58,6 +58,13 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
 Thus, from within the ``ebooktools.py`` script, you have access to various
 `subcommands`_.
 
+`:star:`
+
+  `ebook-tools`_ is the **original** Shell scripts I ported to Python. I 
+  tried to follow the shell script options as much as possible (such as their
+  names) so that if you used the shell scripts, you will easily know how to run
+  the corresponding Python script.
+
 Installation and dependencies
 =============================
 To install and use the script ``ebooktools.py``, follow these steps:
@@ -854,11 +861,6 @@ References
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [TML] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
-
-**NOTE:** `ebook-tools`_ is the **original** Shell scripts I ported to Python. I 
-tried to follow the shell script options as much as possible (such as their
-names) so that if you used the shell scripts, you will easily know how to run
-the corresponding Python script.
 
 Credits
 =======
