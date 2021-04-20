@@ -150,7 +150,7 @@ in the `Script usage and options`_ section).
 General options
 ---------------
 Most of these options are part of the common library `lib.py`_ and may affect
-some or all of the scripts.
+some or all of the subcommands.
 
 General control flags
 ^^^^^^^^^^^^^^^^^^^^^
