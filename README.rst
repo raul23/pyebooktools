@@ -808,9 +808,9 @@ Roadmap
   - ``organize-ebooks.sh``: **working on it**
   - ``interactive-organizer.sh``: **not started yet**
   - |ss| ``find-isbns.sh``: **done**, *see* `find_isbns.py`_ |se|
-  - ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_
+  - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - ``rename-calibre-library.sh``: **working on it**
-  - ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_
+  - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
