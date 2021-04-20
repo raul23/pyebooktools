@@ -748,7 +748,13 @@ Roadmap
 
 References
 ==========
-* `ebook-tools`_: Shell scripts for organizing and managing ebook collections.
+* `ebook-tools`_: Shell scripts for organizing and managing ebook collections. This is
+  the **original** project I ported to Python. I referenced its documentation a lot here since
+  I tried to follow the shell script options as much as possible (such as their names) so
+  that if you used the shell scripts, you will easily know how to run the Python scripts.
+
+  Special thanks to `na--`_, `ebook-tools`_ developer, for having developed these very
+  useful tools. I learned a lot (specially ``bash``) while porting them to Python.
 
 License
 =======
