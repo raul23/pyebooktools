@@ -147,6 +147,12 @@ Where ``[<OPTIONS>``] include general options (as defined in the
 `General options`_ section) and options specific to the subcommand (as defined
 in the `Script usage and options`_ section).
 
+`:warning:`
+ 
+   In order to avoid data loss, use the options ``dry-run`` or ``symlink-only`` when
+   running some of the subcommands to test to make sure that they would do what you
+   expect them to do, as explained in the `Security and safety`_ section.
+
 General options
 ---------------
 Most of these options are part of the common library `lib.py`_ and may affect
@@ -822,6 +828,7 @@ details see the `LICENSE`_ file in the repository.
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Script usage and options: #script-usage-and-options
+.. _Security and safety: #security-and-safety
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
 .. _-v, --verbose: #general-control-flags
