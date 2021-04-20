@@ -26,8 +26,8 @@ ebook collections.
    :local:
    :backlinks: top
    
-Project description
-===================
+About
+=====
 The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
 `ebook-tools`_ and makes use of the following modules:
 
