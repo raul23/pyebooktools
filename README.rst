@@ -406,7 +406,8 @@ subcommand as shown below.
 
 `:information_source:`
 
-  Don't forget the name of the script ``ebooktools`` before the subcommand.
+  Don't forget the name of the Python script ``ebooktools`` before the
+  subcommand.
 
 All subcommands are affected by the following global options:
 
