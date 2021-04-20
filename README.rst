@@ -48,7 +48,7 @@ The Python script `ebooktools.py`_ makes use of the following modules:
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files.
 
-Each of these modules are associated to a subcommand within the
+Each of these modules is associated to a subcommand within the
 ``ebooktools.py`` script, as shown in the `Script usage, subcommands and 
 options`_ section.
 
