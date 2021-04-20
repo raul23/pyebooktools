@@ -434,7 +434,7 @@ And if you want the help message for the whole ``ebooktools`` script:
 
   ebooktools -h
   
-which will show you the description of the project and general description
+which will show you the project description and description
 of each subcommand without showing the subcommand options.
 
 In the subsections below, you will find a definition for each of the
