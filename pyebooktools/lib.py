@@ -22,8 +22,8 @@ import tempfile
 from lxml.etree import parse
 from pathlib import Path
 
-from py_ebooktools.configs import default_config as default_cfg
-from py_ebooktools.utils.genutils import init_log
+from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.utils.genutils import init_log
 
 logger = init_log(__name__, __file__)
 

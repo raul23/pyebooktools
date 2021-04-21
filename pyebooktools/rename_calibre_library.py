@@ -18,11 +18,11 @@ References
 """
 from pathlib import Path
 
-from py_ebooktools.configs import default_config as default_cfg
-from py_ebooktools.lib import (find_isbns, get_metadata, move_or_link_file,
-                               substitute_params, substitute_with_sed,
-                               unique_filename)
-from py_ebooktools.utils.genutils import init_log
+from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.lib import (find_isbns, get_metadata, move_or_link_file,
+                              substitute_params, substitute_with_sed,
+                              unique_filename)
+from pyebooktools.utils.genutils import init_log
 
 logger = init_log(__name__, __file__)
 

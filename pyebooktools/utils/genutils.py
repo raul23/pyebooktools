@@ -15,10 +15,10 @@ from pathlib import Path
 from runpy import run_path
 from types import SimpleNamespace
 
-import py_ebooktools
-from py_ebooktools.configs import default_config as default_cfg
-from py_ebooktools.utils.logutils import (init_log, set_logging_field_width,
-                                          set_logging_formatter, set_logging_level)
+import pyebooktools
+from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
+                                         set_logging_formatter, set_logging_level)
 
 logger = init_log(__name__, __file__)
 logger.addHandler(NullHandler())
@@ -282,7 +282,7 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
         if subcommand:
             size_longest_name = len('scripts.ebooktools')
             for log_name, _ in log_dict['loggers'].items():
-                if log_name.startswith('py_ebooktools') and subcommand in log_name:
+                if log_name.startswith('pyebooktools') and subcommand in log_name:
                     size_longest_name = max(size_longest_name, len(log_name))
         else:
             size_longest_name = None
@@ -292,8 +292,8 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
     # =============
     # Start logging
     # =============
-    logger.info("Running {} v{}".format(py_ebooktools.__name__,
-                                        py_ebooktools.__version__))
+    logger.info("Running {} v{}".format(pyebooktools.__name__,
+                                        pyebooktools.__version__))
     logger.info("Verbose option {}".format(
         "enabled" if verbose else "disabled"))
     logger.debug("Working directory: {}".format(package_path))
@@ -311,7 +311,7 @@ def touch(path, mode=0o666, exist_ok=True):
 # Configs: dirpaths and filepaths
 # -------------------------------
 def get_configs_dirpath():
-    from py_ebooktools.configs import __path__
+    from pyebooktools.configs import __path__
     return __path__[0]
 
 

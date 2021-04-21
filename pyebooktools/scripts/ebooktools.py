@@ -18,13 +18,13 @@ import codecs
 # TODO: remove
 # import ipdb
 
-import py_ebooktools
-from py_ebooktools import (convert_to_txt, edit_config, find_isbns,
-                           rename_calibre_library, split_into_folders)
-from py_ebooktools.configs import default_config as default_cfg
-from py_ebooktools.utils.genutils import (get_config_dict, init_log,
-                                          namespace_to_dict,
-                                          override_config_with_args, setup_log)
+import pyebooktools
+from pyebooktools import (convert_to_txt, edit_config, find_isbns,
+                          rename_calibre_library, split_into_folders)
+from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.utils.genutils import (get_config_dict, init_log,
+                                         namespace_to_dict,
+                                         override_config_with_args, setup_log)
 
 logger = init_log(__name__, __file__)
 
@@ -73,7 +73,7 @@ def add_general_options(parser, remove_opts=None):
     if not remove_opts.count('version'):
         parser_general_group.add_argument(
             '-v', '--version', action='version',
-            version=f'%(prog)s v{py_ebooktools.__version__}',
+            version=f'%(prog)s v{pyebooktools.__version__}',
             help="Show program's version number and exit.")
     if not remove_opts.count('quiet'):
         parser_general_group.add_argument(
@@ -364,7 +364,7 @@ See subcommands below for a list of the tools that can be used.
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
         '-v', '--version', action='version',
-        version=f'%(prog)s v{py_ebooktools.__version__}')
+        version=f'%(prog)s v{pyebooktools.__version__}')
     # ===========
     # Subcommands
     # ===========

@@ -68,31 +68,31 @@ logging = {
         # -----------------------------
         # Loggers using console handler
         # -----------------------------
-        "py_ebooktools.edit_config":
+        "pyebooktools.edit_config":
         {
           "level": "DEBUG",
           "handlers": ["console"],
           "propagate": False
         },
-        "py_ebooktools.find_isbns":
+        "pyebooktools.find_isbns":
         {
           "level": "DEBUG",
           "handlers": ["console"],
           "propagate": False
         },
-        "py_ebooktools.lib":
+        "pyebooktools.lib":
         {
           "level": "DEBUG",
           "handlers": ["console"],
           "propagate": False
         },
-        "py_ebooktools.rename_calibre_library":
+        "pyebooktools.rename_calibre_library":
         {
           "level": "DEBUG",
           "handlers": ["console"],
           "propagate": False
         },
-        "py_ebooktools.split_into_folders":
+        "pyebooktools.split_into_folders":
         {
           "level": "DEBUG",
           "handlers": ["console"],

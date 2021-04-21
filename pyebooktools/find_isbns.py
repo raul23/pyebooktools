@@ -23,9 +23,9 @@ from pathlib import Path
 # TODO: remove
 # import ipdb
 
-from py_ebooktools.configs import default_config as default_cfg
-from py_ebooktools.lib import find_isbns, search_file_for_isbns
-from py_ebooktools.utils.genutils import init_log
+from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.lib import find_isbns, search_file_for_isbns
+from pyebooktools.utils.genutils import init_log
 
 logger = init_log(__name__, __file__)
 

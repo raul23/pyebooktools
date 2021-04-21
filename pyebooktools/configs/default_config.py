@@ -34,7 +34,7 @@ The options are separated based on sections:
 
 References
 ----------
-.. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
+.. _ebooktools.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/scripts/ebooktools.py
 """
 import os
 
