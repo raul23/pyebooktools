@@ -37,8 +37,8 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
   default values is defined in `default_logging.py`_. The `edit`_ subcommand
   from the ``ebook-tools.py`` script uses this module.
 - ``convert_to_txt.py`` converts the supplied file to a text file. It can
-  optionally also use *OCR* for ``.pdf``, ``.djvu`` and image files. The `convert`_
-  subcommand from the ``ebook-tools.py`` script uses this module.
+  optionally also use *OCR* for ``.pdf``, ``.djvu`` and image files. The
+  `convert`_ subcommand from the ``ebook-tools.py`` script uses this module.
 - ``find_isbns.py`` tries to find `valid ISBNs`_ inside a file or in a
   ``string`` if no file was specified. Searching for ISBNs in files uses
   progressively more resource-intensive methods until some ISBNs are found, for
@@ -62,15 +62,15 @@ Thus, from within the ``ebooktools.py`` script, you have access to various
 
   * `ebook-tools`_ is the **original** Shell scripts I ported to Python. I 
     tried to follow the shell script options as much as possible (such as their
-    names) so that if you used the shell scripts, you will easily know how to run
-    the corresponding subcommand within the Python script ``ebooktools.py``.
+    names) so that if you used the shell scripts, you will easily know how to
+    run the corresponding subcommand within the Python script ``ebooktools.py``.
 
 Installation and dependencies
 =============================
 To install and use the script ``ebooktools.py``, follow these steps:
 
 1. Install the dependencies `below <#install-dependencies>`__. 
-2. Install the package ``py_ebooktools`` `below <#install-py-ebooktools>`__.
+2. Install the package ``pyebooktools`` `below <#install-pyebooktools>`__.
 
 Install dependencies
 --------------------
@@ -78,45 +78,45 @@ As explained in the documentation for `ebook-tools
 <https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
 need recent versions of:
 
-  * `calibre`_ for fetching metadata from online sources, conversion to txt (for
-    ISBN searching) and ebook metadata extraction. Versions **2.84** and above
-    are preferred because of their ability to manually specify from which
+  * `calibre`_ for fetching metadata from online sources, conversion to txt
+    (for ISBN searching) and ebook metadata extraction. Versions **2.84** and
+    above are preferred because of their ability to manually specify from which
     specific online source we want to fetch metadata. For earlier versions you
     have to set ``isbn_metadata_fetch_order`` and
     ``organize_without_isbn_sources`` to empty strings.
   * `p7zip`_ for ISBN searching in ebooks that are in archives.
   * `Tesseract`_ for running OCR on books - version 4 gives better results even
-    though it's still in alpha. OCR is disabled by default and another engine can
-    be configured if preferred.
+    though it's still in alpha. OCR is disabled by default and another engine
+    can be configured if preferred.
   * **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for
     faster than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files
     respectively to ``.txt``.
-  * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can be
-    installed for better metadata fetching.
+  * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
+    be installed for better metadata fetching.
   
 `:warning:`
 
   For the moment, the script ``ebooktools.py`` is only tested on **macOS**.
   Eventually, I will test it on linux.
 
-Install ``py_ebooktools``
+Install ``pyebooktools``
 -------------------------
-The package ``py_ebooktools`` contains the script ``ebooktools.py`` which
+The package ``pyebooktools`` contains the script ``ebooktools.py`` which
 consists of various subcommands (e.g. ``find`` and ``organize``) for
 automated and semi-automated organization and management of large ebook
 collections as explained in the `Usage, options and configuration`_ section.
 
-1. It is highly recommended to install the package ``py_ebooktools`` in a
+1. It is highly recommended to install the package ``pyebooktools`` in a
    virtual environment using for example `venv`_ or `conda`_.
 
 2. Make sure to update *pip*::
 
    $ pip install --upgrade pip
 
-3. Install the package ``py_ebooktools`` (**bleeding-edge version**) with
+3. Install the package ``pyebooktools`` (**bleeding-edge version**) with
    *pip*::
 
-   $ pip install git+https://github.com/raul23/py-ebooktools#egg=py-ebooktools
+   $ pip install git+https://github.com/raul23/pyebooktools#egg=pyebooktools
 
 `:warning:`
 
@@ -131,10 +131,10 @@ collections as explained in the `Usage, options and configuration`_ section.
    
 **Test installation**
 
-1. Test your installation by importing ``py_ebooktools`` and printing its
+1. Test your installation by importing ``pyebooktools`` and printing its
    version::
 
-   $ python -c "import py_ebooktools; print(py_ebooktools.__version__)"
+   $ python -c "import pyebooktools; print(pyebooktools.__version__)"
 
 2. You can also test that you have access to the ``ebooktools.py`` script by
    showing the program's version::
@@ -168,9 +168,9 @@ in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
-   In order to avoid data loss, use the option ``dry-run`` or ``symlink-only`` when
-   running some of the subcommands (e.g. ``rename`` and ``split``) to make sure that
-   they would do what you expect them to do, as explained in the
+   In order to avoid data loss, use the option ``dry-run`` or ``symlink-only``
+   when running some of the subcommands (e.g. ``rename`` and ``split``) to make
+   sure that they would do what you expect them to do, as explained in the
    `Security and safety`_ section.
 
 General options
@@ -299,7 +299,7 @@ Options for OCR
     conversion tools. Setting it to ``always`` will cause it to first try
     OCR-ing the books before trying the simple conversion tools.
   
-* ``--ocrop <value>``, ``--ocr-only-first-last-pages <value>``; config variable 
+* ``--ocrop <value>``, ``--ocr-only-first-last-pages <value>``; config variable
   ``ocr_only_first_last_pages``; default value ``(7,3)`` (except for
   `convert_to_txt.py`_ where it's ``False``)
   
@@ -494,8 +494,8 @@ convert [<OPTIONS>] input_file
 
 Description
 """""""""""
-Converts the supplied file to a **text** file. It can optionally also use OCR for
-``.pdf``, ``.djvu`` and image files.
+Converts the supplied file to a **text** file. It can optionally also use OCR
+for ``.pdf``, ``.djvu`` and image files.
 
 Global options
 """"""""""""""
@@ -683,7 +683,7 @@ Note the input string is enclosed within single quotes.
 
 .. code-block:: terminal
 
-   INFO     Running py_ebooktools v0.1.0a3
+   INFO     Running pyebooktools v0.1.0a3
    INFO     Verbose option disabled
    INFO     Extracted ISBNs:
    9781594201721
@@ -706,7 +706,7 @@ Find ISBNs in a pdf file:
 
 .. code-block:: terminal
 
-   INFO     Running py_ebooktools v0.1.0a3
+   INFO     Running pyebooktools v0.1.0a3
    INFO     Verbose option disabled
    INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
    INFO     Trying to decompress 'pdf_file.pdf' and recursively scan the contents
@@ -726,8 +726,8 @@ Example 7: split a folder
 -------------------------
 We have a folder containing four ebooks and their corresponding metadata:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_folder_with_books.png
    :align: left
    :alt: Example 07: content of folder_with_books/
 
@@ -744,8 +744,8 @@ their numbering should start at 1:
 
 **Output:** content of ``output_folder``
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/py_ebooktools/v0.1.0a3/example_07_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_output_folder.png
    :align: left
    :alt: Example 07: content of output_folder/
 
@@ -761,13 +761,13 @@ Note that the metadata folders contain only one file each as expected.
 
 Uninstall
 =========
-To uninstall the package ``py_ebooktools``::
+To uninstall the package ``pyebooktools``::
 
-   $ pip uninstall py_ebooktools
+   $ pip uninstall pyebooktools
    
 `:information_source:`
 
-   When uninstalling the ``py_ebooktools`` package, you might be informed
+   When uninstalling the ``pyebooktools`` package, you might be informed
    that the configuration files *logging.py* and *config.py* won't be
    removed by *pip*. You can remove those files manually by noting their paths
    returned by *pip*. Or you can leave them so your saved settings can be
@@ -777,19 +777,19 @@ To uninstall the package ``py_ebooktools``::
 
    .. code-block:: console
 
-      $ pip uninstall py_ebooktools
-      Found existing installation: py-ebooktools 0.1.0
-      Uninstalling py-ebooktools-0.1.0:
+      $ pip uninstall pyebooktools
+      Found existing installation: pyebooktools 0.1.0
+      Uninstalling pyebooktools-0.1.0:
         Would remove:
           /Users/test/miniconda3/envs/ebooktools_py37/bin/ebooktools
-          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools-0.1.0.dist-info/*
-          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/*
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools-0.1.0.dist-info/*
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/*
         Would not remove (might be manually added):
-          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/configs/config.py
-          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/configs/logging.py
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/configs/config.py
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/configs/logging.py
       Proceed (y/n)? y
-        Successfully uninstalled py-ebooktools-0.1.0
-      $ rm -r /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/py_ebooktools/
+        Successfully uninstalled pyebooktools-0.1.0
+      $ rm -r /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/
 
 Limitations
 ===========
@@ -826,19 +826,22 @@ Security and safety
 ===================
 Important security and safety tips from the `ebook-tools documentation`_:
 
-  Please keep in mind that this is beta-quality software. To avoid data loss, make
-  sure that you have a backup of any files you want to organize. You may also want
-  to run the scripts with the ``--dry-run`` or ``--symlink-only`` option the first
-  time to make sure that they would do what you expect them to do.
+  Please keep in mind that this is beta-quality software. To avoid data loss,
+  make sure that you have a backup of any files you want to organize. You may
+  also want to run the scripts with the ``--dry-run`` or ``--symlink-only``
+  option the first time to make sure that they would do what you expect them to
+  do.
   
-  Also keep in mind that these shell scripts parse and extract complex arbitrary
-  media and archive files and pass them to other external programs written in
-  memory-unsafe languages. This is not very safe and specially-crafted malicious ebook
-  files can probably compromise your system when you use these scripts. If you are
-  cautious and want to organize untrusted or unknown ebook files, use something like
-  `QubesOS`_ or at least do it in a separate VM/jail/container/etc.
+  Also keep in mind that these shell scripts parse and extract complex
+  arbitrary media and archive files and pass them to other external programs
+  written in memory-unsafe languages. This is not very safe and
+  specially-crafted malicious ebook files can probably compromise your system
+  when you use these scripts. If you are cautious and want to organize
+  untrusted or unknown ebook files, use something like `QubesOS`_ or at least
+  do it in a separate VM/jail/container/etc.
 
-**NOTE:** the subcommands that you can use ``--dry-run`` or ``--symlink-only`` are:
+**NOTE:** the subcommands that you can use ``--dry-run`` or ``--symlink-only``
+are:
 
 * `interact`_
 * `organize`_
@@ -864,8 +867,9 @@ References
 
 Credits
 =======
-* Special thanks to `na--`_, the developer of `ebook-tools`_, for having made these very
-  useful tools. I learned a lot (specially ``bash``) while porting them to Python.
+* Special thanks to `na--`_, the developer of `ebook-tools`_, for having made
+  these very useful tools. I learned a lot (specially ``bash``) while porting
+  them to Python.
 * Thanks to all the developers of the different programs used by the project
   such as ``calibre``, ``Tesseract``, text converters (``djvutxt`` and
   ``pdftotext``) and many other utilities!
@@ -881,18 +885,18 @@ details see the `LICENSE`_ file in the repository.
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
-.. _convert_to_txt.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/convert_to_txt.py
-.. _default_config.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py
-.. _default_logging.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_logging.py
+.. _convert_to_txt.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/convert_to_txt.py
+.. _default_config.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py
+.. _default_logging.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_logging.py
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _DjVuLibre: http://djvu.sourceforge.net/
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
-.. _ebooktools.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/scripts/ebooktools.py
-.. _find_isbns.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/find_isbns.py
+.. _ebooktools.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/scripts/ebooktools.py
+.. _find_isbns.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/find_isbns.py
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
-.. _lib.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/lib.py
-.. _LICENSE: https://github.com/raul23/py-ebooktools/blob/master/LICENSE
+.. _lib.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/lib.py
+.. _LICENSE: https://github.com/raul23/pyebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
@@ -900,7 +904,7 @@ details see the `LICENSE`_ file in the repository.
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
-.. _split_into_folders.py: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/split_into_folders.py
+.. _split_into_folders.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/split_into_folders.py
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _Travis CI: https://travis-ci.com/
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
@@ -908,10 +912,10 @@ details see the `LICENSE`_ file in the repository.
 .. _WorldCat xISBN: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
 
 .. URLs: default values
-.. _default_config.py#L59: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L59
-.. _default_config.py#L62: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L62
-.. _default_config.py#L80: https://github.com/raul23/py-ebooktools/blob/master/py_ebooktools/configs/default_config.py#L80
-.. _search_file_for_isbns(): https://github.com/raul23/py-ebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/py_ebooktools/lib.py#L555
+.. _default_config.py#L59: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L59
+.. _default_config.py#L62: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L62
+.. _default_config.py#L80: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L80
+.. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/pyebooktools/lib.py#L555
 
 .. URLs: local
 .. _below: #script-usage-and-options
