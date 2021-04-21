@@ -1,7 +1,7 @@
-"""setup.py file for the package ``py_ebooktools``.
+"""setup.py file for the package ``pyebooktools``.
 
-The PyPi project name is ``py-ebooktools`` and the package name is
-``py_ebooktools``.
+The PyPi project name is ``pyebooktools`` and the package name is
+``pyebooktools``.
 
 """
 import fnmatch
@@ -10,11 +10,11 @@ import sys
 from setuptools import find_packages, setup
 from setuptools.command.build_py import build_py as build_py_orig
 
-from py_ebooktools import __version__, __test_version__
+from pyebooktools import __version__, __test_version__
 
 
-excluded = ['py_ebooktools/configs/config.py',
-            'py_ebooktools/configs/logging.py']
+excluded = ['pyebooktools/configs/config.py',
+            'pyebooktools/configs/logging.py']
 
 
 # IMPORTANT: bdist_wheel behaves differently to sdist
@@ -55,10 +55,10 @@ with open(os.path.join(dirpath, "requirements.txt")) as f:
     REQUIREMENTS = f.read().splitlines()
 
 
-setup(name='py-ebooktools',
+setup(name='pyebooktools',
       version=VERSION,
-      description='''Program for organizing and managing ebook collections. It 
-      is a Python port of ebook-tools (shell scripts).''',
+      description='''Program for organizing and managing ebook collections. It
+      is a Python port from the original shell scripts ebook-tools.''',
       long_description=README,
       long_description_content_type='text/x-rst',
       classifiers=[
@@ -76,7 +76,7 @@ setup(name='py-ebooktools',
         'Topic :: Utilities'
       ],
       keywords='ebook-manager calibre script',
-      url='https://github.com/raul23/py-ebooktools',
+      url='https://github.com/raul23/pyebooktools',
       author='Raul C.',
       author_email='rchfe23@gmail.com',
       license='GPLv3',
@@ -85,11 +85,11 @@ setup(name='py-ebooktools',
       include_package_data=True,
       install_requires=REQUIREMENTS,
       entry_points={
-        'console_scripts': ['ebooktools=py_ebooktools.scripts.ebooktools:main']
+        'console_scripts': ['ebooktools=pyebooktools.scripts.ebooktools:main']
       },
       project_urls={  # Optional
-          'Bug Reports': 'https://github.com/raul23/py-ebooktools/issues',
+          'Bug Reports': 'https://github.com/raul23/pyebooktools/issues',
           # TODO: 'Documentation': 'https://?.readthedocs.io/',
-          'Source': 'https://github.com/raul23/py-ebooktools',
+          'Source': 'https://github.com/raul23/pyebooktools',
       },
       zip_safe=False)
