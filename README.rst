@@ -64,11 +64,6 @@ Thus, from within the ``ebooktools.py`` script, you have access to various
     tried to follow the shell script options as much as possible (such as their
     names) so that if you used the shell scripts, you will easily know how to run
     the corresponding subcommand within the Python script ``ebooktools.py``.
-  * To differentiate between this project's script and the original collection of
-    shell scripts ``ebook-tools``, I used for the Python script the name 
-    ``ebooktools.py`` without hyphen and ending with the ``.py`` file extension.
-  * The main Python package ``py_ebooktools`` for this project starts with ``py_``
-    to differentiate it with the Python script ``ebooktools.py``.
 
 Installation and dependencies
 =============================
