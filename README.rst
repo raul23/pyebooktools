@@ -848,6 +848,20 @@ are:
 * `rename`_
 * `split`_: only ``dry-run`` is applicable
 
+Credits
+=======
+* Special thanks to `na--`_, the developer of `ebook-tools`_, for having made
+  these very useful tools. I learned a lot (specially ``bash``) while porting
+  them to Python.
+* Thanks to all the developers of the different programs used by the project
+  such as ``calibre``, ``Tesseract``, text converters (``djvutxt`` and
+  ``pdftotext``) and many other utilities!
+
+License
+=======
+This program is licensed under the GNU General Public License v3.0. For more
+details see the `LICENSE`_ file in the repository.
+
 References
 ==========
 .. [IBR] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
@@ -864,20 +878,6 @@ References
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [TML] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
-
-Credits
-=======
-* Special thanks to `na--`_, the developer of `ebook-tools`_, for having made
-  these very useful tools. I learned a lot (specially ``bash``) while porting
-  them to Python.
-* Thanks to all the developers of the different programs used by the project
-  such as ``calibre``, ``Tesseract``, text converters (``djvutxt`` and
-  ``pdftotext``) and many other utilities!
-
-License
-=======
-This program is licensed under the GNU General Public License v3.0. For more
-details see the `LICENSE`_ file in the repository.
 
 .. URLs
 .. _1: https://www.mobileread.com/forums/showthread.php?t=130638
