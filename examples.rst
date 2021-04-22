@@ -1,6 +1,10 @@
 ========
 EXAMPLES
 ========
+.. contents:: **Contents**
+   :depth: 2
+   :local:
+   :backlinks: top
 
 Example 1: edit the main config file
 ------------------------------------
