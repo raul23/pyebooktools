@@ -35,10 +35,10 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
   config file that contains all the options defined
   `below <#usage-options-and-configuration>`__ or the logging config file whose
   default values is defined in `default_logging.py`_. The `edit`_ subcommand
-  from the ``ebook-tools.py`` script uses this module.
+  from the ``ebooktools.py`` script uses this module.
 - ``convert_to_txt.py`` converts the supplied file to a text file. It can
   optionally also use *OCR* for ``.pdf``, ``.djvu`` and image files. The
-  `convert`_ subcommand from the ``ebook-tools.py`` script uses this module.
+  `convert`_ subcommand from the ``ebooktools.py`` script uses this module.
 - ``find_isbns.py`` tries to find `valid ISBNs`_ inside a file or in a
   ``string`` if no file was specified. Searching for ISBNs in files uses
   progressively more resource-intensive methods until some ISBNs are found, for
@@ -48,12 +48,12 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
   - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs
     search in files is implemented).
   
-  The `find`_ subcommand from the ``ebook-tools.py`` script uses this module.
+  The `find`_ subcommand from the ``ebooktools.py`` script uses this module.
   
 - ``split_into_folders.py`` splits the supplied ebook files (and the
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files. The `split`_ subcommand
-  from the ``ebook-tools.py`` script uses this module.
+  from the ``ebooktools.py`` script uses this module.
 
 Thus, you have access to various `subcommands`_ from within the
 ``ebooktools.py`` script.
