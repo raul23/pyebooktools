@@ -110,7 +110,7 @@ Install ``pyebooktools``
 The package ``pyebooktools`` contains the script ``ebooktools.py`` which
 consists of various subcommands (e.g. ``find`` and ``organize``) for
 automated and semi-automated organization and management of large ebook
-collections as explained in the `Usage, options and configuration`_ section.
+collections.
 
 1. It is highly recommended to install the package ``pyebooktools`` in a
    virtual environment using for example `venv`_ or `conda`_.
