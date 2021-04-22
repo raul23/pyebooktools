@@ -825,14 +825,14 @@ References
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/pyebooktools/lib.py#L555
 
 .. URLs: pyebooktools project
-.. _convert_to_txt.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/convert_to_txt.py
-.. _default_config.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py
-.. _default_logging.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_logging.py
-.. _ebooktools.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/scripts/ebooktools.py
-.. _examples.rst: https://github.com/raul23/pyebooktools/blob/master/examples.rst
-.. _find_isbns.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/find_isbns.py
-.. _lib.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/lib.py
-.. _LICENSE: https://github.com/raul23/pyebooktools/blob/master/LICENSE
+.. _convert_to_txt.py: ./pyebooktools/convert_to_txt.py
+.. _default_config.py: ./pyebooktools/configs/default_config.py
+.. _default_logging.py: ./pyebooktools/configs/default_logging.py
+.. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
+.. _examples.rst: ./examples.rst
+.. _find_isbns.py: ./pyebooktools/find_isbns.py
+.. _lib.py: ./pyebooktools/lib.py
+.. _LICENSE: ./LICENSE
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
 .. URLs: local
