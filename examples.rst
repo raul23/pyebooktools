@@ -1,8 +1,8 @@
 ========
 EXAMPLES
 ========
-Examples to show how to use execute the different subcommands
-from the script `ebooktools.py`_.
+Examples to show how to execute the different subcommands
+from the script ``ebooktools.py``.
 
 .. contents:: **Contents**
    :depth: 2
