@@ -1,6 +1,9 @@
 ========
 EXAMPLES
 ========
+Examples to show how to use execute the different subcommands
+from the script `ebooktools.py`_.
+
 .. contents:: **Contents**
    :depth: 2
    :local:
@@ -141,4 +144,5 @@ Note that the metadata folders contain only one file each as expected.
    `Security and safety`_ section.
    
 .. URLs
+.. _ebookstools.py: ./pyebooktools/scripts/ebooktools.py
 .. _Security and safety: ./README.rst#security-and-safety
