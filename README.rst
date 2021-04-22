@@ -63,7 +63,7 @@ Thus, you have access to various `subcommands`_ from within the
   * `ebook-tools`_ is the **original** Shell project I ported to Python. I 
     used the same names for the script options (short and longer versions) so
     that if you used the shell scripts, you will easily know how to run the
-    corresponding subcommand with the given options.
+    corresponding `subcommand`_ with the given options.
   * `ebooktools.py`_ is the name of the Python script whose name doesn't have
     a hyphen and ends with ``.py`` to distinguish from the original Shell
     project ``ebook-tools``.
@@ -800,19 +800,11 @@ References
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
-.. _convert_to_txt.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/convert_to_txt.py
-.. _default_config.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py
-.. _default_logging.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_logging.py
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _DjVuLibre: http://djvu.sourceforge.net/
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
-.. _ebooktools.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/scripts/ebooktools.py
-.. _examples.rst: https://github.com/raul23/pyebooktools/blob/master/examples.rst
-.. _find_isbns.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/find_isbns.py
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
-.. _lib.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/lib.py
-.. _LICENSE: https://github.com/raul23/pyebooktools/blob/master/LICENSE
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
@@ -820,7 +812,6 @@ References
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
-.. _split_into_folders.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/split_into_folders.py
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _Travis CI: https://travis-ci.com/
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
@@ -832,6 +823,17 @@ References
 .. _default_config.py#L62: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L62
 .. _default_config.py#L80: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L80
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/pyebooktools/lib.py#L555
+
+.. URLs: pyebooktools project
+.. _convert_to_txt.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/convert_to_txt.py
+.. _default_config.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py
+.. _default_logging.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_logging.py
+.. _ebooktools.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/scripts/ebooktools.py
+.. _examples.rst: https://github.com/raul23/pyebooktools/blob/master/examples.rst
+.. _find_isbns.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/find_isbns.py
+.. _lib.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/lib.py
+.. _LICENSE: https://github.com/raul23/pyebooktools/blob/master/LICENSE
+.. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
 .. URLs: local
 .. _below: #script-usage-and-options
@@ -850,6 +852,7 @@ References
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
+.. _subcommand: #script-usage-subcommands-and-options
 .. _subcommands: #script-usage-subcommands-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
