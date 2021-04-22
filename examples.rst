@@ -144,5 +144,4 @@ Note that the metadata folders contain only one file each as expected.
    `Security and safety`_ section.
    
 .. URLs
-.. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
 .. _Security and safety: ./README.rst#security-and-safety
