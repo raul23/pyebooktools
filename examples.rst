@@ -139,3 +139,6 @@ Note that the metadata folders contain only one file each as expected.
    In order to avoid data loss, use the option ``dry-run`` to test that
    ``split`` would do what you expect it to do, as explained in the
    `Security and safety`_ section.
+   
+.. URLs
+.. _Security and safety: ./README.rst#security-and-safety
