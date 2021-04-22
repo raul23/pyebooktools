@@ -80,7 +80,7 @@ To install and use the script ``ebooktools.py``, follow these steps:
 
 Install dependencies
 --------------------
-* **Platforms:** macOS
+* **Platforms:** macOS [soon linux]
 * **Python**: => 3.7
 
 As explained in the documentation for `ebook-tools 
