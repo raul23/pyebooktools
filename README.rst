@@ -60,9 +60,9 @@ Thus, you have access to various `subcommands`_ from within the
 
 `:star:`
 
-  * `ebook-tools`_ is the **original** Shell scripts I ported to Python. I 
-    used the same names for the options (short and longer versions) so that
-    if you used the shell scripts, you will easily know how to run the
+  * `ebook-tools`_ is the **original** Shell project I ported to Python. I 
+    used the same names for the script options (short and longer versions) so
+    that if you used the shell scripts, you will easily know how to run the
     corresponding subcommand with the given options.
   * `ebooktools.py`_ is the name of the Python script whose name doesn't have
     a hyphen and ends with ``.py`` to distinguish from the original Shell
