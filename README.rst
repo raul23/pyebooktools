@@ -55,8 +55,8 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
   that each contain the specified number of files. The `split`_ subcommand
   from the ``ebook-tools.py`` script uses this module.
 
-Thus, from within the ``ebooktools.py`` script, you have access to various
-`subcommands`_.
+Thus, you have access to various `subcommands`_ from within the
+``ebooktools.py`` script.
 
 `:star:`
 
@@ -64,6 +64,11 @@ Thus, from within the ``ebooktools.py`` script, you have access to various
     tried to follow the shell script options as much as possible (such as their
     names) so that if you used the shell scripts, you will easily know how to
     run the corresponding subcommand within the Python script ``ebooktools.py``.
+  * ``ebooktools.py`` is the name of the Python script whose name doesn't have
+    a hyphen to distinguish from the original shell project.
+  * ``pyeboooktools`` is the name of the Python package that you need to
+    install as explained  `below <#install-pyebooktools>`__ to have access to
+    the ``ebooktools.py` script.
 
 Installation and dependencies
 =============================
