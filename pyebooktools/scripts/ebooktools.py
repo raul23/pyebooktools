@@ -14,6 +14,7 @@ References
 """
 import argparse
 import codecs
+import sys
 
 # TODO: remove
 # import ipdb
@@ -368,9 +369,14 @@ See subcommands below for a list of the tools that can be used.
     # ===========
     # Subcommands
     # ===========
-    subparsers = parser.add_subparsers(
-        title='subcommands', description=None, dest='subcommand', required=True,
-        help=None)
+    if sys.version_info >= (3, 7):
+        subparsers = parser.add_subparsers(
+            title='subcommands', description=None, dest='subcommand', required=True,
+            help=None)
+    else:
+        # No arg 'required' supported for <= 3.6
+        subparsers = parser.add_subparsers(
+            title='subcommands', description=None, dest='subcommand', help=None)
     # TODO: add aliases, see https://bit.ly/3s2fq87
     # ==========
     # Edit files
@@ -575,16 +581,18 @@ if __name__ == '__main__':
     # ebooktools convert --log-level debug --ocr always -o ~/test/_ebooktools/output.txt ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf
     #
     # Edit
-    # ebooktools edit -a charm --log-level info --log-format console log
+    # ebooktools edit -a charm log
     #
     # Find
     # ebooktools find "978-159420172-1 978-1892391810 0000000000 0123456789 1111111111" --log-level debug --log-format console
-    # ebooktools find ~/test/_ebooktools/find_isbns/Title --log-level debug --log-format console
+    # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
+    #
+    # Rename
+    # ebooktools rename
     #
     # Split
-    # ebooktools split ~/test/_ebooktools/folder_with_books/ -o ~/test/_ebooktools/output_folder/ --log-level debug --log-format console
+    # ebooktools split --fpf 2 -s 1 ~/test/_ebooktools/folder_with_books/ -o ~/test/_ebooktools/output_folder/
     # ebooktools split -o output_folder/ folder_with_books/ --log-level debug --log-format simple
-    # ebooktools split --fpf 3 --log-level debug --log-format simple
     retcode = main()
     msg = f'Program exited with {retcode}'
     if retcode == 1:
