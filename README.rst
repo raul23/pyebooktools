@@ -742,7 +742,7 @@ Same limitations as for `ebook-tools`_ apply to this project too:
 
 Roadmap
 =======
-- Port all of `ebook-tools`_ shell scripts into Python
+- Port all `ebook-tools`_ shell scripts into Python
 
   - ``organize-ebooks.sh``: **working on it**
   - ``interactive-organizer.sh``: **not started yet**
