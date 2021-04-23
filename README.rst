@@ -84,11 +84,6 @@ Python dependencies
 * **Python**: >= 3.7
 * ``lxml`` >= 4.4 for parsing Calibre's ``metadata.opf`` files.
 
-`:warning:`
-
-  For the moment, the script ``ebooktools.py`` is only tested on **macOS**.
-  Eventually, I will also test it on linux.
-
 `:information_source:`
 
   When `installing <#install-pyebooktools>`_ the ``pyebooktools``
