@@ -678,8 +678,9 @@ Find ISBNs in a pdf file:
    1000100111
 
 The search for ISBNs starts in the first pages of the document to increase
-the likelihood that the first extracted ISBN is the valid one. Then the last
-pages are analyzed in reverse. Finally, the rest of the pages are search.
+the likelihood that the first extracted ISBN is the correct one. Then the
+last pages are analyzed in reverse. Finally, the rest of the pages are
+search.
 
 Thus, in this example, the first extracted ISBN is the correct one
 associated with the book since it was found in the first page. 
