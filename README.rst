@@ -81,7 +81,8 @@ To install and use the script ``ebooktools.py``, follow these steps:
 Install dependencies
 --------------------
 * **Platforms:** macOS [soon linux]
-* **Python**: => 3.7
+* **Python**: >= 3.7
+* **lxml:** >= 4.4 for parsing Calibre's ``metadata.opf`` files.
 
 As explained in the documentation for `ebook-tools 
 <https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
