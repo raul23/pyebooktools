@@ -99,12 +99,21 @@ Find ISBNs in a pdf file:
    INFO     The file looks like a pdf, using pdftotext to extract the text
    INFO     Reordering input file (if possible), read first 400 lines normally, then read last 50 lines in reverse and then read the rest
    INFO     Extracted ISBNs:
-   9781594201721
+   9783672388737
    1000100111
 
-The first extracted ISBN is the correct one. The last sequence ``1000100111``
-is not an ISBN even though it is a technically valid but wrong ISBN that the
-regular expression ``isbn_blacklist_regex`` didn't catch.
+The search for ISBNs starts in the first pages of the document to increase
+the likelihood that the first extracted ISBN is the valid one. Then the last
+pages are analyzed in reverse. Finally, the rest of the pages are search.
+
+Thus, in this example, the first extracted ISBN is the correct one
+associated with the book since it was found in the first page. 
+
+The last sequence ``1000100111`` was found in the middle of the document
+and is not an ISBN even though it is a technically valid but wrong ISBN
+that the regular expression ``isbn_blacklist_regex`` didn't catch. Maybe
+it is a binary sequence that is part of a problem in a book about digital
+system. 
 
 Example 7: split a folder
 -------------------------
