@@ -42,22 +42,29 @@ def find(input_data, isbn_blacklist_regex=default_cfg.isbn_blacklist_regex,
          ocr_enabled=default_cfg.ocr_enabled,
          ocr_only_first_last_pages=default_cfg.ocr_only_first_last_pages,
          **kwargs):
-    # ipdb.set_trace()
     # Check if input data is a file path or a string
-    if Path(input_data).is_file():
-        logger.debug(f'The input data is a file path: {input_data}')
-        isbns = search_file_for_isbns(input_data, isbn_blacklist_regex,
-                                      isbn_direct_grep_files,
-                                      isbn_grep_reorder_files,
-                                      isbn_grep_rf_reverse_last,
-                                      isbn_grep_rf_scan_first,
-                                      isbn_ignored_files, isbn_regex,
-                                      isbn_ret_separator, ocr_command,
-                                      ocr_enabled, ocr_only_first_last_pages)
-    else:
-        logger.debug(f'The input data is a string: {input_data}')
-        isbns = find_isbns(input_data, isbn_blacklist_regex, isbn_regex,
-                           isbn_ret_separator)
+    try:
+        if Path(input_data).is_file():
+            logger.debug(f'The input data is a file path: {input_data}')
+            isbns = search_file_for_isbns(input_data, isbn_blacklist_regex,
+                                          isbn_direct_grep_files,
+                                          isbn_grep_reorder_files,
+                                          isbn_grep_rf_reverse_last,
+                                          isbn_grep_rf_scan_first,
+                                          isbn_ignored_files, isbn_regex,
+                                          isbn_ret_separator, ocr_command,
+                                          ocr_enabled, ocr_only_first_last_pages)
+        else:
+            logger.debug(f'The input data is a string: {input_data}')
+            isbns = find_isbns(input_data, isbn_blacklist_regex, isbn_regex,
+                               isbn_ret_separator)
+    except OSError as e:
+        if e.args[0]:
+            logger.debug(f'{e.args[1]}: the input data might be a string')
+            isbns = find_isbns(input_data, isbn_blacklist_regex, isbn_regex,
+                               isbn_ret_separator)
+        else:
+            raise e
     if isbns:
         logger.info(f"Extracted ISBNs:\n{isbns}")
     else:
