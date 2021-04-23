@@ -75,7 +75,7 @@ Installation and dependencies
 =============================
 To install and use the script ``ebooktools.py``, follow these steps:
 
-1. Install the dependencies `below <#install-dependencies>`__. 
+1. Install the dependencies `below <#other-dependencies>`__. 
 2. Install the package ``pyebooktools`` `below <#install-pyebooktools>`__.
 
 Python dependencies
