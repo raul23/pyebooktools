@@ -87,8 +87,8 @@ Python dependencies
 `:information_source:`
 
   When `installing <#install-pyebooktools>`_ the ``pyebooktools``
-  package, the ``lxml`` dependency is automatically installed if it is not
-  found or upgraded to the correct supported version.
+  package, the ``lxml`` Python package is automatically installed if it
+  is not found or upgraded to the correct supported version.
 
 Other dependencies
 --------------------
