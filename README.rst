@@ -709,17 +709,17 @@ To uninstall the package ``pyebooktools``::
    .. code-block:: console
 
       $ pip uninstall pyebooktools
-      Found existing installation: pyebooktools 0.1.0
-      Uninstalling pyebooktools-0.1.0:
+      Found existing installation: pyebooktools 0.1.0a3
+      Uninstalling pyebooktools-0.1.0a3:
         Would remove:
           /Users/test/miniconda3/envs/ebooktools_py37/bin/ebooktools
-          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools-0.1.0.dist-info/*
+          /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools-0.1.0a3.dist-info/*
           /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/*
         Would not remove (might be manually added):
           /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/configs/config.py
           /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/configs/logging.py
       Proceed (y/n)? y
-        Successfully uninstalled pyebooktools-0.1.0
+        Successfully uninstalled pyebooktools-0.1.0a3
       $ rm -r /Users/test/miniconda3/envs/ebooktools_py37/lib/python3.7/site-packages/pyebooktools/
 
 Limitations
