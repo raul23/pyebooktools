@@ -375,6 +375,7 @@ See subcommands below for a list of the tools that can be used.
             help=None)
     else:
         # No arg 'required' supported for <= 3.6
+        # TODO: important, test without subcommand
         subparsers = parser.add_subparsers(
             title='subcommands', description=None, dest='subcommand', help=None)
     # TODO: add aliases, see https://bit.ly/3s2fq87
@@ -552,6 +553,15 @@ def main():
     try:
         parser = setup_argparser()
         args = parser.parse_args()
+        if args.subcommand is None:
+            # NOTE: this happens for py <= 3.6 (no required arg found)
+            # TODO: important, find way to get usage msg already
+            # TODO: important, update subcommands in usage msg
+            msg = 'usage: ebooktools [-h] [-v] {edit,convert,find,rename,' \
+                  'split}... \nebooktools: error: the following arguments ' \
+                  'are required: subcommand'
+            print(msg)
+            sys.exit(1)
         # Get main cfg dict
         main_cfg = argparse.Namespace(**get_config_dict('main'))
         returned_values = override_config_with_args(main_cfg, parser)
