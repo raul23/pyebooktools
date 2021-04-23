@@ -78,6 +78,34 @@ they are matched with the regular expression ``isbn_blacklist_regex``.
 
 By default, the extracted ISBNs are separated by newlines, ``\n``.
 
+`:information_source:`
+
+  If you want to search ISBNs in a multiple-lines string, e.g. you copied-pasted
+  many pages from a document, you must follow the ``find`` subcommand with a
+  backslash ``\`` and enclose the string within double quotes, like so:
+  
+  .. code-block:: terminal
+
+     $ ebooktools find \
+     "
+     978-159420172-1
+     
+     blablabla
+     blablabla
+     blablabla
+     
+     978-1892391810
+     0000000000 0123456789 
+     
+     blablabla
+     blablabla
+     blablabla
+     
+     1111111111
+     blablabla
+     blablabla
+     "
+
 Example 6: find ISBNs in a pdf file
 -----------------------------------
 Find ISBNs in a pdf file:
