@@ -22,7 +22,7 @@ ebook collections.
     soon.
 
 .. contents:: **Contents**
-   :depth: 4
+   :depth: 3
    :local:
    :backlinks: top
    
@@ -106,7 +106,7 @@ need recent versions of:
 `:warning:`
 
   For the moment, the script ``ebooktools.py`` is only tested on **macOS**.
-  Eventually, I will test it on linux.
+  Eventually, I will also test it on linux.
 
 Install ``pyebooktools``
 -------------------------
