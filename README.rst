@@ -73,7 +73,7 @@ Thus, you have access to various `subcommands`_ from within the
 
 Installation and dependencies
 =============================
-To install and use the script ``ebooktools.py``, follow these steps:
+To install the script ``ebooktools.py``, follow these steps:
 
 1. Install the dependencies `below <#other-dependencies>`__. 
 2. Install the package ``pyebooktools`` `below <#install-pyebooktools>`__.
