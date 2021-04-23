@@ -13,8 +13,9 @@ from setuptools.command.build_py import build_py as build_py_orig
 from pyebooktools import __version__, __test_version__
 
 if sys.version_info < (3, 7):
-    raise RuntimeError('unsupported python version')
-
+    raise RuntimeError("""
+    pyebooktools v0.1.0+ supports Python 3.7 and above. 
+    """)
 
 excluded = ['pyebooktools/configs/config.py',
             'pyebooktools/configs/logging.py']
