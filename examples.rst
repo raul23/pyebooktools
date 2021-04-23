@@ -61,7 +61,7 @@ Find ISBNs in the string ``'978-159420172-1 978-1892391810 0000000000
 
    $ ebooktools find '978-159420172-1 978-1892391810 0000000000 0123456789 1111111111'
 
-Note the input string can be enclosed within single or double quotes.
+The input string can be enclosed within single or double quotes.
 
 **Output:**
 
