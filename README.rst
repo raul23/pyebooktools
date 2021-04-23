@@ -674,7 +674,7 @@ Find ISBNs in a pdf file:
    INFO     The file looks like a pdf, using pdftotext to extract the text
    INFO     Reordering input file (if possible), read first 400 lines normally, then read last 50 lines in reverse and then read the rest
    INFO     Extracted ISBNs:
-   9781594201721
+   9783672388737
    1000100111
 
 The search for ISBNs starts in the first pages of the document to increase
