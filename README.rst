@@ -772,8 +772,8 @@ Important security and safety tips from the `ebook-tools documentation`_:
   untrusted or unknown ebook files, use something like `QubesOS`_ or at least
   do it in a separate VM/jail/container/etc.
 
-**NOTE:** the subcommands that you can use ``--dry-run`` or ``--symlink-only``
-are:
+**NOTE:** ``--dry-run`` or ``--symlink-only``can be applied to the following
+subcommands:
 
 * `interact`_
 * `organize`_
