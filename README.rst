@@ -772,7 +772,7 @@ Important security and safety tips from the `ebook-tools documentation`_:
   untrusted or unknown ebook files, use something like `QubesOS`_ or at least
   do it in a separate VM/jail/container/etc.
 
-**NOTE:** ``--dry-run`` or ``--symlink-only`` can be applied to the following
+**NOTE:** ``--dry-run`` and ``--symlink-only`` can be applied to the following
 subcommands:
 
 * `interact`_
