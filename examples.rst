@@ -2,7 +2,7 @@
 EXAMPLES
 ========
 Examples to show how to execute the different subcommands
-from the script ``ebooktools.py``.
+from the ``ebooktools.py`` script.
 
 .. contents:: **Contents**
    :depth: 2
