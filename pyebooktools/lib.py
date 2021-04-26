@@ -426,8 +426,6 @@ def ocr_file(input_file, output_file, mime_type,
                                 stderr=subprocess.PIPE)
         return convert_result_from_shell_cmd(result)
 
-    # TODO: remove
-    # import ipdb
     if mime_type.startswith('application/pdf'):
         # TODO: they are using the `pdfinfo` command but it might not be present;
         # in check_file_for_corruption(), they are testing if this command exists
@@ -464,8 +462,8 @@ def ocr_file(input_file, output_file, mime_type,
         logger.debug(f"Function '{ocr_command}' doesn't exit. Ending ocr.")
         return 1
 
-    logger.debug(f"Will run OCR on file '{input_file}' with {num_pages} "
-                 f"page{'s' if num_pages > 1 else ''}")
+    logger.info(f"Will run OCR on file '{input_file}' with {num_pages} "
+                f"page{'s' if num_pages > 1 else ''}...")
     logger.debug(f'mime type: {mime_type}')
 
     # TODO: ? assert on ocr_only_first_last_pages (should be tuple or False)
