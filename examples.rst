@@ -42,7 +42,7 @@ To convert a pdf file to text **with OCR**:
 
    $ ebooktools convert --ocr always pdf_to_convert.pdf -o converted.txt
    
-By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
+By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
 ``ebook-convert`` if the former command is not found).
 
