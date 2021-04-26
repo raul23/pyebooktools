@@ -22,7 +22,7 @@ from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (find_isbns, get_metadata, move_or_link_file,
                               substitute_params, substitute_with_sed,
                               unique_filename)
-from pyebooktools.utils.genutils import init_log
+from pyebooktools.utils.genutils import copy, init_log
 
 logger = init_log(__name__, __file__)
 
@@ -35,8 +35,6 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
            output_metadata_extension=default_cfg.output_metadata_extension,
            reverse=default_cfg.reverse, save_metadata=default_cfg.save_metadata,
            symlink_only=default_cfg.symlink_only, **kwargs):
-    # TODO: remove
-    import ipdb
     number_ebooks = 0
     file_paths = []
     for book_path in Path(calibre_folder).rglob('*'):
@@ -85,9 +83,8 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
         authors = get_metadata(metadata_path.as_posix(),
                                '//*[local-name()="creator"]/text()')
         # e.g. b'John Doe\\nJane Doe' -> 'John Doe\nJane Doe'
-        authors_decoded = authors.decode('unicode_escape')
         # e.g. 'John Doe\nJane Doe' -> 'John Doe, Jane Doe'
-        metadata['AUTHORS'] = ', '.join(authors_decoded.split('\n')).encode()
+        metadata['AUTHORS'] = ', '.join(authors.decode().split('\\n')).encode('utf-8')
         metadata['SERIES'] = get_metadata(
             metadata_path.as_posix(),
             '//*[local-name()="meta"][@name="calibre:series"]/@content')
@@ -113,14 +110,29 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
             # else:
                 # TODO: important better isbn validator since one wrong ISBN is found
                 # in the metadata file in the the uuid field (but only one case)
-                # ipdb.set_trace()
-        logger.info('Parsed metadata:')
+        logger.debug('Parsed metadata:')
         for k, v in metadata.items():
             v = substitute_with_sed('[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]', '_', v)
             logger.debug(f'{k}: {v}')
         new_name = substitute_params(metadata, output_filename_template)
         new_path = unique_filename(output_folder, new_name)
         logger.debug(f"Moving file to '{new_path}'...")
-        ipdb.set_trace()
         move_or_link_file(book_path, new_path, dry_run, symlink_only)
-    ipdb.set_trace()
+        new_metadata_path = f'{new_path.split(Path(new_path).suffix)[0]}.' \
+                            f'{output_metadata_extension}'
+        if save_metadata == 'recreate':
+            new_metadata = f"""Title               : {metadata['TITLE'].decode()}
+Author(s)           : {metadata['AUTHORS'].decode()}
+Series              : {metadata['SERIES'].decode()}
+Published           : {metadata['PUBLISHED'].decode()}
+ISBN                : {metadata['ISBN'].decode()}
+Old file path       : {book_path}
+Metadata source     : metadata.opf"""
+            with open(new_metadata_path, mode='w') as f:
+                f.write(new_metadata)
+        elif save_metadata == 'opfcopy':
+            copy(metadata_path, new_metadata_path, clobber=False)
+        else:
+            logger.debug('Metadata was not copied or recreated')
+        import ipdb
+        # ipdb.set_trace()
