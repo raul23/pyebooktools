@@ -810,7 +810,7 @@ Roadmap
   - ``interactive-organizer.sh``: **not started yet**
   - |ss| ``find-isbns.sh``: **done**, *see* `find_isbns.py`_ |se|
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
-  - ``rename-calibre-library.sh``: **working on it**
+  - |ss| ``rename-calibre-library.sh``: **working on it** |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
 - Test on linux
 - Add tests on `Travis CI`_
