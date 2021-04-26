@@ -16,8 +16,8 @@ ebook collections.
 
 `:warning:`
 
-  * For the moment, the script ``ebooktools.py`` is only tested on **macOS**.
-    Eventually, I will test it on linux.
+  * For the moment, the ``ebooktools.py`` script is only tested on **macOS**.
+    Eventually, I will also test it on linux.
   * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming
     soon.
 
@@ -678,8 +678,9 @@ Find ISBNs in a pdf file:
    1000100111
 
 The search for ISBNs starts in the first pages of the document to increase
-the likelihood that the first extracted ISBN is the valid one. Then the last
-pages are analyzed in reverse. Finally, the rest of the pages are search.
+the likelihood that the first extracted ISBN is the correct one. Then the
+last pages are analyzed in reverse. Finally, the rest of the pages are
+searched.
 
 Thus, in this example, the first extracted ISBN is the correct one
 associated with the book since it was found in the first page. 
@@ -741,7 +742,7 @@ Same limitations as for `ebook-tools`_ apply to this project too:
 
 Roadmap
 =======
-- Port all of `ebook-tools`_ shell scripts into Python
+- Port all `ebook-tools`_ shell scripts into Python
 
   - ``organize-ebooks.sh``: **working on it**
   - ``interactive-organizer.sh``: **not started yet**
@@ -771,8 +772,8 @@ Important security and safety tips from the `ebook-tools documentation`_:
   untrusted or unknown ebook files, use something like `QubesOS`_ or at least
   do it in a separate VM/jail/container/etc.
 
-**NOTE:** the subcommands that you can use ``--dry-run`` or ``--symlink-only``
-are:
+**NOTE:** ``--dry-run`` and ``--symlink-only`` can be applied to the following
+subcommands:
 
 * `interact`_
 * `organize`_
