@@ -941,6 +941,9 @@ References
 .. _--verbose: #general-control-flags
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
+.. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
+.. _--ome, --output-metadata-extension: #options-related-to-the-input-and-output-files
 
 .. |ss| raw:: html
 
