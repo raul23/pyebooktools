@@ -36,8 +36,7 @@ To reset the **main** config file with factory settings:
 
 Example 3: convert a pdf file to text **with** OCR
 --------------------------------------------------
-To convert a pdf file (``pdf_to_convert.pdf``) to text
-(``converted.txt``) **with OCR**:
+To convert a pdf file to text **with OCR**:
 
 .. code-block:: terminal
 
@@ -56,8 +55,7 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
 Example 4: convert a pdf file to text **without** OCR
 -----------------------------------------------------
-To convert a pdf file (``pdf_to_convert.pdf``) to text
-(``converted.txt``) **without OCR**:
+To convert a pdf file to text **without OCR**:
 
 .. code-block:: terminal
 
