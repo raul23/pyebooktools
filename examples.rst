@@ -50,6 +50,7 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
    INFO     Running pyebooktools v0.1.0a3
    INFO     Verbose option disabled
+   INFO     OCR=always, first try OCR then conversion
    INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
    INFO     OCR successful!
 
@@ -63,6 +64,13 @@ To convert a pdf file to text **without OCR**:
     
 If ``pdftotext`` is present, it is used to convert the pdf file to text.
 Otherwise, calibre's ``ebook-convert`` is used for the conversion.
+
+.. code-block:: terminal
+
+   INFO     Running pyebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     OCR=false, try only conversion...
+   INFO     Conversion successful!
 
 Example 5: find ISBNs in a string
 ---------------------------------
