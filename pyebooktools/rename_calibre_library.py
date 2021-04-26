@@ -125,7 +125,8 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
         # Remove accents
         new_name = remove_accents(new_name)
         new_path = unique_filename(output_folder, new_name)
-        logger.debug(f"Moving file to '{new_path}'...")
+        logger.info('Saving book file and metadata...')
+        logger.debug(f"Moving file to '{new_path}'")
         move_or_link_file(book_path, new_path, dry_run, symlink_only)
         new_metadata_path = f'{new_path.split(Path(new_path).suffix)[0]}.' \
                             f'{output_metadata_extension}'
