@@ -34,7 +34,7 @@ To convert a pdf file (``pdf_to_convert.pdf``) to text
 
 .. code-block:: terminal
 
-   $ ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
+   $ ebooktools convert --ocr always pdf_to_convert.pdf -o converted.txt
    
 By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
@@ -47,7 +47,7 @@ To convert a pdf file (``pdf_to_convert.pdf``) to text
 
 .. code-block:: terminal
 
-   $ ebooktools convert -o converted.txt pdf_to_convert.pdf
+   $ ebooktools convert pdf_to_convert.pdf -o converted.txt
     
 If ``pdftotext`` is present, it is used to convert the pdf file to text.
 Otherwise, calibre's ``ebook-convert`` is used for the conversion.
@@ -142,6 +142,16 @@ system.
 
 Example 7: rename book files from calibre library folder
 --------------------------------------------------------
+Rename book files from a calibre library folder and symlink them along with
+their copied ``metadata.opf`` files into an output folder:
+
+.. code-block:: terminal
+
+   $ ebooktools rename --sm opfcopy --sl ~/calibre_folder/ -o ~/output_folder/
+   
+**Output:**
+
+.. code-block:: terminal
 
 Example 8: split a folder
 -------------------------
