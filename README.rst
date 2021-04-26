@@ -749,7 +749,7 @@ associated with the book since it was found in the first page.
 
 The last sequence ``1000100111`` was found in the middle of the document
 and is not an ISBN even though it is a technically valid but wrong ISBN
-that the regular expression ``isbn_blacklist_regex`` didn't catch. Maybe
+that the regular expression `isbn_blacklist_regex`_ didn't catch. Maybe
 it is a binary sequence that is part of a problem in a book about digital
 system. 
 
@@ -925,6 +925,7 @@ References
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
 .. _interact: #security-and-safety
+.. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
