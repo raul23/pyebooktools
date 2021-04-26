@@ -610,11 +610,9 @@ Global options
 In particular, the following global options are especially important for the
 ``rename`` subcommand:
 
-* ``--oft``, ``--output-filename-template`` found in the
-  `Options related to the input and output files`_ section
-  
-* ``--ome``, ``--output-metadata-extension`` found in the
-  `Options related to the input and output files`_ section
+* ``-i, --isbn-regex``
+* ``--oft, --output-filename-template``
+* ``--ome, --output-metadata-extension``
 
 Local options
 """""""""""""
