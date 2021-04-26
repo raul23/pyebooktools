@@ -94,9 +94,10 @@ The input string can be enclosed within single or double quotes.
    9781892391810
 
 The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
-they are matched with the regular expression ``isbn_blacklist_regex``.
+they are matched with the regular expression `isbn_blacklist_regex`_.
 
-By default, the extracted ISBNs are separated by newlines, ``\n``.
+By `default <./README.rst#local-options>`__, the extracted ISBNs are separated
+by newlines, ``\n``.
 
 `:information_source:`
 
@@ -199,8 +200,9 @@ Content of ``output_folder``:
 **NOTES:**
 
 * The book files are renamed following the `output_filename_template`_ format.
-* The ``metadata.opf`` files are copied with the ``meta`` extension (`default`_)
-  beside the symlinks to the book files.
+* The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
+  <./README.rst#options-related-to-the-input-and-output-files>`__) beside the
+  symlinks to the book files.
 
 Example 8: split a folder
 -------------------------
@@ -240,8 +242,7 @@ Note that the metadata folders contain only one file each as expected.
    `Security and safety`_ section.
    
 .. URLs
-.. _default: ./README.rst#options-related-to-the-input-and-output-files
+.. _isbn_blacklist_regex: ./README.rst#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
-
