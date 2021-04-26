@@ -115,27 +115,27 @@ def convert_result_from_shell_cmd(old_result):
 def convert_to_txt(input_file, output_file, mime_type):
     result = None
     if mime_type == 'application/pdf' and command_exists('pdftotext'):
-        logger.info('The file looks like a pdf, using pdftotext to extract '
-                    'the text')
+        logger.debug('The file looks like a pdf, using pdftotext to extract '
+                     'the text')
         result = pdftotext(input_file, output_file)
     elif mime_type == 'application/msword' and command_exists('catdoc'):
-        logger.info('The file looks like a doc, using catdoc to extract the text')
+        logger.debug('The file looks like a doc, using catdoc to extract the text')
         result = catdoc(input_file, output_file)
     # TODO: not need to specify the full path to djvutxt if you set correctly
     # the right env. variables
     elif mime_type.startswith('image/vnd.djvu') and \
             command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
         # TODO: important remove path to djvutxt in command_exists()
-        logger.info('The file looks like a djvu, using djvutxt to extract the '
-                    'text')
+        logger.debug('The file looks like a djvu, using djvutxt to extract the '
+                     'text')
         result = djvutxt(input_file, output_file)
     elif (not mime_type.startswith('image/vnd.djvu')) \
             and mime_type.startswith('image/'):
-        logger.info(f'The file looks like a normal image ({mime_type}), skipping '
-                    'ebook-convert usage!')
+        logger.debug(f'The file looks like a normal image ({mime_type}), skipping '
+                     'ebook-convert usage!')
     else:
-        logger.info("Trying to use calibre's ebook-convert to convert the "
-                    f"{mime_type} file to .txt")
+        logger.debug("Trying to use calibre's ebook-convert to convert the "
+                     f"{mime_type} file to .txt")
         result = ebook_convert(input_file, output_file)
     return result
 
@@ -205,7 +205,7 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
         else:
             logger.debug(f'Non-unique ISBN found: {match}')
     if not isbns:
-        msg = ': ' + input_str if len(input_str) < 100 else ''
+        msg = f'"{input_str}"' if len(input_str) < 100 else ''
         logger.debug(f'No ISBN found in the input string {msg}')
     return isbn_ret_separator.join(isbns)
 
@@ -217,20 +217,20 @@ def get_all_isbns_from_archive(file_path, isbn_ret_separator=ISBN_RET_SEPARATOR,
     all_isbns = []
     tmpdir = tempfile.mkdtemp()
 
-    logger.info(f"Trying to decompress '{os.path.basename(file_path)}' and "
-                "recursively scan the contents")
+    logger.debug(f"Trying to decompress '{os.path.basename(file_path)}' and "
+                 "recursively scan the contents")
     logger.debug(f"Decompressing '{file_path}' into tmp folder '{tmpdir}'")
     result = extract_archive(file_path, tmpdir)
     if result.stderr:
-        logger.info('Error extracting the file (probably not an archive)! '
-                    'Removing tmp dir...')
+        logger.debug('Error extracting the file (probably not an archive)! '
+                     'Removing tmp dir...')
         logger.debug(result.stderr)
         remove_tree(tmpdir)
         # TODO: return None?
         return ''
 
-    logger.info(f"Archive extracted successfully in '{tmpdir}', scanning "
-                f"contents recursively...")
+    logger.debug(f"Archive extracted successfully in '{tmpdir}', scanning "
+                 f"contents recursively...")
     # TODO: ref.: https://stackoverflow.com/a/2759553
     # TODO: ignore .DS_Store
     for path, dirs, files in os.walk(tmpdir, topdown=False):
@@ -446,8 +446,8 @@ def ocr_file(input_file, output_file, mime_type,
         page_convert_cmd = convert_djvu_page
     elif mime_type.startswith('image/'):
         # TODO: in their code, they don't initialize num_pages
-        logger.info(f"Running OCR on file '{input_file}' and with mime type "
-                    f"'{mime_type}'...")
+        logger.debug(f"Running OCR on file '{input_file}' and with mime type "
+                     f"'{mime_type}'...")
         # TODO: find out if you can call the ocr_command function without `eval`
         if ocr_command in globals():
             result = eval(f'{ocr_command}("{input_file}", "{output_file}")')
@@ -465,8 +465,8 @@ def ocr_file(input_file, output_file, mime_type,
         logger.debug(f"Function '{ocr_command}' doesn't exit. Ending ocr.")
         return 1
 
-    logger.info(f"Will run OCR on file '{input_file}' with {num_pages} "
-                f"page{'s' if num_pages > 1 else ''}")
+    logger.debug(f"Will run OCR on file '{input_file}' with {num_pages} "
+                 f"page{'s' if num_pages > 1 else ''}")
     logger.debug(f'mime type: {mime_type}')
 
     # TODO: ? assert on ocr_only_first_last_pages (should be tuple or False)
@@ -489,7 +489,7 @@ def ocr_file(input_file, output_file, mime_type,
         # Make temporary files
         tmp_file = tempfile.mkstemp()[1]
         tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
-        logger.info(f'Running OCR of page {page} ...')
+        logger.debug(f'Running OCR of page {page} ...')
         logger.debug(f'Using tmp files {tmp_file} and {tmp_file_txt}')
         # doc(pdf, djvu) --> image(png, tiff)
         result = page_convert_cmd(page, input_file, tmp_file)
@@ -557,10 +557,10 @@ def reorder_file_content(
         isbn_grep_rf_scan_first=ISBN_GREP_RF_SCAN_FIRST,
         isbn_grep_rf_reverse_last=ISBN_GREP_RF_REVERSE_LAST):
     if isbn_grep_reorder_files:
-        logger.info('Reordering input file (if possible), read first '
-                    f'{isbn_grep_rf_scan_first} lines normally, then read '
-                    f'last {isbn_grep_rf_reverse_last} lines in reverse and '
-                    'then read the rest')
+        logger.debug('Reordering input file (if possible), read first '
+                     f'{isbn_grep_rf_scan_first} lines normally, then read '
+                     f'last {isbn_grep_rf_reverse_last} lines in reverse and '
+                     'then read the rest')
         # TODO: try out with big file, more than 800 pages (approx. 73k lines)
         # TODO: see alternatives for reading big file @
         # https://stackoverflow.com/a/4999741 (mmap),
@@ -588,8 +588,8 @@ def reorder_file_content(
             data = first_part + last_part + middle_part
             data = "".join(data)
     else:
-        logger.info('Since isbn_grep_reorder_files is False, input file will '
-                    'not be reordered')
+        logger.debug('Since isbn_grep_reorder_files is False, input file will '
+                     'not be reordered')
         with open(file_path, 'r') as f:
             # TODO: do we remove newlines? e.g. with f.read().rstrip("\n")
             # Read whole content of file as a string
@@ -632,6 +632,7 @@ def search_file_for_isbns(file_path,
     # ipdb.set_trace()
     # Step 1: check the filename for ISBNs
     # TODO: make sure that we return an empty string when we can't find ISBNs
+    logger.debug('check the filename for ISBNs')
     isbns = find_isbns(basename, isbn_blacklist_regex, isbn_regex,
                        isbn_ret_separator)
     if isbns:
@@ -655,12 +656,13 @@ def search_file_for_isbns(file_path,
             logger.debug('Did not find any ISBNs')
         return isbns
     elif re.match(isbn_ignored_files, mime_type):
-        logger.info('The file type in the blacklist, ignoring...')
+        logger.info('The file type is in the blacklist, ignoring...')
         return isbns
 
     # Step 4: check the file metadata from calibre's `ebook-meta` for ISBNs
-    logger.debug('Ebook metadata:')
+    logger.debug("check the file metadata from calibre's `ebook-meta` for ISBNs")
     ebookmeta = get_ebook_metadata(file_path)
+    logger.debug(f'Ebook metadata:\n{ebookmeta.stdout}')
     isbns = find_isbns(ebookmeta.stdout, isbn_blacklist_regex, isbn_regex,
                        isbn_ret_separator)
     if isbns:
@@ -668,6 +670,7 @@ def search_file_for_isbns(file_path,
         return isbns
 
     # Step 5: decompress with 7z
+    logger.debug('decompress with 7z')
     isbns = get_all_isbns_from_archive(file_path, isbn_ret_separator,
                                        isbn_direct_grep_files,
                                        isbn_ignored_files, ocr_enabled)
@@ -678,7 +681,7 @@ def search_file_for_isbns(file_path,
     # Step 6: convert file to .txt
     try_ocr = False
     tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
-    logger.info(f"Converting ebook to text format...")
+    logger.debug(f"Converting ebook to text format...")
     logger.debug(f"Temp file: {tmp_file_txt}")
 
     result = convert_to_txt(file_path, tmp_file_txt, mime_type)
@@ -703,8 +706,8 @@ def search_file_for_isbns(file_path,
             if isbns:
                 logger.debug(f"Text output contains ISBNs '{isbns}'!")
             elif ocr_enabled == 'always':
-                logger.info('We will try OCR because the successfully converted '
-                            'text did not have any ISBNs')
+                logger.debug('We will try OCR because the successfully converted '
+                             'text did not have any ISBNs')
                 try_ocr = True
             else:
                 logger.debug('Did not find any ISBNs and will NOT try OCR')
@@ -714,7 +717,7 @@ def search_file_for_isbns(file_path,
 
     # Step 7: OCR the file
     if not isbns and ocr_enabled and try_ocr:
-        logger.info('Trying to run OCR on the file...')
+        logger.debug('Trying to run OCR on the file...')
         if ocr_file(file_path, tmp_file_txt, mime_type, ocr_command,
                     ocr_only_first_last_pages) == 0:
             logger.debug('OCR was successful, checking the result...')
@@ -798,8 +801,8 @@ def unique_filename(folder_path, basename):
     counter = 0
     while new_path.is_file():
         counter += 1
-        logger.info(f"File '{new_path.name}' already exists in destination "
-                    f"'{folder_path}', trying with counter {counter}!")
+        logger.debug(f"File '{new_path.name}' already exists in destination "
+                     f"'{folder_path}', trying with counter {counter}!")
         new_stem = f'{stem} {counter}'
         new_path = Path(Path(folder_path).joinpath(new_stem + ext))
     return new_path.as_posix()
