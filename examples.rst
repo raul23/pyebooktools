@@ -102,9 +102,9 @@ by newlines, ``\n``.
 `:information_source:`
 
   If you want to search ISBNs in a **multiple-lines string**, e.g. you
-  copied-pasted many pages from a document, you must follow the
-  ``find`` subcommand with a backslash ``\`` and enclose the string
-  within **double quotes**, like so:
+  copied many pages from a document, you must follow the ``find``
+  subcommand with a backslash ``\`` and enclose the string within
+  **double quotes**, like so:
   
   .. code-block:: terminal
 
