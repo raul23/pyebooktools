@@ -49,7 +49,11 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
     search in files is implemented).
   
   The `find`_ subcommand from the ``ebooktools.py`` script uses this module.
-  
+- ``rename_calibre_library.py`` traverses a calibre library folder, renames
+  all the book files in it by reading their metadata from calibre's
+  ``metadata.opf`` files. Then the book files are either moved or symlinked
+  to an output folder along with their corresponding metadata files.
+  The `rename`_ subcommand from the ``ebooktools.py`` script uses this module.
 - ``split_into_folders.py`` splits the supplied ebook files (and the
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files. The `split`_ subcommand
@@ -173,7 +177,7 @@ one of the subcommands is as follows:
 
 .. code-block:: terminal
 
-  ebooktools {edit,convert,find,split} [<OPTIONS>]
+  ebooktools {edit,convert,find,rename,split} [<OPTIONS>]
   
 Where ``[<OPTIONS>``] include general options (as defined in the
 `General options`_ section) and options specific to the subcommand (as defined
@@ -419,7 +423,7 @@ The usage pattern for running a given **subcommand** is the following:
 
 .. code-block:: terminal
 
-  ebooktools {edit,convert,find,split} [<OPTIONS>]
+  ebooktools {edit,convert,find,rename,split} [<OPTIONS>]
   
 Where ``[<OPTIONS>]`` include general options and options specific to the
 subcommand as shown below.
@@ -574,6 +578,70 @@ Input argument
 
   Can either be the path to a file or a string. The input will be searched for
   ISBNs.
+  
+rename [<OPTIONS>] calibre_folder
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools rename [-h] [-v] [-q] [--verbose] [-d] [--sl] [-r]
+                            [--log-level {debug,info,warning,error}]
+                            [--log-format {console,simple,only_msg}]
+                            [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
+                            [--oft TEMPLATE] [--ome EXTENSION]
+                            [--sm {disable,opfcopy,recreate}] [-o PATH]
+                            calibre_folder
+
+Description
+"""""""""""
+This subcommand traverses a calibre library folder and renames all the book
+files in it by reading their metadata from calibre's ``metadata.opf`` files.
+Then the book files are either moved or symlinked (if the flag
+``--symlink-only`` is enabled) to the output folder along with their 
+corresponding metadata files. [RCL]_
+
+`:information_source:`
+
+  Activate the ``--dry-run`` flag for testing purposes since no file
+  rename/move/symlink/etc. operations will actually be executed.
+
+Global options
+""""""""""""""
+In particular, the following global options are especially important for the
+``rename`` subcommand:
+
+* `-d, --dry-run`_
+* `--sl, --symlink-only`_
+* `-i, --isbn-regex`_
+* `--isbn-blacklist-regex`_
+* `--oft, --output-filename-template`_
+* `--ome, --output-metadata-extension`_
+
+Local options
+"""""""""""""
+* ``--sm <value>``, ``--save-metadata <value>``; config variable
+  ``save_metadata``; default value ``recreate``
+  
+  This specifies whether metadata files will be saved together with the renamed
+  ebooks. Value ``opfcopy`` just copies calibre's ``metadata.opf`` next to each
+  renamed file with a ``output_metadata_extension`` extension, while
+  ``recreate`` saves a metadata file that is similar to the one
+  ``organize-ebooks.py`` creates. ``disable`` disables this function. [SM]_
+
+Input and output arguments
+""""""""""""""""""""""""""
+* ``calibre_folder``; no config variable; **required**
+  
+  Calibre library folder which will be traversed and all the book files in it
+  will be renamed. The renamed files will be either moved or symlinked (if the
+  ``--symlink-only`` flag is enabled) to the ouput folder along with their
+  corresponding metadata.
+
+* ``-o <value>``, ``--output-folder <value>``; config variable
+  ``output_folder``; **default value is the current working directory** (check
+  with ``pwd``)
+  
+  This is the output folder the renamed books will be moved to along with their
+  metadata files. The default value is the current working directory.
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -597,12 +665,11 @@ Global options
 In particular, the following global options are especially important for the
 ``split`` subcommand:
 
-* ``-d``, ``--dry-run`` found in the `General control flags`_ section
+* `-d, --dry-run`_
 
-* ``-r``, ``--reverse`` found in the `Miscellaneous options`_ section
+* `-r, --reverse`_
 
-* ``--ome``, ``--output-metadata-extension`` found in the
-  `Options related to the input and output files`_ section
+* `--ome, --output-metadata-extension`_
 
 Local options
 """""""""""""
@@ -802,7 +869,9 @@ References
 .. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
+.. [RCL] https://bit.ly/3sPJ9kT
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. [SM] https://bit.ly/3sPJ9kT
 .. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [TML] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 
@@ -860,7 +929,7 @@ References
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _organize: #security-and-safety
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _rename: #security-and-safety
+.. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
@@ -871,8 +940,15 @@ References
 .. _-v, --verbose: #general-control-flags
 .. _-q, --quiet: #general-control-flags
 .. _--verbose: #general-control-flags
+.. _-d, --dry-run: #general-control-flags
+.. _--sl, --symlink-only: #general-control-flags
+.. _-r, --reverse: #miscellaneous-options
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
+.. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _--isbn-blacklist-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
+.. _--ome, --output-metadata-extension: #options-related-to-the-input-and-output-files
 
 .. |ss| raw:: html
 
