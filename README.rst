@@ -870,9 +870,9 @@ References
 .. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
-.. [RCL] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder\-\
+.. [RCL] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder-\\-
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. [SM] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder\-\
+.. [SM] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder-\\-
 .. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [TML] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 
