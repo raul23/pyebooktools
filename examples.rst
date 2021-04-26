@@ -177,7 +177,7 @@ Content of ``output_folder``:
 |
 
 The ``metadata.opf`` files are copied beside the symlinks to the book
-files in the output folder.
+files.
 
 Example 8: split a folder
 -------------------------
