@@ -22,6 +22,7 @@ from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
                                          set_logging_formatter, set_logging_level)
 
 logger = init_log(__name__, __file__)
+# TODO: is next necessary? already done in init_log
 logger.addHandler(NullHandler())
 
 CFG_TYPES = ['main', 'log']
