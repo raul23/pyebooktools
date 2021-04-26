@@ -51,8 +51,7 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
    INFO     Running pyebooktools v0.1.0a3
    INFO     Verbose option disabled
-   INFO     Will run OCR on file '~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf' with 1 page
-   INFO     Running OCR of page 1 ...
+   INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
    INFO     OCR successful!
 
 Example 4: convert a pdf file to text **without** OCR
