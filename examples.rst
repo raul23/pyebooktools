@@ -140,7 +140,10 @@ that the regular expression ``isbn_blacklist_regex`` didn't catch. Maybe
 it is a binary sequence that is part of a problem in a book about digital
 system. 
 
-Example 7: split a folder
+Example 7: rename book files from calibre library folder
+--------------------------------------------------------
+
+Example 8: split a folder
 -------------------------
 We have a folder containing four ebooks and their corresponding metadata:
 
