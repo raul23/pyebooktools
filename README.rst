@@ -709,24 +709,23 @@ More examples can be found at `examples.rst`_.
 
 Example 1: convert a pdf file to text **with** OCR
 --------------------------------------------------
-To convert a pdf file (``pdf_to_convert.pdf``) to text
-(``converted.txt``) **with OCR**:
+To convert a pdf file to text **with OCR**:
 
 .. code-block:: terminal
 
    $ ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
    
-By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
+By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
 ``ebook-convert`` if the former command is not found).
 
-Example 2: find ISBNs in a pdf file
------------------------------------
-Find ISBNs in a pdf file:
-
 .. code-block:: terminal
 
-   $ ebooktools find pdf_file.pdf
+   INFO     Running pyebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     OCR=always, first try OCR then conversion
+   INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
+   INFO     OCR successful!
    
 **Output:**
 
