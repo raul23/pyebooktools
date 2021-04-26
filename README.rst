@@ -118,19 +118,19 @@ need recent versions of:
 
 Install ``pyebooktools``
 -------------------------
-The package ``pyebooktools`` contains the script ``ebooktools.py`` which
+The ``pyebooktools`` package contains the ``ebooktools.py`` script which
 consists of various subcommands (e.g. ``find`` and ``organize``) for
 automated and semi-automated organization and management of large ebook
 collections.
 
-1. It is highly recommended to install the package ``pyebooktools`` in a
+1. It is highly recommended to install the ``pyebooktools`` package in a
    virtual environment using for example `venv`_ or `conda`_.
 
 2. Make sure to update *pip*::
 
    $ pip install --upgrade pip
 
-3. Install the package ``pyebooktools`` (**bleeding-edge version**) with
+3. Install the ``pyebooktools`` package (**bleeding-edge version**) with
    *pip*::
 
    $ pip install git+https://github.com/raul23/pyebooktools#egg=pyebooktools
