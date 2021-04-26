@@ -83,7 +83,7 @@ def split(folder_with_books,
             if dry_run:
                 logger.debug(f"Moving file '{file_to_move}'...")
             else:
-                move(file_to_move, file_dest)
+                move(file_to_move, file_dest, clobber=False)
             # Move metadata file if found
             metadata_name = f'{file_to_move.stem}.{output_metadata_extension}'
             metada_file_to_move = file_to_move.parent.joinpath(metadata_name)
@@ -98,5 +98,5 @@ def split(folder_with_books,
                     mkdir(current_folder_metadata)
                     metadata_dest = os.path.join(current_folder_metadata,
                                                  metadata_name)
-                    move(metada_file_to_move, metadata_dest)
+                    move(metada_file_to_move, metadata_dest, clobber=False)
     return 0
