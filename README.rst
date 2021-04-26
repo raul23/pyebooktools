@@ -610,7 +610,10 @@ Global options
 In particular, the following global options are especially important for the
 ``rename`` subcommand:
 
+* `-d, --dry-run`_
+* `--sl, --symlink-only`_
 * `-i, --isbn-regex`_
+* `--isbn-blacklist-regex`_
 * `--oft, --output-filename-template`_
 * `--ome, --output-metadata-extension`_
 
@@ -941,7 +944,10 @@ References
 .. _--verbose: #general-control-flags
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
+.. _-d, --dry-run: #general-control-flags
+.. _--sl, --symlink-only: #general-control-flags
 .. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _--isbn-blacklist-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
 .. _--ome, --output-metadata-extension: #options-related-to-the-input-and-output-files
 
