@@ -156,14 +156,21 @@ along with their copied ``metadata.opf`` files into an output folder:
    INFO     Running pyebooktools v0.1.0a3
    INFO     Verbose option disabled
    INFO     Files sorted in asc
-   INFO     Parsing metadata for 'Title1 (2017).epub'...
+   INFO     Parsing metadata for 'Title1 - Author1.pdf'...
    INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title2 - Author1.epub'...
+   INFO     Parsing metadata for 'Title2 - Author2.epub'...
    INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title3 - Author2.pdf'...
+   INFO     Parsing metadata for 'Title3 - Author3.pdf'...
    INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title4 - Author3.pdf'...
+   INFO     Parsing metadata for 'Title4 - Author4.epub'...
    INFO     Saving book file and metadata...
+
+|
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder/``
 
 The ``metadata.opf`` files are copied beside the symlinks to the book
 files in the output folder.
@@ -172,10 +179,10 @@ Example 8: split a folder
 -------------------------
 We have a folder containing four ebooks and their corresponding metadata:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_folder_with_books.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_folder_with_books.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
    :align: left
-   :alt: Example 07: content of folder_with_books/
+   :alt: Example: content of ``folder_with_books/``
 
 Note that two ebook files don't have metadata files associated with them.
 
@@ -190,10 +197,10 @@ their numbering should start at 1:
 
 **Output:** content of ``output_folder``
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/v0.1.0a3/example_07_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
    :align: left
-   :alt: Example 07: content of output_folder/
+   :alt: Example: content of ``output_folder/``
 
 |
 
