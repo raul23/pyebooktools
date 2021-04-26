@@ -592,6 +592,58 @@ rename [<OPTIONS>] calibre_folder
                             [--sm {disable,opfcopy,recreate}] [-o PATH]
                             calibre_folder
 
+Description
+"""""""""""
+This subcommand traverses a calibre library folder and renames all the book
+files in it by reading their metadata from calibre's ``metadata.opf`` files.
+Then the book files are moved to the output folder along with their 
+corresponding metadata files which can either be copied or symlinked (if
+the flag ``--symlink-only`` is enabled). Also, activate the flag
+``--dry-run`` for testing purposes since no file rename/move/symlink/etc.
+operations will actually be executed.
+
+`:information_source:`
+
+  Activate the flag ``--dry-run`` for testing purposes since no file
+  rename/move/symlink/etc. operations will actually be executed.
+
+Global options
+""""""""""""""
+In particular, the following global options are especially important for the
+``rename`` subcommand:
+
+* ``--oft``, ``--output-filename-template`` found in the
+  `Options related to the input and output files`_ section
+  
+* ``--ome``, ``--output-metadata-extension`` found in the
+  `Options related to the input and output files`_ section
+
+Local options
+"""""""""""""
+* ``--sm <value>``, ``--save-metadata <value>``; config variable
+  ``save_metadata``; default value ``recreate``
+  
+  This specifies whether metadata files will be saved together with the renamed
+  ebooks. Value ``opfcopy`` just copies calibre's ``metadata.opf`` next to each
+  renamed file with a ``output_metadata_extension`` extension, while
+  ``recreate`` saves a metadata file that is similar to the one
+  ``organize-ebooks.py`` creates. ``disable`` disables this function.
+
+Input and output arguments
+""""""""""""""""""""""""""
+* ``calibre_folder``; no config variable; **required**
+  
+  Calibre library folder which will be traversed and all its book files will
+  be renamed. The renamed files will moved to the ouput folder and their
+  corresponding metadata files will either be moved or symlinked (if the flag
+  ``--symlink-only`` is enabled).
+
+* ``-o <value>``, ``--output-folder <value>``; config variable
+  ``output_folder``; **default value is the current working directory** (check
+  with ``pwd``)
+  
+  This is the output folder the renamed books will be moved to. The default
+  value is the current working directory.
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
