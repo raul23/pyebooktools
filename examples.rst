@@ -123,7 +123,7 @@ Find ISBNs in a pdf file:
    INFO     Verbose option disabled
    INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
    INFO     Extracted ISBNs:
-   9783672388737
+   9789580158448
    1000100111
 
 The search for ISBNs starts in the first pages of the document to increase
