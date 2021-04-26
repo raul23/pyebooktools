@@ -45,6 +45,8 @@ OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 SYMLINK_ONLY = default_cfg.symlink_only
 
+# TODO: move some functions to genutils, e.g.
+# is_dir_empty, isalnum_in_file, remove_file, remove_tree remove_file
 
 # For macOS use the built-in textutil,
 # see https://stackoverflow.com/a/44003923/14664104
@@ -176,9 +178,6 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
     isbns = []
     # TODO: they are using grep -oP
     # ref.: https://bit.ly/2HUbnIs
-    # TODO: remove
-    # import ipdb
-    # ipdb.set_trace()
     # Remove spaces
     # input_str = input_str.replace(' ', '')
     matches = re.finditer(isbn_regex, input_str)
@@ -627,9 +626,6 @@ def search_file_for_isbns(file_path,
                           ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES):
     basename = os.path.basename(file_path)
     logger.info(f"Searching file '{basename}' for ISBN numbers...")
-    # TODO: remove
-    # import ipdb
-    # ipdb.set_trace()
     # Step 1: check the filename for ISBNs
     # TODO: make sure that we return an empty string when we can't find ISBNs
     logger.debug('check the filename for ISBNs')
