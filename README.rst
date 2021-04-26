@@ -666,12 +666,11 @@ Global options
 In particular, the following global options are especially important for the
 ``split`` subcommand:
 
-* ``-d``, ``--dry-run`` found in the `General control flags`_ section
+* `-d, --dry-run`_
 
-* ``-r``, ``--reverse`` found in the `Miscellaneous options`_ section
+* `-r, --reverse`_
 
-* ``--ome``, ``--output-metadata-extension`` found in the
-  `Options related to the input and output files`_ section
+* `--ome, --output-metadata-extension`_
 
 Local options
 """""""""""""
@@ -942,10 +941,11 @@ References
 .. _-v, --verbose: #general-control-flags
 .. _-q, --quiet: #general-control-flags
 .. _--verbose: #general-control-flags
-.. _--log-level: #miscellaneous-options
-.. _--log-format: #miscellaneous-options
 .. _-d, --dry-run: #general-control-flags
 .. _--sl, --symlink-only: #general-control-flags
+.. _-r, --reverse: #miscellaneous-options
+.. _--log-level: #miscellaneous-options
+.. _--log-format: #miscellaneous-options
 .. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _--isbn-blacklist-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
