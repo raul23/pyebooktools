@@ -598,7 +598,7 @@ This subcommand traverses a calibre library folder and renames all the book
 files in it by reading their metadata from calibre's ``metadata.opf`` files.
 Then the book files are moved to the output folder along with their 
 corresponding metadata files which can either be copied or symlinked (if
-the flag ``--symlink-only`` is enabled). [RENAME]_
+the flag ``--symlink-only`` is enabled). [RENAME-SCRIPT]_
 
 `:information_source:`
 
@@ -870,7 +870,7 @@ References
 .. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
-.. [RENAME] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder-
+.. [RENAME-SCRIPT] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder-
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. [SM] https://github.com/na--/ebook-tools#rename-calibre-librarysh-options-calibre-folder-
 .. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
