@@ -59,7 +59,7 @@ def convert(input_file, output_file=default_cfg.output_file,
         touch(output_file)
     check_conversion = False
     if ocr_enabled == 'always':
-        logger.debug("OCR=always, first try OCR then conversion")
+        logger.info("OCR=always, first try OCR then conversion")
         if ocr_file(input_file, output_file, mime_type, ocr_command,
                     OCR_ONLY_FIRST_LAST_PAGES):
             logger.warning("OCR failed! Will try conversion...")
@@ -69,7 +69,7 @@ def convert(input_file, output_file=default_cfg.output_file,
             logger.info("OCR successful!")
             return 0
     elif ocr_enabled == 'true':
-        logger.debug("OCR=true, first try conversion and then OCR")
+        logger.info("OCR=true, first try conversion and then OCR...")
         # Check if valid converted text file
         result = convert_to_txt(input_file, output_file, mime_type)
         if result.returncode == 0 and isalnum_in_file(output_file):
@@ -84,7 +84,7 @@ def convert(input_file, output_file=default_cfg.output_file,
             else:
                 logger.info("OCR successful!")
     else:
-        logger.debug("OCR=false, try only conversion")
+        logger.info("OCR=false, try only conversion...")
         result = convert_to_txt(input_file, output_file, mime_type)
         check_conversion = True
     if check_conversion:
