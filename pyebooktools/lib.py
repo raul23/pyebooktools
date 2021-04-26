@@ -23,7 +23,7 @@ from lxml.etree import parse
 from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.utils.genutils import init_log
+from pyebooktools.utils.genutils import init_log, move
 
 logger = init_log(__name__, __file__)
 
@@ -48,6 +48,7 @@ SYMLINK_ONLY = default_cfg.symlink_only
 
 # For macOS use the built-in textutil,
 # see https://stackoverflow.com/a/44003923/14664104
+# TODO: important implement it
 def catdoc(input_file, output_file):
     raise NotImplementedError('catdoc is not implemented')
 
@@ -389,10 +390,14 @@ def move_or_link_file(current_path, new_path, dry_run=DRY_RUN,
     else:
         logger.debug(f"Moving file '{current_path}' to '{new_path}'...")
         if not dry_run:
+            move(current_path, new_path, clobber=False)
+            # TODO: important, remove next
+            """
             if not Path(new_path).exists():
                 shutil.move(current_path, new_path)
             else:
                 logger.debug(f'File already exists: {new_path}')
+            """
 
 
 # OCR on a pdf, djvu document or image
@@ -789,12 +794,12 @@ def tesseract_wrapper(input_file, output_file):
 def unique_filename(folder_path, basename):
     stem = Path(basename).stem
     ext = Path(basename).suffix
-    new_path = os.path.join(folder_path, basename)
+    new_path = Path(Path(folder_path).joinpath(basename))
     counter = 0
-    while os.path.isfile(new_path):
+    while new_path.is_file():
         counter += 1
-        logger.info(f'File {new_path} already exists in destination '
-                    f'{folder_path}, trying with counter {counter}!')
-        new_stem = '{} {}'.format(stem, counter)
-        new_path = os.path.join(folder_path, new_stem) + ext
-    return new_path
+        logger.info(f"File '{new_path.name}' already exists in destination "
+                    f"'{folder_path}', trying with counter {counter}!")
+        new_stem = f'{stem} {counter}'
+        new_path = Path(Path(folder_path).joinpath(new_stem + ext))
+    return new_path.as_posix()
