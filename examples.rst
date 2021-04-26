@@ -142,8 +142,8 @@ system.
 
 Example 7: rename book files from calibre library folder
 --------------------------------------------------------
-Rename book files from a calibre library folder and symlink them along with
-their copied ``metadata.opf`` files into an output folder:
+Rename book files from a calibre library folder and save their symlinks
+along with their copied ``metadata.opf`` files into an output folder:
 
 .. code-block:: terminal
 
@@ -152,6 +152,14 @@ their copied ``metadata.opf`` files into an output folder:
 **Output:**
 
 .. code-block:: terminal
+
+   INFO     Running pyebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     Files sorted in asc
+   INFO     Parsing metadata for 'Title1 (2017).epub'...
+   INFO     Parsing metadata for 'Title2 - Author1.epub'...
+   INFO     Parsing metadata for 'Title3 - Author2.pdf'...
+   INFO     Parsing metadata for 'Title4 - Author3.pdf'...
 
 Example 8: split a folder
 -------------------------
