@@ -632,7 +632,7 @@ Input and output arguments
 * ``calibre_folder``; no config variable; **required**
   
   Calibre library folder which will be traversed and all its book files will
-  be renamed. The renamed files will moved to the ouput folder and their
+  be renamed. The renamed files will be moved to the ouput folder and their
   corresponding metadata files will either be moved or symlinked (if the flag
   ``--symlink-only`` is enabled).
 
