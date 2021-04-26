@@ -11,7 +11,7 @@ from the ``ebooktools.py`` script.
 
 Example 1: edit the main config file
 ------------------------------------
-To edit the **main** config file with *PyCharm*:
+To edit the **main** config file with **PyCharm**:
 
 .. code-block:: terminal
 
