@@ -598,7 +598,7 @@ if __name__ == '__main__':
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
     #
     # Rename
-    # ebooktools rename
+    # ebooktools rename -o ~/test/_ebooktools/rename_calibre_library/output_folder/ ~/Calibre\ Library/ --sm recreate --sl --log-format console
     #
     # Split
     # ebooktools split --fpf 2 -s 1 ~/test/_ebooktools/folder_with_books/ -o ~/test/_ebooktools/output_folder/
