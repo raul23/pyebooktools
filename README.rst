@@ -52,7 +52,7 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
 - ``rename_calibre_library.py`` traverses a calibre library folder, renames
   all the book files in it by reading their metadata from calibre's
   ``metadata.opf`` files. Then the book files are either moved or symlinked
-  to an output folder along with their corresponding metadata files 
+  to an output folder along with their corresponding metadata files.
   The `rename`_ subcommand from the ``ebooktools.py`` script uses this module.
 - ``split_into_folders.py`` splits the supplied ebook files (and the
   accompanying metadata files if present) into folders with consecutive names
