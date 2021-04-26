@@ -165,6 +165,9 @@ along with their copied ``metadata.opf`` files into an output folder:
    INFO     Parsing metadata for 'Title4 - Author3.pdf'...
    INFO     Saving book file and metadata...
 
+The ``metadata.opf`` files are copied beside the symlinks to the book
+files in the output folder.
+
 Example 8: split a folder
 -------------------------
 We have a folder containing four ebooks and their corresponding metadata:
