@@ -27,6 +27,20 @@ CFG_TYPES = ['main', 'log']
 CONFIGS_DIRNAME = 'configs'
 
 
+def copy(src, dst, clobber=True):
+    dst = Path(dst)
+    if dst.exists():
+        logger.debug(f'{dst}: file already exists')
+        if clobber:
+            logger.debug(f'{dst}: overwriting the file')
+            shutil.copy(src, dst)
+        else:
+            logger.debug(f'{dst}: cannot overwrite existing file')
+    else:
+        logger.debug(f'Copying the file')
+        shutil.copy(src, dst)
+
+
 def get_config_dict(cfg_type='main'):
     return load_cfg_dict(get_config_filepath(cfg_type), cfg_type)
 
@@ -147,18 +161,27 @@ def mkdir(path):
         logger.debug("Folder created!")
 
 
-def move(src, dest):
+def move(src, dst, clobber=True):
+    # TODO: necessary?
     # Since path can be relative to the cwd
-    src = os.path.abspath(src)
-    filename = os.path.basename(src)
-    if os.path.exists(dest):
-        logger.debug(f"File already exits: '{filename}'")
-        logger.debug(f"Destination folder path: {os.path.dirname(dest)}")
-        logger.debug(f"Skipping it!")
+    # src = os.path.abspath(src)
+    # filename = os.path.basename(src)
+    src = Path(src)
+    dst = Path(dst)
+    if dst.exists():
+        logger.debug(f'{dst.name}: file already exists')
+        logger.debug(f"Destination folder path: {dst.parent}")
+        if clobber:
+            logger.debug(f'{dst.name}: overwriting the file')
+            shutil.move(src, dst)
+            logger.debug("File moved!")
+        else:
+            logger.debug(f'{dst.name}: cannot overwrite existing file')
+            logger.debug(f"Skipping it!")
     else:
-        logger.debug(f"Moving '{filename}'...")
-        logger.debug(f"Destination folder path: {os.path.dirname(dest)}")
-        shutil.move(src, dest)
+        logger.debug(f"Moving '{src.name}'...")
+        logger.debug(f"Destination folder path: {dst.parent}")
+        shutil.move(src, dst)
         logger.debug("File moved!")
 
 
