@@ -461,10 +461,11 @@ See subcommands below for a list of the tools that can be used.
         'rename', add_help=False,
         help='''Traverses a calibre library folder and renames all the book
         files in it by reading their metadata from calibre's metadata.opf
-        files. The book files along with their corresponding metadata can
-        either be moved or symlinked (if the flag `--symlink-only` is enabled).
-        Also, activate the flag `--dry-run` for testing purposes since no file
-        rename/move/symlink/etc. operations will actually be executed.''')
+        files. Then the book files are either moved or symlinked (if the
+        `--symlink-only` flag is enabled) to the output folder along with
+        their corresponding metadata files. Also, activate the `--dry-run`
+        flag for testing purposes since no file rename/move/symlink/etc.
+        operations will actually be executed.''')
     add_general_options(parser_rename, remove_opts=['keep-metadata'])
     add_isbns_options(parser_rename, remove_opts=['isbn-direct-grep-files',
                                                   'isbn-ignored-files',
@@ -487,11 +488,12 @@ See subcommands below for a list of the tools that can be used.
         title='input and output arguments')
     parser_rename_input_output_group.add_argument(
         'calibre_folder',
-        help='''Calibre library folder which will be traversed and all its book
-            files will be renamed. The renamed files will either be moved or
-            symlinked (if the flag `--symlink-only` is enabled) within the folder
-            `output-folder`. NOTE: activate the flag `--dry-run` if you just want
-            to test without moving or symlinking files.''')
+        help='''Calibre library folder which will be traversed and all the book
+            files in it will be renamed. The renamed files will either be moved
+            or symlinked (if the flag `--symlink-only` is enabled) to the
+            output folder along with their corresponding metadata files. NOTE:
+            activate the `--dry-run` flag if you just want to test without
+            moving or symlinking files.''')
     parser_rename_input_output_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         help='''This is the output folder the renamed books will be moved to.
