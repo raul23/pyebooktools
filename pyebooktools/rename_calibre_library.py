@@ -22,7 +22,7 @@ from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (find_isbns, get_metadata, move_or_link_file,
                               substitute_params, substitute_with_sed,
                               unique_filename)
-from pyebooktools.utils.genutils import copy, init_log
+from pyebooktools.utils.genutils import copy, init_log, remove_accents
 
 logger = init_log(__name__, __file__)
 
@@ -53,6 +53,9 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
             continue
         elif book_path.name in ['metadata.db', 'metadata_db_prefs_backup.json']:
             logger.debug("Rejected! Calibre's metadata db files")
+            continue
+        elif book_path.parent.parent.name == 'calibre':
+            logger.debug("Rejected! File is part of calibre/")
             continue
         else:
             logger.debug('We found a book file!')
@@ -115,6 +118,8 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
             v = substitute_with_sed('[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]', '_', v)
             logger.debug(f'{k}: {v}')
         new_name = substitute_params(metadata, output_filename_template)
+        # Remove accents
+        new_name = remove_accents(new_name)
         new_path = unique_filename(output_folder, new_name)
         logger.debug(f"Moving file to '{new_path}'...")
         move_or_link_file(book_path, new_path, dry_run, symlink_only)
@@ -134,5 +139,3 @@ Metadata source     : metadata.opf"""
             copy(metadata_path, new_metadata_path, clobber=False)
         else:
             logger.debug('Metadata was not copied or recreated')
-        import ipdb
-        # ipdb.set_trace()
