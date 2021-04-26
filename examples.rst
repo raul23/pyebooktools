@@ -47,6 +47,14 @@ By setting ``--ocr`` to ``always``, the pdf file will first be OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
 ``ebook-convert`` if the former command is not found).
 
+.. code-block:: terminal
+
+   INFO     Running pyebooktools v0.1.0a3
+   INFO     Verbose option disabled
+   INFO     Will run OCR on file '/Users/nova/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf' with 1 page
+   INFO     Running OCR of page 1 ...
+   INFO     OCR successful!
+
 Example 4: convert a pdf file to text **without** OCR
 -----------------------------------------------------
 To convert a pdf file (``pdf_to_convert.pdf``) to text
