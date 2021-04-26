@@ -1,7 +1,7 @@
 ========
 EXAMPLES
 ========
-Examples to show how to execute the different subcommands
+Examples to show how to execute the different `subcommands`_
 from the ``ebooktools.py`` script.
 
 .. contents:: **Contents**
@@ -243,4 +243,5 @@ Note that the metadata folders contain only one file each as expected.
 .. _default: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _Security and safety: ./README.rst#security-and-safety
+.. _subcommands: ./README.rst#script-usage-subcommands-and-options
 
