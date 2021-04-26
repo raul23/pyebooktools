@@ -51,10 +51,9 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
   The `find`_ subcommand from the ``ebooktools.py`` script uses this module.
 - ``rename_calibre_library.py`` traverses a calibre library folder, renames
   all the book files in it by reading their metadata from calibre's
-  ``metadata.opf`` files. Then the book files are moved to a given folder 
-  along with their corresponding metadata files which can either be copied or
-  symlinked. The `rename`_ subcommand from the ``ebooktools.py`` script uses
-  this module.
+  ``metadata.opf`` files. Then the book files are eiter moved or symlinked
+  to a given folder along with their corresponding metadata files 
+  The `rename`_ subcommand from the ``ebooktools.py`` script uses this module.
 - ``split_into_folders.py`` splits the supplied ebook files (and the
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files. The `split`_ subcommand
@@ -596,9 +595,9 @@ Description
 """""""""""
 This subcommand traverses a calibre library folder and renames all the book
 files in it by reading their metadata from calibre's ``metadata.opf`` files.
-Then the book files are moved to the output folder along with their 
-corresponding metadata files which can either be copied or symlinked (if
-the flag ``--symlink-only`` is enabled). [RCL]_
+Then the book files are either moved or symlinked (if the flag
+``--symlink-only`` is enabled) to the output folder along with their 
+corresponding metadata files which can either be copied or symlinked. [RCL]_
 
 `:information_source:`
 
@@ -632,17 +631,17 @@ Input and output arguments
 """"""""""""""""""""""""""
 * ``calibre_folder``; no config variable; **required**
   
-  Calibre library folder which will be traversed and all its book files will
-  be renamed. The renamed files will be moved to the ouput folder and their
-  corresponding metadata files will either be moved or symlinked (if the flag
-  ``--symlink-only`` is enabled).
+  Calibre library folder which will be traversed and all the book files in it
+  will be renamed. The renamed files will be either moved or symlinked (if the
+  ``--symlink-only`` flag is enabled) to the ouput folder along with their
+  corresponding metadata.
 
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working directory** (check
   with ``pwd``)
   
-  This is the output folder the renamed books will be moved to. The default
-  value is the current working directory.
+  This is the output folder the renamed books will be moved to along with their
+  metadata files. The default value is the current working directory.
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
