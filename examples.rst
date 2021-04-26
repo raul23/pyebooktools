@@ -199,8 +199,9 @@ Content of ``output_folder``:
 
 **NOTES:**
 
-* The book files are renamed based on their associated ``metadata.opf`` files \
-  and the new filenames follow the `output_filename_template`_ format.
+* The book files are renamed based on the conntent of their associated
+  ``metadata.opf`` files and the new filenames follow the
+  `output_filename_template`_ format.
 * The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
   <./README.rst#options-related-to-the-input-and-output-files>`__) beside the
   symlinks to the book files.
