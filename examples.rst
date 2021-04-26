@@ -157,7 +157,7 @@ associated with the book since it was found in the first page.
 
 The last sequence ``1000100111`` was found in the middle of the document
 and is not an ISBN even though it is a technically valid but wrong ISBN
-that the regular expression ``isbn_blacklist_regex`` didn't catch. Maybe
+that the regular expression `isbn_blacklist_regex`_ didn't catch. Maybe
 it is a binary sequence that is part of a problem in a book about digital
 system. 
 
