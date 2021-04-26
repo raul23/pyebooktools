@@ -726,7 +726,15 @@ trying the simple conversion tools (``pdftotext`` or calibre's
    INFO     OCR=always, first try OCR then conversion
    INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
    INFO     OCR successful!
-   
+
+Example 2: find ISBNs in a pdf file
+-----------------------------------
+Find ISBNs in a pdf file:
+
+.. code-block:: terminal
+
+   $ ebooktools find pdf_file.pdf
+
 **Output:**
 
 .. code-block:: terminal
