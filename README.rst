@@ -52,8 +52,9 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
 - ``rename_calibre_library.py`` traverses a calibre library folder, renames
   all the book files in it by reading their metadata from calibre's
   ``metadata.opf`` files. Then the book files are moved to a given folder 
-  along with their corresponding metadata which can either be copied or
-  symlinked.
+  along with their corresponding metadata files which can either be copied or
+  symlinked. The `rename`_ subcommand from the ``ebooktools.py`` script uses
+  this module.
 - ``split_into_folders.py`` splits the supplied ebook files (and the
   accompanying metadata files if present) into folders with consecutive names
   that each contain the specified number of files. The `split`_ subcommand
@@ -578,6 +579,19 @@ Input argument
 
   Can either be the path to a file or a string. The input will be searched for
   ISBNs.
+  
+rename [<OPTIONS>] calibre_folder
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools rename [-h] [-v] [-q] [--verbose] [-d] [--sl] [-r]
+                            [--log-level {debug,info,warning,error}]
+                            [--log-format {console,simple,only_msg}]
+                            [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
+                            [--oft TEMPLATE] [--ome EXTENSION]
+                            [--sm {disable,opfcopy,recreate}] [-o PATH]
+                            calibre_folder
+
 
 split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -864,7 +878,7 @@ References
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _organize: #security-and-safety
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _rename: #security-and-safety
+.. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
 .. _Security and safety: #security-and-safety
 .. _split: #split-options-folder-with-books
