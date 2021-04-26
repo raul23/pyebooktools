@@ -17,7 +17,12 @@ To edit the **main** config file with **PyCharm**:
 
    $ ebooktools edit -a charm main
    
-A tab with the main config file will be opened in PyCharm's Editor window.
+A tab with the main config file will be opened in PyCharm's Editor window:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
+   :align: left
+   :alt: Example: opened tab with config file in PyCharm
 
 Example 2: reset the main config file
 -------------------------------------
