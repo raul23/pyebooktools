@@ -8,6 +8,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import unicodedata
 from argparse import Namespace
 from collections import namedtuple, OrderedDict
 from logging import NullHandler
@@ -237,6 +238,12 @@ def override_config_with_args(config, parser):
                 raise AttributeError("No value could be found for the "
                                      f"argument {arg_name}")
     return results
+
+
+# Ref.: https://bit.ly/3tTMlNF
+def remove_accents(text):
+    text = unicodedata.normalize('NFKD', text)
+    return "".join([c for c in text if not unicodedata.combining(c)])
 
 
 def run_cmd(cmd):
