@@ -176,8 +176,10 @@ Content of ``output_folder``:
 
 |
 
-The ``metadata.opf`` files are copied with the ``meta`` extension (default)
-beside the symlinks to the book files.
+NOTES:
+* The book files are renamed following the `output_filename_template`_ format.
+* The ``metadata.opf`` files are copied with the ``meta`` extension (`default`_)
+  beside the symlinks to the book files.
 
 Example 8: split a folder
 -------------------------
@@ -217,4 +219,7 @@ Note that the metadata folders contain only one file each as expected.
    `Security and safety`_ section.
    
 .. URLs
+.. _default: ./README.rst#options-related-to-the-input-and-output-files
+.. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _Security and safety: ./README.rst#security-and-safety
+
