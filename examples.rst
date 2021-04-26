@@ -167,10 +167,14 @@ along with their copied ``metadata.opf`` files into an output folder:
 
 |
 
+Content of ``output_folder``:
+
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
    :align: left
-   :alt: Example: content of ``output_folder/``
+   :alt: Example: content of ``output_folder``
+
+|
 
 The ``metadata.opf`` files are copied beside the symlinks to the book
 files in the output folder.
@@ -182,7 +186,7 @@ We have a folder containing four ebooks and their corresponding metadata:
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
    :align: left
-   :alt: Example: content of ``folder_with_books/``
+   :alt: Example: content of ``folder_with_books``
 
 Note that two ebook files don't have metadata files associated with them.
 
@@ -200,7 +204,7 @@ their numbering should start at 1:
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
    :align: left
-   :alt: Example: content of ``output_folder/``
+   :alt: Example: content of ``output_folder``
 
 |
 
