@@ -176,7 +176,8 @@ Content of ``output_folder``:
 
 |
 
-NOTES:
+**NOTES:**
+
 * The book files are renamed following the `output_filename_template`_ format.
 * The ``metadata.opf`` files are copied with the ``meta`` extension (`default`_)
   beside the symlinks to the book files.
