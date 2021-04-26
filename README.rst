@@ -847,7 +847,7 @@ subcommands:
 * `interact`_
 * `organize`_
 * `rename`_
-* `split`_: only ``dry-run`` is applicable
+* `split`_: only ``--dry-run`` is applicable
 
 Credits
 =======
