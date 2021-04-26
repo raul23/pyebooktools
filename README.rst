@@ -185,7 +185,7 @@ in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
-   In order to avoid data loss, use the option ``dry-run`` or ``symlink-only``
+   In order to avoid data loss, use the ``dry-run`` or ``symlink-only`` option
    when running some of the subcommands (e.g. ``rename`` and ``split``) to make
    sure that they would do what you expect them to do, as explained in the
    `Security and safety`_ section.
@@ -736,7 +736,7 @@ Find ISBNs in a pdf file:
    INFO     Verbose option disabled
    INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
    INFO     Extracted ISBNs:
-   9783672388737
+   9789580158448
    1000100111
 
 The search for ISBNs starts in the first pages of the document to increase
@@ -749,7 +749,7 @@ associated with the book since it was found in the first page.
 
 The last sequence ``1000100111`` was found in the middle of the document
 and is not an ISBN even though it is a technically valid but wrong ISBN
-that the regular expression ``isbn_blacklist_regex`` didn't catch. Maybe
+that the regular expression `isbn_blacklist_regex`_ didn't catch. Maybe
 it is a binary sequence that is part of a problem in a book about digital
 system. 
 
@@ -925,6 +925,7 @@ References
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
 .. _interact: #security-and-safety
+.. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
