@@ -587,10 +587,10 @@ def main():
 
 if __name__ == '__main__':
     # Convert
-    # ebooktools convert -o ~/test/_ebooktools/output.txt ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf
+    # ebooktools convert ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf -o ~/test/_ebooktools/output.txt
     #
     # Convert with debug and ocr=always
-    # ebooktools convert --log-level debug --ocr always -o ~/test/_ebooktools/output.txt ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf
+    # ebooktools convert --log-level debug --ocr always ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf -o ~/test/_ebooktools/output.txt
     #
     # Edit
     # ebooktools edit -a charm log
@@ -600,11 +600,13 @@ if __name__ == '__main__':
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
     #
     # Rename
-    # ebooktools rename -o ~/test/_ebooktools/rename_calibre_library/output_folder/ ~/Calibre\ Library/ --sm recreate --sl --log-format console
+    # ebooktools rename --sm opcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
+    # -o ~/test/_ebooktools/rename_calibre_library/output_folder/
+    # ebooktools rename --sm opcopy --sl --log-format console ~/Calibre\ Library/ -o ~/test/_ebooktools/rename_calibre_library/output_folder/
     #
     # Split
     # ebooktools split --fpf 2 -s 1 ~/test/_ebooktools/folder_with_books/ -o ~/test/_ebooktools/output_folder/
-    # ebooktools split -o output_folder/ folder_with_books/ --log-level debug --log-format simple
+    # ebooktools split --log-level debug --log-format simple folder_with_books/ -o output_folder/
     retcode = main()
     msg = f'Program exited with {retcode}'
     if retcode == 1:
