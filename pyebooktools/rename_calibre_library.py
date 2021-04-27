@@ -26,7 +26,8 @@ from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (find_isbns, get_metadata, move_or_link_file,
                               substitute_params, substitute_with_sed,
                               unique_filename)
-from pyebooktools.utils.genutils import copy, init_log, remove_accents
+from pyebooktools.utils.genutils import copy, remove_accents
+from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
