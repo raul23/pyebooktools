@@ -23,5 +23,5 @@ from pyebooktools.utils.logutils import init_log
 logger = init_log(__name__, __file__)
 
 
-def organize():
+def organize(**kwargs):
     logger.info('Test')
