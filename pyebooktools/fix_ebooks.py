@@ -8,4 +8,4 @@ logger = init_log(__name__, __file__)
 
 
 def fix(input_data, **kwargs):
-    logger.info('test')
+    logger.warning('Not implemented yet!')
