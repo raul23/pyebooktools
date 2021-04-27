@@ -18,7 +18,7 @@ import codecs
 import sys
 
 import pyebooktools
-from pyebooktools import (convert_to_txt, edit_config, find_isbns,
+from pyebooktools import (convert_to_txt, edit_config, find_isbns, fix_ebooks,
                           organize_ebooks, rename_calibre_library,
                           split_into_folders)
 from pyebooktools.configs import default_config as default_cfg
@@ -472,8 +472,9 @@ See subcommands below for a list of the tools that can be used.
     # create the parser for the "organize-ebooks" command
     parser_fix = subparsers.add_parser(
         'fix', add_help=False,
-        help='''Tries to fix corrupted ebook files. For the moment, only PDF
-        files are supported.''')
+        # Tries to fix corrupted ebook files. For the moment, only PDF files
+        # are supported.
+        help='''Not implemented yet!''')
     add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
                                                  'keep-metadata'])
     parser_fix_input_output_group = parser_fix.add_argument_group(
@@ -482,6 +483,7 @@ See subcommands below for a list of the tools that can be used.
         'input_data',
         help='''Can either be a corrupted file or a folder containing the
         corrupted ebook files that need to be fixed.''')
+    parser_fix.set_defaults(func=fix_ebooks.fix)
     # ===============
     # organize-ebooks
     # ===============
