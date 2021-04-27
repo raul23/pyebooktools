@@ -43,15 +43,87 @@ OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 SYMLINK_ONLY = default_cfg.symlink_only
+TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
 
 # TODO: move some functions to genutils, e.g.
 # is_dir_empty, isalnum_in_file, remove_file, remove_tree remove_file
+
 
 # For macOS use the built-in textutil,
 # see https://stackoverflow.com/a/44003923/14664104
 # TODO: important implement it
 def catdoc(input_file, output_file):
     raise NotImplementedError('catdoc is not implemented')
+
+
+# Checks the supplied file for different kinds of corruption:
+#  - If it's zero-sized or contains only \0
+#  - If it has a pdf extension but different mime type
+#  - If it's a pdf and `pdfinfo` returns an error
+#  - If it has an archive extension but `7z t` returns an error
+# ref.: https://bit.ly/2JLpqgf
+def check_file_for_corruption(file_path,
+                              tested_archive_extensions=TESTED_ARCHIVE_EXTENSIONS):
+    file_err = ''
+    logger.info(f"Testing '{file_path}' for corruption...")
+
+    # TODO: test that it is the same as
+    # if [[ "$(tr -d '\0' < "$file_path" | head -c 1)" == "" ]]; then
+    # Ref.: https://bit.ly/2jpX0xf
+    if is_file_empty(file_path):
+        file_err = 'The file is empty or contains only zeros!'
+        logger.debug(file_err)
+        return file_err
+
+    ext = Path(file_path).suffix[1:]  # Remove the dot from extension
+    mime_type = get_mime_type(file_path)
+
+    if mime_type == 'application/octet-stream' and \
+            re.match('^(pdf|djv|djvu)$', mime_type):
+        file_err = f"The file has a {ext} extension but '{mime_type}' MIME type!"
+        logger.debug(file_err)
+        return file_err
+    elif mime_type == 'application/pdf':
+        logger.info('Checking pdf file for integrity...')
+        if not command_exists('pdfinfo'):
+            file_err = 'pdfinfo does not exist, could not check if pdf is OK'
+            logger.debug(file_err)
+            return file_err
+        else:
+            pdfinfo_output = pdfinfo(file_path)
+            if pdfinfo_output.stderr:
+                logger.info('pdfinfo returned an error!')
+                logger.debug(pdfinfo_output.stderr)
+                file_err = 'Has pdf MIME type or extension, but pdfinfo ' \
+                           'returned an error!'
+                logger.debug(file_err)
+                return file_err
+            else:
+                logger.info('pdfinfo returned successfully')
+                logger.debug(pdfinfo_output.stdout)
+                if re.search('^Page size:\s*0 x 0 pts$', pdfinfo_output.stdout):
+                    logger.info('pdf is corrupt anyway, page size property is '
+                                'empty!')
+                    file_err = 'pdf can be parsed, but page size is 0 x 0 pts!'
+                    logger.debug(file_err)
+                    return file_err
+
+    if re.match(tested_archive_extensions, ext):
+        logger.info(f"The file has a '{ext}' extension, testing with 7z...")
+        log = test_archive(file_path)
+        if log.stderr:
+            logger.info('Test failed!')
+            logger.debug(log.stderr)
+            file_err = 'Looks like an archive, but testing it with 7z failed!'
+            return file_err
+        else:
+            logger.info('Test succeeded!')
+            logger.debug(log.stdout)
+
+    if file_err != '':
+        logger.warning(f'We are at the end of the function and '
+                       f'file_err="{file_err}"; it should be empty!')
+    return file_err
 
 
 # Ref.: https://stackoverflow.com/a/28909933
@@ -317,9 +389,21 @@ def get_pages_in_pdf(file_path):
 
 
 # Checks if directory is empty
-# ref.: https://stackoverflow.com/a/47363995
+# Ref.: https://stackoverflow.com/a/47363995
 def is_dir_empty(path):
     return next(os.scandir(path), None) is None
+
+
+# Ref.: https://stackoverflow.com/a/15924160
+def is_file_empty(file_path):
+    # TODO: test when file doesn't exist
+    # TODO: see if the proposed solution @ https://stackoverflow.com/a/15924160
+    # is equivalent to using try and catch the `OSError`
+    try:
+        return not os.path.getsize(file_path) > 0
+    except OSError as e:
+        print(f'Error: {e.filename} - {e.strerror}')
+        return False
 
 
 # Validates ISBN-10 and ISBN-13 numbers
@@ -510,6 +594,13 @@ def ocr_file(input_file, output_file, mime_type,
         f.write(text)
     # TODO: they don't return anything
     return 0
+
+
+def pdfinfo(file_path):
+    cmd = 'pdfinfo "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
 
 
 def pdftotext(input_file, output_file):
@@ -780,6 +871,13 @@ def tesseract_wrapper(input_file, output_file):
                             stderr=subprocess.PIPE,
                             encoding='utf-8',
                             bufsize=4096)
+    return convert_result_from_shell_cmd(result)
+
+
+def test_archive(file_path):
+    cmd = '7z t "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
 
 
