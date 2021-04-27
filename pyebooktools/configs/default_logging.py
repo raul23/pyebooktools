@@ -68,6 +68,12 @@ logging = {
         # -----------------------------
         # Loggers using console handler
         # -----------------------------
+        "pyebooktools.convert_to_txt":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
         "pyebooktools.edit_config":
         {
           "level": "DEBUG",
