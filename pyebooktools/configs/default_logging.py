@@ -86,6 +86,12 @@ logging = {
           "handlers": ["console"],
           "propagate": False
         },
+        "pyebooktools.fix_ebooks":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
         "pyebooktools.lib":
         {
           "level": "DEBUG",
