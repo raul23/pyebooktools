@@ -19,3 +19,6 @@ References
 .. _na--: https://github.com/na--
 .. _organize-ebooks.sh: https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh
 """
+from pyebooktools.utils.logutils import init_log
+
+logger = init_log(__name__, __file__)
