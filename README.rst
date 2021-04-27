@@ -236,7 +236,7 @@ General control flags
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
-  default value in `default_config.py#L59`_
+  default value in `default_config.py#L62`_
   
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
@@ -258,7 +258,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   converting or OCR-ing them to ``.txt`` first. [IDGF]_
   
 * ``--isbn-ignored-files <value>``; config variable ``isbn_ignored_files``; see
-  default value in `default_config.py#L62`_
+  default value in `default_config.py#L65`_
   
   This is a regular expression that is matched against the MIME type of the
   searched files. Matching files are not searched for ISBNs beyond their
@@ -348,7 +348,7 @@ Options related to extracting and searching for non-ISBN metadata
   ignored. [TML]_
   
 * ``--tokens-to-ignore <value>``; env. variable ``tokens_to_ignore``; see
-  default value in `default_config.py#L80`_
+  default value in `default_config.py#L83`_
 
   A regular expression that is matched against the filename/author/title tokens
   and matching tokens are ignored. The default regular expression includes
@@ -907,9 +907,9 @@ References
 .. _WorldCat xISBN: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
 
 .. URLs: default values
-.. _default_config.py#L59: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L59
 .. _default_config.py#L62: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L62
-.. _default_config.py#L80: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L80
+.. _default_config.py#L65: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L65
+.. _default_config.py#L83: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/configs/default_config.py#L83
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/pyebooktools/lib.py#L555
 
 .. URLs: pyebooktools project
