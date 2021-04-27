@@ -23,9 +23,9 @@ import pyebooktools
 from pyebooktools import (convert_to_txt, edit_config, find_isbns,
                           rename_calibre_library, split_into_folders)
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.utils.genutils import (get_config_dict, init_log,
-                                         namespace_to_dict,
+from pyebooktools.utils.genutils import (get_config_dict, namespace_to_dict,
                                          override_config_with_args, setup_log)
+from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
