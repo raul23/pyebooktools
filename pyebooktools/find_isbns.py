@@ -20,12 +20,10 @@ References
 .. _na--: https://github.com/na--
 """
 from pathlib import Path
-# TODO: remove
-# import ipdb
 
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import find_isbns, search_file_for_isbns
-from pyebooktools.utils.genutils import init_log
+from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
