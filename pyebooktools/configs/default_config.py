@@ -1,17 +1,14 @@
-"""Options for the script ebooktools
+"""Options for the ebooktools.py script
 
-`ebooktools`_ is a Python port of the shell scripts developed by na-- for
-organizing and managing ebook collections. See
-`<https://github.com/na--/ebook-tools>`__.
+`ebooktools.py`_ is a Python port of the Shell scripts `ebook-tools` developed
+by `na--`_ for organizing and managing ebook collections.
 
-The options are described in full detail in the project's README @
-`<https://github.com/raul23/python-ebook-tools>`__
+The options are described in full details in the Python project's `README`_
 
 IMPORTANT: these options can also be passed to the Python script
-`ebooktools.py`_ via command-line parameters (Run `ebooktools -h` for a
-detailed list of the options). Also, command-line parameters supersede the
-variables defined in this configuration file. Most parameters are not required
-and if nothing is specified, the default value will be used.
+`ebooktools.py`_ via command-line parameters. Also, command-line parameters
+supersede the variables defined in this configuration file. Most parameters are
+not required and if nothing is specified, the default value will be used.
 
 The options are separated based on sections:
 1. General options
@@ -34,7 +31,13 @@ The options are separated based on sections:
 
 References
 ----------
+* `ebook-tools`_
+
+.. external links
+.. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebooktools.py: https://github.com/raul23/pyebooktools/blob/master/pyebooktools/scripts/ebooktools.py
+.. _na--: https://github.com/na--
+.. _README: https://github.com/raul23/pyebooktools#readme
 """
 import os
 
@@ -76,9 +79,9 @@ ocr_command = 'tesseract_wrapper'
 
 # 1.4 Options related to extracting and searching for non-ISBN metadata
 # =====================================================================
-# token_min_length = 3
-# tokens_to_ignore = 'ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}'
-# organize_without_isbn_sources = ['Goodreads' ,'Amazon.com', 'Google']
+token_min_length = 3
+tokens_to_ignore = 'ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}'
+organize_without_isbn_sources = ['Goodreads' ,'Amazon.com', 'Google']
 
 # 1.5 Options related to the input and output files
 # =================================================
@@ -112,23 +115,26 @@ app = None
 # ===================
 # 2.2.1 Specific options for organizing files
 # -------------------------------------------
-# corruption_check_only = False
-# tested_archive_extensions = '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$'
-# organize_without_isbn = False
-# without_isbn_ignore = ?
-# pamphlet_included_files = '\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$'
-# pamphlet_excluded_files = '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$'
-# pamphlet_max_pdf_pages = 50
-# pamphlet_max_filesize_kb = 250
+corruption_check_only = False
+tested_archive_extensions = '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$'
+organize_without_isbn = False
+without_isbn_ignore = None
+# TODO: why '?' in pptx, see https://bit.ly/2ryWlgt
+pamphlet_included_files = '\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$'
+pamphlet_excluded_files = '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$'
+pamphlet_max_pdf_pages = 50
+pamphlet_max_filesize_kb = 250
 
 # 2.2.2 Output options
 # --------------------
 # output_folder = os.getcwd()
 # If organize_without_isbn is enabled, this is the folder to which all ebooks
 # that were renamed based on non-ISBN metadata will be moved to.
-# output_folder_uncertain = None
-# output_folder_corrupt = None
-# output_folder_pamphlets = None
+output_folder_uncertain = None
+# If specified, corrupt files will be moved to this folder.
+output_folder_corrupt = None
+# If specified, pamphlets will be moved to this folder.
+output_folder_pamphlets = None
 
 # 2.3 interactive-organizer
 # =========================
