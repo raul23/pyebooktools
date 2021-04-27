@@ -600,9 +600,9 @@ if __name__ == '__main__':
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
     #
     # Rename
-    # ebooktools rename --sm opcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
+    # ebooktools rename --sm opfcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
     # -o ~/test/_ebooktools/rename_calibre_library/output_folder/
-    # ebooktools rename --sm opcopy --sl --log-format console ~/Calibre\ Library/ -o ~/test/_ebooktools/rename_calibre_library/output_folder/
+    # ebooktools rename --sm opfcopy --sl --log-format console ~/Calibre\ Library/ -o ~/test/_ebooktools/rename_calibre_library/output_folder/
     #
     # Split
     # ebooktools split --fpf 2 -s 1 ~/test/_ebooktools/folder_with_books/ -o ~/test/_ebooktools/output_folder/
