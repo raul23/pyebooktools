@@ -16,12 +16,10 @@ import argparse
 import codecs
 import sys
 
-# TODO: remove
-# import ipdb
-
 import pyebooktools
 from pyebooktools import (convert_to_txt, edit_config, find_isbns,
-                          rename_calibre_library, split_into_folders)
+                          organize_ebooks, rename_calibre_library,
+                          split_into_folders)
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.utils.genutils import (get_config_dict, namespace_to_dict,
                                          override_config_with_args, setup_log)
@@ -453,15 +451,26 @@ See subcommands below for a list of the tools that can be used.
         help='''Can either be the path to a file or a string. The input will
             be searched for ISBNs.''')
     parser_find.set_defaults(func=find_isbns.find)
+    # ===============
+    # organize-ebooks
+    # ===============
+    # create the parser for the "organize-ebooks" command
+    parser_organize = subparsers.add_parser(
+        'organize', add_help=False,
+        help='''Automatically organize folders with potentially huge amounts
+        of unorganized ebooks. This is done by renaming the files with proper
+        names and moving them to other folders.''')
+    add_general_options(parser_organize)
+    parser_organize.set_defaults(func=organize_ebooks.organize)
     # ======================
     # rename-calibre-library
     # ======================
     # create the parser for the "rename-calibre-library" command
     parser_rename = subparsers.add_parser(
         'rename', add_help=False,
-        help='''Traverses a calibre library folder and renames all the book
+        help='''Traverse a calibre library folder and rename all the book
         files in it by reading their metadata from calibre's metadata.opf
-        files. Then the book files are either moved or symlinked (if the
+        files. The book files are then either moved or symlinked (if the
         `--symlink-only` flag is enabled) to the output folder along with
         their corresponding metadata files. Also, activate the `--dry-run`
         flag for testing purposes since no file rename/move/symlink/etc.
