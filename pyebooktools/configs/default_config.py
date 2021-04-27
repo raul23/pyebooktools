@@ -21,7 +21,7 @@ The options are separated based on sections:
   1.4 Options related to extracting and searching for non-ISBN metadata
   1.5 Options related to the input and output files
   1.6 Miscellaneous options
-2. Script options
+2. Subcommand options
   2.1 edit-config-files
   2.2 organize-ebooks
     2.2.1 Specific options for organizing files
@@ -97,9 +97,9 @@ output_metadata_extension = 'meta'
 reverse = False
 # debug_prefix_length = 40
 
-# =================
-# 2. Script options
-# =================
+# =====================
+# 2. Subcommand options
+# =====================
 
 # 2.1 edit-config-files
 # =====================
