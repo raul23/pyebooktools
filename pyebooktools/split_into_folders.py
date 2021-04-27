@@ -21,7 +21,8 @@ import os
 from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.utils.genutils import init_log, mkdir, move
+from pyebooktools.utils.genutils import mkdir, move
+from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
