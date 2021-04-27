@@ -19,13 +19,11 @@ References
 import os
 from pathlib import Path
 
-# TODO: remove
-# import ipdb
-
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (convert_to_txt, get_mime_type, isalnum_in_file,
                                ocr_file)
-from pyebooktools.utils.genutils import init_log, touch
+from pyebooktools.utils.genutils import touch
+from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
