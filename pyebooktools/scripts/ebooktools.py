@@ -466,6 +466,22 @@ See subcommands below for a list of the tools that can be used.
         help='''Can either be the path to a file or a string. The input will
             be searched for ISBNs.''')
     parser_find.set_defaults(func=find_isbns.find)
+    # ==========
+    # fix-ebooks
+    # ==========
+    # create the parser for the "organize-ebooks" command
+    parser_fix = subparsers.add_parser(
+        'fix', add_help=False,
+        help='''Tries to fix corrupted ebook files. For the moment, only PDF
+        files are supported.''')
+    add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
+                                                 'keep-metadata'])
+    parser_fix_input_output_group = parser_fix.add_argument_group(
+        title='input and output arguments')
+    parser_fix_input_output_group.add_argument(
+        'input_data',
+        help='''Can either be a corrupted file or a folder containing the
+        corrupted ebook files that need to be fixed.''')
     # ===============
     # organize-ebooks
     # ===============
