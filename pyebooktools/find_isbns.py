@@ -11,8 +11,6 @@ References
 ----------
 * `ebook-tools`_
 
-.. URLs
-
 .. external links
 .. _documentation: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _ebook-tools: https://github.com/na--/ebook-tools

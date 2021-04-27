@@ -9,8 +9,6 @@ References
 ----------
 * `ebook-tools`_
 
-.. URLs
-
 .. external links
 .. _convert-to-txt.sh: https://github.com/na--/ebook-tools/blob/master/convert-to-txt.sh
 .. _ebook-tools: https://github.com/na--/ebook-tools

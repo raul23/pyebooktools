@@ -12,7 +12,6 @@ References
 * `ebook-tools`_
 
 .. TODO: add description to reference (and other places too)
-.. URLs
 
 .. external links
 .. _ebook-tools: https://github.com/na--/ebook-tools
