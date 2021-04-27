@@ -120,6 +120,7 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
         logger.debug('Parsed metadata:')
         for k, v in metadata.items():
             v = substitute_with_sed('[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]', '_', v)
+            metadata[k] = v.encode('utf-8')
             logger.debug(f'{k}: {v}')
         new_name = substitute_params(metadata, output_filename_template)
         # Remove accents
