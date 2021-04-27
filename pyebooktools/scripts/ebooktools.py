@@ -2,11 +2,12 @@
 """This script is a Python port of `ebook-tools`_ which is written in Shell by
 `na--`_.
 
+It is a collection of tools for automated and semi-automated organization and
+management of large ebook collections.
+
 References
 ----------
 * `ebook-tools`_
-
-.. URLs
 
 .. external links
 .. _ebook-tools: https://github.com/na--/ebook-tools
@@ -30,6 +31,7 @@ logger = init_log(__name__, __file__)
 # =====================
 # Default config values
 # =====================
+CORRUPTION_CHECK_ONLY = default_cfg.corruption_check_only
 FILES_PER_FOLDER = default_cfg.files_per_folder
 FOLDER_PATTERN = default_cfg.folder_pattern
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
@@ -41,15 +43,28 @@ ISBN_REGEX = default_cfg.isbn_regex
 ISBN_RET_SEPARATOR = default_cfg.isbn_ret_separator
 LOGGING_FORMATTER = default_cfg.logging_formatter
 LOGGING_LEVEL = default_cfg.logging_level
+PAMPHLET_EXCLUDED_FILES = default_cfg.pamphlet_excluded_files
+PAMPHLET_INCLUDED_FILES = default_cfg.pamphlet_included_files
+PAMPHLET_MAX_FILESIZE_KB = default_cfg.pamphlet_max_filesize_kb
+PAMPHLET_MAX_PDF_PAGES = default_cfg.pamphlet_max_pdf_pages
 OCR_COMMAND = default_cfg.ocr_command
 OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
+ORGANIZE_WITHOUT_ISBN = default_cfg.organize_without_isbn
+ORGANIZE_WITHOUT_ISBN_SOURCES = default_cfg.organize_without_isbn_sources
 OUTPUT_FILE = default_cfg.output_file
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 OUTPUT_FOLDER = default_cfg.output_folder
+OUTPUT_FOLDER_CORRUPT = default_cfg.output_folder_corrupt
+OUTPUT_FOLDER_PAMPHLETS = default_cfg.output_folder_pamphlets
+OUTPUT_FOLDER_UNCERTAIN = default_cfg.output_folder_uncertain
 OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
 SAVE_METADATA = default_cfg.save_metadata
 START_NUMBER = default_cfg.start_number
+TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
+TOKEN_MIN_LENGTH = default_cfg.token_min_length
+TOKENS_TO_IGNORE = default_cfg.tokens_to_ignore
+WITHOUT_ISBN_IGNORE = default_cfg.without_isbn_ignore
 
 # ====================
 # Other default values
@@ -461,6 +476,31 @@ See subcommands below for a list of the tools that can be used.
         of unorganized ebooks. This is done by renaming the files with proper
         names and moving them to other folders.''')
     add_general_options(parser_organize)
+    parser_organize_input_output_group = parser_organize.add_argument_group(
+        title='input and output arguments')
+    parser_organize_input_output_group.add_argument(
+        'folder_to_organize',
+        help='''Folder containing the ebook files that need to be organized.''')
+    parser_organize_input_output_group.add_argument(
+        '-o', '--output-folder', dest='output_folder', metavar='PATH',
+        help='''The folder where ebooks that were renamed based on the ISBN
+        metadata will be moved to.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+    parser_organize_input_output_group.add_argument(
+        '--ofu', '--output-folder-uncertain', dest='output_folder_uncertain',
+        metavar='PATH',
+        help='''If `organize_without_isbn` is enabled, this is the folder to
+        which all ebooks that were renamed based on non-ISBN metadata will be
+        moved to.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+    parser_organize_input_output_group.add_argument(
+        '--ofc', '--output-folder-corrupt', dest='output_folder_corrupt',
+        metavar='PATH',
+        help='''If specified, corrupt files will be moved to this folder.'''
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+    parser_organize_input_output_group.add_argument(
+        '--ofp', '--output-folder-pamphlets', dest='output_folder_pamphlets',
+        metavar='PATH',
+        help='''If specified, pamphlets will be moved to this folder.'''
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_organize.set_defaults(func=organize_ebooks.organize)
     # ======================
     # rename-calibre-library
@@ -506,8 +546,8 @@ See subcommands below for a list of the tools that can be used.
     parser_rename_input_output_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
         help='''This is the output folder the renamed books will be moved to.
-        The default value is the current working directory.''' +
-             _DEFAULT_MSG.format(OUTPUT_FOLDER))
+        The default value is the current working directory.'''
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_rename.set_defaults(func=rename_calibre_library.rename)
     # ==================
     # split-into-folders
