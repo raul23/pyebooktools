@@ -595,9 +595,9 @@ Description
 """""""""""
 This subcommand traverses a calibre library folder and renames all the book
 files in it by reading their metadata from calibre's ``metadata.opf`` files.
-Then the book files are either moved or symlinked (if the flag
-`--symlink-only`_ is enabled) to the output folder along with their 
-corresponding metadata files. [RCL]_
+Then the book files are either moved or symlinked (if the `--symlink-only`_
+flag is enabled) to the output folder along with their corresponding metadata
+files. [RCL]_
 
 `:information_source:`
 
