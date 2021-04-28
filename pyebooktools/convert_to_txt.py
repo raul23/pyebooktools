@@ -19,7 +19,7 @@ from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (convert_to_txt, get_mime_type, isalnum_in_file,
-                               ocr_file)
+                              ocr_file)
 from pyebooktools.utils.genutils import touch
 from pyebooktools.utils.logutils import init_log
 
