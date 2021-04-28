@@ -30,6 +30,7 @@ logger = init_log(__name__, __file__)
 # Default config values
 # =====================
 DRY_RUN = default_cfg.dry_run
+KEEP_METADATA = default_cfg.keep_metadata
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
 ISBN_DIRECT_GREP_FILES = default_cfg.isbn_direct_grep_files
 ISBN_GREP_REORDER_FILES = default_cfg.isbn_grep_reorder_files
@@ -42,6 +43,7 @@ OCR_COMMAND = default_cfg.ocr_command
 OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
+OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
 SYMLINK_ONLY = default_cfg.symlink_only
 TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
 
@@ -137,6 +139,48 @@ def check_file_for_corruption(file_path,
 # Ref.: https://stackoverflow.com/a/28909933
 def command_exists(cmd):
     return shutil.which(cmd) is not None
+
+
+def convert_bytes_binary(num, unit):
+    """
+    this function will convert bytes to MiB.... GiB... etc
+
+    Ref.: https://stackoverflow.com/a/39988702
+    """
+    unit = unit.lower()
+    units = ['bytes', 'kib', 'mib', 'gib', 'tib']
+    if unit not in units:
+        """
+        logger.error(f"'{unit}' is not a valid unit\n"
+                     f'Aborting {convert_bytes_binary.__name__}()')
+        """
+        return None
+    for x in units:
+        if num < 1024.0 or x == unit:
+            # return "%3.1f %s" % (num, x)
+            return num
+        num /= 1024.0
+
+
+def convert_bytes_decimal(num, unit):
+    """
+    this function will convert bytes to MB.... GB... etc
+
+    Ref.: https://stackoverflow.com/a/39988702
+    """
+    unit = unit.lower()
+    units = ['bytes', 'kb', 'mb', 'gb', 'tb']
+    if unit not in units:
+        """
+        logger.error(f"'{unit}' is not a valid unit\n"
+                     f'Aborting {convert_bytes_decimal.__name__}()')
+        """
+        return None
+    for x in units:
+        if num < 1000.0 or x == unit:
+            # return "%3.1f %s" % (num, x)
+            return num
+        num /= 1000.0
 
 
 def convert_result_from_shell_cmd(old_result):
@@ -248,6 +292,33 @@ def extract_archive(input_file, output_file):
     return convert_result_from_shell_cmd(result)
 
 
+# Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from
+# online sources. The first parameter is the comma-separated list of allowed
+# plugins (e.g. 'Goodreads,Amazon.com,Google') and the second parameter is the
+# remaining of the `fetch-ebook-metadata`'s options, e.g.
+# options='--verbose --opf isbn=1234567890'
+# Returns the ebook metadata as a string; if no metadata found, an empty string
+# is returned
+# ref.: https://bit.ly/2HS0iXQ
+def fetch_metadata(isbn_sources, options=''):
+    args = '{} {}'.format('fetch-ebook-metadata', options)
+    isbn_sources = isbn_sources.split(',')
+    for isbn_source in isbn_sources:
+        args += ' --allowed-plugin={} '.format(isbn_source)
+    # Remove trailing whitespace
+    args = args.strip()
+    logger.info('Calling `{}`'.format(args))
+    args = shlex.split(args)
+    # NOTE: `stderr` contains the whole log from running the fetch-data query
+    # from the specified online sources. Thus, `stderr` is a superset of
+    # `stdout` which only contains the ebook metadata for those fields that
+    # have the pattern '[a-zA-Z()]+ +: .*'
+    # TODO: make sure that you are getting only the fields that match the pattern
+    # '[a-zA-Z()]+ +: .*' since you are not using a regex on the result
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
 # Searches the input string for ISBN-like sequences and removes duplicates and
 # finally validates them using is_isbn_valid() and returns them separated by
 # `isbn_ret_separator`
@@ -347,6 +418,29 @@ def get_ebook_metadata(file_path):
     return convert_result_from_shell_cmd(result)
 
 
+# NOTE: the original function was returning the file size in MB... GB... but it
+# was actually returning the file in MiB... GiB... etc (dividing by 1024, not 1000)
+# see the comment @ https://bit.ly/2HL5RnI
+# TODO: call this function when computing file size here in lib.py
+# TODO: unit can be given with binary prefix as {'bytes', 'KiB', 'MiB', 'GiB', TiB'}
+# or decimal prefix as {'bytes', 'KB', 'MB', 'GB', TB'}
+def get_file_size(file_path, unit):
+    """
+    This function will return the file size
+
+    Ref.: https://stackoverflow.com/a/39988702
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        if unit[1] == 'i':
+            return convert_bytes_binary(file_info.st_size, unit=unit)
+        else:
+            return convert_bytes_decimal(file_info.st_size, unit=unit)
+    else:
+        logger.error(f"'{file_path}' is not a file\nAborting get_file_size()")
+        return None
+
+
 # Ref.: https://bit.ly/3txo53J
 def get_metadata(source_data, xpath):
     return (u'\\n'.join(parse(source_data).xpath(xpath))).encode('utf-8')
@@ -428,9 +522,10 @@ def is_isbn_valid(isbn):
     # Case 1: ISBN-10
     if len(isbn) == 10:
         for i in range(len(isbn)):
-            number = int(isbn[i])
             if i == 9 and isbn[i] == 'X':
                 number = 10
+            else:
+                number = int(isbn[i])
             sum += (number * (10 - i))
         if sum % 11 == 0:
             return True
@@ -457,6 +552,105 @@ def isalnum_in_file(file_path):
             if isalnum:
                 break
     return isalnum
+
+
+# ref.: https://bit.ly/2HxYEaw
+# TODO: `output_filename_template` should be accessed from config.config_dict,
+# all scripts should have access to config.config_dict
+def move_or_link_ebook_file_and_metadata(
+        new_folder, current_ebook_path, current_metadata_path, dry_run=DRY_RUN,
+        keep_metadata=KEEP_METADATA,
+        output_filename_template=OUTPUT_FILENAME_TEMPLATE,
+        output_metadata_extension=OUTPUT_METADATA_EXTENSION):
+    # Get ebook's file extension
+    ext = Path(current_ebook_path).suffix
+    ext = ext[1:] if ext[0] == '.' else ext
+    d = {'EXT': ext}
+
+    # Extract fields from metadata file
+    with open(current_metadata_path, 'r') as f:
+        for line in f:
+            # Get field name and value separately, e.g.
+            # 'Title  : A nice ebook' ---> field_name = 'Title  ' and field_value = ' A nice ebook'
+            # Find the first colon and split on its position
+            pos = line.find(':')
+            field_name, field_value = line[:pos], line[pos+1:]
+
+            # TODO: try to use subprocess.run instead of subprocess.Popen and
+            # creating two processes
+            # OR try to do it without subprocess, only with Python regex
+
+            #########################
+            # Processing field name #
+            #########################
+            #  Remove trailing whitespace, including tab
+            field_name = field_name.strip()
+            p1 = subprocess.Popen(['echo', field_name], stdout=subprocess.PIPE)
+            # TODO: explain what's going on with this replacement code
+            cmd = "sed -e 's/[ \t]*$//' -e 's/ /_/g' -e 's/[^a-zA-Z0-9_]//g'"
+            args = shlex.split(cmd)
+            p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
+            # Remove '\n' at the end of `result`
+            result = p2.communicate()[0].decode('UTF-8').strip()
+            # TODO: converting characters to upper case with `-e 's/\(.*\)/\\U\1/'`
+            # doesn't work on mac, \\U is not supported
+            field_name = result.upper()
+
+            ##########################
+            # Processing field value #
+            ##########################
+            # Remove trailing whitespace, including tab
+            field_value = field_value.strip()
+            p1 = subprocess.Popen(['echo', field_value], stdout=subprocess.PIPE)
+            # TODO: explain what's going on with this replacement code
+            cmd = "sed -e 's/[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]/_/g'"
+            args = shlex.split(cmd)
+            p2 = subprocess.Popen(args, stdin=p1.stdout, stdout=subprocess.PIPE)
+            field_value = p2.communicate()[0].decode('UTF-8').strip()
+            # Get only the first 100 characters
+            field_value = field_value[:100]
+            d[field_name] = field_value
+
+    logger.info('Variables that will be used for the new filename construction:')
+    array = ''
+    for k, v in d.items():
+        logger.debug(f'{d[k]}')
+        array += f' ["{k}"]="{v}" '
+
+    cmd = 'declare -A d=( {} )'  # debug: `echo "${d[TITLE]}"`
+    cmd = cmd.format(array)
+    # TODO: make it safer; maybe by removing single/double quotation marks from
+    # `OUTPUT_FILENAME_TEMPLATE`
+    # TODO: explain what's going
+    cmd += f'; OUTPUT_FILENAME_TEMPLATE=\'"{output_filename_template}"\'; ' \
+           'eval echo "$OUTPUT_FILENAME_TEMPLATE"'
+    result = subprocess.Popen(['/usr/local/bin/bash', '-c', cmd],
+                              stdout=subprocess.PIPE)
+    new_name = result.stdout.read().decode('UTF-8').strip()
+    logger.info(f'The new file name of the book file/link {current_ebook_path} '
+                f'will be: {new_name}')
+
+    new_path = unique_filename(new_folder, new_name)
+    logger.info('Full path: {}'.format(new_path))
+
+    move_or_link_file(current_ebook_path, new_path)
+    if keep_metadata:
+        logger.info(f'Removing metadata file {current_metadata_path}...')
+        remove_file(current_metadata_path)
+    else:
+        new_metadata_path = f'{new_path}.{output_metadata_extension}'
+        logger.info(f'Moving metadata file {current_metadata_path} to '
+                    f'{new_metadata_path}....')
+        if not dry_run:
+            if not Path(new_metadata_path).is_file():
+                shutil.move(current_metadata_path, new_metadata_path)
+            else:
+                logger.info(f'File already exists: {new_metadata_path}')
+        else:
+            logger.debug('Removing current metadata file: '
+                         f'{current_metadata_path}')
+            remove_file(current_metadata_path)
+    return new_path
 
 
 def move_or_link_file(current_path, new_path, dry_run=DRY_RUN,
@@ -834,6 +1028,21 @@ def search_file_for_isbns(file_path,
         logger.debug(f'Could not find any ISBNs in {file_path} :(')
 
     return isbns
+
+
+# Returns a single value by key by parsing the calibre-style text metadata
+# hashmap that is passed as argument
+# Ref.: https://bit.ly/2rIUHZM
+def search_meta_val(ebookmeta, key):
+    val = None
+    lines = ebookmeta.splitlines()
+    for line in lines:
+        match = re.match('^({})( +):'.format(key), ebookmeta)
+        if match:
+            val = line.split(match.end - 1)[-1]
+            return val
+    return val
+
 
 
 def substitute_params(hashmap, output_filename_template=OUTPUT_FILENAME_TEMPLATE):
