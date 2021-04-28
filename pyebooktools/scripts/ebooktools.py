@@ -45,7 +45,7 @@ LOGGING_FORMATTER = default_cfg.logging_formatter
 LOGGING_LEVEL = default_cfg.logging_level
 PAMPHLET_EXCLUDED_FILES = default_cfg.pamphlet_excluded_files
 PAMPHLET_INCLUDED_FILES = default_cfg.pamphlet_included_files
-PAMPHLET_MAX_FILESIZE_KB = default_cfg.pamphlet_max_filesize_kb
+PAMPHLET_MAX_FILESIZE_KIB = default_cfg.pamphlet_max_filesize_kib
 PAMPHLET_MAX_PDF_PAGES = default_cfg.pamphlet_max_pdf_pages
 OCR_COMMAND = default_cfg.ocr_command
 OCR_ENABLED = default_cfg.ocr_enabled
@@ -534,11 +534,12 @@ See subcommands below for a list of the tools that can be used.
         number pages than this are considered pamplets/non-ebook documents.'''
              + _DEFAULT_MSG.format(PAMPHLET_MAX_PDF_PAGES))
     parser_organize_group.add_argument(
-        '--pamphlet-max-filesize-kb', dest='pamphlet_max_filesize_kb', type=int,
+        '--pamphlet-max-filesize-kb', dest='pamphlet_max_filesize_kib', type=int,
         metavar='SIZE',
         help='''Other files that do not contain valid ISBNs and are below this
         size in KBs are considered pamplets/non-ebook documents.'''
-             + _DEFAULT_MSG.format(PAMPHLET_MAX_FILESIZE_KB))
+             + _DEFAULT_MSG.format(PAMPHLET_MAX_FILESIZE_KIB))
+    add_isbn_return_separator(parser_organize_group)
     parser_organize_input_output_group = parser_organize.add_argument_group(
         title='input and output arguments')
     parser_organize_input_output_group.add_argument(
@@ -711,8 +712,15 @@ if __name__ == '__main__':
     # ebooktools find "978-159420172-1 978-1892391810 0000000000 0123456789 1111111111" --log-level debug --log-format console
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
     #
+    # Organize
+    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
+    #
     # Organize with corrupted files
     # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ --log-level debug -o ~/test/_ebooktools/organize/output_folder/
+    #
+    # Organize with corrupted files and corrupted folder
+    # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ -o ~/test/_ebooktools/organize/output_folder/
+    # --log-format only_msg --ofc ~/test/_ebooktools/organize/output_folder_corrupt/
     #
     # Rename
     # ebooktools rename --sm opfcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
