@@ -493,7 +493,53 @@ See subcommands below for a list of the tools that can be used.
         help='''Automatically organize folders with potentially huge amounts
         of unorganized ebooks. This is done by renaming the files with proper
         names and moving them to other folders.''')
-    add_general_options(parser_organize)
+    add_general_options(parser_organize, remove_opts=['symlink-only',
+                                                      'keep-metadata'])
+    parser_organize_group = parser_organize.add_argument_group(
+        title='specific arguments for the subcommand `organize`')
+    parser_organize_group.add_argument(
+        "--cco", "--corruption-check-only", dest='corruption_check_only',
+        action="store_true",
+        help='''Do not organize or rename files, just check them for corruption
+        (ex. zero-filled files, corrupt archives or broken .pdf files). Useful
+        with the `output-folder-corrupt` option.''')
+    parser_organize_group.add_argument(
+        '--wii', '--without-isbn-ignore', dest='without_isbn_ignore',
+        metavar='REGEX',
+        help='''This is a regular expression that is matched against lowercase
+        filenames. All files that do not contain ISBNs are matched against it
+        and matching files are ignored by the script, even if
+        `organize-without-isbn` is true. The default value is calibrated to
+        match most periodicals (magazines, newspapers, etc.) so the script can
+        ignore them.''' + _DEFAULT_MSG.format(WITHOUT_ISBN_IGNORE))
+    parser_organize_group.add_argument(
+        '--pamphlet-included-files', dest='pamphlet_included_files',
+        metavar='REGEX',
+        help='''This is a regular expression that is matched against lowercase
+        filenames. All files that do not contain ISBNs and do not match
+        `without_isbn_ignore` are matched against it and matching files are
+        considered pamphlets by default. They are moved to
+        `output_folder_pamphlets` if set, otherwise they are ignored.'''
+             + _DEFAULT_MSG.format(PAMPHLET_INCLUDED_FILES))
+    parser_organize_group.add_argument(
+        '--pamphlet-excluded-files', dest='pamphlet_excluded_files',
+        metavar='REGEX',
+        help='''This is a regular expression that is matched against lowercase
+        filenames. If files do not contain ISBNs and match against it, they are
+        NOT considered as pamphlets, even if they have a small size or number
+        of pages.''' + _DEFAULT_MSG.format(PAMPHLET_EXCLUDED_FILES))
+    parser_organize_group.add_argument(
+        '--pamphlet-max-pdf-pages', dest='pamphlet_max_pdf_pages', type=int,
+        metavar='PAGES',
+        help='''.pdf files that do not contain valid ISBNs and have a lower
+        number pages than this are considered pamplets/non-ebook documents.'''
+             + _DEFAULT_MSG.format(PAMPHLET_MAX_PDF_PAGES))
+    parser_organize_group.add_argument(
+        '--pamphlet-max-filesize-kb', dest='pamphlet_max_filesize_kb', type=int,
+        metavar='SIZE',
+        help='''Other files that do not contain valid ISBNs and are below this
+        size in KBs are considered pamplets/non-ebook documents.'''
+             + _DEFAULT_MSG.format(PAMPHLET_MAX_FILESIZE_KB))
     parser_organize_input_output_group = parser_organize.add_argument_group(
         title='input and output arguments')
     parser_organize_input_output_group.add_argument(
@@ -508,17 +554,17 @@ See subcommands below for a list of the tools that can be used.
         metavar='PATH',
         help='''If `organize_without_isbn` is enabled, this is the folder to
         which all ebooks that were renamed based on non-ISBN metadata will be
-        moved to.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+        moved to.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER_UNCERTAIN))
     parser_organize_input_output_group.add_argument(
         '--ofc', '--output-folder-corrupt', dest='output_folder_corrupt',
         metavar='PATH',
         help='''If specified, corrupt files will be moved to this folder.'''
-             + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER_CORRUPT))
     parser_organize_input_output_group.add_argument(
         '--ofp', '--output-folder-pamphlets', dest='output_folder_pamphlets',
         metavar='PATH',
         help='''If specified, pamphlets will be moved to this folder.'''
-             + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER_PAMPHLETS))
     parser_organize.set_defaults(func=organize_ebooks.organize)
     # ======================
     # rename-calibre-library
@@ -665,6 +711,9 @@ if __name__ == '__main__':
     # Find
     # ebooktools find "978-159420172-1 978-1892391810 0000000000 0123456789 1111111111" --log-level debug --log-format console
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
+    #
+    # Organize with corrupted files
+    # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ --log-level debug -o ~/test/_ebooktools/organize/output_folder/
     #
     # Rename
     # ebooktools rename --sm opfcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
