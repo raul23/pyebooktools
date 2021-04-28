@@ -368,7 +368,7 @@ Options related to extracting and searching for non-ISBN metadata
   ``fetch-ebook-metadata --help`` and check the description for the
   ``--allowed-plugin`` option. *Because Calibre versions older than 2.84 don't
   support the --allowed-plugin option, if you want to use such an old Calibre
-  version you should manually set organize-without-isbn-sources to an empty
+  version you should manually set organize_without_isbn_sources to an empty
   string.*
   
   In contrast to searching by ISBNs, searching by author and title is done
