@@ -123,7 +123,7 @@ without_isbn_ignore = None
 pamphlet_included_files = '\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$'
 pamphlet_excluded_files = '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$'
 pamphlet_max_pdf_pages = 50
-pamphlet_max_filesize_kb = 250
+pamphlet_max_filesize_kib = 250
 
 # 2.2.2 Output options
 # --------------------
