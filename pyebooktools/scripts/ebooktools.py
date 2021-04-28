@@ -493,8 +493,7 @@ See subcommands below for a list of the tools that can be used.
         help='''Automatically organize folders with potentially huge amounts
         of unorganized ebooks. This is done by renaming the files with proper
         names and moving them to other folders.''')
-    add_general_options(parser_organize, remove_opts=['symlink-only',
-                                                      'keep-metadata'])
+    add_general_options(parser_organize, remove_opts=['keep-metadata'])
     parser_organize_group = parser_organize.add_argument_group(
         title='specific arguments for the subcommand `organize`')
     parser_organize_group.add_argument(
