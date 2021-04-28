@@ -45,6 +45,11 @@ OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 SYMLINK_ONLY = default_cfg.symlink_only
 TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
 
+GREEN = '\033[0;32m'
+RED = '\033[0;31m'
+BOLD = '\033[1m'
+NC = '\033[0m'
+
 # TODO: move some functions to genutils, e.g.
 # is_dir_empty, isalnum_in_file, remove_file, remove_tree remove_file
 
@@ -65,7 +70,8 @@ def catdoc(input_file, output_file):
 def check_file_for_corruption(file_path,
                               tested_archive_extensions=TESTED_ARCHIVE_EXTENSIONS):
     file_err = ''
-    logger.info(f"Testing '{file_path}' for corruption...")
+    logger.info(f"Testing '{Path(file_path).name}' for corruption...")
+    logger.debug(f"Full path: {file_path}")
 
     # TODO: test that it is the same as
     # if [[ "$(tr -d '\0' < "$file_path" | head -c 1)" == "" ]]; then
@@ -93,14 +99,14 @@ def check_file_for_corruption(file_path,
             pdfinfo_output = pdfinfo(file_path)
             if pdfinfo_output.stderr:
                 logger.info('pdfinfo returned an error!')
-                logger.debug(pdfinfo_output.stderr)
+                logger.debug(f'Error:\n{pdfinfo_output.stderr}')
                 file_err = 'Has pdf MIME type or extension, but pdfinfo ' \
                            'returned an error!'
                 logger.debug(file_err)
                 return file_err
             else:
                 logger.info('pdfinfo returned successfully')
-                logger.debug(pdfinfo_output.stdout)
+                logger.debug(f'Output of pdfinfo:\n{pdfinfo_output.stdout}')
                 if re.search('^Page size:\s*0 x 0 pts$', pdfinfo_output.stdout):
                     logger.info('pdf is corrupt anyway, page size property is '
                                 'empty!')
@@ -120,7 +126,9 @@ def check_file_for_corruption(file_path,
             logger.info('Test succeeded!')
             logger.debug(log.stdout)
 
-    if file_err != '':
+    if file_err == '':
+        logger.info('Corruption not detected!')
+    else:
         logger.warning(f'We are at the end of the function and '
                        f'file_err="{file_err}"; it should be empty!')
     return file_err
