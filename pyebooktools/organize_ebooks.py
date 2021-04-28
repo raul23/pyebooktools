@@ -39,6 +39,7 @@ OUTPUT_FOLDER = default_cfg.output_folder
 OUTPUT_FOLDER_CORRUPT = default_cfg.output_folder_corrupt
 OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
 REVERSE = default_cfg.reverse
+SYMLINK_ONLY=default_cfg.symlink_only
 TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
 
 
@@ -77,17 +78,17 @@ def organize_file(file_path, output_folder=OUTPUT_FOLDER,
                   corruption_check_only=CORRUPTION_CHECK_ONLY, dry_run=DRY_RUN,
                   organize_without_isbn=ORGANIZE_WITHOUT_ISBN,
                   output_metadata_extension=OUTPUT_METADATA_EXTENSION,
+                  symlink_only=SYMLINK_ONLY,
                   tested_archive_extensions=TESTED_ARCHIVE_EXTENSIONS):
     import ipdb
-    # ipdb.set_trace()
     file_err = check_file_for_corruption(file_path, tested_archive_extensions)
     if file_err:
+        # ipdb.set_trace()
         logger.debug(f"File '{file_path}' is corrupt with error: {file_err}")
         if output_folder_corrupt:
             new_path = unique_filename(output_folder_corrupt,
-                                       Path(file_path).parent)
-            fail_file(file_path, f'File is corrupt: {file_err}', new_path)
-            move_or_link_file(file_path, new_path)
+                                       file_path.name)
+            move_or_link_file(file_path, new_path, dry_run, symlink_only)
             # TODO: do we add the meta extension directly to new_path (which
             # already has an extension); thus if new_path='/test/path/book.pdf'
             # then new_metadata_path='/test/path/book.pdf.meta' or should it be
@@ -96,12 +97,13 @@ def organize_file(file_path, output_folder=OUTPUT_FOLDER,
             # ref.: https://bit.ly/2I6K3pW
             new_metadata_path = f'{os.path.splitext(new_path)[0]}.' \
                                 f'{output_metadata_extension}'
-            logger.info(f'Saving original filename to {new_metadata_path}...')
+            logger.debug(f'Saving original filename to {new_metadata_path}...')
             if not dry_run:
-                metadata = f'Corruption reason   : {file_err}\nOld file path' \
-                           f'       : {file_path}\n'
+                metadata = f'Corruption reason   : {file_err}\n' \
+                           f'Old file path       : {file_path}'
                 with open(new_metadata_path, 'w') as f:
                     f.write(metadata)
+            fail_file(file_path, f'File is corrupt: {file_err}', new_path)
         else:
             logger.info('Output folder for corrupt files is not set, doing '
                         'nothing')
@@ -131,6 +133,7 @@ def organize(folder_to_organize, output_folder=OUTPUT_FOLDER,
              corruption_check_only=CORRUPTION_CHECK_ONLY, dry_run=DRY_RUN,
              organize_without_isbn=ORGANIZE_WITHOUT_ISBN,
              output_metadata_extension=OUTPUT_METADATA_EXTENSION,
+             symlink_only=SYMLINK_ONLY,
              tested_archive_extensions=TESTED_ARCHIVE_EXTENSIONS,
              reverse=REVERSE, **kwargs):
     files = []
@@ -147,4 +150,5 @@ def organize(folder_to_organize, output_folder=OUTPUT_FOLDER,
     for fp in files:
         organize_file(fp, output_folder, output_folder_corrupt,
                       corruption_check_only, dry_run, organize_without_isbn,
-                      output_metadata_extension, tested_archive_extensions)
+                      output_metadata_extension, symlink_only,
+                      tested_archive_extensions)
