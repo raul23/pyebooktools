@@ -129,8 +129,8 @@ def check_file_for_corruption(file_path,
     if file_err == '':
         logger.info('Corruption not detected!')
     else:
-        logger.warning(f'We are at the end of the function and '
-                       f'file_err="{file_err}"; it should be empty!')
+        logger.debug(f'We are at the end of the function and '
+                     f'file_err="{file_err}"; it should be empty!')
     return file_err
 
 
