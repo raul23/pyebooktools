@@ -116,6 +116,8 @@ versions of:
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
 
+|
+
 `:star:`
 
   If you only install **calibre** among these dependencies, you can still have
