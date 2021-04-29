@@ -124,8 +124,11 @@ versions of:
   
   * metadata fetching will work: by default `calibre` comes with Amazon and
     Google sources among others
-  * conversion to text will work: `calibre`'s own ``ebook-convert`` tool
+  * conversion to txt will work: `calibre`'s own ``ebook-convert`` tool
     will be used
+    
+  All `subcommands`_ should work but you will mainly be limited in accuracy
+  and performance.
 
 Install ``pyebooktools``
 -------------------------
