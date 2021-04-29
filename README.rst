@@ -68,9 +68,9 @@ Thus, you have access to various `subcommands`_ from within the
     used the same names for the script options (short and longer versions) so
     that if you used the shell scripts, you will easily know how to run the
     corresponding `subcommand`_ with the given options.
-  * `ebooktools.py`_ is the name of the Python script whose name doesn't have
-    a hyphen and ends with ``.py`` to distinguish from the original Shell
-    project ``ebook-tools``.
+  * `ebooktools.py`_ is the name of the Python script which will always be
+    referred that way in this document (i.e. no hyphen and ending with ``.py``)
+    to distinguish from the original Shell project ``ebook-tools``.
   * ``pyeboooktools`` is the name of the Python package that you need to
     install as explained  `below <#install-pyebooktools>`__ to have access to
     the ``ebooktools.py`` script.
@@ -97,8 +97,8 @@ Python dependencies
 Other dependencies
 --------------------
 As explained in the documentation for `ebook-tools 
-<https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
-need recent versions of:
+<https://github.com/na--/ebook-tools#shell-scripts>`__, you need recent
+versions of:
 
   * `calibre`_ for fetching metadata from online sources, conversion to txt
     (for ISBN searching) and ebook metadata extraction. Versions **2.84** and
@@ -115,6 +115,17 @@ need recent versions of:
     respectively to ``.txt``.
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
+
+`:star:`
+
+  If you only install `calibre` among these dependencies, you can still have
+  a functioning program that will allow to do the important tasks of
+  organizing and managing your ebook collections: 
+  
+    * metadata fetching will work: by default `calibre` comes with Amazon and
+      Google sources among others
+    * conversion to text will work: `calibre`'s own ``ebook-convert`` tool
+      will be used
 
 Install ``pyebooktools``
 -------------------------
