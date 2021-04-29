@@ -122,10 +122,10 @@ versions of:
   a functioning program that will allow to do the important tasks of
   organizing and managing your ebook collections: 
   
-    * metadata fetching will work: by default `calibre` comes with Amazon and
-      Google sources among others
-    * conversion to text will work: `calibre`'s own ``ebook-convert`` tool
-      will be used
+  * metadata fetching will work: by default `calibre` comes with Amazon and
+    Google sources among others
+  * conversion to text will work: `calibre`'s own ``ebook-convert`` tool
+    will be used
 
 Install ``pyebooktools``
 -------------------------
