@@ -121,8 +121,8 @@ versions of:
 `:star:`
 
   If you only install **calibre** among these dependencies, you can still have
-  a functioning program that will allow you to do the important tasks of
-  organizing and managing your ebook collections: 
+  a functioning program that will still organize and manage your ebook
+  collections: 
   
   * fetching metadata from online sources will work: by default `calibre`
     comes with Amazon and Google sources among others
@@ -130,7 +130,7 @@ versions of:
     will be used
     
   All `subcommands`_ should work but accuracy and performance will be
-  affected as explained in the list above.
+  affected as explained in the list of dependencies above.
 
 Install ``pyebooktools``
 -------------------------
