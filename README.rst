@@ -127,8 +127,8 @@ versions of:
   * conversion to txt will work: `calibre`'s own ``ebook-convert`` tool
     will be used
     
-  All `subcommands`_ should work but you will mainly be limited in accuracy
-  and performance.
+  All `subcommands`_ should work but accuracy and performance will be
+  affected as explained in the list above.
 
 Install ``pyebooktools``
 -------------------------
