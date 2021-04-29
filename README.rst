@@ -80,7 +80,7 @@ Installation and dependencies
 To install the script ``ebooktools.py``, follow these steps:
 
 1. Install the dependencies `below <#other-dependencies>`__. 
-2. Install the package ``pyebooktools`` `below <#install-pyebooktools>`__.
+2. Install the ``pyebooktools`` package `below <#install-pyebooktools>`__.
 
 Python dependencies
 -------------------
@@ -118,10 +118,7 @@ need recent versions of:
 
 Install ``pyebooktools``
 -------------------------
-The ``pyebooktools`` package contains the ``ebooktools.py`` script which
-consists of various subcommands (e.g. ``find`` and ``organize``) for
-automated and semi-automated organization and management of large ebook
-collections.
+To install the ``pyebooktools`` package:
 
 1. It is highly recommended to install the ``pyebooktools`` package in a
    virtual environment using for example `venv`_ or `conda`_.
