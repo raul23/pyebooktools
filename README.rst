@@ -17,7 +17,7 @@ ebook collections.
 `:warning:`
 
   * For the moment, the ``ebooktools.py`` script is only tested on **macOS**.
-    Eventually, I will test it on linux.
+    Eventually, it will be tested on linux.
   * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming
     soon.
 
@@ -68,9 +68,9 @@ Thus, you have access to various `subcommands`_ from within the
     used the same names for the script options (short and longer versions) so
     that if you used the shell scripts, you will easily know how to run the
     corresponding `subcommand`_ with the given options.
-  * `ebooktools.py`_ is the name of the Python script whose name doesn't have
-    a hyphen and ends with ``.py`` to distinguish from the original Shell
-    project ``ebook-tools``.
+  * `ebooktools.py`_ is the name of the Python script which will always be
+    referred that way in this document (i.e. no hyphen and ending with ``.py``)
+    to distinguish from the original Shell project ``ebook-tools``.
   * ``pyeboooktools`` is the name of the Python package that you need to
     install as explained  `below <#install-pyebooktools>`__ to have access to
     the ``ebooktools.py`` script.
@@ -80,7 +80,7 @@ Installation and dependencies
 To install the script ``ebooktools.py``, follow these steps:
 
 1. Install the dependencies `below <#other-dependencies>`__. 
-2. Install the package ``pyebooktools`` `below <#install-pyebooktools>`__.
+2. Install the ``pyebooktools`` package `below <#install-pyebooktools>`__.
 
 Python dependencies
 -------------------
@@ -97,8 +97,8 @@ Python dependencies
 Other dependencies
 --------------------
 As explained in the documentation for `ebook-tools 
-<https://github.com/na--/ebook-tools#shell-scripts>`__ (shell scripts), you
-need recent versions of:
+<https://github.com/na--/ebook-tools#shell-scripts>`__, you need recent
+versions of:
 
   * `calibre`_ for fetching metadata from online sources, conversion to txt
     (for ISBN searching) and ebook metadata extraction. Versions **2.84** and
@@ -116,12 +116,25 @@ need recent versions of:
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
 
+|
+
+`:star:`
+
+  If you only install **calibre** among these dependencies, you can still have
+  a functioning program that will still organize and manage your ebook
+  collections: 
+  
+  * fetching metadata from online sources will work: by default `calibre`
+    comes with Amazon and Google sources among others
+  * conversion to txt will work: `calibre`'s own ``ebook-convert`` tool
+    will be used
+    
+  All `subcommands`_ should work but accuracy and performance will be
+  affected as explained in the list of dependencies above.
+
 Install ``pyebooktools``
 -------------------------
-The ``pyebooktools`` package contains the ``ebooktools.py`` script which
-consists of various subcommands (e.g. ``find`` and ``organize``) for
-automated and semi-automated organization and management of large ebook
-collections.
+To install the ``pyebooktools`` package:
 
 1. It is highly recommended to install the ``pyebooktools`` package in a
    virtual environment using for example `venv`_ or `conda`_.
@@ -173,7 +186,7 @@ defined in the default config file ``default_config.py`` will be used.
 
 The ``ebooktools.py`` script consists of various subcommands for the
 organization and management of ebook collections. The usage pattern for running
-one of the subcommands is as follows:
+one of the subcommands is as followed:
 
 .. code-block:: terminal
 
@@ -368,7 +381,7 @@ Options related to extracting and searching for non-ISBN metadata
   ``fetch-ebook-metadata --help`` and check the description for the
   ``--allowed-plugin`` option. *Because Calibre versions older than 2.84 don't
   support the --allowed-plugin option, if you want to use such an old Calibre
-  version you should manually set ORGANIZE_WITHOUT_ISBN_SOURCES to an empty
+  version you should manually set organize_without_isbn_sources to an empty
   string.*
   
   In contrast to searching by ISBNs, searching by author and title is done
