@@ -169,6 +169,7 @@ def add_input_output_options(parser, remove_opts=None, add_as_group=True):
     return parser_input_output
 
 
+# TODO: important, should be in add_isbns_options
 def add_isbn_return_separator(parser):
     # TODO: note down that escape other characters in ISBN_RET_SEPARATOR,
     # e.g. \r, \t, \a, \f, \v, \b, \n
@@ -218,9 +219,9 @@ def add_isbns_options(parser, remove_opts=None):
             "--isbn-ignored-files", dest='isbn_ignored_files', metavar='REGEX',
             help='''This is a regular expression that is matched against the MIME
             type of the searched files. Matching files are not searched for ISBNs
-            beyond their filename. By default, it tries to make the scripts ignore
-            .gif and .svg images, audio, video and executable files and fonts.'''
-                 + _DEFAULT_MSG.format(ISBN_IGNORED_FILES))
+            beyond their filename. By default, it tries to make the subcommands
+            ignore .gif and .svg images, audio, video and executable files and
+            fonts.''' + _DEFAULT_MSG.format(ISBN_IGNORED_FILES))
     if not remove_opts.count('reorder-files-for-grep'):
         # TODO: important don't use grep in name of option since we are searching w/o it
         # TODO: test this option (1 or 2 args)
@@ -240,19 +241,56 @@ def add_isbns_options(parser, remove_opts=None):
                  + _DEFAULT_MSG.format(ISBN_GREP_REORDER_FILES))
     if not remove_opts.count('metadata-fetch-order'):
         parser_isbns_group.add_argument(
-            "---mfo", "---metadata-fetch-order", dest='isbn_metadata_fetch_order',
-            metavar='METADATA_SOURCES',
-            help='''This option allows you to specify the online metadata sources
-            and order in which the scripts will try searching in them for books by
-            their ISBN. The actual search is done by calibre's fetch-ebook-metadata
-            command-line application, so any custom calibre metadata plugins can
-            also be used. To see the currently available options, run
-            fetch-ebook-metadata --help and check the description for the
-            --allowed-plugin option. If you use Calibre versions that are older than
-            2.84, it's required to manually set this option to an empty string.'''
+            "---mfo", "---metadata-fetch-order", nargs='+',
+            dest='isbn_metadata_fetch_order', metavar='METADATA_SOURCE',
+            help='''This option allows you to specify the online metadata
+            sources and order in which the subcommands will try searching in
+            them for books by their ISBN. The actual search is done by
+            calibre's `fetch-ebook-metadata` command-line application, so any
+            custom calibre metadata plugins can also be used. To see the
+            currently available options, run `fetch-ebook-metadata --help` and
+            check the description for the `--allowed-plugin` option. If you use
+            Calibre versions that are older than 2.84, it's required to
+            manually set this option to an empty string.'''
                  + _DEFAULT_MSG.format(ISBN_METADATA_FETCH_ORDER))
     # TODO: return parser for other functions too?
     return parser_isbns_group
+
+
+def add_non_isbn_options(parser):
+    parser_non_isbn_group = parser.add_argument_group(
+        title='arguments for extracting and searching non-ISBN metadata')
+    parser_non_isbn_group.add_argument(
+        '--token-min-length', dest='token_min_length', metavar='LENGTH',
+        type=int,
+        help='''When files and file metadata are parsed, they are split into
+        words (or more precisely, either alpha or numeric tokens) and ones
+        shorter than this value are ignored. By default, single and two
+        character number and words are ignored.'''
+             + _DEFAULT_MSG.format(TOKEN_MIN_LENGTH))
+    parser_non_isbn_group.add_argument(
+        '--tokens-to-ignore', dest='tokens_to_ignore', metavar='TOKENS',
+        help='''A regular expression that is matched against the
+        filename/author/title tokens and matching tokens are ignored. The
+        default regular expression includes common words that probably hinder
+        online metadata searching like book, novel, series, volume and others,
+        as well as probable publication years like (so 1999 is ignored while
+        2033 is not). You can see it in lib.py.'''
+             + _DEFAULT_MSG.format(TOKENS_TO_IGNORE))
+    parser_non_isbn_group.add_argument(
+        '--owis', '--organize-without-isbn-sources', nargs='+',
+        dest='organize_without_isbn_sources', metavar='METADATA_SOURCE',
+        help='''This option allows you to specify the online metadata sources
+        in which the subcommands will try searching for books by non-ISBN
+        metadata (i.e. author and title). The actual search is done by
+        calibre's `fetch-ebook-metadata` command-line application, so any
+        custom calibre metadata plugins can also be used. To see the currently
+        available options, run `fetch-ebook-metadata --help` and check the
+        description for the `--allowed-plugin` option. Because Calibre versions
+        older than 2.84 don't support the `--allowed-plugin` option, if you
+        want to use such an old Calibre version you should manually set
+        `organize_without_isbn_sources` to an empty string.'''
+             + _DEFAULT_MSG.format(ORGANIZE_WITHOUT_ISBN_SOURCES))
 
 
 # Options for OCR
@@ -269,8 +307,8 @@ def add_ocr_options(parser, remove_opts=None):
         parser_convert_group.add_argument(
             "--ocrop", "--ocr-only-first-last-pages",
             dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
-            help='''Value n,m instructs the scripts to convert only the first n
-                and last m pages when OCR-ing ebooks.'''
+            help='''Value n,m instructs the subcommands to convert only the
+            first n and last m pages when OCR-ing ebooks.'''
                  + _DEFAULT_MSG.format(OCR_ONLY_FIRST_LAST_PAGES))
     if not remove_opts.count('ocr-command'):
         # TODO: test ocrc option or drop it
@@ -493,7 +531,10 @@ See subcommands below for a list of the tools that can be used.
         help='''Automatically organize folders with potentially huge amounts
         of unorganized ebooks. This is done by renaming the files with proper
         names and moving them to other folders.''')
-    add_general_options(parser_organize, remove_opts=['keep-metadata'])
+    add_general_options(parser_organize)
+    add_isbns_options(parser_organize)
+    add_ocr_options(parser_organize)
+    add_non_isbn_options(parser_organize)
     parser_organize_group = parser_organize.add_argument_group(
         title='specific arguments for the subcommand `organize`')
     parser_organize_group.add_argument(
@@ -503,6 +544,24 @@ See subcommands below for a list of the tools that can be used.
         (ex. zero-filled files, corrupt archives or broken .pdf files). Useful
         with the `output-folder-corrupt` option.''')
     parser_organize_group.add_argument(
+        '--tested-archive-extensions', dest='tested_archive_extensions',
+        metavar='REGEX',
+        help='''A regular expression that specifies which file extensions will
+        be tested with `7z t` for corruption.'''
+             + _DEFAULT_MSG.format(TESTED_ARCHIVE_EXTENSIONS))
+    parser_organize_group.add_argument(
+        "--owi", "--organize-without-isbn", dest='organize_without_isbn',
+        action="store_true",
+        help='''Specify whether the script will try to organize ebooks if there
+        were no ISBN found in the book or if no metadata was found online with
+        the retrieved ISBNs. If enabled, the script will first try to use
+        calibre's `ebook-meta` command-line tool to extract the author and
+        title metadata from the ebook file. The script will try searching the
+        online metadata sources (`organize_without_isbn_sources`) by the
+        extracted author & title and just by title. If there is no useful
+        metadata or nothing is found online, the script will try to use the
+        filename for searching.''')
+    parser_organize_group.add_argument(
         '--wii', '--without-isbn-ignore', dest='without_isbn_ignore',
         metavar='REGEX',
         help='''This is a regular expression that is matched against lowercase
@@ -510,7 +569,9 @@ See subcommands below for a list of the tools that can be used.
         and matching files are ignored by the script, even if
         `organize-without-isbn` is true. The default value is calibrated to
         match most periodicals (magazines, newspapers, etc.) so the script can
-        ignore them.''' + _DEFAULT_MSG.format(WITHOUT_ISBN_IGNORE))
+        ignore them.'''
+             + _DEFAULT_MSG.format('complex default value, see the main '
+                                   'config file'))
     parser_organize_group.add_argument(
         '--pamphlet-included-files', dest='pamphlet_included_files',
         metavar='REGEX',
@@ -713,6 +774,13 @@ if __name__ == '__main__':
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
     #
     # Organize
+    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg -o ~/test/_ebooktools/organize/output_folder
+    # --ofu ~/test/_ebooktools/oranize/output_folder_uncertain/ --pamphlet-max-pdf-pages 10 --owi
+    #
+    # Organize with output folder (no corrupted files)
+    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
+    # -o ~/test/_ebooktools/organize/output_folder -d
+    #
     # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
     #
     # Organize with corrupted files
