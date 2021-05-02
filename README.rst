@@ -121,7 +121,7 @@ versions of:
 `:star:`
 
   If you only install **calibre** among these dependencies, you can still have
-  a functioning program that will still organize and manage your ebook
+  a functioning program that will organize and manage your ebook
   collections: 
   
   * fetching metadata from online sources will work: by default `calibre`
