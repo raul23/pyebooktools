@@ -828,8 +828,8 @@ Roadmap
 =======
 - Port all `ebook-tools`_ shell scripts into Python
 
-  - ``organize-ebooks.sh``: **working on it**
-  - ``interactive-organizer.sh``: **not started yet**
+  - |ss| ``organize-ebooks.sh``: **done**, *see* `organize_ebooks.py`_ |se|
+  - ``interactive-organizer.sh``: **working on it**
   - |ss| ``find-isbns.sh``: **done**, *see* `find_isbns.py`_ |se|
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
@@ -937,6 +937,7 @@ References
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
+.. _organize_ebooks.py: ./pyebooktools/_organize_ebooks.py
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
