@@ -117,7 +117,9 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
                 # in the metadata file in the the uuid field (but only one case)
         logger.debug('Parsed metadata:')
         for k, v in metadata.items():
-            v = substitute_with_sed('[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]', '_', v)
+            # Get only the first 100 characters
+            v = substitute_with_sed(regex='[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]',
+                                    replacement='_', text=v)[:100]
             metadata[k] = v.encode('utf-8')
             logger.debug(f'{k}: {v}')
         new_name = substitute_params(metadata, output_filename_template)
@@ -127,8 +129,15 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
         logger.info('Saving book file and metadata...')
         logger.debug(f"Moving file to '{new_path}'")
         move_or_link_file(book_path, new_path, dry_run, symlink_only)
+        # TODO: important, book.pdf.meta or book.meta?
+        # What if: book.pdf and book.epub
+        # case 1: book.pdf.meta and book.epub.meta
+        # case 2: book.meta overwritten (since no unique_filename for metadata)
+        """
         new_metadata_path = f'{new_path.split(Path(new_path).suffix)[0]}.' \
                             f'{output_metadata_extension}'
+        """
+        new_metadata_path = f'{new_path}.{output_metadata_extension}'
         if save_metadata == 'recreate':
             new_metadata = f"""Title               : {metadata['TITLE'].decode()}
 Author(s)           : {metadata['AUTHORS'].decode()}
@@ -143,3 +152,4 @@ Metadata source     : metadata.opf"""
             copy(metadata_path, new_metadata_path, clobber=False)
         else:
             logger.debug('Metadata was not copied or recreated')
+    return 0
