@@ -33,7 +33,6 @@ from pyebooktools.lib import (BOLD, GREEN, NC, RED, check_file_for_corruption,
                               search_file_for_isbns, search_meta_val,
                               unique_filename)
 from pyebooktools.utils.logutils import init_log
-import ipdb
 
 logger = init_log(__name__, __file__)
 
@@ -95,6 +94,7 @@ def skip_file(old_path, new_path):
     logger.info(f'REASON\t: {new_path}\n')
 
 
+# TODO: important, do the same for others
 class OrganizeEbooks:
     def __init__(self):
         self.folder_to_organize=None
@@ -477,7 +477,6 @@ class OrganizeEbooks:
         logger.info('=====================================================')
 
     def organize(self, folder_to_organize, **kwargs):
-        ipdb.set_trace()
         # TODO: add debug message about update attributes
         self.__dict__.update(kwargs)
         self.folder_to_organize = folder_to_organize
