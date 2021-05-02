@@ -56,6 +56,7 @@ def convert(input_file, output_file=default_cfg.output_file,
     check_conversion = False
     if ocr_enabled == 'always':
         logger.info("OCR=always, first try OCR then conversion")
+        # TODO: important, use **vars()?
         if ocr_file(input_file, output_file, mime_type, ocr_command,
                     OCR_ONLY_FIRST_LAST_PAGES):
             logger.warning("OCR failed! Will try conversion...")
@@ -72,6 +73,7 @@ def convert(input_file, output_file=default_cfg.output_file,
             logger.info("Conversion successful, will not try OCR")
         else:
             logger.warning("Conversion failed! Will try OCR...")
+            # TODO: important, use **vars()?
             if ocr_file(input_file, output_file, mime_type, ocr_command,
                         OCR_ONLY_FIRST_LAST_PAGES):
                 logger.warning("OCR failed!")
