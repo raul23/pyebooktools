@@ -186,7 +186,7 @@ defined in the default config file ``default_config.py`` will be used.
 
 The ``ebooktools.py`` script consists of various subcommands for the
 organization and management of ebook collections. The usage pattern for running
-one of the subcommands is as follows:
+one of the subcommands is as followed:
 
 .. code-block:: terminal
 
