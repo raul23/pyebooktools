@@ -19,9 +19,9 @@ import sys
 
 import pyebooktools
 from pyebooktools import (convert_to_txt, edit_config, find_isbns, fix_ebooks,
-                          organize_ebooks, rename_calibre_library,
-                          split_into_folders)
+                          rename_calibre_library, split_into_folders)
 from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.organize_ebooks import organizer
 from pyebooktools.utils.genutils import (get_config_dict, namespace_to_dict,
                                          override_config_with_args, setup_log)
 from pyebooktools.utils.logutils import init_log
@@ -626,7 +626,7 @@ See subcommands below for a list of the tools that can be used.
         metavar='PATH',
         help='''If specified, pamphlets will be moved to this folder.'''
              + _DEFAULT_MSG.format(OUTPUT_FOLDER_PAMPHLETS))
-    parser_organize.set_defaults(func=organize_ebooks.organize)
+    parser_organize.set_defaults(func=organizer.organize)
     # ======================
     # rename-calibre-library
     # ======================
@@ -789,6 +789,11 @@ if __name__ == '__main__':
     # Organize with corrupted files and corrupted folder
     # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ -o ~/test/_ebooktools/organize/output_folder/
     # --log-format only_msg --ofc ~/test/_ebooktools/organize/output_folder_corrupt/
+    #
+    # Organize with uncertain folder
+    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
+    # -o ~/test/_ebooktools/organize/output_folder --ofu ~/test/_ebooktools/oganize/output_folder_uncertain/
+    # --pamphlet-max-pdf-pages 10 --owi --log-level info --km
     #
     # Rename
     # ebooktools rename --sm opfcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
