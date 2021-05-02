@@ -427,7 +427,7 @@ def get_all_isbns_from_archive(
 
 
 def get_ebook_metadata(file_path):
-    # TODO: add `ebook-meta` in PATH, right now it is only working for mac
+    # TODO: urgent, add `ebook-meta` in PATH, right now it is only working for mac
     cmd = f'/Applications/calibre.app/Contents/MacOS/ebook-meta "{file_path}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -906,6 +906,7 @@ def search_file_for_isbns(
         ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES, **kwargs):
     # TODO: urgent, check vars and other functions
     func_params = locals().copy()
+    # TODO: explain pop()
     func_params.pop('file_path')
     basename = os.path.basename(file_path)
     logger.info(f"Searching file '{basename}' for ISBN numbers...")
