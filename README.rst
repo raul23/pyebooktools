@@ -128,7 +128,7 @@ versions of:
     <https://manual.calibre-ebook.com/generated/en/fetch-ebook-metadata.html#
     cmdoption-fetch-ebook-metadata-allowed-plugin>`__
     **calibre** comes with Amazon and Google sources among others
-  * conversion to txt will work: `calibre`'s own ``ebook-convert`` tool
+  * conversion to txt will work: `calibre`'s own `ebook-convert`_ tool
     will be used
     
   All `subcommands`_ should work but accuracy and performance will be
@@ -905,6 +905,7 @@ References
 .. _conda: https://docs.conda.io/en/latest/
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _DjVuLibre: http://djvu.sourceforge.net/
+.. _ebook-convert: https://manual.calibre-ebook.com/generated/en/ebook-convert.html
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
