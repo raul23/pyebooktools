@@ -124,8 +124,10 @@ versions of:
   a functioning program that will organize and manage your ebook
   collections: 
   
-  * fetching metadata from online sources will work: by default `calibre`
-    comes with Amazon and Google sources among others
+  * fetching metadata from online sources will work: by `default 
+    <https://manual.calibre-ebook.com/generated/en/fetch-ebook-metadata.html#
+    cmdoption-fetch-ebook-metadata-allowed-plugin>`__
+    **calibre** comes with Amazon and Google sources among others
   * conversion to txt will work: `calibre`'s own ``ebook-convert`` tool
     will be used
     
