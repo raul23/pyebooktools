@@ -937,7 +937,7 @@ References
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
-.. _organize_ebooks.py: ./pyebooktools/_organize_ebooks.py
+.. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
