@@ -41,6 +41,9 @@ References
 """
 import os
 
+from pyebooktools.configs import get_without_isbn_ignore
+
+
 # ==================
 # 1. General options
 # ==================
@@ -118,7 +121,7 @@ app = None
 corruption_check_only = False
 tested_archive_extensions = '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$'
 organize_without_isbn = False
-without_isbn_ignore = None
+without_isbn_ignore = get_without_isbn_ignore()
 # TODO: why '?' in pptx, see https://bit.ly/2ryWlgt
 pamphlet_included_files = '\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$'
 pamphlet_excluded_files = '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$'
