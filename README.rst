@@ -975,21 +975,27 @@ Roadmap
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
-- Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
-  the following methods:
+- Add a ``fix`` subcommand that will try to fix corrupted PDF files
+  by checking first if the file is corrupted based on the following 
+  methods:
   
   * ``pdfinfo``
   * ``pdftotext``
   * ``qpdf``
   * ``jhove``
+  
+  Then, use ``gs`` or ``cpdf`` to fix it.
     
   **References:**
     
-    * `Some user tested first three methods <https://superuser.com/a/1546294>`__
-      (results: ``pdfinfo`` fastest and ``qpdf`` slowest)
+    * `Some user tested first three methods by checking PDF files only, not 
+      fixing them <https://superuser.com/a/1546294>`__ (results: ``pdfinfo`` 
+      fastest and ``qpdf`` slowest)
     * `Some user tested jhove <https://superuser.com/a/1204692>`__
+    * `_Some user uses cpdf to fix broken files <https://superuser.com/a/1228662>`__
     * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
     * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
+    * `Official website for cpdf <https://community.coherentpdf.com/>`__
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
