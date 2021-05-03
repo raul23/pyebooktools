@@ -9,8 +9,10 @@ from the ``ebooktools.py`` script.
    :local:
    :backlinks: top
 
-Example 1: edit the main config file
-------------------------------------
+``edit`` examples
+=================
+Edit the main config file
+-------------------------
 To edit the **main** config file with **PyCharm**:
 
 .. code-block:: terminal
@@ -26,16 +28,19 @@ A tab with the main config file will be opened in PyCharm's Editor window:
    :align: left
    :alt: Example: opened tab with config file in PyCharm
 
-Example 2: reset the main config file
--------------------------------------
+Reset the main config file
+--------------------------
 To reset the **main** config file with factory settings:
 
 .. code-block:: terminal
    
    $ ebooktools edit -r main
 
-Example 3: convert a pdf file to text **with** OCR
---------------------------------------------------
+
+``convert`` examples
+====================
+Convert a pdf file to text **with** OCR
+---------------------------------------
 To convert a pdf file to text **with OCR**:
 
 .. code-block:: terminal
@@ -54,8 +59,8 @@ trying the simple conversion tools (``pdftotext`` or calibre's
    INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
    INFO     OCR successful!
 
-Example 4: convert a pdf file to text **without** OCR
------------------------------------------------------
+Convert a pdf file to text **without** OCR
+------------------------------------------
 To convert a pdf file to text **without OCR**:
 
 .. code-block:: terminal
@@ -72,8 +77,11 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
    INFO     OCR=false, try only conversion...
    INFO     Conversion successful!
 
-Example 5: find ISBNs in a string
----------------------------------
+``find`` examples
+=================
+
+Find ISBNs in a string
+----------------------
 Find ISBNs in the string ``'978-159420172-1 978-1892391810 0000000000 
 0123456789 1111111111'``:
 
@@ -128,8 +136,8 @@ by newlines, ``\n``.
      blablabla
      "
 
-Example 6: find ISBNs in a pdf file
------------------------------------
+Find ISBNs in a pdf file
+------------------------
 Find ISBNs in a pdf file:
 
 .. code-block:: terminal
@@ -161,8 +169,23 @@ that the regular expression `isbn_blacklist_regex`_ didn't catch. Maybe
 it is a binary sequence that is part of a problem in a book about digital
 system. 
 
-Example 7: rename book files from calibre library folder
---------------------------------------------------------
+``organize`` examples
+=====================
+
+Organize ebook files with corrupted folder
+------------------------------------------
+
+Organize ebook files with pamphlets folder
+------------------------------------------
+
+Organize ebook files with uncertain folder
+------------------------------------------
+
+``rename`` examples
+===================
+
+Rename book files from calibre library folder
+---------------------------------------------
 Rename book files from a calibre library folder and save their symlinks
 along with their copied ``metadata.opf`` files into an output folder:
 
@@ -206,8 +229,11 @@ Content of ``output_folder``:
   <./README.rst#options-related-to-the-input-and-output-files>`__) beside the
   symlinks to the book files.
 
-Example 8: split a folder
--------------------------
+``split`` examples
+==================
+
+Split a folder
+--------------
 We have a folder containing four ebooks and their corresponding metadata:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
