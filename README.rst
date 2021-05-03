@@ -1004,15 +1004,15 @@ Starting from first priority tasks:
    - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
    - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se| 
    
-1. Test on linux
+2. Test on linux
 
-1. Add tests on `Travis CI`_
+3. Add tests on `Travis CI`_
 
-1. Eventually add documentation on `Read the Docs`_
+4. Eventually add documentation on `Read the Docs`_
 
-1. Create a `docker`_ image for this project
+5. Create a `docker`_ image for this project
 
-1. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+6. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following methods:
   
    * ``gs``: Ghostscript
@@ -1028,7 +1028,7 @@ Starting from first priority tasks:
    * ``qpdf``
    * ``jhove``
    
-1. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
+7. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks and attachments from PDF files based
    on the following methods:
  
