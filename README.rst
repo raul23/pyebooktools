@@ -632,6 +632,26 @@ and corrupt ebooks and non-ebook documents (pamphlets) can be separated in
 specified folders. Most of the general options and flags above affect how 
 this subcommand operates, but there are also some specific options for it.
 
+Global options
+""""""""""""""
+
+Local options
+"""""""""""""
+
+Input and output arguments
+""""""""""""""""""""""""""
+* ``folder_to_organize``; no config variable; **required**
+
+  Folder containing the ebook files that need to be organized.
+  
+* ``-o <value>``,`` --output-folder <value>``; config variable
+  ``output_folder``; **default value is the current working 
+  directory** (check with ``pwd``)
+  
+  The folder where ebooks that were renamed based on the ISBN 
+  metadata will be moved to.
+
+
 rename [<OPTIONS>] calibre_folder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
