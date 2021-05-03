@@ -993,9 +993,9 @@ Roadmap
     
   **References:**
     
-    * `Some user tested first three methods by checking PDF files only, not 
-      fixing them <https://superuser.com/a/1546294>`__ (results: ``pdfinfo`` 
-      fastest and ``qpdf`` slowest)
+    * `Some user tested first three pdf-checking methods 
+      <https://superuser.com/a/1546294>`__ (results: ``pdfinfo`` fastest 
+      and ``qpdf`` slowest)
     * `Some user tested jhove <https://superuser.com/a/1204692>`__
     * `Some user provides gs command for linux <https://superuser.com/a/282056>`__
     * `Some user provides pdftocairo command <https://superuser.com/a/608862>`__
