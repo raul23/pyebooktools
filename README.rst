@@ -694,6 +694,7 @@ Specific options
   Do not organize or rename files, just check them for corruption
   (ex. zero-filled files, corrupt archives or broken ``.pdf`` files). 
   Useful with the ``output_folder_corrupt`` option.
+
 * ``--tested-archive-extensions <value>``; config variable
   ``tested_archive_extensions``; default value 
   ``^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods
@@ -701,6 +702,19 @@ Specific options
   
   A regular expression that specifies which file extensions will be
   tested with ``7z t`` for corruption.
+  
+* ``--owi``, ``--organize-without-isbn``; config variable
+  ``organize_without_isbn``; default value ``False``
+  
+  Specify whether the script will try to organize ebooks if there were
+  no ISBN found in the book or if no metadata was found online with the
+  retrieved ISBNs. If enabled, the script will first try to use
+  calibre's ``ebook-meta`` command-line tool to extract the author and 
+  title metadata from the ebook file. The script will try searching the
+  online metadata sources (``organize_without_isbn_sources``) by the
+  extracted author & title and just by title. If there is no useful
+  metadata or nothing is found online, the script will try to use the
+  filename for searching.
 
 Input and output arguments
 """"""""""""""""""""""""""
