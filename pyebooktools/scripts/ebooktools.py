@@ -15,6 +15,7 @@ References
 """
 import argparse
 import codecs
+import os
 import sys
 
 import pyebooktools
@@ -79,7 +80,7 @@ _DEFAULT_MSG = ' (default: {})'
 # General options
 def add_general_options(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
-    parser_general_group = parser.add_argument_group(title='general arguments')
+    parser_general_group = parser.add_argument_group(title='General options')
     if not remove_opts.count('help'):
         parser_general_group.add_argument('-h', '--help', action='help',
                             help='Show this help message and exit.')
@@ -91,42 +92,42 @@ def add_general_options(parser, remove_opts=None):
             help="Show program's version number and exit.")
     if not remove_opts.count('quiet'):
         parser_general_group.add_argument(
-            "-q", "--quiet", action="store_true",
-            help="Enable quiet mode, i.e. nothing will be printed.")
+            '-q', '--quiet', action='store_true',
+            help='Enable quiet mode, i.e. nothing will be printed.')
     if not remove_opts.count('verbose'):
         # TODO: important test traceback
         parser_general_group.add_argument(
-            "--verbose", action="store_true",
-            help='''Print various debugging information, e.g. print
-            traceback when there is an exception.''')
+            '--verbose', action='store_true',
+            help='Print various debugging information, e.g. print traceback '
+                 'when there is an exception.')
     if not remove_opts.count('dry-run'):
         parser_general_group.add_argument(
-            "-d", "--dry-run", dest='dry_run', action="store_true",
-            help='''If this is enabled, no file rename/move/symlink/etc.
-                operations will actually be executed.''')
+            '-d', '--dry-run', dest='dry_run', action='store_true',
+            help='If this is enabled, no file rename/move/symlink/etc. '
+                 'operations will actually be executed.')
     # TODO: important remove symlink-only and other options for some subcommands
     if not remove_opts.count('symlink-only'):
         parser_general_group.add_argument(
-            "--sl", "--symlink-only", dest='symlink_only', action="store_true",
-            help='''Instead of moving the ebook files, create symbolic links
-            to them.''')
+            '--sl', '--symlink-only', dest='symlink_only', action='store_true',
+            help='Instead of moving the ebook files, create symbolic links to '
+                 'them.')
     if not remove_opts.count('keep-metadata'):
         parser_general_group.add_argument(
-            "--km", "--keep-metadata", dest='keep_metadata',
-            action="store_true",
-            help='''Do not delete the gathered metadata for the organized
-            ebooks, instead save it in an accompanying file together with each
-            renamed book. It is very useful for semi-automatic verification of
-            the organized files with interactive-organizer.sh or for additional
-            verification, indexing or processing at a later date.''')
+            '--km', '--keep-metadata', dest='keep_metadata', action='store_true',
+            help='Do not delete the gathered metadata for the organized ebooks, '
+                 'instead save it in an accompanying file together with each'
+                 'renamed book. It is very useful for semi-automatic '
+                 'verification of the organized files with '
+                 '`interactive-organizer.sh` or for additional verification, '
+                 'indexing or processing at a later date.')
     # TODO: important move reverse and 2 others after into misc
     # TODO: implement more sort options, e.g. random sort
     if not remove_opts.count('reverse'):
         parser_general_group.add_argument(
-            "-r", "--reverse", dest='reverse', action="store_true",
-            help='''If this is enabled, the files will be sorted in reverse
-                (i.e. descending) order. By default, they are sorted in ascending
-                order.''')
+            '-r', '--reverse', dest='reverse', action='store_true',
+            help='If this is enabled, the files will be sorted in reverse (i.e. '
+                 'descending) order. By default, they are sorted in ascending '
+                 'order.')
     if not remove_opts.count('log-level'):
         parser_general_group.add_argument(
             '--log-level', dest='logging_level',
@@ -148,7 +149,7 @@ def add_input_output_options(parser, remove_opts=None, add_as_group=True):
     remove_opts = init_list(remove_opts)
     if add_as_group:
         parser_input_output = parser.add_argument_group(
-            title='arguments related to the input and output files')
+            title='Options related to the input and output files')
     else:
         parser_input_output = parser
     if not remove_opts.count('output-filename-template'):
@@ -188,7 +189,7 @@ def add_isbn_return_separator(parser):
 def add_isbns_options(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
     parser_isbns_group = parser.add_argument_group(
-        title='arguments related to extracting ISBNS from files and finding '
+        title='Options related to extracting ISBNS from files and finding '
               'metadata by ISBN')
     if not remove_opts.count('isbn-regex'):
         # TODO: add look-ahead and look-behind info, see https://bit.ly/2OYsY76
@@ -259,7 +260,7 @@ def add_isbns_options(parser, remove_opts=None):
 
 def add_non_isbn_options(parser):
     parser_non_isbn_group = parser.add_argument_group(
-        title='arguments for extracting and searching non-ISBN metadata')
+        title='Options for extracting and searching non-ISBN metadata')
     parser_non_isbn_group.add_argument(
         '--token-min-length', dest='token_min_length', metavar='LENGTH',
         type=int,
@@ -296,7 +297,7 @@ def add_non_isbn_options(parser):
 # Options for OCR
 def add_ocr_options(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
-    parser_convert_group = parser.add_argument_group(title='arguments for OCR')
+    parser_convert_group = parser.add_argument_group(title='Options for OCR')
     if not remove_opts.count('ocr-enabled'):
         parser_convert_group.add_argument(
             "--ocr", "--ocr-enabled", dest='ocr_enabled',
@@ -304,6 +305,9 @@ def add_ocr_options(parser, remove_opts=None):
             help='''Whether to enable OCR for .pdf, .djvu and image files. It is
                 disabled by default.''')
     if not remove_opts.count('ocr-only-first-last-pages'):
+        # TODO: improve presentation of default values (and other places)
+        # e.g. right now: (7,3)
+        # what we want: 7 3
         parser_convert_group.add_argument(
             "--ocrop", "--ocr-only-first-last-pages",
             dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
@@ -393,6 +397,61 @@ def required_length(nmin,nmax):
     return RequiredLength
 
 
+# Ref.: https://stackoverflow.com/a/32891625/14664104
+class MyFormatter(argparse.HelpFormatter):
+    """
+    Corrected _max_action_length for the indenting of subactions
+    """
+
+    def add_argument(self, action):
+        if action.help is not argparse.SUPPRESS:
+
+            # find all invocations
+            get_invocation = self._format_action_invocation
+            invocations = [get_invocation(action)]
+            current_indent = self._current_indent
+            for subaction in self._iter_indented_subactions(action):
+                # compensate for the indent that will be added
+                indent_chg = self._current_indent - current_indent
+                added_indent = 'x' * indent_chg
+                invocations.append(added_indent + get_invocation(subaction))
+            # print('inv', invocations)
+
+            # update the maximum item length
+            invocation_length = max([len(s) for s in invocations])
+            action_length = invocation_length + self._current_indent
+            self._action_max_length = max(self._action_max_length,
+                                          action_length)
+
+            # add the item to the list
+            self._add_item(self._format_action, [action])
+
+    # Ref.: https://stackoverflow.com/a/23941599/14664104
+    def _format_action_invocation(self, action):
+        if not action.option_strings:
+            metavar, = self._metavar_formatter(action, action.dest)(1)
+            return metavar
+        else:
+            parts = []
+            # if the Optional doesn't take a value, format is:
+            #    -s, --long
+            if action.nargs == 0:
+                parts.extend(action.option_strings)
+
+            # if the Optional takes a value, format is:
+            #    -s ARGS, --long ARGS
+            # change to
+            #    -s, --long ARGS
+            else:
+                default = action.dest.upper()
+                args_string = self._format_args(action, default)
+                for option_string in action.option_strings:
+                    #parts.append('%s %s' % (option_string, args_string))
+                    parts.append('%s' % option_string)
+                parts[-1] += ' %s'%args_string
+            return ', '.join(parts)
+
+
 def setup_argparser():
     """Setup the argument parser for the command-line script.
 
@@ -402,18 +461,18 @@ def setup_argparser():
         Argument parser.
 
     """
+    width = os.get_terminal_size().columns - 5
     # Setup the parser
     parser = argparse.ArgumentParser(
-        description='''\
-This program is a Python port of ebook-tools written in Shell by na-- (See
-https://github.com/na--/ebook-tools).
-
-This program is a collection of tools for automated and
-semi-automated organization and management of large ebook collections.
-
-See subcommands below for a list of the tools that can be used.
-''',
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        description='This program is a Python port of ebook-tools written in '
+                    'Shell by na-- (See https://github.com/na--/ebook-tools). '
+                    'It is a collection of tools for automated and '
+                    'semi-automated organization and management of large ebook '
+                    'collections. See subcommands below for a list of the tools '
+                    'that can be used.',
+        # RawDescriptionHelpFormatter
+        formatter_class=lambda prog: MyFormatter(
+            prog, max_help_position=30, width=width))
     parser.add_argument(
         '-v', '--version', action='version',
         version=f'%(prog)s v{pyebooktools.__version__}')
@@ -434,214 +493,246 @@ See subcommands below for a list of the tools that can be used.
     # Edit files
     # ==========
     # create the parser for the "edit" command
+    desc = 'Edit a configuration file, either the main configuration file ' \
+           f'(`{_MAIN_CFG}`) or the logging configuration file (`{_LOG_CFG}`).'
     parser_edit = subparsers.add_parser(
-        'edit', add_help=False, help='''Edit a configuration file, either the main
-        configuration file (`{}`) or the logging configuration file
-        (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
+        'edit', add_help=False,
+        usage=f'%(prog)s [OPTIONS] {{{_MAIN_CFG}, {_LOG_CFG}}}\n\n{desc}',
+        help='Edit a configuration file.',
+        formatter_class=lambda prog: MyFormatter(
+            prog, max_help_position=50, width=width))
     add_general_options(parser_edit, remove_opts=['dry-run', 'keep-metadata',
                                                   'reverse', 'symlink-only'])
     parser_edit_group = parser_edit.add_argument_group(
-        title='specific arguments for the subcommand `test`')
+        title='Specific options for the subcommand `test`')
     parser_edit_mutual_group = parser_edit_group.add_mutually_exclusive_group()
     parser_edit_mutual_group.add_argument(
         '-a', '--app', metavar='NAME', nargs='?',
-        help='''Name of the application to use for editing the config file. If
-        no name is given, then the default application for opening this type of
-        file will be used.''')
+        help='Name of the application to use for editing the config file. If '
+             'no name is given, then the default application for opening this '
+             'type of file will be used.')
     parser_edit_mutual_group.add_argument(
-        "-r", "--reset", action="store_true",
-        help='''Reset a configuration file (`{}` or `{}`) with factory
-        default values.'''.format(_MAIN_CFG, _LOG_CFG))
+        '-r', '--reset', action='store_true',
+        help=f'Reset a configuration file (`{_MAIN_CFG}` or `{_LOG_CFG}`) '
+             'with factory default values.')
     parser_edit_input_group = parser_edit.add_argument_group(
         title='input argument')
     parser_edit_input_group.add_argument(
         'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
-        help='''The config file to edit which can either be the main
-                configuration file (`{}`) or the logging configuration file
-                (`{}`).'''.format(_MAIN_CFG, _LOG_CFG))
+        help='The config file to edit which can either be the main '
+             f'configuration file (`{_MAIN_CFG}`) or the logging configuration '
+             f'file (`{_LOG_CFG}`).')
     parser_edit.set_defaults(func=parse_edit_args)
     # ==============
     # Convert to txt
     # ==============
     # create the parser for the "convert" command
+    name_input = 'input_file'
+    desc = 'Convert the supplied ebook file to a text file. It can optionally ' \
+           'also use *OCR* for .pdf, .djvu and image files.'
     parser_convert = subparsers.add_parser(
         'convert', add_help=False,
-        help='''Convert the supplied file to a text file. It can optionally
-        also use *OCR* for .pdf, .djvu and image files.''')
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
+        help='Convert the supplied file to a text file.',
+        formatter_class=lambda prog: MyFormatter(
+            prog, max_help_position=40, width=width))
     add_general_options(parser_convert, remove_opts=['dry-run', 'keep-metadata',
                                                      'reverse', 'symlink-only'])
     add_ocr_options(parser_convert)
     parser_convert_group = parser_convert.add_argument_group(
-        title='input and output arguments')
+        title='Input and output options')
     parser_convert_group.add_argument(
-        'input_file',
+        name_input,
         help='''The input file to be converted to a text file.''')
     parser_convert_group.add_argument(
         '-o', '--output-file', dest='output_file', metavar='OUTPUT',
-        help='''The output file text. By default, it is saved in the current
-            working directory.''' + _DEFAULT_MSG.format(OUTPUT_FILE))
+        help='The output file text. By default, it is saved in the current '
+             'working directory.' + _DEFAULT_MSG.format(OUTPUT_FILE))
     parser_convert.set_defaults(func=convert_to_txt.convert)
     # ==========
     # Find ISBNs
     # ==========
     # create the parser for the "find" command
+    name_input = 'input_data'
+    desc = 'Find valid ISBNs inside a file or in a string if no file was ' \
+           'specified. \nSearching for ISBNs in files uses progressively more ' \
+           'resource-intensive methods until some ISBNs are found.'
     parser_find = subparsers.add_parser(
         'find', add_help=False,
-        help='''Find valid ISBNs inside a file or in a string if no file
-        was specified. Searching for ISBNs in files uses progressively more
-        resource-intensive methods until some ISBNs are found.''')
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
+        help='Find valid ISBNs inside a file or in a string.',
+        formatter_class=lambda prog: MyFormatter(
+            prog, max_help_position=52, width=width))
     add_general_options(parser_find, remove_opts=['dry-run', 'keep-metadata',
                                                   'reverse', 'symlink-only'])
     add_isbns_options(parser_find, remove_opts=['metadata-fetch-order'])
     add_ocr_options(parser_find)
     parser_find_group = parser_find.add_argument_group(
-        title='specific arguments for the subcommand `find`')
+        title='Specific options for the subcommand `find`')
     add_isbn_return_separator(parser_find_group)
     parser_find_input_group = parser_find.add_argument_group(
         title='input argument')
     parser_find_input_group.add_argument(
-        'input_data',
-        help='''Can either be the path to a file or a string. The input will
-            be searched for ISBNs.''')
+        name_input,
+        help='Can either be the path to a file or a string. The input will be '
+             'searched for ISBNs.')
     parser_find.set_defaults(func=find_isbns.find)
     # ==========
     # fix-ebooks
     # ==========
     # create the parser for the "organize-ebooks" command
+    name_input = 'input_data'
+    desc = 'Not implemented yet!'
     parser_fix = subparsers.add_parser(
         'fix', add_help=False,
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
         # Tries to fix corrupted ebook files. For the moment, only PDF files
         # are supported.
-        help='''Not implemented yet!''')
+        help=desc,
+        formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
+                                                 width=width))
     add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
                                                  'keep-metadata'])
     parser_fix_input_output_group = parser_fix.add_argument_group(
-        title='input and output arguments')
+        title='Input and output options')
     parser_fix_input_output_group.add_argument(
         'input_data',
-        help='''Can either be a corrupted file or a folder containing the
-        corrupted ebook files that need to be fixed.''')
+        help='Can either be a corrupted file or a folder containing the '
+             'corrupted ebook files that need to be fixed.')
     parser_fix.set_defaults(func=fix_ebooks.fix)
     # ===============
     # organize-ebooks
     # ===============
     # create the parser for the "organize-ebooks" command
+    name_input = 'folder_to_organize'
+    desc = 'Automatically organize folders with potentially huge amounts of ' \
+           'unorganized ebooks.\nThis is done by renaming the files with ' \
+           'proper names and moving them to other folders.'
     parser_organize = subparsers.add_parser(
         'organize', add_help=False,
-        help='''Automatically organize folders with potentially huge amounts
-        of unorganized ebooks. This is done by renaming the files with proper
-        names and moving them to other folders.''')
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
+        help='Automatically organize folders.',
+        formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
+                                                 width=width))
     add_general_options(parser_organize)
     add_isbns_options(parser_organize)
     add_ocr_options(parser_organize)
     add_non_isbn_options(parser_organize)
     add_input_output_options(parser_organize)
     parser_organize_group = parser_organize.add_argument_group(
-        title='specific arguments for the subcommand `organize`')
+        title='Specific options for the subcommand `organize`')
     parser_organize_group.add_argument(
         "--cco", "--corruption-check-only", dest='corruption_check_only',
         action="store_true",
-        help='''Do not organize or rename files, just check them for corruption
-        (ex. zero-filled files, corrupt archives or broken .pdf files). Useful
-        with the `output-folder-corrupt` option.''')
+        help='Do not organize or rename files, just check them for corruption '
+             '(ex. zero-filled files, corrupt archives or broken .pdf files). '
+             'Useful with the `output-folder-corrupt` option.')
     parser_organize_group.add_argument(
         '--tested-archive-extensions', dest='tested_archive_extensions',
         metavar='REGEX',
-        help='''A regular expression that specifies which file extensions will
-        be tested with `7z t` for corruption.'''
+        help='A regular expression that specifies which file extensions will '
+             'be tested with `7z t` for corruption.'
              + _DEFAULT_MSG.format(TESTED_ARCHIVE_EXTENSIONS))
     parser_organize_group.add_argument(
-        "--owi", "--organize-without-isbn", dest='organize_without_isbn',
+        '--owi', '--organize-without-isbn', dest='organize_without_isbn',
         action="store_true",
-        help='''Specify whether the script will try to organize ebooks if there
-        were no ISBN found in the book or if no metadata was found online with
-        the retrieved ISBNs. If enabled, the script will first try to use
-        calibre's `ebook-meta` command-line tool to extract the author and
-        title metadata from the ebook file. The script will try searching the
-        online metadata sources (`organize_without_isbn_sources`) by the
-        extracted author & title and just by title. If there is no useful
-        metadata or nothing is found online, the script will try to use the
-        filename for searching.''')
+        help='Specify whether the script will try to organize ebooks if there'
+             'were no ISBN found in the book or if no metadata was found '
+             'online with the retrieved ISBNs. If enabled, the script will '
+             'first try to use calibre\'s `ebook-meta` command-line tool to '
+             'extract the author and title metadata from the ebook file. The '
+             'script will try searching the online metadata sources '
+             '(`organize_without_isbn_sources`) by the extracted author & '
+             'title and just by title. If there is no useful metadata or '
+             'nothing is found online, the script will try to use the filename '
+             'for searching.')
     parser_organize_group.add_argument(
         '--wii', '--without-isbn-ignore', dest='without_isbn_ignore',
         metavar='REGEX',
-        help='''This is a regular expression that is matched against lowercase
-        filenames. All files that do not contain ISBNs are matched against it
-        and matching files are ignored by the script, even if
-        `organize-without-isbn` is true. The default value is calibrated to
-        match most periodicals (magazines, newspapers, etc.) so the script can
-        ignore them.'''
-             + _DEFAULT_MSG.format('complex default value, see the main '
-                                   'config file'))
+        help='This is a regular expression that is matched against lowercase'
+             'filenames. All files that do not contain ISBNs are matched '
+             'against it and matching files are ignored by the script, even if '
+             '`organize-without-isbn` is true. The default value is calibrated '
+             'to match most periodicals (magazines, newspapers, etc.) so the '
+             'script can ignore them.'
+             + _DEFAULT_MSG.format('complex default value, see the main config '
+                                   'file'))
     # + _DEFAULT_MSG.format(WITHOUT_ISBN_IGNORE))
     parser_organize_group.add_argument(
         '--pamphlet-included-files', dest='pamphlet_included_files',
         metavar='REGEX',
-        help='''This is a regular expression that is matched against lowercase
-        filenames. All files that do not contain ISBNs and do not match
-        `without_isbn_ignore` are matched against it and matching files are
-        considered pamphlets by default. They are moved to
-        `output_folder_pamphlets` if set, otherwise they are ignored.'''
+        help='This is a regular expression that is matched against lowercase'
+             'filenames. All files that do not contain ISBNs and do not match'
+             '`without_isbn_ignore` are matched against it and matching files '
+             'are considered pamphlets by default. They are moved to '
+             '`output_folder_pamphlets` if set, otherwise they are ignored.'
              + _DEFAULT_MSG.format(PAMPHLET_INCLUDED_FILES))
     parser_organize_group.add_argument(
         '--pamphlet-excluded-files', dest='pamphlet_excluded_files',
         metavar='REGEX',
-        help='''This is a regular expression that is matched against lowercase
-        filenames. If files do not contain ISBNs and match against it, they are
-        NOT considered as pamphlets, even if they have a small size or number
-        of pages.''' + _DEFAULT_MSG.format(PAMPHLET_EXCLUDED_FILES))
+        help='This is a regular expression that is matched against lowercase'
+             'filenames. If files do not contain ISBNs and match against it, '
+             'they are NOT considered as pamphlets, even if they have a small '
+             'size or number of pages.'
+             + _DEFAULT_MSG.format(PAMPHLET_EXCLUDED_FILES))
     parser_organize_group.add_argument(
         '--pamphlet-max-pdf-pages', dest='pamphlet_max_pdf_pages', type=int,
         metavar='PAGES',
-        help='''.pdf files that do not contain valid ISBNs and have a lower
-        number pages than this are considered pamplets/non-ebook documents.'''
-             + _DEFAULT_MSG.format(PAMPHLET_MAX_PDF_PAGES))
+        help='.pdf files that do not contain valid ISBNs and have a lower'
+             'number pages than this are considered pamplets/non-ebook '
+             'documents.' + _DEFAULT_MSG.format(PAMPHLET_MAX_PDF_PAGES))
     parser_organize_group.add_argument(
         '--pamphlet-max-filesize-kb', dest='pamphlet_max_filesize_kib', type=int,
         metavar='SIZE',
-        help='''Other files that do not contain valid ISBNs and are below this
-        size in KBs are considered pamplets/non-ebook documents.'''
+        help='Other files that do not contain valid ISBNs and are below this'
+             'size in KBs are considered pamplets/non-ebook documents.'
              + _DEFAULT_MSG.format(PAMPHLET_MAX_FILESIZE_KIB))
     add_isbn_return_separator(parser_organize_group)
     parser_organize_input_output_group = parser_organize.add_argument_group(
-        title='input and output arguments')
+        title='Input and output options')
     parser_organize_input_output_group.add_argument(
-        'folder_to_organize',
-        help='''Folder containing the ebook files that need to be organized.''')
+        name_input,
+        help='Folder containing the ebook files that need to be organized.')
     parser_organize_input_output_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        help='''The folder where ebooks that were renamed based on the ISBN
-        metadata will be moved to.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+        help='The folder where ebooks that were renamed based on the ISBN'
+             'metadata will be moved to.' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_organize_input_output_group.add_argument(
         '--ofu', '--output-folder-uncertain', dest='output_folder_uncertain',
         metavar='PATH',
-        help='''If `organize_without_isbn` is enabled, this is the folder to
-        which all ebooks that were renamed based on non-ISBN metadata will be
-        moved to.''' + _DEFAULT_MSG.format(OUTPUT_FOLDER_UNCERTAIN))
+        help='If `organize_without_isbn` is enabled, this is the folder to'
+             'which all ebooks that were renamed based on non-ISBN metadata '
+             'will be moved to.' + _DEFAULT_MSG.format(OUTPUT_FOLDER_UNCERTAIN))
     parser_organize_input_output_group.add_argument(
         '--ofc', '--output-folder-corrupt', dest='output_folder_corrupt',
         metavar='PATH',
-        help='''If specified, corrupt files will be moved to this folder.'''
+        help='If specified, corrupt files will be moved to this folder.'
              + _DEFAULT_MSG.format(OUTPUT_FOLDER_CORRUPT))
     parser_organize_input_output_group.add_argument(
         '--ofp', '--output-folder-pamphlets', dest='output_folder_pamphlets',
         metavar='PATH',
-        help='''If specified, pamphlets will be moved to this folder.'''
+        help='If specified, pamphlets will be moved to this folder.'
              + _DEFAULT_MSG.format(OUTPUT_FOLDER_PAMPHLETS))
     parser_organize.set_defaults(func=organizer.organize)
     # ======================
     # rename-calibre-library
     # ======================
     # create the parser for the "rename-calibre-library" command
+    name_input = 'folder_to_organize'
+    desc = 'Traverse a calibre library folder and rename all the book files ' \
+           'in it by reading their metadata from calibre\'s metadata.opf ' \
+           'files.\nThe book files are then either moved or symlinked (if ' \
+           'the `--symlink-only` flag is enabled) to the output folder along ' \
+           'with their corresponding metadata files.\nAlso, activate the ' \
+           '`--dry-run` flag for testing purposes since no file ' \
+           'rename/move/symlink/etc. operations will actually be executed.'
     parser_rename = subparsers.add_parser(
         'rename', add_help=False,
-        help='''Traverse a calibre library folder and rename all the book
-        files in it by reading their metadata from calibre's metadata.opf
-        files. The book files are then either moved or symlinked (if the
-        `--symlink-only` flag is enabled) to the output folder along with
-        their corresponding metadata files. Also, activate the `--dry-run`
-        flag for testing purposes since no file rename/move/symlink/etc.
-        operations will actually be executed.''')
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
+        help='Traverse a calibre library folder and rename all the book files '
+             'in it.',
+        formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
+                                                 width=width))
     add_general_options(parser_rename, remove_opts=['keep-metadata'])
     add_isbns_options(parser_rename, remove_opts=['isbn-direct-grep-files',
                                                   'isbn-ignored-files',
@@ -649,7 +740,7 @@ See subcommands below for a list of the tools that can be used.
                                                   'metadata-fetch-order'])
     add_input_output_options(parser_rename)
     parser_rename_group = parser_rename.add_argument_group(
-        title='specific arguments for the subcommand `rename`')
+        title='Specific options for the subcommand `rename`')
     parser_rename_group.add_argument(
         '--sm', '--save-metadata', dest='save_metadata',
         choices=['disable', 'opfcopy', 'recreate'],
@@ -661,7 +752,7 @@ See subcommands below for a list of the tools that can be used.
         disables this function.'''
              + _DEFAULT_MSG.format(SAVE_METADATA))
     parser_rename_input_output_group = parser_rename.add_argument_group(
-        title='input and output arguments')
+        title='Input and output options')
     parser_rename_input_output_group.add_argument(
         'calibre_folder',
         help='''Calibre library folder which will be traversed and all the book
@@ -680,11 +771,16 @@ See subcommands below for a list of the tools that can be used.
     # split-into-folders
     # ==================
     # create the parser for the "split-into-folders" command
+    name_input = 'folder_with_books'
+    desc = 'Split the supplied ebook files (and the accompanying metadata' \
+           'files if present) into folders with consecutive names that each ' \
+           'contain the specified number of files.'
     parser_split = subparsers.add_parser(
         'split', add_help=False,
-        help='''Split the supplied ebook files (and the accompanying metadata
-        files if present) into folders with consecutive names that each contain
-        the specified number of files.''')
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
+        help='Split the supplied ebook files into folders.',
+        formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
+                                                 width=width))
     parser_general = add_general_options(parser_split,
                                          remove_opts=['symlink-only',
                                                       'keep-metadata'])
@@ -692,10 +788,10 @@ See subcommands below for a list of the tools that can be used.
                              remove_opts=['output-filename-template'],
                              add_as_group=False)
     parser_split_group = parser_split.add_argument_group(
-        title='specific arguments for the subcommand `split`')
+        title='Specific options for the subcommand `split`')
     parser_split_group.add_argument(
         '-s', '--start-number', dest='start_number', type=int,
-        help='''The number of the first folder.'''
+        help='The number of the first folder.'
              + _DEFAULT_MSG.format(START_NUMBER))
     # TODO: important explain why we don't use default arg in add_argument()
     parser_split_group.add_argument(
@@ -710,9 +806,9 @@ See subcommands below for a list of the tools that can be used.
         help='''How many files should be moved to each folder.'''
              + _DEFAULT_MSG.format(FILES_PER_FOLDER))
     parser_split_input_output_group = parser_split.add_argument_group(
-        title='input and output arguments')
+        title='Input and output options')
     parser_split_input_output_group.add_argument(
-        'folder_with_books',
+        name_input,
         help='''Folder with books which will be recursively scanned for files.
             The found files (and the accompanying metadata files if present) will
             be split into folders with consecutive names that each contain the
@@ -781,7 +877,7 @@ if __name__ == '__main__':
     # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg -o ~/test/_ebooktools/organize/output_folder
     # --ofu ~/test/_ebooktools/oranize/output_folder_uncertain/ --pamphlet-max-pdf-pages 10 --owi
     #
-    # Organize with output folder (no corrupted files)
+    # Organize with output folder (no corrupted files) with dry-run (no metadata copied)
     # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
     # -o ~/test/_ebooktools/organize/output_folder -d
     #
