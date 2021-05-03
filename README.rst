@@ -746,14 +746,14 @@ Specific options
   number of pages.
   
 * ``--pamphlet-max-pdf-pages <value>``; config variable
-  ``pamphlet_max_pdf_pages``; default value 50
+  ``pamphlet_max_pdf_pages``; default value ``50``
   
   ``.pdf`` files that do not contain valid ISBNs and have a
   lower number pages than this are considered 
   pamplets/non-ebook documents.
   
 * ``--pamphlet-max-filesize-kb <value>``; config variable
-  ``pamphlet_max_filesize_kb``; default value 250
+  ``pamphlet_max_filesize_kb``; default value ``250``
   
   Other files that do not contain valid ISBNs and are below
   this size in KBs are considered pamplets/non-ebook documents.
