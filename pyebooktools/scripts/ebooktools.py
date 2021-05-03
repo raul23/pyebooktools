@@ -163,7 +163,7 @@ def add_input_output_options(parser, remove_opts=None, add_as_group=True):
         parser_input_output.add_argument(
             '--ome', '--output-metadata-extension', dest='output_metadata_extension',
             metavar='EXTENSION',
-            help='''If keep_metadata is enabled, this is the extension of the
+            help='''If `keep_metadata` is enabled, this is the extension of the
             additional metadata file that is saved next to each newly renamed file.'''
                  + _DEFAULT_MSG.format(OUTPUT_METADATA_EXTENSION))
     return parser_input_output
@@ -535,6 +535,7 @@ See subcommands below for a list of the tools that can be used.
     add_isbns_options(parser_organize)
     add_ocr_options(parser_organize)
     add_non_isbn_options(parser_organize)
+    add_input_output_options(parser_organize)
     parser_organize_group = parser_organize.add_argument_group(
         title='specific arguments for the subcommand `organize`')
     parser_organize_group.add_argument(
@@ -572,6 +573,7 @@ See subcommands below for a list of the tools that can be used.
         ignore them.'''
              + _DEFAULT_MSG.format('complex default value, see the main '
                                    'config file'))
+    # + _DEFAULT_MSG.format(WITHOUT_ISBN_IGNORE))
     parser_organize_group.add_argument(
         '--pamphlet-included-files', dest='pamphlet_included_files',
         metavar='REGEX',
