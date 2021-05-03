@@ -643,7 +643,7 @@ options that the most important ones:
 * `--km, --keep-metadata`_
 * `---mfo, ---metadata-fetch-order`_
 * `--owis, --organize-without-isbn-sources`_
-* `--oft TEMPLATE, --output-filename-template`_
+* `--oft, --output-filename-template`_
 * `all the ocr-related arguments`_
 
 Local options
