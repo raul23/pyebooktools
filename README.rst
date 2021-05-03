@@ -976,16 +976,19 @@ Roadmap
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
 - Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
-  three methods:
+  the following methods:
   
   * ``pdfinfo``
   * ``pdftotext``
   * ``qpdf``
+  * ``jhove``
     
   **References:**
     
-    * `<https://superuser.com/a/1546294>`__
-    * `<https://formulae.brew.sh/formula/qpdf>`__
+    * `Some user tested first three methods <https://superuser.com/a/1546294>`__
+    * `Some user tested jhove <https://superuser.com/a/1204692>`__
+    * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
+    * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
