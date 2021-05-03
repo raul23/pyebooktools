@@ -1022,14 +1022,11 @@ Roadmap
 - Eventually add documentation on `Read the Docs`_
 - Create a `docker`_ image for this project
 - Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
-  comments, notes, arrows), bookmarks and attachments from PDF files.
-  
-  **References:** 
-  
-  * `Use cpdf to remove bookmarks and attachments 
-    <https://community.coherentpdf.com/>`__
-  * `Use pdftk to remove annotations 
-    <https://stackoverflow.com/a/49614525/14664104>`__
+  comments, notes, arrows), bookmarks and attachments from PDF files based
+  on the following methods:
+ 
+  * ``cpdf`` to remove bookmarks and attachments 
+  * ``pdftk`` to remove annotations 
 
 Security and safety
 ===================
@@ -1101,6 +1098,7 @@ References
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
+.. _cpdf: https://community.coherentpdf.com
 .. _docker: https://docs.docker.com/
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _DjVuLibre: http://djvu.sourceforge.net/
@@ -1111,6 +1109,7 @@ References
 .. _ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
+.. _pdftk: https://stackoverflow.com/a/49614525/14664104
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _poppler: https://poppler.freedesktop.org/
 .. _QubesOS: https://www.qubes-os.org/
