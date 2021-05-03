@@ -1050,7 +1050,7 @@ Roadmap
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
-- Create a docker image for this project
+- Create a `docker`_ image for this project
 - Add a ``remove`` subcommand that can remove annotations, bookmarks and
   attachments from PDF files.
   
@@ -1126,6 +1126,7 @@ References
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
+.. _docker: https://docs.docker.com/
 .. _documentation for ebook-tools: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _DjVuLibre: http://djvu.sourceforge.net/
 .. _ebook-convert: https://manual.calibre-ebook.com/generated/en/ebook-convert.html
