@@ -137,8 +137,6 @@ by newlines, ``\n``.
 
 Find ISBNs in a pdf file
 ------------------------
-Find ISBNs in a pdf file:
-
 .. code-block:: terminal
 
    $ ebooktools find pdf_file.pdf
