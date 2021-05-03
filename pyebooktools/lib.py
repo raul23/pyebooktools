@@ -56,11 +56,25 @@ NC = '\033[0m'
 # is_dir_empty, isalnum_in_file, remove_file, remove_tree remove_file
 
 
-# For macOS use the built-in textutil,
-# see https://stackoverflow.com/a/44003923/14664104
-# TODO: important implement it
+# TODO: important, test it on linux
 def catdoc(input_file, output_file):
-    raise NotImplementedError('catdoc is not implemented')
+    cmd = f'catdoc "{input_file}"'
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # Everything on the stdout must be copied to the output file
+    if result.returncode == 0:
+        with open(output_file, 'w') as f:
+            f.write(result.stdout)
+    return convert_result_from_shell_cmd(result)
+
+
+# macOS equivalent for catdoc
+# See https://stackoverflow.com/a/44003923/14664104
+def textutil(input_file, output_file):
+    cmd = f'textutil -convert txt "{input_file}" -output "{output_file}"'
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
 
 
 # Checks the supplied file for different kinds of corruption:
@@ -244,14 +258,18 @@ def convert_to_txt(input_file, output_file, mime_type):
         logger.debug('The file looks like a pdf, using pdftotext to extract '
                      'the text')
         result = pdftotext(input_file, output_file)
-    elif mime_type == 'application/msword' and command_exists('catdoc'):
-        logger.debug('The file looks like a doc, using catdoc to extract the text')
-        result = catdoc(input_file, output_file)
+    elif mime_type == 'application/msword' and \
+            (command_exists('catdoc') or command_exists('textutil')):
+        msg = 'The file looks like a doc, using {} to extract the text'
+        if command_exists('catdoc'):
+            logger.debug(msg.format('catdoc'))
+            result = catdoc(input_file, output_file)
+        else:
+            logger.debug(msg.format('textutil'))
+            result = textutil(input_file, output_file)
     # TODO: not need to specify the full path to djvutxt if you set correctly
     # the right env. variables
-    elif mime_type.startswith('image/vnd.djvu') and \
-            command_exists('/Applications/DjView.app/Contents/bin/djvutxt'):
-        # TODO: important remove path to djvutxt in command_exists()
+    elif mime_type.startswith('image/vnd.djvu') and command_exists('djvutxt'):
         logger.debug('The file looks like a djvu, using djvutxt to extract the '
                      'text')
         result = djvutxt(input_file, output_file)
@@ -271,8 +289,7 @@ def convert_to_txt(input_file, output_file, mime_type):
 def djvutxt(input_file, output_file):
     # TODO: explain that you need to softlink djvutxt in /user/local/bin (or
     # add in $PATH?)
-    cmd = f'/Applications/DjView.app/Contents/bin/djvutxt "{input_file}" ' \
-          f'"{output_file}"'
+    cmd = f'djvutxt "{input_file}" "{output_file}"'
     # TODO: use genutils.run_cmd() [fix problem with 3.<6] and in other places?
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -401,11 +418,6 @@ def get_all_isbns_from_archive(
             # TODO: add debug_prefixer
             file_to_check = os.path.join(path, file_to_check)
             isbns = search_file_for_isbns(file_to_check, **func_params)
-            # TODO: important, remove next lines
-            """
-            isbns = search_file_for_isbns(file_to_check, isbn_direct_grep_files,
-                                          isbn_ignored_files, ocr_enabled)
-            """
             if isbns:
                 logger.debug(f"Found ISBNs '{isbns}'!")
                 # TODO: two prints, one for stderror and the other for stdout
@@ -427,8 +439,7 @@ def get_all_isbns_from_archive(
 
 
 def get_ebook_metadata(file_path):
-    # TODO: urgent, add `ebook-meta` in PATH, right now it is only working for mac
-    cmd = f'/Applications/calibre.app/Contents/MacOS/ebook-meta "{file_path}"'
+    cmd = f'ebook-meta "{file_path}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -478,31 +489,41 @@ def get_mime_type_version2(file_path):
     return result.stdout.decode('UTF-8').split()[0]
 
 
-# Return number of pages in djvu document
+# Return number of pages in a djvu document
 def get_pages_in_djvu(file_path):
     # TODO: To access the djvu command line utilities and their documentation,
     # you must set the shell variable PATH and MANPATH appropriately. This can
     # be achieved by invoking a convenient shell script hidden inside the
     # application bundle:
     #    $ eval `/Applications/DjView.app/Contents/setpath.sh`
-    # ref.: ReadMe from DjVuLibre
+    # Ref.: ReadMe from DjVuLibre
     # TODO: not need to specify the full path to djvused if you set correctly
-    # the right env. variables
-    cmd = f'/Applications/DjView.app/Contents/bin/djvused -e "n" "{file_path}"'
+    # the right env. variables or use soft links (ln -s file1 link1)
+    cmd = f'djvused -e "n" "{file_path}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
 
 
-# Return number of pages in pdf document
+# Return number of pages in a pdf document
 def get_pages_in_pdf(file_path):
-    # TODO: IMPORTANT add also the option to use `pdfinfo` (like in the
-    # original shell script) since mdls is for macOS
-    # TODO: see if you can find the number of pages using a python module
-    # (e.g. PyPDF2) but dependency
-    cmd = f'mdls -raw -name kMDItemNumberOfPages "{file_path}"'
-    args = shlex.split(cmd)
-    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # NOTE: mdls is for macOS
+    if command_exists('mdls'):
+        cmd = f'mdls -raw -name kMDItemNumberOfPages "{file_path}"'
+        args = shlex.split(cmd)
+        result = subprocess.run(args, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+    else:
+        cmd = f'pdfinfo {file_path}'
+        args = shlex.split(cmd)
+        result = subprocess.run(args, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+        if result.returncode == 0:
+            result = convert_result_from_shell_cmd(result)
+            result.stdout = int(re.findall('^Pages:\s+([0-9]+)',
+                                           result.stdout,
+                                           flags=re.MULTILINE)[0])
+            return result
     return convert_result_from_shell_cmd(result)
 
 
@@ -695,8 +716,7 @@ def ocr_file(file_path, output_file, mime_type,
     def convert_djvu_page(page, input_file, output_file):
         # TODO: IMPORTANT not need to specify the full path to djvused if you
         # set correctly the right env. variables
-        cmd = f'/Applications/DjView.app/Contents/bin/ddjvu -page={page} ' \
-              f'-format=tif {input_file} {output_file}'
+        cmd = f'ddjvu -page={page} -format=tif {input_file} {output_file}'
         args = shlex.split(cmd)
         result = subprocess.run(args, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
@@ -706,18 +726,21 @@ def ocr_file(file_path, output_file, mime_type,
         # TODO: they are using the `pdfinfo` command but it might not be present;
         # in check_file_for_corruption(), they are testing if this command exists
         # but not in ocr_file()
+        # TODO: check returned value (no pages returned)
         result = get_pages_in_pdf(file_path)
         num_pages = result.stdout
         logger.debug(f"Result of '{get_pages_in_pdf.__repr__()}' on "
                      f"'{file_path}':\n{result}")
         page_convert_cmd = convert_pdf_page
     elif mime_type.startswith('image/vnd.djvu'):
+        # TODO: check returned value (no pages returned)
         result = get_pages_in_djvu(file_path)
         num_pages = result.stdout
         logger.debug(f"Result of '{get_pages_in_djvu.__repr__()}' on "
                      f"'{file_path}':\n{result}")
         page_convert_cmd = convert_djvu_page
     elif mime_type.startswith('image/'):
+        # TODO: important, test this part
         # TODO: in their code, they don't initialize num_pages
         logger.debug(f"Running OCR on file '{file_path}' and with mime type "
                      f"'{mime_type}'...")
@@ -725,11 +748,11 @@ def ocr_file(file_path, output_file, mime_type,
         if ocr_command in globals():
             result = eval(f'{ocr_command}("{file_path}", "{output_file}")')
             logger.debug("Result of '{ocr_command.__repr__()}':\n{result}")
+            # TODO: they don't return anything
+            return 0
         else:
             logger.debug(f"Function '{ocr_command}' doesn't exit. Ending ocr.")
             return 1
-        # TODO: they don't return anything
-        return 0
     else:
         logger.info(f"Unsupported mime type '{mime_type}'!")
         return 2
@@ -1057,6 +1080,7 @@ def substitute_with_sed(regex, replacement, text, use_global=True):
     return p2.communicate()[0].decode('UTF-8').strip()
 
 
+# TODO: important, make it work correctly with ocr_command
 # OCR: convert image to text
 def tesseract_wrapper(input_file, output_file):
     # cmd = 'tesseract INPUT_FILE stdout --psm 12 > OUTPUT_FILE || exit 1
