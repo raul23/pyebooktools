@@ -239,7 +239,7 @@ in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
-   In order to avoid data loss, use the ``dry-run`` or ``symlink-only`` option
+   In order to avoid data loss, use the `dry-run`_ or `symlink-only`_ option
    when running some of the subcommands (e.g. ``rename`` and ``split``) to make
    sure that they would do what you expect them to do, as explained in the
    `Security and safety`_ section.
@@ -1143,8 +1143,10 @@ References
 .. _-q, --quiet: #general-control-flags
 .. _--verbose: #general-control-flags
 .. _-d, --dry-run: #general-control-flags
+.. _dry-run: #general-control-flags
 .. _--sl, --symlink-only: #general-control-flags
 .. _--symlink-only: #general-control-flags
+.. _symlink-only: #general-control-flags
 .. _--km, --keep-metadata: #general-control-flags
 .. _-r, --reverse: #miscellaneous-options
 .. _--log-level: #miscellaneous-options
