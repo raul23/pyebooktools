@@ -49,6 +49,18 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
     search in files is implemented).
   
   The `find`_ subcommand from the ``ebooktools.py`` script uses this module.
+- ``organize_ebooks.py`` is used to automatically organize folders with
+  potentially huge amounts of unorganized ebooks. This is done by renaming
+  the files with proper names and moving them to other folders:
+  
+    * By default it `searches`_ the supplied ebook files for `ISBNs`_,
+      downloads the book metadata (author, title, series, publication date,
+      etc.) from online sources like Goodreads, Amazon and Google Books and
+      renames the files according to a specified template.
+    * If no ISBN is found, the script can optionally search for the ebooks
+      online by their title and author, which are extracted from the filename
+      or file metadata.
+  
 - ``rename_calibre_library.py`` traverses a calibre library folder, renames
   all the book files in it by reading their metadata from calibre's
   ``metadata.opf`` files. Then the book files are either moved or symlinked
@@ -997,12 +1009,14 @@ References
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
+.. _ISBNs: https://es.wikipedia.org/wiki/ISBN
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _poppler: https://poppler.freedesktop.org/
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
+.. _searches: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
 .. _Travis CI: https://travis-ci.com/
