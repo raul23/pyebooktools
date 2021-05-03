@@ -1011,7 +1011,7 @@ Roadmap
 - Add a ``remove`` subcommand that can remove the following data from a PDF
   file: bookmarks and attachments.
   
-  **Reference:** `Use cpdf <https://community.coherentpdf.com/>`__
+  **Reference:** `use cpdf <https://community.coherentpdf.com/>`__
 
 Security and safety
 ===================
