@@ -769,8 +769,10 @@ if __name__ == '__main__':
     # Edit
     # ebooktools edit -a charm log
     #
-    # Find
+    # Find in a string
     # ebooktools find "978-159420172-1 978-1892391810 0000000000 0123456789 1111111111" --log-level debug --log-format console
+    #
+    # Find in a PDF file
     # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
     #
     # Organize
@@ -795,9 +797,11 @@ if __name__ == '__main__':
     # -o ~/test/_ebooktools/organize/output_folder --ofu ~/test/_ebooktools/oganize/output_folder_uncertain/
     # --pamphlet-max-pdf-pages 10 --owi --log-level info --km
     #
-    # Rename
+    # Rename using own calibre library
     # ebooktools rename --sm opfcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
     # -o ~/test/_ebooktools/rename_calibre_library/output_folder/
+    #
+    # Rename using real calibre library
     # ebooktools rename --sm opfcopy --sl --log-format console ~/Calibre\ Library/ -o ~/test/_ebooktools/rename_calibre_library/output_folder/
     #
     # Split
