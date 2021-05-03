@@ -1025,8 +1025,8 @@ Roadmap
   comments, notes, arrows), bookmarks and attachments from PDF files based
   on the following methods:
  
-  * ``cpdf`` to remove bookmarks and attachments 
-  * ``pdftk`` to remove annotations 
+  * `cpdf`_ to remove bookmarks and attachments 
+  * `pdftk`_ to remove annotations 
 
 Security and safety
 ===================
