@@ -637,6 +637,7 @@ Global options
 """"""""""""""
 All general options affect this subcommand. However, these are the general
 options that the most important ones:
+
 * ``-d, --dry-run``_
 * ``--sl, --symlink-only``_
 * ``--km, --keep-metadata``_
