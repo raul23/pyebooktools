@@ -1019,7 +1019,7 @@ Important security and safety tips from the `ebook-tools documentation`_:
 
   Please keep in mind that this is beta-quality software. To avoid data loss,
   make sure that you have a backup of any files you want to organize. You may
-  also want to run the scripts with the ``--dry-run`` or ``--symlink-only``
+  also want to run the scripts with the `--dry-run`_ or `--symlink-only`_
   option the first time to make sure that they would do what you expect them to
   do.
   
