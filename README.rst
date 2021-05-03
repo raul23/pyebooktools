@@ -233,7 +233,7 @@ one of the subcommands is as followed:
 
   ebooktools {edit,convert,find,organize,rename,split} [<OPTIONS>]
   
-Where ``[<OPTIONS>``] include general options (as defined in the
+Where ``[<OPTIONS>``] includes general options (as defined in the
 `General options`_ section) and options specific to the subcommand (as defined
 in the `Script usage, subcommands and options`_ section).
 
@@ -479,7 +479,7 @@ The usage pattern for running a given **subcommand** is the following:
 
   ebooktools {edit,convert,find,organize,rename,split} [<OPTIONS>]
   
-Where ``[<OPTIONS>]`` include general options and options specific to the
+Where ``[<OPTIONS>]`` includes general options and options specific to the
 subcommand as shown below.
 
 `:information_source:`
