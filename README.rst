@@ -999,7 +999,7 @@ Roadmap
     * `Some user tested jhove <https://superuser.com/a/1204692>`__
     * `Some user provides gs command for linux <https://superuser.com/a/282056>`__
     * `Some user provides pdftocairo command <https://superuser.com/a/608862>`__
-    * `Some user proposes mutool on Ubuntu (can also be installed on mac with 
+    * `Some user proposes mutool on Ubuntu (can also be installed on macOS with 
       brew) <https://superuser.com/a/923800>`__
     * `Some user used cpdf to fix broken files <https://superuser.com/a/1228662>`__
     * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
