@@ -36,41 +36,6 @@ from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
-# =====================
-# Default config values
-# =====================
-CORRUPTION_CHECK_ONLY = default_cfg.corruption_check_only
-DRY_RUN = default_cfg.dry_run
-ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
-ISBN_DIRECT_GREP_FILES = default_cfg.isbn_direct_grep_files
-ISBN_GREP_REORDER_FILES = default_cfg.isbn_grep_reorder_files
-ISBN_GREP_RF_REVERSE_LAST = default_cfg.isbn_grep_rf_reverse_last
-ISBN_GREP_RF_SCAN_FIRST = default_cfg.isbn_grep_rf_scan_first
-ISBN_IGNORED_FILES = default_cfg.isbn_ignored_files
-ISBN_METADATA_FETCH_ORDER = default_cfg.isbn_metadata_fetch_order
-ISBN_REGEX = default_cfg.isbn_regex
-ISBN_RET_SEPARATOR = default_cfg.isbn_ret_separator
-KEEP_METADATA = default_cfg.keep_metadata
-OCR_COMMAND = default_cfg.ocr_command
-OCR_ENABLED = default_cfg.ocr_enabled
-OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
-ORGANIZE_WITHOUT_ISBN = default_cfg.organize_without_isbn
-ORGANIZE_WITHOUT_ISBN_SOURCES = default_cfg.organize_without_isbn_sources
-OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
-OUTPUT_FOLDER = default_cfg.output_folder
-OUTPUT_FOLDER_CORRUPT = default_cfg.output_folder_corrupt
-OUTPUT_FOLDER_PAMPHLETS = default_cfg.output_folder_pamphlets
-OUTPUT_FOLDER_UNCERTAIN = default_cfg.output_folder_uncertain
-OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
-PAMPHLET_EXCLUDED_FILES = default_cfg.pamphlet_excluded_files
-PAMPHLET_INCLUDED_FILES = default_cfg.pamphlet_included_files
-PAMPHLET_MAX_FILESIZE_KIB = default_cfg.pamphlet_max_filesize_kib
-PAMPHLET_MAX_PDF_PAGES = default_cfg.pamphlet_max_pdf_pages
-REVERSE = default_cfg.reverse
-SYMLINK_ONLY = default_cfg.symlink_only
-TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
-WITHOUT_ISBN_IGNORE = default_cfg.without_isbn_ignore
-
 
 def fail_file(old_path, reason, new_path=None):
     # More info about printing in terminal with color:
