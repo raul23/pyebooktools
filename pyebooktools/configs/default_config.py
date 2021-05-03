@@ -162,7 +162,7 @@ output_file = 'output.txt'
 
 # 2.6 rename-calibre-library
 # ==========================
-# output_folder = os.getcwd()
+# output_folder is by default current directory
 save_metadata = 'recreate'
 
 # 2.7 split-into-folders
