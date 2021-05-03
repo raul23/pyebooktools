@@ -1026,8 +1026,10 @@ Roadmap
   
   **References:** 
   
-  * `Use cpdf <https://community.coherentpdf.com/>`__
-  * `Use pdftk <https://stackoverflow.com/a/49614525/14664104>`__
+  * `Use cpdf to remove bookmarks and attachments 
+    <https://community.coherentpdf.com/>`__
+  * `Use pdftk to remove annotations 
+    <https://stackoverflow.com/a/49614525/14664104>`__
 
 Security and safety
 ===================
