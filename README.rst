@@ -635,6 +635,15 @@ this subcommand operates, but there are also some specific options for it.
 
 Global options
 """"""""""""""
+All general options affect this subcommand. However, these are the general
+options that the most important ones:
+* ``-d, --dry-run``_
+* ``--sl, --symlink-only``_
+* ``--km, --keep-metadata``_
+* ``---mfo, ---metadata-fetch-order``_
+* ``--owis, --organize-without-isbn-sources``_
+* ``--oft TEMPLATE, --output-filename-template``_
+* ``all the ocr-related arguments``_
 
 Local options
 """""""""""""
@@ -1015,6 +1024,7 @@ References
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
 .. URLs: local
+.. _all the ocr-related arguments: #options-for-ocr
 .. _below: #script-usage-and-options
 .. _convert: #convert-options-input-file
 .. _edit: #edit-options-main-log
@@ -1042,11 +1052,14 @@ References
 .. _-d, --dry-run: #general-control-flags
 .. _--sl, --symlink-only: #general-control-flags
 .. _--symlink-only: #general-control-flags
+.. _--km, --keep-metadata: #general-control-flags
 .. _-r, --reverse: #miscellaneous-options
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
 .. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _--isbn-blacklist-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _---mfo, ---metadata-fetch-order: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _--owis, --organize-without-isbn-sources: #options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
 .. _--ome, --output-metadata-extension: #options-related-to-the-input-and-output-files
 
