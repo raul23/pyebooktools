@@ -477,9 +477,9 @@ The usage pattern for running a given **subcommand** is the following:
 
 .. code-block:: terminal
 
-  ebooktools {edit,convert,find,organize,rename,split} [<OPTIONS>]
+  ebooktools {edit,convert,find,organize,rename,split} [OPTIONS]
   
-Where ``[<OPTIONS>]`` includes `general options`_ and options specific to the
+where ``[OPTIONS]`` includes `general options`_ and options specific to the
 subcommand as shown below.
 
 `:information_source:`
