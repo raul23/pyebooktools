@@ -567,8 +567,8 @@ for ``.pdf``, ``.djvu`` and image files.
 
 General options
 """""""""""""""
-Some of the global options affect this script's behavior a lot, especially the
-`OCR ones`_.
+Some of the global options affect this subcommand's behavior a lot, especially
+the `OCR ones`_.
 
 Input and output options
 """"""""""""""""""""""""
