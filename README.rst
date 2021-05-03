@@ -616,8 +616,8 @@ Global options
 The global options that especially affect this script are the ones `related to
 extracting ISBNs from files`_ and the `OCR ones`_.
 
-Local options
-"""""""""""""
+Specific options
+""""""""""""""""
 The only subcommand-specific option is:
 
 * ``--irs <value>``, ``--isbn-return-separator <value>``; config variable
@@ -685,8 +685,21 @@ options that you will used the most:
 * `--oft, --output-filename-template`_
 * `all the ocr-related arguments`_
 
-Local options
-"""""""""""""
+Specific options
+""""""""""""""""
+* ``--cco``, ``--corruption-check-only``; config variable
+  ``corruption_check_only``; default value ``False``
+  
+  Do not organize or rename files, just check them for corruption
+  (ex. zero-filled files, corrupt archives or broken ``.pdf`` files). 
+  Useful with the ``output_folder_corrupt`` option.
+* ``--tested-archive-extensions <value>``; config variable
+  ``tested_archive_extensions``; default value 
+  ``^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods
+  |cbr|cbz|maff|iso)$``
+  
+  A regular expression that specifies which file extensions will be
+  tested with ``7z t`` for corruption.
 
 Input and output arguments
 """"""""""""""""""""""""""
@@ -758,8 +771,8 @@ In particular, the following global options are especially important for the
 * `--oft, --output-filename-template`_
 * `--ome, --output-metadata-extension`_
 
-Local options
-"""""""""""""
+Specific options
+""""""""""""""""
 * ``--sm <value>``, ``--save-metadata <value>``; config variable
   ``save_metadata``; default value ``recreate``
   
@@ -813,8 +826,8 @@ In particular, the following global options are especially important for the
 
 * `--ome, --output-metadata-extension`_
 
-Local options
-"""""""""""""
+Specific options
+""""""""""""""""
 * ``-s <value>``, ``--start-number <value>``; config variable ``start_number``;
   default value ``0``
 
