@@ -1054,7 +1054,6 @@ References
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number
 .. _na--: https://github.com/na--
-.. _OCR: https://en.wikipedia.org/wiki/Optical_character_recognition
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _poppler: https://poppler.freedesktop.org/
