@@ -984,8 +984,8 @@ Roadmap
     
   **References:**
     
-  * `<https://superuser.com/a/1546294>__
-  * `<https://formulae.brew.sh/formula/qpdf>`__
+    * `<https://superuser.com/a/1546294>`__
+    * `<https://formulae.brew.sh/formula/qpdf>`__
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
