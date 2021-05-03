@@ -1031,21 +1031,21 @@ Roadmap
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
-- Add a ``fix`` subcommand that will try to fix corrupted PDF files
-  by checking first if they are corrupted based on one of the following 
+- Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+  one of the following methods:
+  
+  * ``gs``: Ghostscript
+  * ``pdftocairo``: from Poppler
+  * ``mutool``: it does not "print" the PDF file
+  * ``cpdf``
+  
+  It can also check PDF files based on one of the following
   methods:
   
   * ``pdfinfo``
   * ``pdftotext``
   * ``qpdf``
   * ``jhove``
-  
-  Then, fix them based on one of the following methods: 
-  
-  * ``gs``: Ghostscript
-  * ``pdftocairo``: from Poppler
-  * ``mutool``: it does not "print" the PDF file
-  * ``cpdf``
     
 - Test on linux
 - Add tests on `Travis CI`_
