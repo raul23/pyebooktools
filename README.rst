@@ -1009,7 +1009,7 @@ References
 .. _ebook-tools: https://github.com/na--/ebook-tools
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
-.. _ISBNs: https://es.wikipedia.org/wiki/ISBN
+.. _ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
