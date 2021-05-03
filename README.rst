@@ -70,11 +70,12 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
       arbitrary archive files are supported. For example a ``.zip``, ``.rar`` 
       or other archive file that contains the ``.pdf`` or ``.html`` chapters 
       of an ebook can be organized without a problem.
-    * Optical character recognition (`OCR`_) can be automatically used for 
-      ``.pdf``, ``.djvu`` and image files when no ISBNs were found in them by 
-      the fast and straightforward conversion to ``.txt``. This is very useful
-      for scanned ebooks that only contain images or were badly OCR-ed in the
-      first place.
+    * Optical character recognition (`OCR 
+      <https://en.wikipedia.org/wiki/Optical_character_recognition>`_) can be
+      automatically used for ``.pdf``, ``.djvu`` and image files when no ISBNs 
+      were found in them by the fast and straightforward conversion to 
+      ``.txt``. This is very useful for scanned ebooks that only contain
+      images or were badly OCR-ed in the first place.
       
   The `organize`_ subcommand from the ``ebooktools.py`` script uses this
   module.
