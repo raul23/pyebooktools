@@ -60,6 +60,9 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
     * If no ISBN is found, the script can optionally search for the ebooks
       online by their title and author, which are extracted from the filename
       or file metadata.
+      
+  The `organize`_ subcommand from the ``ebooktools.py`` script uses this
+  module.
   
 - ``rename_calibre_library.py`` traverses a calibre library folder, renames
   all the book files in it by reading their metadata from calibre's
@@ -1052,7 +1055,7 @@ References
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
-.. _organize: #security-and-safety
+.. _organize: #organize-options-folder-to-organize
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
