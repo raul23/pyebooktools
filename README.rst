@@ -635,7 +635,7 @@ this subcommand operates, but there are also some specific options for it.
 
 Global options
 """"""""""""""
-All general options affect this subcommand. However, these are the general
+All `general options`_ affect this subcommand. However, these are the general
 options that the most important ones:
 
 * `-d, --dry-run`_
@@ -1032,6 +1032,7 @@ References
 .. _find: #find-options-input-data
 .. _General control flags: #general-control-flags
 .. _General options: #general-options
+.. _general options: #general-options
 .. _interact: #security-and-safety
 .. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Miscellaneous options: #miscellaneous-options
