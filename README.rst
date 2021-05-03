@@ -538,14 +538,14 @@ the logging configuration file (``log``). The configuration file can be opened
 by a user-specified application (``app``) or a default program associated with
 this type of file (when ``app`` is ``None``).
 
-Options
-"""""""
+Specific options for editing config files
+"""""""""""""""""""""""""""""""""""""""""
 * ``-a <value>``, ``--app <value>``; config variable ``app``; 
   default value ``None``
 * ``-r``, ``--reset``; no config variable; default value ``False``
 
-Input argument
-""""""""""""""
+Input option
+""""""""""""
 * ``{main,log}``; no config variable; **required**
   
   The config file to edit which can either be the main configuration file
@@ -570,8 +570,8 @@ General options
 Some of the global options affect this script's behavior a lot, especially the
 `OCR ones`_.
 
-Input and output arguments
-""""""""""""""""""""""""""
+Input and output options
+""""""""""""""""""""""""
 * ``input_file``; no config variable; **required**
   
   The input file to be converted to a text file.
@@ -607,8 +607,8 @@ General options
 The global options that especially affect this script are the ones `related to
 extracting ISBNs from files`_ and the `OCR ones`_.
 
-Specific options
-""""""""""""""""
+Specific options for finding ISBNs
+""""""""""""""""""""""""""""""""""
 The only subcommand-specific option is:
 
 * ``--irs <value>``, ``--isbn-return-separator <value>``; config variable
@@ -617,8 +617,8 @@ The only subcommand-specific option is:
   This specifies the separator that will be used when returning any found
   ISBNs.
 
-Input argument
-""""""""""""""
+Input option
+""""""""""""
 * ``input_data``; no config variable; **required**
 
   Can either be the path to a file or a string. The input will be searched for
@@ -661,8 +661,8 @@ options that you will used the most:
 * `--oft, --output-filename-template`_
 * `all the ocr-related arguments`_
 
-Specific options
-""""""""""""""""
+Specific options for organizing files
+"""""""""""""""""""""""""""""""""""""
 * ``--cco``, ``--corruption-check-only``; config variable
   ``corruption_check_only``; default value ``False``
   
@@ -800,8 +800,8 @@ In particular, the following global options are especially important for the
 * `--oft, --output-filename-template`_
 * `--ome, --output-metadata-extension`_
 
-Specific options
-""""""""""""""""
+Specific options for renaming files
+"""""""""""""""""""""""""""""""""""
 * ``--sm <value>``, ``--save-metadata <value>``; config variable
   ``save_metadata``; default value ``recreate``
   
@@ -811,8 +811,8 @@ Specific options
   ``recreate`` saves a metadata file that is similar to the one
   ``organize-ebooks.py`` creates. ``disable`` disables this function. [SM]_
 
-Input and output arguments
-""""""""""""""""""""""""""
+Input and output options
+""""""""""""""""""""""""
 * ``calibre_folder``; no config variable; **required**
   
   Calibre library folder which will be traversed and all the book files in it
@@ -853,8 +853,8 @@ In particular, the following global options are especially important for the
 
 * `--ome, --output-metadata-extension`_
 
-Specific options
-""""""""""""""""
+Specific options for splitting files
+""""""""""""""""""""""""""""""""""""
 * ``-s <value>``, ``--start-number <value>``; config variable ``start_number``;
   default value ``0``
 
@@ -872,8 +872,8 @@ Specific options
 
   How many files should be moved to each folder.
   
-Input and output arguments
-""""""""""""""""""""""""""
+Input and output options
+""""""""""""""""""""""""
 * ``input_file``; no config variable; **required**
   
   Folder with books which will be recursively scanned for files.
