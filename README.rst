@@ -922,9 +922,6 @@ References
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
 .. _WorldCat xISBN: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
 
-.. URLs: default values
-.. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/0a3f7ceb5fb3e77a480a489d1a43d3346521e685/pyebooktools/lib.py#L555
-
 .. URLs: pyebooktools project
 .. _convert_to_txt.py: ./pyebooktools/convert_to_txt.py
 .. _default_config.py: ./pyebooktools/configs/default_config.py
@@ -936,6 +933,7 @@ References
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
+.. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/lib.py#L880
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
 .. URLs: local
