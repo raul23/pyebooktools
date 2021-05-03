@@ -1039,7 +1039,7 @@ Roadmap
   * ``mutool``: it does not "print" the PDF file
   * ``cpdf``
   
-  It can also check PDF files based on one of the following
+  It will also check PDF files based on one of the following
   methods:
   
   * ``pdfinfo``
