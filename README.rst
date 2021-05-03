@@ -992,7 +992,7 @@ Roadmap
       fixing them <https://superuser.com/a/1546294>`__ (results: ``pdfinfo`` 
       fastest and ``qpdf`` slowest)
     * `Some user tested jhove <https://superuser.com/a/1204692>`__
-    * `_Some user uses cpdf to fix broken files <https://superuser.com/a/1228662>`__
+    * `Some user uses cpdf to fix broken files <https://superuser.com/a/1228662>`__
     * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
     * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
     * `Official website for cpdf <https://community.coherentpdf.com/>`__
