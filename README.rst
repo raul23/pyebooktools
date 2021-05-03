@@ -976,7 +976,7 @@ Roadmap
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
 - Add a ``fix`` subcommand that will try to fix corrupted PDF files
-  by checking first if the file is corrupted based on the following 
+  by checking first if they are corrupted based on one of the following 
   methods:
   
   * ``pdfinfo``
@@ -984,7 +984,12 @@ Roadmap
   * ``qpdf``
   * ``jhove``
   
-  Then, use ``gs`` or ``cpdf`` to fix it.
+  Then, fix them based on one of the following methods: 
+  
+  * ``gs`` (Ghostscript)
+  * ``pdftocairo`` (from Poppler)
+  * ``mutool``: it does not "print" the PDF file
+  * ``cpdf``
     
   **References:**
     
@@ -992,7 +997,11 @@ Roadmap
       fixing them <https://superuser.com/a/1546294>`__ (results: ``pdfinfo`` 
       fastest and ``qpdf`` slowest)
     * `Some user tested jhove <https://superuser.com/a/1204692>`__
-    * `Some user uses cpdf to fix broken files <https://superuser.com/a/1228662>`__
+    * `Some user provides gs command for linux <https://superuser.com/a/282056>`__
+    * `Some user provides pdftocairo command <https://superuser.com/a/608862>`__
+    * `Some user proposes mutool on Ubuntu (can also be installed on mac with 
+      brew) <https://superuser.com/a/923800>`__
+    * `Some user used cpdf to fix broken files <https://superuser.com/a/1228662>`__
     * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
     * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
     * `Official website for cpdf <https://community.coherentpdf.com/>`__
