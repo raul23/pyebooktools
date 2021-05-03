@@ -714,7 +714,7 @@ Specific options
   online metadata sources (``organize_without_isbn_sources``) by the
   extracted author & title and just by title. If there is no useful
   metadata or nothing is found online, the script will try to use the
-  filename for searching.
+  filename for searching. [OWI]_
 
 Input and output arguments
 """"""""""""""""""""""""""
@@ -1081,6 +1081,7 @@ References
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [ORG] https://github.com/na--/ebook-tools#ebook-tools
 .. [ORG_DESCR] https://github.com/na--/ebook-tools#description
+.. [OWI] https://github.com/na--/ebook-tools#specific-options-for-organizing-files
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [RCL] https://bit.ly/3sPJ9kT
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
