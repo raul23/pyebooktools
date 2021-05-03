@@ -9,34 +9,6 @@ from the ``ebooktools.py`` script.
    :local:
    :backlinks: top
 
-``edit`` examples
-=================
-Edit the main config file
--------------------------
-To edit the **main** config file with **PyCharm**:
-
-.. code-block:: terminal
-
-   $ ebooktools edit -a charm main
-
-|
-
-A tab with the main config file will be opened in PyCharm's Editor window:
-
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
-   :align: left
-   :alt: Example: opened tab with config file in PyCharm
-
-Reset the main config file
---------------------------
-To reset the **main** config file with factory settings:
-
-.. code-block:: terminal
-   
-   $ ebooktools edit -r main
-
-
 ``convert`` examples
 ====================
 Convert a pdf file to text **with** OCR
@@ -76,6 +48,33 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
    INFO     Verbose option disabled
    INFO     OCR=false, try only conversion...
    INFO     Conversion successful!
+
+``edit`` examples
+=================
+Edit the main config file
+-------------------------
+To edit the **main** config file with **PyCharm**:
+
+.. code-block:: terminal
+
+   $ ebooktools edit -a charm main
+
+|
+
+A tab with the main config file will be opened in PyCharm's Editor window:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
+   :align: left
+   :alt: Example: opened tab with config file in PyCharm
+
+Reset the main config file
+--------------------------
+To reset the **main** config file with factory settings:
+
+.. code-block:: terminal
+   
+   $ ebooktools edit -r main
 
 ``find`` examples
 =================
