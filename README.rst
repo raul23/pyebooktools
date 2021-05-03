@@ -70,6 +70,11 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
       arbitrary archive files are supported. For example a ``.zip``, ``.rar`` 
       or other archive file that contains the ``.pdf`` or ``.html`` chapters 
       of an ebook can be organized without a problem.
+    * Optical character recognition (`OCR`_) can be automatically used for 
+      ``.pdf``, ``.djvu`` and image files when no ISBNs were found in them by 
+      the fast and straightforward conversion to ``.txt``. This is very useful
+      for scanned ebooks that only contain images or were badly OCR-ed in the
+      first place.
       
   The `organize`_ subcommand from the ``ebooktools.py`` script uses this
   module.
@@ -1024,6 +1029,7 @@ References
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number
 .. _na--: https://github.com/na--
+.. _OCR: https://en.wikipedia.org/wiki/Optical_character_recognition
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _plugins: https://plugins.calibre-ebook.com/
 .. _poppler: https://poppler.freedesktop.org/
