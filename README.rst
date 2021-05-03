@@ -978,14 +978,14 @@ Roadmap
 - Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
   three methods:
   
-    * ``pdfinfo``
-    * ``pdftotext``
-    * ``qpdf``
+  * ``pdfinfo``
+  * ``pdftotext``
+  * ``qpdf``
     
   **References:**
     
-    * `<https://superuser.com/a/1546294>__
-    * `<https://formulae.brew.sh/formula/qpdf>`__
+  * `<https://superuser.com/a/1546294>__
+  * `<https://formulae.brew.sh/formula/qpdf>`__
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
