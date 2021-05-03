@@ -1001,6 +1001,10 @@ Roadmap
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
+- Test on linux
+- Add tests on `Travis CI`_
+- Eventually add documentation on `Read the Docs`_
+- Create a `docker`_ image for this project
 - Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
   one of the following methods:
   
@@ -1016,11 +1020,6 @@ Roadmap
   * ``pdftotext``
   * ``qpdf``
   * ``jhove``
-    
-- Test on linux
-- Add tests on `Travis CI`_
-- Eventually add documentation on `Read the Docs`_
-- Create a `docker`_ image for this project
 - Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
   comments, notes, arrows), bookmarks and attachments from PDF files based
   on the following methods:
