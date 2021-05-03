@@ -986,6 +986,7 @@ Roadmap
   **References:**
     
     * `Some user tested first three methods <https://superuser.com/a/1546294>`__
+      (results: ``pdfinfo`` fastest and ``qpdf`` slowest)
     * `Some user tested jhove <https://superuser.com/a/1204692>`__
     * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
     * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
