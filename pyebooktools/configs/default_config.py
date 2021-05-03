@@ -130,7 +130,7 @@ pamphlet_max_filesize_kib = 250
 
 # 2.2.2 Output options
 # --------------------
-# output_folder = os.getcwd()
+# output_folder is by default current directory
 # If organize_without_isbn is enabled, this is the folder to which all ebooks
 # that were renamed based on non-ISBN metadata will be moved to.
 output_folder_uncertain = None
@@ -167,7 +167,7 @@ save_metadata = 'recreate'
 
 # 2.7 split-into-folders
 # ======================
-# output_folder = os.getcwd()
+# output_folder is by default current directory
 start_number = 0
 folder_pattern = '%05d000'
 files_per_folder = 1000
