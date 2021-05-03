@@ -1021,10 +1021,13 @@ Roadmap
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
 - Create a `docker`_ image for this project
-- Add a ``remove`` subcommand that can remove annotations, bookmarks and
-  attachments from PDF files.
+- Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
+  comments, notes, arrows), bookmarks and attachments from PDF files.
   
-  **Reference:** `use cpdf <https://community.coherentpdf.com/>`__
+  **References:** 
+  
+  * `Use cpdf <https://community.coherentpdf.com/>`__
+  * `Use pdftk <https://stackoverflow.com/a/49614525/14664104>`__
 
 Security and safety
 ===================
