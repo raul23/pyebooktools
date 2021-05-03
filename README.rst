@@ -995,7 +995,7 @@ Roadmap
 =======
 Starting from first priority tasks:
 
-- Port all `ebook-tools`_ shell scripts into Python
+1. Port all `ebook-tools`_ shell scripts into Python
 
   - |ss| ``organize-ebooks.sh``: **done**, *see* `organize_ebooks.py`_ |se|
   - ``interactive-organizer.sh``: **working on it**
@@ -1003,11 +1003,11 @@ Starting from first priority tasks:
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
-- Test on linux
-- Add tests on `Travis CI`_
-- Eventually add documentation on `Read the Docs`_
-- Create a `docker`_ image for this project
-- Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+1. Test on linux
+1. Add tests on `Travis CI`_
+1. Eventually add documentation on `Read the Docs`_
+1. Create a `docker`_ image for this project
+1. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
   one of the following methods:
   
   * ``gs``: Ghostscript
@@ -1022,7 +1022,7 @@ Starting from first priority tasks:
   * ``pdftotext``
   * ``qpdf``
   * ``jhove``
-- Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
+1. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
   comments, notes, arrows), bookmarks and attachments from PDF files based
   on the following methods:
  
