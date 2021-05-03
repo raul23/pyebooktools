@@ -986,8 +986,8 @@ Roadmap
   
   Then, fix them based on one of the following methods: 
   
-  * ``gs`` (Ghostscript)
-  * ``pdftocairo`` (from Poppler)
+  * ``gs``: Ghostscript
+  * ``pdftocairo``: from Poppler
   * ``mutool``: it does not "print" the PDF file
   * ``cpdf``
     
