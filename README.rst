@@ -659,7 +659,7 @@ the general options that you will used the most:
 * `---mfo, ---metadata-fetch-order`_
 * `--owis, --organize-without-isbn-sources`_
 * `--oft, --output-filename-template`_
-* `all the ocr-related arguments`_
+* `all the ocr-related options`_
 
 Specific options for organizing files
 """""""""""""""""""""""""""""""""""""
@@ -733,8 +733,8 @@ Specific options for organizing files
   Other files that do not contain valid ISBNs and are below
   this size in KBs are considered pamplets/non-ebook documents.
 
-Input and output arguments
-""""""""""""""""""""""""""
+Input and output options
+""""""""""""""""""""""""
 * ``folder_to_organize``; no config variable; **required**
 
   Folder containing the ebook files that need to be organized.
@@ -1144,7 +1144,7 @@ References
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
 .. URLs: local
-.. _all the ocr-related arguments: #options-for-ocr
+.. _all the ocr-related options: #options-for-ocr
 .. _below: #script-usage-and-options
 .. _convert: #convert-options-input-file
 .. _edit: #edit-options-main-log
