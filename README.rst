@@ -986,3 +986,4 @@ References
 .. add more to description (+ examples of output filenames) for the output-filename-template option
 .. add more to description for isbn-regex option
 .. IMPORTANT: change internal url for subcommands in #security-and-safety
+.. IMPORTANT: don't forget see default value
