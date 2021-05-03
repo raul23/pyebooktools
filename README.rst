@@ -76,6 +76,13 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
       were found in them by the fast and straightforward conversion to 
       ``.txt``. This is very useful for scanned ebooks that only contain
       images or were badly OCR-ed in the first place.
+    * Files are checked for corruption (zero-filled files, broken pdfs,
+      corrupt archive, etc.) and corrupt files can optionally be moved to
+      another folder.
+    * Non-ebook documents, pamphlets and pamphlet-like documents like saved
+      webpages, short pdfs, etc. can also be detected and optionally moved to
+      another folder.
+      [ORG]_
       
   The `organize`_ subcommand from the ``ebooktools.py`` script uses this
   module.
@@ -1009,6 +1016,7 @@ References
 .. [OCROP] https://github.com/na--/ebook-tools#options-for-ocr
 .. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
+.. [ORG] https://github.com/na--/ebook-tools#ebook-tools
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [RCL] https://bit.ly/3sPJ9kT
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
