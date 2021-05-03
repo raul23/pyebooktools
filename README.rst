@@ -567,8 +567,8 @@ for ``.pdf``, ``.djvu`` and image files.
 
 General options
 """""""""""""""
-Some of the global options affect this subcommand's behavior a lot, especially
-the `OCR ones`_.
+Some of the global options affect the ``convert`` subcommand's behavior a lot,
+especially the `OCR ones`_.
 
 Input and output options
 """"""""""""""""""""""""
@@ -604,8 +604,8 @@ resource-intensive methods until some ISBNs are found, for more details see
 
 General options
 """""""""""""""
-The global options that especially affect this script are the ones `related to
-extracting ISBNs from files`_ and the `OCR ones`_.
+The global options that especially affect the ``find`` subcommand are the
+ones `related to extracting ISBNs from files`_ and the `OCR ones`_.
 
 Specific options for finding ISBNs
 """"""""""""""""""""""""""""""""""
@@ -650,8 +650,8 @@ this subcommand operates, but there are also some specific options for it.
 
 General options
 """""""""""""""
-All `general options`_ affect this subcommand. However, these are the general 
-options that you will used the most:
+All `general options`_ affect the ``organize`` subcommand. However, these are
+the general options that you will used the most:
 
 * `-d, --dry-run`_
 * `--sl, --symlink-only`_
