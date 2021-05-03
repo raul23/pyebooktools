@@ -83,7 +83,7 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
       webpages, short pdfs, etc. can also be detected and optionally moved to
       another folder.
       
-    [ORG]_
+    **Ref.:** [ORG]_
       
   The `organize`_ subcommand from the ``ebooktools.py`` script uses this
   module.
