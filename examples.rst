@@ -258,7 +258,7 @@ Note that the metadata folders contain only one file each as expected.
 
 `:warning:`
  
-   In order to avoid data loss, use the ``dry-run`` option to test that
+   In order to avoid data loss, use the ``--dry-run`` option to test that
    ``split`` would do what you expect it to do, as explained in the
    `Security and safety`_ section.
    
