@@ -1064,8 +1064,8 @@ Roadmap
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
-- Add a ``remove`` subcommand that can remove the following data from a PDF
-  file: bookmarks and attachments.
+- Add a ``remove`` subcommand that can remove the bookmarks and attachments
+  from a PDF file.
   
   **Reference:** `use cpdf <https://community.coherentpdf.com/>`__
 
