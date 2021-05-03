@@ -993,6 +993,8 @@ Same limitations as for `ebook-tools`_ apply to this project too:
 
 Roadmap
 =======
+Starting from first priority tasks:
+
 - Port all `ebook-tools`_ shell scripts into Python
 
   - |ss| ``organize-ebooks.sh``: **done**, *see* `organize_ebooks.py`_ |se|
