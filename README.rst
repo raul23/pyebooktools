@@ -60,6 +60,16 @@ The `ebooktools.py`_ script is a Python port of the `shell scripts`_ from
     * If no ISBN is found, the script can optionally search for the ebooks
       online by their title and author, which are extracted from the filename
       or file metadata.
+    * Optionally an additional file that contains all the gathered ebook
+      metadata can be saved together with the renamed book so it can later
+      be used for additional verification, indexing or processing.
+    * Most ebook types are supported: ``.epub``, ``.mobi``, ``.azw``,
+      ``.pdf``, ``.djvu``, ``.chm``, ``.cbr``, ``.cbz``, ``.txt``, ``.lit``,
+      ``.rtf``, ``.doc``, ``.docx``, ``.pdb``, ``.html``, ``.fb2``, ``.lrf``, 
+      ``.odt``, ``.prc`` and potentially others. Even compressed ebooks in 
+      arbitrary archive files are supported. For example a ``.zip``, ``.rar`` 
+      or other archive file that contains the ``.pdf`` or ``.html`` chapters 
+      of an ebook can be organized without a problem.
       
   The `organize`_ subcommand from the ``ebooktools.py`` script uses this
   module.
