@@ -1050,6 +1050,7 @@ Roadmap
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
+- 
 - Add a ``remove`` subcommand that can remove annotations, bookmarks and
   attachments from PDF files.
   
