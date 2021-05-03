@@ -715,6 +715,48 @@ Specific options
   extracted author & title and just by title. If there is no useful
   metadata or nothing is found online, the script will try to use the
   filename for searching. [OWI]_
+  
+* ``--wii <value>``, ``--without-isbn-ignore <value>``; config variable
+  ``without_isbn_ignore``; complex default value
+  
+  This is a regular expression that is matched against lowercase
+  filenames. All files that do not contain ISBNs are matched against it
+  and matching files are ignored by the script, even if 
+  ``organize_without_isbn`` is ``True``. The default value is calibrated
+  to match most periodicals (magazines, newspapers, etc.) so the script
+  can ignore them.
+  
+* ``--pamphlet-included-files <value>``; config variable
+  ``pamphlet_included_files``; default value 
+  ``\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$``
+  
+  This is a regular expression that is matched against lowercase
+  filenames. All files that do not contain ISBNs and do not match
+  ``without_isbn_ignore`` are matched against it and matching files
+  are considered pamphlets by default. They are moved to 
+  ``output_folder_pamphlets`` if set, otherwise they are ignored.
+  
+* ``--pamphlet-excluded-files <value>``; config variable
+  ``pamphlet_excluded_files``; default value 
+  ``\.(chm|epub|cbr|cbz|mobi|lit|pdb)$``
+  
+  This is a regular expression that is matched against lowercase
+  filenames. If files do not contain ISBNs and match against it, they
+  are NOT considered as pamphlets, even if they have a small size or
+  number of pages.
+  
+* ``--pamphlet-max-pdf-pages <value>``; config variable
+  ``pamphlet_max_pdf_pages``; default value 50
+  
+  ``.pdf`` files that do not contain valid ISBNs and have a
+  lower number pages than this are considered 
+  pamplets/non-ebook documents.
+  
+* ``--pamphlet-max-filesize-kb <value>``; config variable
+  ``pamphlet_max_filesize_kb``; default value 250
+  
+  Other files that do not contain valid ISBNs and are below
+  this size in KBs are considered pamplets/non-ebook documents.
 
 Input and output arguments
 """"""""""""""""""""""""""
