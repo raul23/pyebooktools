@@ -724,7 +724,7 @@ Specific options
   and matching files are ignored by the script, even if 
   ``organize_without_isbn`` is ``True``. The default value is calibrated
   to match most periodicals (magazines, newspapers, etc.) so the script
-  can ignore them.
+  can ignore them. [WII]_
   
 * ``--pamphlet-included-files <value>``; config variable
   ``pamphlet_included_files``; default value 
@@ -734,7 +734,7 @@ Specific options
   filenames. All files that do not contain ISBNs and do not match
   ``without_isbn_ignore`` are matched against it and matching files
   are considered pamphlets by default. They are moved to 
-  ``output_folder_pamphlets`` if set, otherwise they are ignored.
+  ``output_folder_pamphlets`` if set, otherwise they are ignored. [PIF]_
   
 * ``--pamphlet-excluded-files <value>``; config variable
   ``pamphlet_excluded_files``; default value 
@@ -1125,11 +1125,13 @@ References
 .. [ORG_DESCR] https://github.com/na--/ebook-tools#description
 .. [OWI] https://github.com/na--/ebook-tools#specific-options-for-organizing-files
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
+.. [PIF] https://github.com/na--/ebook-tools#specific-options-for-organizing-files
 .. [RCL] https://bit.ly/3sPJ9kT
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. [SM] https://bit.ly/3sPJ9kT
 .. [TI] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [TML] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
+.. [WII] https://github.com/na--/ebook-tools#specific-options-for-organizing-files
 
 .. URLs
 .. _1: https://www.mobileread.com/forums/showthread.php?t=130638
