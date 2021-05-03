@@ -13,8 +13,6 @@ from the ``ebooktools.py`` script.
 ====================
 Convert a pdf file to text **with** OCR
 ---------------------------------------
-To convert a pdf file to text **with OCR**:
-
 .. code-block:: terminal
 
    $ ebooktools convert --ocr always pdf_to_convert.pdf -o converted.txt
@@ -33,8 +31,6 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
 Convert a pdf file to text **without** OCR
 ------------------------------------------
-To convert a pdf file to text **without OCR**:
-
 .. code-block:: terminal
 
    $ ebooktools convert pdf_to_convert.pdf -o converted.txt
