@@ -975,6 +975,17 @@ Roadmap
   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se|
+- Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+  three methods:
+  
+    * ``pdfinfo``
+    * ``pdftotext``
+    * ``qpdf``
+    
+  **References:**
+    
+    * `<https://superuser.com/a/1546294>__
+    * `<https://formulae.brew.sh/formula/qpdf>`__
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
