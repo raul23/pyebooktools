@@ -231,7 +231,7 @@ one of the subcommands is as followed:
 
 .. code-block:: terminal
 
-  ebooktools {edit,convert,find,rename,split} [<OPTIONS>]
+  ebooktools {edit,convert,find,organize,rename,split} [<OPTIONS>]
   
 Where ``[<OPTIONS>``] include general options (as defined in the
 `General options`_ section) and options specific to the subcommand (as defined
@@ -477,7 +477,7 @@ The usage pattern for running a given **subcommand** is the following:
 
 .. code-block:: terminal
 
-  ebooktools {edit,convert,find,rename,split} [<OPTIONS>]
+  ebooktools {edit,convert,find,organize,rename,split} [<OPTIONS>]
   
 Where ``[<OPTIONS>]`` include general options and options specific to the
 subcommand as shown below.
