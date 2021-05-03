@@ -1002,9 +1002,9 @@ Roadmap
     * `Some user proposes mutool on Ubuntu (can also be installed on macOS with 
       brew) <https://superuser.com/a/923800>`__
     * `Some user used cpdf to fix broken files <https://superuser.com/a/1228662>`__
+    * `Official website for cpdf <https://community.coherentpdf.com/>`__
     * `Install qpdf with homebrew <https://formulae.brew.sh/formula/qpdf>`__
     * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
-    * `Official website for cpdf <https://community.coherentpdf.com/>`__
 - Test on linux
 - Add tests on `Travis CI`_
 - Eventually add documentation on `Read the Docs`_
