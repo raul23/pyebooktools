@@ -251,7 +251,7 @@ General control flags
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
-  `default value <./pyebooktools/configs/default_config.py#L65>`__
+  `default value <https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/configs/default_config.py#L65>`__
   
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
@@ -273,7 +273,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   converting or OCR-ing them to ``.txt`` first. [IDGF]_
   
 * ``--isbn-ignored-files <value>``; config variable ``isbn_ignored_files``; see
-  `default value <./pyebooktools/configs/default_config.py#L68>`__
+  `default value <https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/configs/default_config.py#L68>`__
   
   This is a regular expression that is matched against the MIME type of the
   searched files. Matching files are not searched for ISBNs beyond their
@@ -363,7 +363,7 @@ Options related to extracting and searching for non-ISBN metadata
   ignored. [TML]_
   
 * ``--tokens-to-ignore <value>``; env. variable ``tokens_to_ignore``; see
-  `default value <./pyebooktools/configs/default_config.py#L86>`__
+  `default value <https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/configs/default_config.py#L86>`__
 
   A regular expression that is matched against the filename/author/title tokens
   and matching tokens are ignored. The default regular expression includes
