@@ -859,12 +859,7 @@ split [<OPTIONS>] folder_with_books
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools split [-h] [-v] [-q] [--verbose] [-d] [-r]
-                           [--log-level {debug,info,warning,error}]
-                           [--log-format {console,simple,only_msg}]
-                           [--ome EXTENSION] [-s START_NUMBER] [-f PATTERN]
-                           [--fpf FILES_PER_FOLDER] [-o PATH]
-                           folder_with_books
+   usage: ebooktools split [<OPTIONS>] [-o PATH] folder_with_books
 
 Description
 """""""""""
