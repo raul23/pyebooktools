@@ -523,14 +523,13 @@ In the subsections below, you will find a definition for each of the
 supported subcommands for automated and semi-automated organization and
 management of large ebook collections.
 
-edit [<OPTIONS>] {main,log}
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+edit [OPTIONS] {main,log}
+^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools edit [-h] [-v] [-q] [--verbose]
-                          [--log-level {debug,info,warning,error}]
-                          [--log-format {console,simple,only_msg}] [-a [NAME] | -r]
-                          {main,log}
+   usage: ebooktools edit [OPTIONS] {main,log}
+
+where ``[OPTIONS]`` can be any of the options described below.
 
 Description
 """""""""""
@@ -552,24 +551,22 @@ Input argument
   The config file to edit which can either be the main configuration file
   (``main``) or the logging configuration file (``log``).
 
-convert [<OPTIONS>] input_file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+convert [OPTIONS] input_file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools convert [-h] [-v] [-q] [--verbose]
-                             [--log-level {debug,info,warning,error}]
-                             [--log-format {console,simple,only_msg}]
-                             [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                             [--ocrc CMD] [-o OUTPUT]
-                             input_file
+   usage: ebooktools convert [OPTIONS] input_file
+
+where ``[OPTIONS]`` can be any of the general and specific options described 
+below.
 
 Description
 """""""""""
 Converts the supplied file to a **text** file. It can optionally also use OCR
 for ``.pdf``, ``.djvu`` and image files.
 
-Global options
-""""""""""""""
+General options
+"""""""""""""""
 Some of the global options affect this script's behavior a lot, especially the
 `OCR ones`_.
 
@@ -586,21 +583,15 @@ Input and output arguments
   directory.
 
 
-find [<OPTIONS>] input_data
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+find [OPTIONS] input_data
+^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools find [-h] [-v] [-q] [--verbose]
-                          [--log-level {debug,info,warning,error}]
-                          [--log-format {console,simple,only_msg}]
-                          [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
-                          [--isbn-direct-grep-files REGEX]
-                          [--isbn-ignored-files REGEX]
-                          [--reorder-files-for-grep LINES [LINES ...]]
-                          [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                          [--ocrc CMD] [--irs SEPARATOR]
-                          input_data
-                         
+   usage: ebooktools find [OPTIONS] input_data
+
+where ``[OPTIONS]`` can be any of the general and specific options described 
+below.
+
 Description
 """""""""""                       
 Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
@@ -611,8 +602,8 @@ resource-intensive methods until some ISBNs are found, for more details see
 - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs
   search in files is implemented).
 
-Global options
-""""""""""""""
+General options
+"""""""""""""""
 The global options that especially affect this script are the ones `related to
 extracting ISBNs from files`_ and the `OCR ones`_.
 
@@ -633,30 +624,14 @@ Input argument
   Can either be the path to a file or a string. The input will be searched for
   ISBNs.
   
-organize [<OPTIONS>] folder_to_organize
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+organize [OPTIONS] folder_to_organize
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools organize [-h] [-v] [-q] [--verbose] [-d] [--sl] [--km] [-r]
-                              [--log-level {debug,info,warning,error}]
-                              [--log-format {console,simple,only_msg}]
-                              [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
-                              [--isbn-direct-grep-files REGEX]
-                              [--isbn-ignored-files REGEX]
-                              [--reorder-files-for-grep LINES [LINES ...]]
-                              [---mfo METADATA_SOURCE [METADATA_SOURCE ...]]
-                              [--ocr {always,true,false}] [--ocrop PAGES PAGES]
-                              [--ocrc CMD] [--token-min-length LENGTH]
-                              [--tokens-to-ignore TOKENS]
-                              [--owis METADATA_SOURCE [METADATA_SOURCE ...]]
-                              [--oft TEMPLATE] [--ome EXTENSION] [--cco]
-                              [--tested-archive-extensions REGEX] [--owi]
-                              [--wii REGEX] [--pamphlet-included-files REGEX]
-                              [--pamphlet-excluded-files REGEX]
-                              [--pamphlet-max-pdf-pages PAGES]
-                              [--pamphlet-max-filesize-kb SIZE] [--irs SEPARATOR]
-                              [-o PATH] [--ofu PATH] [--ofc PATH] [--ofp PATH]
-                              folder_to_organize
+   usage: ebooktools organize [OPTIONS] folder_to_organize
+
+where ``[OPTIONS]`` can be any of the general and specific options described 
+below.
 
 Description
 """""""""""
@@ -673,8 +648,8 @@ specified folders. Most of the general options and flags above affect how
 this subcommand operates, but there are also some specific options for it.
 [ORG_DESCR]_
 
-Global options
-""""""""""""""
+General options
+"""""""""""""""
 All `general options`_ affect this subcommand. However, these are the general 
 options that you will used the most:
 
@@ -791,17 +766,14 @@ Input and output arguments
 
   If specified, pamphlets will be moved to this folder.
 
-rename [<OPTIONS>] calibre_folder
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+rename [OPTIONS] calibre_folder
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools rename [-h] [-v] [-q] [--verbose] [-d] [--sl] [-r]
-                            [--log-level {debug,info,warning,error}]
-                            [--log-format {console,simple,only_msg}]
-                            [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
-                            [--oft TEMPLATE] [--ome EXTENSION]
-                            [--sm {disable,opfcopy,recreate}] [-o PATH]
-                            calibre_folder
+   usage: ebooktools rename [OPTIONS] calibre_folder
+
+where ``[OPTIONS]`` can be any of the general and specific options described 
+below.
 
 Description
 """""""""""
@@ -816,8 +788,8 @@ files. [RCL]_
   Activate the `--dry-run`_ flag for testing purposes since no file
   rename/move/symlink/etc. operations will actually be executed.
 
-Global options
-""""""""""""""
+General options
+"""""""""""""""
 In particular, the following global options are especially important for the
 ``rename`` subcommand:
 
@@ -855,11 +827,14 @@ Input and output arguments
   This is the output folder the renamed books will be moved to along with their
   metadata files. The default value is the current working directory.
 
-split [<OPTIONS>] folder_with_books
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+split [OPTIONS] folder_with_books
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
-   usage: ebooktools split [<OPTIONS>] [-o PATH] folder_with_books
+   usage: ebooktools split [OPTIONS] folder_with_books
+
+where ``[OPTIONS]`` can be any of the general and specific options described 
+below.
 
 Description
 """""""""""
@@ -867,8 +842,8 @@ Splits the supplied ebook files (and the accompanying metadata files if
 present) into folders with consecutive names that each contain the specified
 number of files.
 
-Global options
-""""""""""""""
+General options
+"""""""""""""""
 In particular, the following global options are especially important for the
 ``split`` subcommand:
 
