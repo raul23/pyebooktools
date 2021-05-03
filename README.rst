@@ -813,7 +813,7 @@ files. [RCL]_
 
 `:information_source:`
 
-  Activate the ``--dry-run`` flag for testing purposes since no file
+  Activate the `--dry-run`_ flag for testing purposes since no file
   rename/move/symlink/etc. operations will actually be executed.
 
 Global options
