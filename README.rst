@@ -594,6 +594,44 @@ Input argument
   Can either be the path to a file or a string. The input will be searched for
   ISBNs.
   
+organize [<OPTIONS>] folder_to_organize
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: terminal
+
+   usage: ebooktools organize [-h] [-v] [-q] [--verbose] [-d] [--sl] [--km] [-r]
+                              [--log-level {debug,info,warning,error}]
+                              [--log-format {console,simple,only_msg}]
+                              [-i ISBN_REGEX] [--isbn-blacklist-regex REGEX]
+                              [--isbn-direct-grep-files REGEX]
+                              [--isbn-ignored-files REGEX]
+                              [--reorder-files-for-grep LINES [LINES ...]]
+                              [---mfo METADATA_SOURCE [METADATA_SOURCE ...]]
+                              [--ocr {always,true,false}] [--ocrop PAGES PAGES]
+                              [--ocrc CMD] [--token-min-length LENGTH]
+                              [--tokens-to-ignore TOKENS]
+                              [--owis METADATA_SOURCE [METADATA_SOURCE ...]]
+                              [--cco] [--tested-archive-extensions REGEX] [--owi]
+                              [--wii REGEX] [--pamphlet-included-files REGEX]
+                              [--pamphlet-excluded-files REGEX]
+                              [--pamphlet-max-pdf-pages PAGES]
+                              [--pamphlet-max-filesize-kb SIZE] [--irs SEPARATOR]
+                              [-o PATH] [--ofu PATH] [--ofc PATH] [--ofp PATH]
+                              folder_to_organize
+
+Description
+"""""""""""
+This is probably the most versatile subcommand. It can automatically organize 
+folders with huge quantities of unorganized ebook files. This is done by 
+extracting ISBNs and/or metadata from the ebook files, downloading their full 
+and hopefully correct metadata from online sources and auto-renaming the 
+unorganized files with full and correct names and moving them to specified 
+folders. It supports virtually all ebook types, including ebooks in arbitrary 
+or even nested archives (like the other subcommands, it assumes that one file
+is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks 
+and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
+specified folders. Most of the general options and flags above affect how 
+this subcommand operates, but there are also some specific options for it.
+
 rename [<OPTIONS>] calibre_folder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
