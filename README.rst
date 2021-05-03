@@ -644,13 +644,32 @@ Input and output arguments
 
   Folder containing the ebook files that need to be organized.
   
-* ``-o <value>``,`` --output-folder <value>``; config variable
+* ``-o <value>``, `` --output-folder <value>``; config variable
   ``output_folder``; **default value is the current working 
   directory** (check with ``pwd``)
   
   The folder where ebooks that were renamed based on the ISBN 
   metadata will be moved to.
+  
+* ``--ofu <value>``, ``--output-folder-uncertain <value>``;
+  config variable ``output_folder_uncertain``; default value is 
+  ``None``
+  
+  If ``organize_without_isbn`` is enabled, this is the folder
+  to which all ebooks that were renamed based on non-ISBN
+  metadata will be moved to.
+  
+* ``--ofc <value>``, ``--output-folder-corrupt <value>``;
+  config variable ``output_folder_corrupt``; default value is 
+  ``None``
+  
+  If specified, corrupt files will be moved to this folder.
+  
+* ``--ofp <value>``, ``--output-folder-pamphlets <value>``;
+  config variable ``output_folder_pamphlets ``; default value is 
+  ``None``
 
+  If specified, pamphlets will be moved to this folder.
 
 rename [<OPTIONS>] calibre_folder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
