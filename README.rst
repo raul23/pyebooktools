@@ -671,6 +671,7 @@ is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks
 and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
 specified folders. Most of the general options and flags above affect how 
 this subcommand operates, but there are also some specific options for it.
+[ORG_DESCR]_
 
 Global options
 """"""""""""""
@@ -1031,6 +1032,7 @@ References
 .. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [ORG] https://github.com/na--/ebook-tools#ebook-tools
+.. [ORG_DESCR] https://github.com/na--/ebook-tools#description
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [RCL] https://bit.ly/3sPJ9kT
 .. [RFFG] https://github.com/na--/ebook-tools#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
