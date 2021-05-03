@@ -635,8 +635,8 @@ this subcommand operates, but there are also some specific options for it.
 
 Global options
 """"""""""""""
-All `general options`_ affect this subcommand. However, these are the most 
-important general options:
+All `general options`_ affect this subcommand. However, these are the general 
+options that you will used the most:
 
 * `-d, --dry-run`_
 * `--sl, --symlink-only`_
