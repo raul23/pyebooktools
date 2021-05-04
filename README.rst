@@ -299,11 +299,16 @@ General control flags
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _isbn-regex-label:
+
 * ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
   `default value <https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/configs/default_config.py#L65>`__
   
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
+
+.. _isbn-blacklist-regex:
 
 * ``--isbn-blacklist-regex <value>``; config variable ``isbn_blacklist_regex``;
   default value ``^(0123456789|([0-9xX])\2{9})$``
@@ -344,6 +349,8 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   even if these regions overlap. If you use the command-line option, the format
   for ``<value>`` is ``False`` to disable the functionality or
   ``first_lines,last_lines`` to enable it with the specified values. [RFFG]_
+  
+.. _metadata-fetch-order-label:
   
 * ``--mfo <value>``, ``--metadata-fetch-order <value>``; config variable
   ``isbn_metadata_fetch_order``; default value
@@ -419,7 +426,9 @@ Options related to extracting and searching for non-ISBN metadata
   common words that probably hinder online metadata searching like ``book``,
   ``novel``, ``series``, ``volume`` and others, as well as probable publication
   years (so ``1999`` is ignored while ``2033`` is not). [TI]_
-  
+
+.. _organize-without-isbn-sources-label:
+
 * ``--owis <value>``, ``--organize-without-isbn-sources <value>``; config
   variable ``organize_without_isbn_sources``; default value
   ``Goodreads,Amazon.com,Google``
@@ -442,6 +451,9 @@ Options related to extracting and searching for non-ISBN metadata
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _output-filename-template-label:
+
 * ``--oft <value>``, ``--output-filename-template <value>``; config variable
   ``output_filename_template``; default value:
   
@@ -453,6 +465,8 @@ Options related to the input and output files
   followed by the book series name and number in square brackets (if present),
   followed by the book title, the year of publication (if present), the ISBN(s)
   (if present) and the original extension. [OFT]_
+  
+.. _output-metadata-extension-label:
   
 * ``--ome <value>``, ``--output-metadata-extension <value>``; config variable
   ``output_metadata_extension``; default value ``meta``
@@ -473,6 +487,8 @@ Miscellaneous options
 
   Set logging formatter for all loggers. Choices are
   ``{console,simple,only_msg}``.
+
+.. _reverse-label:
 
 * ``-r``, ``--reverse``; config variable ``reverse``; default value ``False``
 
