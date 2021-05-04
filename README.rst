@@ -476,11 +476,16 @@ Options related to the input and output files
 
 Miscellaneous options
 ^^^^^^^^^^^^^^^^^^^^^
+
+.. _log-level-label:
+
 * ``--log-level <value>``; config variable ``logging_level``; default value
   ``info``
 
   Set logging level for all loggers. Choices are
   ``{debug,info,warning,error}``.
+
+.. _log-format-label:
 
 * ``--log-format <value>``; config variable ``logging_formatter``; default
   value ``simple``
