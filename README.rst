@@ -500,9 +500,8 @@ options specific to the subcommand as shown below.
 All subcommands are affected by the following global options:
 
 * `-h, --help`_
-* `-v, --verbose`_
 * `-q, --quiet`_
-* `--verbose`_
+* `-v, --verbose`_
 * `--log-level`_
 * `--log-format`_
 
