@@ -1217,15 +1217,15 @@ References
 .. _--sl, --symlink-only: #symlink-only-label
 .. _--symlink-only: #symlink-only-label
 .. _--km, --keep-metadata: #keep-metadata-label
-.. _-r, --reverse: #miscellaneous-options
-.. _--log-level: #miscellaneous-options
-.. _--log-format: #miscellaneous-options
-.. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _--isbn-blacklist-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _---mfo, ---metadata-fetch-order: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _--owis, --organize-without-isbn-sources: #options-related-to-extracting-and-searching-for-non-isbn-metadata
-.. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
-.. _--ome, --output-metadata-extension: #options-related-to-the-input-and-output-files
+.. _-r, --reverse: #reverse-label
+.. _--log-level: #log-level-label
+.. _--log-format: #log-format-label
+.. _-i, --isbn-regex: #isbn-regex-label
+.. _--isbn-blacklist-regex: #isbn-blacklist-regex
+.. _---mfo, ---metadata-fetch-order: #metadata-fetch-order-label
+.. _--owis, --organize-without-isbn-sources: #organize-without-isbn-sources-label
+.. _--oft, --output-filename-template: #output-filename-template-label
+.. _--ome, --output-metadata-extension: #output-metadata-extension-label
 
 .. |ss| raw:: html
 
