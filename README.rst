@@ -674,7 +674,8 @@ is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks
 and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
 specified folders. All of the general options and flags 
 `above <#general-options>`__ affect how this subcommand operates, but there 
-are also some `specific options`_ for it. [ORG_DESCR]_
+are also some `specific options <#specific-options-for-organizing-files>`__ 
+for it. [ORG_DESCR]_
 
 General options for organizing files
 """"""""""""""""""""""""""""""""""""
@@ -1194,7 +1195,6 @@ References
 .. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
 .. _Security and safety: #security-and-safety
-.. _specific options: #specific-options-for-organizing-files
 .. _split: #split-options-folder-with-books
 .. _subcommand: #script-usage-subcommands-and-options
 .. _subcommands: #script-usage-subcommands-and-options
