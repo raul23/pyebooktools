@@ -99,8 +99,8 @@ The input string can be enclosed within single or double quotes.
 The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
 they are matched with the regular expression `isbn_blacklist_regex`_.
 
-By `default <./README.rst#local-options>`__, the extracted ISBNs are separated
-by newlines, ``\n``.
+By `default <./README.rst#specific-options-for-finding-isbns>`__, the extracted 
+ISBNs are separated by newlines, ``\n``.
 
 `:information_source:`
 
@@ -263,7 +263,7 @@ Note that the metadata folders contain only one file each as expected.
    `Security and safety`_ section.
    
 .. URLs
-.. _isbn_blacklist_regex: ./README.rst#options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
