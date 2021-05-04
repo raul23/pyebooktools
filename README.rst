@@ -530,8 +530,8 @@ edit [OPTIONS] {main,log}
    usage: ebooktools edit [OPTIONS] {main,log}
 
 where ``[OPTIONS]`` includes 
-`specific <#specific-options-for-editing-config-files>`__ and 
-`input/output options <#input-and-output-options-for-editing-config-files>`__, 
+`specific <#specific-options-for-editing-config-files>`__ and an
+`input option <#input-option-for-editing-config-files>`__, 
 as described below.
 
 Very few general options affect this subcommand, such as
