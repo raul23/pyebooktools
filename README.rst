@@ -604,7 +604,7 @@ find [OPTIONS] input_data
    usage: ebooktools find [OPTIONS] input_data
 
 where ``[OPTIONS]`` includes
-`general options <#general-options-for-finding-isbns>`_
+`general options <#general-options-for-finding-isbns>`_,
 `specific options <#specific-options-for-finding-isbns>`_ and
 `an input option <#input-option-for-finding-isbns>`__,
 as described below.
