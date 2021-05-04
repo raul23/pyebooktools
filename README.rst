@@ -530,8 +530,8 @@ edit [OPTIONS] {main,log}
    usage: ebooktools edit [OPTIONS] {main,log}
 
 where ``[OPTIONS]`` includes 
-`specific <#specific-options-for-editing-config-files>`__ and an
-`input option <#input-option-for-editing-config-files>`__, 
+`specific options <#specific-options-for-editing-config-files>`__ 
+and an `input option <#input-option-for-editing-config-files>`__, 
 as described below.
 
 Very few general options affect this subcommand, such as
@@ -548,7 +548,14 @@ Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
 * ``-a <value>``, ``--app <value>``; config variable ``app``; 
   default value ``None``
+  
+  Name of the application to use for editing the config file. If no name is
+  given, then the default application for opening this type of file will be 
+  used.
+
 * ``-r``, ``--reset``; no config variable; default value ``False``
+
+  Reset a configuration file (``main`` or ``log``) with factory default values.
 
 Input option for editing config files
 """""""""""""""""""""""""""""""""""""
@@ -563,8 +570,10 @@ convert [OPTIONS] input_file
 
    usage: ebooktools convert [OPTIONS] input_file
 
-where ``[OPTIONS]`` includes general and input/output options as decribed
-below.
+where ``[OPTIONS]`` includes 
+`general options <#general-options-for-converting-files>`__ and 
+`input/output options <#input-and-output-options-for-converting-files>`__,
+as decribed below.
 
 Description
 """""""""""
@@ -594,8 +603,11 @@ find [OPTIONS] input_data
 
    usage: ebooktools find [OPTIONS] input_data
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` includes
+`general options <#general-options-for-finding-isbns>`_
+`specific options <#specific-options-for-finding-isbns>`_ and
+`an input option <#input-option-for-finding-isbns>`__,
+as described below.
 
 Description
 """""""""""                       
@@ -635,9 +647,9 @@ organize [OPTIONS] folder_to_organize
 
    usage: ebooktools organize [OPTIONS] folder_to_organize
 
-where ``[OPTIONS]`` can be any of the 
-`general <#general-options-for-organizing-files>`__, 
-`specific <#specific-options-for-organizing-files>`__, and 
+where ``[OPTIONS]`` includes
+`general options <#general-options-for-organizing-files>`__, 
+`specific options <#specific-options-for-organizing-files>`__, and 
 `input/output options <#input-and-output-options-for-organizing-files>`__,
 as described below.
 
@@ -780,9 +792,9 @@ rename [OPTIONS] calibre_folder
 
    usage: ebooktools rename [OPTIONS] calibre_folder
 
-where ``[OPTIONS]`` can be any of the 
-`general <#general-options-for-renaming-files>`__, 
-`specific <#specific-options-for-renaming-files>`__, and 
+where ``[OPTIONS]`` includes 
+`general options <#general-options-for-renaming-files>`__, 
+`specific options <#specific-options-for-renaming-files>`__, and 
 `input/output options <#input-and-output-options-for-renaming-files>`__,
 as described below.
 
@@ -844,9 +856,9 @@ split [OPTIONS] folder_with_books
 
    usage: ebooktools split [OPTIONS] folder_with_books
 
-where ``[OPTIONS]`` can be any of the 
-`general <#general-options-for-splitting-files>`__, 
-`specific <#specific-options-for-splitting-files>`__, and 
+where ``[OPTIONS]`` includes 
+`general options <#general-options-for-splitting-files>`__, 
+`specific options <#specific-options-for-splitting-files>`__, and 
 `input/output options <#input-and-output-options-for-splitting-files>`__, 
 as described below.
 
