@@ -710,7 +710,7 @@ for it. [ORG_DESCR]_
 General options for organizing files
 """"""""""""""""""""""""""""""""""""
 All `general options <#general-options>`__ affect the ``organize`` subcommand. 
-However, these are the general options that you will used the most:
+However, these are the general options that you will probably used the most:
 
 * `-d, --dry-run`_
 * `--sl, --symlink-only`_
