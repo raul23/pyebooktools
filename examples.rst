@@ -219,7 +219,7 @@ Content of ``output_folder``:
   ``metadata.opf`` files and the new filenames follow the
   `output_filename_template`_ format.
 * The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
-  <./README.rst#options-related-to-the-input-and-output-files>`__) beside the
+  <./README.rst#output-metadata-extension-label>`__) beside the
   symlinks to the book files.
 
 ``split`` examples
