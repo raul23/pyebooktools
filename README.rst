@@ -673,7 +673,7 @@ or even nested archives (like the other subcommands, it assumes that one file
 is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks 
 and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
 specified folders. All of the general options and flags 
-`above <##general-options>`__ affect how this subcommand operates, but there 
+`above <#general-options>`__ affect how this subcommand operates, but there 
 are also some `specific options`_ for it. [ORG_DESCR]_
 
 General options for organizing files
