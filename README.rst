@@ -544,8 +544,8 @@ Specific options for editing config files
   default value ``None``
 * ``-r``, ``--reset``; no config variable; default value ``False``
 
-Input option
-""""""""""""
+Input option for editing config files
+"""""""""""""""""""""""""""""""""""""
 * ``{main,log}``; no config variable; **required**
   
   The config file to edit which can either be the main configuration file
@@ -557,7 +557,7 @@ convert [OPTIONS] input_file
 
    usage: ebooktools convert [OPTIONS] input_file
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
+where ``[OPTIONS]`` includes general and input/output options as decribed
 below.
 
 Description
@@ -565,13 +565,13 @@ Description
 Converts the supplied file to a **text** file. It can optionally also use OCR
 for ``.pdf``, ``.djvu`` and image files.
 
-General options
-"""""""""""""""
+General options for converting files
+""""""""""""""""""""""""""""""""""""
 Some of the global options affect the ``convert`` subcommand's behavior a lot,
 especially the `OCR ones`_.
 
-Input and output options
-""""""""""""""""""""""""
+Input and output options for converting files
+"""""""""""""""""""""""""""""""""""""""""""""
 * ``input_file``; no config variable; **required**
   
   The input file to be converted to a text file.
@@ -581,7 +581,6 @@ Input and output options
   
   The output file text. By default, it is saved in the current working
   directory.
-
 
 find [OPTIONS] input_data
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -602,8 +601,8 @@ resource-intensive methods until some ISBNs are found, for more details see
 - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs
   search in files is implemented).
 
-General options
-"""""""""""""""
+General options for finding ISBNs
+"""""""""""""""""""""""""""""""""
 The global options that especially affect the ``find`` subcommand are the
 ones `related to extracting ISBNs from files`_ and the `OCR ones`_.
 
@@ -617,8 +616,8 @@ The only subcommand-specific option is:
   This specifies the separator that will be used when returning any found
   ISBNs.
 
-Input option
-""""""""""""
+Input option for finding ISBNs
+""""""""""""""""""""""""""""""
 * ``input_data``; no config variable; **required**
 
   Can either be the path to a file or a string. The input will be searched for
@@ -630,8 +629,11 @@ organize [OPTIONS] folder_to_organize
 
    usage: ebooktools organize [OPTIONS] folder_to_organize
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` can be any of the 
+`general <#general-options-for-organizing-files>`__, 
+`specific <#specific-options-for-organizing-files>`__, and 
+`input/output options <#input-and-output-options-for-organizing-files>`__,
+as described below.
 
 Description
 """""""""""
@@ -644,12 +646,12 @@ folders. It supports virtually all ebook types, including ebooks in arbitrary
 or even nested archives (like the other subcommands, it assumes that one file
 is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks 
 and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
-specified folders. Most of the general options and flags above affect how 
-this subcommand operates, but there are also some `specific options`_ for it.
-[ORG_DESCR]_
+specified folders. All of the general options and flags 
+`above <##general-options>`__ affect how this subcommand operates, but there 
+are also some `specific options`_ for it. [ORG_DESCR]_
 
-General options
-"""""""""""""""
+General options for organizing files
+""""""""""""""""""""""""""""""""""""
 All `general options`_ affect the ``organize`` subcommand. However, these are
 the general options that you will used the most:
 
@@ -733,8 +735,8 @@ Specific options for organizing files
   Other files that do not contain valid ISBNs and are below
   this size in KBs are considered pamplets/non-ebook documents.
 
-Input and output options
-""""""""""""""""""""""""
+Input and output options for organizing files
+"""""""""""""""""""""""""""""""""""""""""""""
 * ``folder_to_organize``; no config variable; **required**
 
   Folder containing the ebook files that need to be organized.
@@ -772,8 +774,11 @@ rename [OPTIONS] calibre_folder
 
    usage: ebooktools rename [OPTIONS] calibre_folder
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` can be any of the 
+`general <#general-options-for-renaming-files>`__, 
+`specific <#specific-options-for-renaming-files>`__, and 
+`input/output options <#input-and-output-options-for-renaming-files>`__,
+as described below.
 
 Description
 """""""""""
@@ -788,8 +793,8 @@ files. [RCL]_
   Activate the `--dry-run`_ flag for testing purposes since no file
   rename/move/symlink/etc. operations will actually be executed.
 
-General options
-"""""""""""""""
+General options for renaming files
+""""""""""""""""""""""""""""""""""
 In particular, the following global options are especially important for the
 ``rename`` subcommand:
 
@@ -811,8 +816,8 @@ Specific options for renaming files
   ``recreate`` saves a metadata file that is similar to the one
   ``organize-ebooks.py`` creates. ``disable`` disables this function. [SM]_
 
-Input and output options
-""""""""""""""""""""""""
+Input and output options for renaming files
+"""""""""""""""""""""""""""""""""""""""""""
 * ``calibre_folder``; no config variable; **required**
   
   Calibre library folder which will be traversed and all the book files in it
@@ -833,8 +838,11 @@ split [OPTIONS] folder_with_books
 
    usage: ebooktools split [OPTIONS] folder_with_books
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` can be any of the 
+`general <#general-options-for-splitting-files>`__, 
+`specific <#specific-options-for-splitting-files>`__, and 
+`input/output options <#input-and-output-options-for-splitting-files>`__, 
+as described below.
 
 Description
 """""""""""
@@ -842,8 +850,8 @@ Splits the supplied ebook files (and the accompanying metadata files if
 present) into folders with consecutive names that each contain the specified
 number of files.
 
-General options
-"""""""""""""""
+General options for splitting files
+"""""""""""""""""""""""""""""""""""
 In particular, the following global options are especially important for the
 ``split`` subcommand:
 
@@ -872,8 +880,8 @@ Specific options for splitting files
 
   How many files should be moved to each folder.
   
-Input and output options
-""""""""""""""""""""""""
+Input and output options for splitting files
+""""""""""""""""""""""""""""""""""""""""""""
 * ``input_file``; no config variable; **required**
   
   Folder with books which will be recursively scanned for files.
