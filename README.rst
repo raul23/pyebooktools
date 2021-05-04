@@ -1200,14 +1200,14 @@ References
 .. _subcommands: #script-usage-subcommands-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
-.. _-v, --verbose: #general-control-flags
-.. _-q, --quiet: #general-control-flags
-.. _--verbose: #general-control-flags
-.. _-d, --dry-run: #general-control-flags
-.. _--dry-run: #general-control-flags
-.. _--sl, --symlink-only: #general-control-flags
-.. _--symlink-only: #general-control-flags
-.. _--km, --keep-metadata: #general-control-flags
+.. _-v, --verbose: #verbose-label
+.. _-q, --quiet: #quiet-label
+.. _--verbose: #verbose-label
+.. _-d, --dry-run: #dry-run-label
+.. _--dry-run: #dry-run-label
+.. _--sl, --symlink-only: #symlink-only-label
+.. _--symlink-only: #symlink-only-label
+.. _--km, --keep-metadata: #keep-metadata-label
 .. _-r, --reverse: #miscellaneous-options
 .. _--log-level: #miscellaneous-options
 .. _--log-format: #miscellaneous-options
