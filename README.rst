@@ -259,24 +259,34 @@ General control flags
 
   Show program's version number and exit.
 
+.. _quiet-label:
+
 * ``-q``, ``--quiet``; config variable ``quiet``; default value ``False``
 
   Enable quiet mode, i.e. nothing will be printed.
+
+.. _verbose-label:
 
 * ``--verbose``; config variable ``verbose``; default value ``False``
 
   Print various debugging information, e.g. print traceback when there is an
   exception.
 
+.. _dry-run-label:
+
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
 
   If this is enabled, no file rename/move/symlink/etc. operations will actually
   be executed.
 
+.. _symlink-only-label:
+
 * ``--sl``, ``--symlink-only``; config variable ``symlink_only``; default value
   ``False``
   
   Instead of moving the ebook files, create symbolic links to them.
+
+.. _keep-metadata-label:
 
 * ``--km``, ``--keep-metadata``; config variable ``keep_metadata``; default
   value ``False``
