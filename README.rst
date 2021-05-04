@@ -234,8 +234,8 @@ one of the subcommands is as followed:
   ebooktools {edit,convert,find,organize,rename,split} [OPTIONS]
   
 where ``[OPTIONS]`` includes general options (as defined in the
-`General options`_ section) and options specific to the subcommand (as defined
-in the `Script usage, subcommands and options`_ section).
+`General options <#general-options>`__ section) and options specific to the 
+subcommand (as defined in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
@@ -479,8 +479,8 @@ The usage pattern for running a given **subcommand** is the following:
 
   ebooktools {edit,convert,find,organize,rename,split} [OPTIONS]
   
-where ``[OPTIONS]`` includes `general options`_ and options specific to the
-subcommand as shown below.
+where ``[OPTIONS]`` includes `general options <#general-options>`__ and 
+options specific to the subcommand as shown below.
 
 `:information_source:`
 
@@ -678,8 +678,8 @@ are also some `specific options`_ for it. [ORG_DESCR]_
 
 General options for organizing files
 """"""""""""""""""""""""""""""""""""
-All `general options`_ affect the ``organize`` subcommand. However, these are
-the general options that you will used the most:
+All `general options <#general-options>`__ affect the ``organize`` subcommand. 
+However, these are the general options that you will used the most:
 
 * `-d, --dry-run`_
 * `--sl, --symlink-only`_
@@ -1184,8 +1184,6 @@ References
 .. _edit: #edit-options-main-log
 .. _find: #find-options-input-data
 .. _General control flags: #general-control-flags
-.. _General options: #general-options
-.. _general options: #general-options
 .. _interact: #security-and-safety
 .. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Miscellaneous options: #miscellaneous-options
