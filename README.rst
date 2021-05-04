@@ -539,10 +539,18 @@ Very few general options affect this subcommand, such as
 
 Description
 """""""""""
-Edits a configuration file, either the main configuration file (``main``) or
-the logging configuration file (``log``). The configuration file can be opened
-by a user-specified application (``app``) or a default program associated with
-this type of file (when ``app`` is ``None``).
+Edits a configuration file, which can either be 
+
+- the main configuration file (``main``) where all the options associated
+  with the ``ebooktools.py`` script can be found and whose default values
+  are defined in `default_config.py`_ or
+- the logging configuration file (``log``) to setup the different loggers
+  used in the ``ebooktools.py`` script and whose default values are 
+  defined in `default_logging.py`.
+
+The configuration file can be opened by a user-specified application 
+(``app``) or a default program associated with this type of file (when 
+``app`` is ``None``).
 
 Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
