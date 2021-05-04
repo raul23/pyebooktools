@@ -308,7 +308,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
 
-.. _isbn-blacklist-regex:
+.. _isbn-blacklist-regex-label:
 
 * ``--isbn-blacklist-regex <value>``; config variable ``isbn_blacklist_regex``;
   default value ``^(0123456789|([0-9xX])\2{9})$``
@@ -1242,7 +1242,7 @@ References
 .. _--log-level: #log-level-label
 .. _--log-format: #log-format-label
 .. _-i, --isbn-regex: #isbn-regex-label
-.. _--isbn-blacklist-regex: #isbn-blacklist-regex
+.. _--isbn-blacklist-regex: #isbn-blacklist-regex-label
 .. _---mfo, ---metadata-fetch-order: #metadata-fetch-order-label
 .. _--owis, --organize-without-isbn-sources: #organize-without-isbn-sources-label
 .. _--oft, --output-filename-template: #output-filename-template-label
