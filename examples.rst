@@ -304,8 +304,8 @@ Content of ``output_folder``:
 
 Content of ``output_folder_corrupt``:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/output_folder_corrupt.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/output_folder_corrupt.png
    :align: left
    :alt: Example: content of ``output_folder_corrupt``
 
