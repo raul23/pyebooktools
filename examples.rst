@@ -215,6 +215,9 @@ cases:
   The ``config.py`` file will be opened by the default source code
   editor associated with this type of file and then you can modify
   the right configuration variables.
+  
+  Then run the ``organize`` subcommand and the updated options in
+  the configuration file will be used.
    
   See `edit`_ for more info about this subcommand.
 
