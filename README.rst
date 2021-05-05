@@ -798,13 +798,17 @@ Input and output options for organizing files
 
   Folder containing the ebook files that need to be organized.
   
+.. _organize-output-folder-label:  
+  
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working 
   directory** (check with ``pwd``)
   
   The folder where ebooks that were renamed based on the ISBN 
   metadata will be moved to.
-  
+
+.. _output-folder-uncertain-label:
+
 * ``--ofu <value>``, ``--output-folder-uncertain <value>``;
   config variable ``output_folder_uncertain``; default value is 
   ``None``
