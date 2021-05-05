@@ -164,15 +164,28 @@ system.
 
 ``organize`` examples
 =====================
+These examples show how to organize ebooks depending on different 
+cases:
 
-Organize ebook files with corrupted folder
-------------------------------------------
+- `Organize ebook files with only output_folder`_: ignore ebooks without ISBNs
+- `Organize ebook files with output_folder_corrupt`_: check for corruption (e.g. 
+  zero-filled files, corrupt archives or broken ``.pdf`` files)
+- `Organize ebook files with output_folder_pamphlets`_: e.g. small pdfs or 
+  saved webpages
+- `Organize ebook files with output_folder_uncertain`_: use online metadata
+  sources to get ISBN from author & title
 
-Organize ebook files with pamphlets folder
-------------------------------------------
+Organize ebook files with only ``output_folder``
+------------------------------------------------
 
-Organize ebook files with uncertain folder
-------------------------------------------
+Organize ebook files with ``output_folder_corrupt``
+---------------------------------------------------
+
+Organize ebook files with ``output_folder_pamphlets``
+-----------------------------------------------------
+
+Organize ebook files with ``output_folder_uncertain``
+-----------------------------------------------------
 We want to organize the following ebook files, some of which do not contain 
 any ISBNs:
 
@@ -340,3 +353,9 @@ References
 .. _--owi: ./README.rst#organize-without-isbn-label
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
+
+.. Local URLs
+.. _Organize ebook files with only output_folder: #organize-ebook-files-with-only-output_folder
+.. _Organize ebook files with output_folder_corrupt: #organize-ebook-files-with-output-folder-corrupt
+.. _Organize ebook files with output_folder_pamphlets: #organize-ebook-files-with-output-folder-pamphlets
+.. _Organize ebook files with output_folder_uncertain: #organize-ebook-files-with-output-folder-uncertain
