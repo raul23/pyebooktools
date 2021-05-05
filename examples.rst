@@ -22,7 +22,7 @@ from the ``ebooktools.py`` script.
   editor associated with this type of file and then you can modify
   the right configuration variables for the given subcommand.
   
-  You can then run the given subcommand (e.g. ``organize``) and all 
+  You can then run the given subcommand and all 
   the updated options in the configuration file will be used. 
   However, command-line parameters supersede variables defined in 
   the configuration file. 
