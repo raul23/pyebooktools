@@ -175,6 +175,10 @@ cases:
 - `Organize ebook files with output_folder_uncertain`_: use online metadata
   sources to get ISBN from extracted author & title
 
+`:information_source:`
+
+  You can also combine all these cases by using all of the `output folders`_
+
 Organize ebook files with only ``output_folder``
 ------------------------------------------------
 
@@ -350,6 +354,7 @@ References
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
+.. _output folders: ./README.rst#input-and-output-options-for-organizing-files
 .. _--owi: ./README.rst#organize-without-isbn-label
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
