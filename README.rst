@@ -582,6 +582,11 @@ The configuration file can be opened by a user-specified application
 (``app``) or a default program associated with this type of file (when 
 ``app`` is ``None``).
 
+`:warning:`
+
+  Command-line parameters supersede variables defined in the configuration
+  file. 
+
 Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
 * ``-a <value>``, ``--app <value>``; config variable ``app``; 
