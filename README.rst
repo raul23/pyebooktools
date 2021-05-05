@@ -1264,6 +1264,7 @@ References
 .. _-i, --isbn-regex: #isbn-regex-label
 .. _--isbn-blacklist-regex: #isbn-blacklist-regex-label
 .. _---mfo, ---metadata-fetch-order: #metadata-fetch-order-label
+.. _--ocr: #options-for-ocr
 .. _--owis, --organize-without-isbn-sources: #organize-without-isbn-sources-label
 .. _--oft, --output-filename-template: #output-filename-template-label
 .. _--ome, --output-metadata-extension: #output-metadata-extension-label
