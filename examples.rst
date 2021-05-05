@@ -222,6 +222,8 @@ Content of ``output_folder_uncertain``:
    :align: left
    :alt: Example: content of ``output_folder_uncertain``
 
+|
+
 `:information_source:`
 
   For those ebooks for which no ISBNs could be found in them, the ``ebooktools.py``
