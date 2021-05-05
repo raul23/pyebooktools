@@ -751,7 +751,9 @@ Specific options for organizing files
   extracted author & title and just by title. If there is no useful
   metadata or nothing is found online, the script will try to use the
   filename for searching. [OWI]_
-  
+
+.. _without-isbn-ignore-label:
+
 * ``--wii <value>``, ``--without-isbn-ignore <value>``; config variable
   ``without_isbn_ignore``; complex default value
   
@@ -1234,6 +1236,7 @@ References
 .. _organize_without_isbn: #organize-without-isbn-label
 .. _organize_without_isbn_sources: #organize-without-isbn-sources-label
 .. _output_folder_corrupt: #output-folder-corrupt-label
+.. _output_folder_pamphlets: #output-folder-pamphlets-label
 .. _output_metadata_extension: #output-metadata-extension-label
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #rename-options-calibre-folder
@@ -1243,6 +1246,7 @@ References
 .. _subcommand: #script-usage-subcommands-and-options
 .. _subcommands: #script-usage-subcommands-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
+.. _without_isbn_ignore: #without-isbn-ignore-label
 .. _-h, --help: #general-control-flags
 .. _-v, --verbose: #verbose-label
 .. _-q, --quiet: #quiet-label
