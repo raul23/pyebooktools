@@ -395,7 +395,7 @@ Options for OCR
   ``m`` pages when OCR-ing ebooks. This is done because OCR is a slow
   resource-intensive process and ISBN numbers are usually at the beginning or
   at the end of books. Setting the value to ``False`` disables this
-  optimization and is the default for ``convert_to_txt.sh``, where we probably
+  optimization and is the default for `convert_to_txt.py`_, where we probably
   want the whole book to be converted. [OCROP]_
   
 * ``--ocrc <value>``, ``--ocr-command <value>``; config variable
