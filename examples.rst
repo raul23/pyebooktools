@@ -178,7 +178,18 @@ cases:
 `:information_source:`
 
   You can also combine all these cases by using all of the `output folders`_
-  in the command-line when calling the `organize`_ subcommand.
+  along with the `--owi`_ flag in the command-line when calling the 
+  `organize`_ subcommand.
+  
+  Or better you can also do it through the config file ``config.py`` by
+  running the following command and modifying the right variables:
+  
+  
+  .. code-block:: terminal
+
+     $ ebooktools edit main
+   
+  See `edit`_ for more info about this subcommand.
 
 Organize ebook files with only ``output_folder``
 ------------------------------------------------
@@ -351,6 +362,7 @@ References
 .. [OWI] https://github.com/raul23/pyebooktools#organize-without-isbn-label
    
 .. URLs
+.. _edit: ./README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
 .. _organize: ./README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
