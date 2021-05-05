@@ -193,7 +193,8 @@ where
 - `output_folder`_ will contain all the *renamed* ebook files 
   for which an ISBN was found in it
 - `output_folder_uncertain`_ will contain all the *renamed*
-  ebook files for which no ISBNs could be found in them.
+  ebook files for which no ISBNs could be found in them
+- `--log-format only_msg`_ is to remove all logging level in the terminal
 
 ``rename`` examples
 ===================
@@ -285,6 +286,7 @@ Note that the metadata folders contain only one file each as expected.
    
 .. URLs
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
+.. _--log-format only_msg: ./README.rst#log-format-label
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
