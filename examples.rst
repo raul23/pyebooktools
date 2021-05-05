@@ -194,7 +194,8 @@ where
   for which an ISBN was found in it
 - `output_folder_uncertain`_ will contain all the *renamed*
   ebook files for which no ISBNs could be found in them
-- `--log-format only_msg`_ is to remove all logging level in the terminal
+- `--log-format only_msg`_ is to make sure to log only the message without 
+  any logging level (e.g. ``INFO``)
 
 ``rename`` examples
 ===================
