@@ -183,7 +183,7 @@ any ISBNs:
 
 |
 
-This is the command to organize these books as wanted:
+This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
