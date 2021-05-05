@@ -222,6 +222,18 @@ Content of ``output_folder_uncertain``:
    :align: left
    :alt: Example: content of ``output_folder_uncertain``
 
+`:information_source:`
+
+  For those ebooks for which no ISBNs could be found in them, the ``ebooktools.py``
+  takes the following steps to organize them:
+  
+  1. Use calibre's ``ebook-meta`` to extract the author and title 
+     metadata from the ebook file
+  2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by the 
+     extracted author & title and just by title
+  3. If there is no useful metadata or nothing is found online, the script will
+     try to use the filename for searching.
+
 ``rename`` examples
 ===================
 
