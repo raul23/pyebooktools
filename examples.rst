@@ -260,7 +260,7 @@ Content of ``output_folder``:
 
 Organize ebook files with ``output_folder_corrupt``
 ---------------------------------------------------
-We want to organize the following ebook files, some of which are corrupted:
+We want to organize the following ebook files, one of which is corrupted:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
@@ -313,7 +313,8 @@ Content of ``output_folder_corrupt``:
 
 `:information_source:`
 
-  TODO
+  Along each corrupted file, a metadata file is saved containing information about 
+  the corruption reason and the ebook's old file path.
 
 Organize ebook files with ``output_folder_pamphlets``
 -----------------------------------------------------
@@ -370,7 +371,9 @@ Content of ``output_folder_pamphlets``:
 
 `:information_source:`
 
-  TODO
+  If no ISBN was found for a non-pdf file and the file size 
+  is less than `pamphlet_max_filesize_kib`_, then it is 
+  considered as a pamphlet.
 
 Organize ebook files with ``output_folder_uncertain``
 -----------------------------------------------------
@@ -542,6 +545,7 @@ References
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
 .. _output folders: ./README.rst#input-and-output-options-for-organizing-files
 .. _--owi: ./README.rst#organize-without-isbn-label
+.. _pamphlet_max_filesize_kib: ./README.rst#pamphlet-max-filesize-kib-label
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
 
