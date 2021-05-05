@@ -887,8 +887,12 @@ if __name__ == '__main__':
     # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ --log-level debug -o ~/test/_ebooktools/organize/output_folder/
     #
     # Organize with corrupted files and corrupted folder
-    # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ -o ~/test/_ebooktools/organize/output_folder/
+    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize -o ~/test/_ebooktools/organize/output_folder/
     # --log-format only_msg --ofc ~/test/_ebooktools/organize/output_folder_corrupt/
+    #
+    # -d, --dry-run
+    # --sl, --symlink-only
+    # Keep metadata: --km
     #
     # Organize with uncertain folder
     # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
