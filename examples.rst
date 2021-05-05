@@ -186,7 +186,7 @@ This is the command to organize these books as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --log-format only_msg --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
 
 where 
 
