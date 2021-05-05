@@ -329,7 +329,7 @@ Note that the metadata folders contain only one file each as expected.
    
 References
 ==========
-.. [OWI] ./README.rst#organize-without-isbn-label
+.. [OWI] https://github.com/raul23/pyebooktools/blob/master/README.rst#organize-without-isbn-label
    
 .. URLs
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
