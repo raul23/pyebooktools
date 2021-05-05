@@ -348,7 +348,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   mentioned in the middle of the book. No part of the text is searched twice,
   even if these regions overlap. If you use the command-line option, the format
   for ``<value>`` is ``False`` to disable the functionality or
-  ``first_lines,last_lines`` to enable it with the specified values. [RFFG]_
+  ``first_lines last_lines`` to enable it with the specified values. [RFFG]_
   
 .. _metadata-fetch-order-label:
   
