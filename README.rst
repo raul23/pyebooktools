@@ -234,8 +234,8 @@ one of the subcommands is as followed:
   ebooktools {edit,convert,find,organize,rename,split} [OPTIONS]
   
 where ``[OPTIONS]`` includes general options (as defined in the
-`General options`_ section) and options specific to the subcommand (as defined
-in the `Script usage, subcommands and options`_ section).
+`General options <#general-options>`__ section) and options specific to the 
+subcommand (as defined in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
@@ -259,24 +259,34 @@ General control flags
 
   Show program's version number and exit.
 
+.. _quiet-label:
+
 * ``-q``, ``--quiet``; config variable ``quiet``; default value ``False``
 
   Enable quiet mode, i.e. nothing will be printed.
+
+.. _verbose-label:
 
 * ``--verbose``; config variable ``verbose``; default value ``False``
 
   Print various debugging information, e.g. print traceback when there is an
   exception.
 
+.. _dry-run-label:
+
 * ``-d``, ``--dry-run``; config variable ``dry_run``; default value ``False``
 
   If this is enabled, no file rename/move/symlink/etc. operations will actually
   be executed.
 
+.. _symlink-only-label:
+
 * ``--sl``, ``--symlink-only``; config variable ``symlink_only``; default value
   ``False``
   
   Instead of moving the ebook files, create symbolic links to them.
+
+.. _keep-metadata-label:
 
 * ``--km``, ``--keep-metadata``; config variable ``keep_metadata``; default
   value ``False``
@@ -289,11 +299,16 @@ General control flags
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _isbn-regex-label:
+
 * ``-i <value>``, ``--isbn-regex <value>``; config variable ``isbn_regex``; see
   `default value <https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/configs/default_config.py#L65>`__
   
   This is the regular expression used to match ISBN-like numbers in the supplied
   books.
+
+.. _isbn-blacklist-regex-label:
 
 * ``--isbn-blacklist-regex <value>``; config variable ``isbn_blacklist_regex``;
   default value ``^(0123456789|([0-9xX])\2{9})$``
@@ -334,6 +349,8 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   even if these regions overlap. If you use the command-line option, the format
   for ``<value>`` is ``False`` to disable the functionality or
   ``first_lines,last_lines`` to enable it with the specified values. [RFFG]_
+  
+.. _metadata-fetch-order-label:
   
 * ``--mfo <value>``, ``--metadata-fetch-order <value>``; config variable
   ``isbn_metadata_fetch_order``; default value
@@ -409,7 +426,9 @@ Options related to extracting and searching for non-ISBN metadata
   common words that probably hinder online metadata searching like ``book``,
   ``novel``, ``series``, ``volume`` and others, as well as probable publication
   years (so ``1999`` is ignored while ``2033`` is not). [TI]_
-  
+
+.. _organize-without-isbn-sources-label:
+
 * ``--owis <value>``, ``--organize-without-isbn-sources <value>``; config
   variable ``organize_without_isbn_sources``; default value
   ``Goodreads,Amazon.com,Google``
@@ -432,6 +451,9 @@ Options related to extracting and searching for non-ISBN metadata
 
 Options related to the input and output files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _output-filename-template-label:
+
 * ``--oft <value>``, ``--output-filename-template <value>``; config variable
   ``output_filename_template``; default value:
   
@@ -444,6 +466,8 @@ Options related to the input and output files
   followed by the book title, the year of publication (if present), the ISBN(s)
   (if present) and the original extension. [OFT]_
   
+.. _output-metadata-extension-label:
+  
 * ``--ome <value>``, ``--output-metadata-extension <value>``; config variable
   ``output_metadata_extension``; default value ``meta``
   
@@ -452,17 +476,24 @@ Options related to the input and output files
 
 Miscellaneous options
 ^^^^^^^^^^^^^^^^^^^^^
+
+.. _log-level-label:
+
 * ``--log-level <value>``; config variable ``logging_level``; default value
   ``info``
 
   Set logging level for all loggers. Choices are
   ``{debug,info,warning,error}``.
 
+.. _log-format-label:
+
 * ``--log-format <value>``; config variable ``logging_formatter``; default
   value ``simple``
 
   Set logging formatter for all loggers. Choices are
   ``{console,simple,only_msg}``.
+
+.. _reverse-label:
 
 * ``-r``, ``--reverse``; config variable ``reverse``; default value ``False``
 
@@ -479,8 +510,8 @@ The usage pattern for running a given **subcommand** is the following:
 
   ebooktools {edit,convert,find,organize,rename,split} [OPTIONS]
   
-where ``[OPTIONS]`` includes `general options`_ and options specific to the
-subcommand as shown below.
+where ``[OPTIONS]`` includes `general options <#general-options>`__ and 
+options specific to the subcommand as shown below.
 
 `:information_source:`
 
@@ -490,9 +521,8 @@ subcommand as shown below.
 All subcommands are affected by the following global options:
 
 * `-h, --help`_
-* `-v, --verbose`_
 * `-q, --quiet`_
-* `--verbose`_
+* `-v, --verbose`_
 * `--log-level`_
 * `--log-format`_
 
@@ -529,23 +559,44 @@ edit [OPTIONS] {main,log}
 
    usage: ebooktools edit [OPTIONS] {main,log}
 
-where ``[OPTIONS]`` can be any of the options described below.
+where ``[OPTIONS]`` includes 
+`specific options <#specific-options-for-editing-config-files>`__ 
+and an `input option <#input-option-for-editing-config-files>`__, 
+as described below.
+
+Very few general options affect this subcommand, such as
+`-q, --quiet`_ and `--verbose`_.
 
 Description
 """""""""""
-Edits a configuration file, either the main configuration file (``main``) or
-the logging configuration file (``log``). The configuration file can be opened
-by a user-specified application (``app``) or a default program associated with
-this type of file (when ``app`` is ``None``).
+Edits a configuration file, which can either be 
+
+- the main configuration file (``main``) where all the options associated
+  with the ``ebooktools.py`` script can be found and whose default values
+  are defined in `default_config.py`_ or
+- the logging configuration file (``log``) to setup the different loggers
+  used in the ``ebooktools.py`` script and whose default values are 
+  defined in `default_logging.py`.
+
+The configuration file can be opened by a user-specified application 
+(``app``) or a default program associated with this type of file (when 
+``app`` is ``None``).
 
 Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
 * ``-a <value>``, ``--app <value>``; config variable ``app``; 
   default value ``None``
+  
+  Name of the application to use for editing the config file. If no name is
+  given, then the default application for opening this type of file will be 
+  used.
+
 * ``-r``, ``--reset``; no config variable; default value ``False``
 
-Input option
-""""""""""""
+  Reset a configuration file (``main`` or ``log``) with factory default values.
+
+Input option for editing config files
+"""""""""""""""""""""""""""""""""""""
 * ``{main,log}``; no config variable; **required**
   
   The config file to edit which can either be the main configuration file
@@ -557,21 +608,23 @@ convert [OPTIONS] input_file
 
    usage: ebooktools convert [OPTIONS] input_file
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` includes 
+`general options <#general-options-for-converting-files>`__ and 
+`input/output options <#input-and-output-options-for-converting-files>`__,
+as decribed below.
 
 Description
 """""""""""
 Converts the supplied file to a **text** file. It can optionally also use OCR
 for ``.pdf``, ``.djvu`` and image files.
 
-General options
-"""""""""""""""
+General options for converting files
+""""""""""""""""""""""""""""""""""""
 Some of the global options affect the ``convert`` subcommand's behavior a lot,
 especially the `OCR ones`_.
 
-Input and output options
-""""""""""""""""""""""""
+Input and output options for converting files
+"""""""""""""""""""""""""""""""""""""""""""""
 * ``input_file``; no config variable; **required**
   
   The input file to be converted to a text file.
@@ -582,15 +635,17 @@ Input and output options
   The output file text. By default, it is saved in the current working
   directory.
 
-
 find [OPTIONS] input_data
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: terminal
 
    usage: ebooktools find [OPTIONS] input_data
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` includes
+`general options <#general-options-for-finding-isbns>`_,
+`specific options <#specific-options-for-finding-isbns>`_ and
+`an input option <#input-option-for-finding-isbns>`__,
+as described below.
 
 Description
 """""""""""                       
@@ -602,8 +657,8 @@ resource-intensive methods until some ISBNs are found, for more details see
 - `search_file_for_isbns()`_ from ``lib.py`` (Python function where ISBNs
   search in files is implemented).
 
-General options
-"""""""""""""""
+General options for finding ISBNs
+"""""""""""""""""""""""""""""""""
 The global options that especially affect the ``find`` subcommand are the
 ones `related to extracting ISBNs from files`_ and the `OCR ones`_.
 
@@ -617,8 +672,8 @@ The only subcommand-specific option is:
   This specifies the separator that will be used when returning any found
   ISBNs.
 
-Input option
-""""""""""""
+Input option for finding ISBNs
+""""""""""""""""""""""""""""""
 * ``input_data``; no config variable; **required**
 
   Can either be the path to a file or a string. The input will be searched for
@@ -630,8 +685,11 @@ organize [OPTIONS] folder_to_organize
 
    usage: ebooktools organize [OPTIONS] folder_to_organize
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` includes
+`general options <#general-options-for-organizing-files>`__, 
+`specific options <#specific-options-for-organizing-files>`__, and 
+`input/output options <#input-and-output-options-for-organizing-files>`__,
+as described below.
 
 Description
 """""""""""
@@ -644,14 +702,15 @@ folders. It supports virtually all ebook types, including ebooks in arbitrary
 or even nested archives (like the other subcommands, it assumes that one file
 is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks 
 and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
-specified folders. Most of the general options and flags above affect how 
-this subcommand operates, but there are also some specific options for it.
-[ORG_DESCR]_
+specified folders. All of the general options and flags 
+`above <#general-options>`__ affect how this subcommand operates, but there 
+are also some `specific options <#specific-options-for-organizing-files>`__ 
+for it. [ORG_DESCR]_
 
-General options
-"""""""""""""""
-All `general options`_ affect the ``organize`` subcommand. However, these are
-the general options that you will used the most:
+General options for organizing files
+""""""""""""""""""""""""""""""""""""
+All `general options <#general-options>`__ affect the ``organize`` subcommand. 
+However, these are the general options that you will probably used the most:
 
 * `-d, --dry-run`_
 * `--sl, --symlink-only`_
@@ -659,7 +718,7 @@ the general options that you will used the most:
 * `---mfo, ---metadata-fetch-order`_
 * `--owis, --organize-without-isbn-sources`_
 * `--oft, --output-filename-template`_
-* `all the ocr-related arguments`_
+* `all the ocr-related options`_
 
 Specific options for organizing files
 """""""""""""""""""""""""""""""""""""
@@ -733,8 +792,8 @@ Specific options for organizing files
   Other files that do not contain valid ISBNs and are below
   this size in KBs are considered pamplets/non-ebook documents.
 
-Input and output arguments
-""""""""""""""""""""""""""
+Input and output options for organizing files
+"""""""""""""""""""""""""""""""""""""""""""""
 * ``folder_to_organize``; no config variable; **required**
 
   Folder containing the ebook files that need to be organized.
@@ -772,8 +831,11 @@ rename [OPTIONS] calibre_folder
 
    usage: ebooktools rename [OPTIONS] calibre_folder
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` includes 
+`general options <#general-options-for-renaming-files>`__, 
+`specific options <#specific-options-for-renaming-files>`__, and 
+`input/output options <#input-and-output-options-for-renaming-files>`__,
+as described below.
 
 Description
 """""""""""
@@ -788,8 +850,8 @@ files. [RCL]_
   Activate the `--dry-run`_ flag for testing purposes since no file
   rename/move/symlink/etc. operations will actually be executed.
 
-General options
-"""""""""""""""
+General options for renaming files
+""""""""""""""""""""""""""""""""""
 In particular, the following global options are especially important for the
 ``rename`` subcommand:
 
@@ -811,8 +873,8 @@ Specific options for renaming files
   ``recreate`` saves a metadata file that is similar to the one
   ``organize-ebooks.py`` creates. ``disable`` disables this function. [SM]_
 
-Input and output options
-""""""""""""""""""""""""
+Input and output options for renaming files
+"""""""""""""""""""""""""""""""""""""""""""
 * ``calibre_folder``; no config variable; **required**
   
   Calibre library folder which will be traversed and all the book files in it
@@ -833,8 +895,11 @@ split [OPTIONS] folder_with_books
 
    usage: ebooktools split [OPTIONS] folder_with_books
 
-where ``[OPTIONS]`` can be any of the general and specific options described 
-below.
+where ``[OPTIONS]`` includes 
+`general options <#general-options-for-splitting-files>`__, 
+`specific options <#specific-options-for-splitting-files>`__, and 
+`input/output options <#input-and-output-options-for-splitting-files>`__, 
+as described below.
 
 Description
 """""""""""
@@ -842,8 +907,8 @@ Splits the supplied ebook files (and the accompanying metadata files if
 present) into folders with consecutive names that each contain the specified
 number of files.
 
-General options
-"""""""""""""""
+General options for splitting files
+"""""""""""""""""""""""""""""""""""
 In particular, the following global options are especially important for the
 ``split`` subcommand:
 
@@ -872,8 +937,8 @@ Specific options for splitting files
 
   How many files should be moved to each folder.
   
-Input and output options
-""""""""""""""""""""""""
+Input and output options for splitting files
+""""""""""""""""""""""""""""""""""""""""""""
 * ``input_file``; no config variable; **required**
   
   Folder with books which will be recursively scanned for files.
@@ -1144,14 +1209,12 @@ References
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
 
 .. URLs: local
-.. _all the ocr-related arguments: #options-for-ocr
+.. _all the ocr-related options: #options-for-ocr
 .. _below: #script-usage-and-options
 .. _convert: #convert-options-input-file
 .. _edit: #edit-options-main-log
 .. _find: #find-options-input-data
 .. _General control flags: #general-control-flags
-.. _General options: #general-options
-.. _general options: #general-options
 .. _interact: #security-and-safety
 .. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _Miscellaneous options: #miscellaneous-options
@@ -1167,23 +1230,23 @@ References
 .. _subcommands: #script-usage-subcommands-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
 .. _-h, --help: #general-control-flags
-.. _-v, --verbose: #general-control-flags
-.. _-q, --quiet: #general-control-flags
-.. _--verbose: #general-control-flags
-.. _-d, --dry-run: #general-control-flags
-.. _--dry-run: #general-control-flags
-.. _--sl, --symlink-only: #general-control-flags
-.. _--symlink-only: #general-control-flags
-.. _--km, --keep-metadata: #general-control-flags
-.. _-r, --reverse: #miscellaneous-options
-.. _--log-level: #miscellaneous-options
-.. _--log-format: #miscellaneous-options
-.. _-i, --isbn-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _--isbn-blacklist-regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _---mfo, ---metadata-fetch-order: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
-.. _--owis, --organize-without-isbn-sources: #options-related-to-extracting-and-searching-for-non-isbn-metadata
-.. _--oft, --output-filename-template: #options-related-to-the-input-and-output-files
-.. _--ome, --output-metadata-extension: #options-related-to-the-input-and-output-files
+.. _-v, --verbose: #verbose-label
+.. _-q, --quiet: #quiet-label
+.. _--verbose: #verbose-label
+.. _-d, --dry-run: #dry-run-label
+.. _--dry-run: #dry-run-label
+.. _--sl, --symlink-only: #symlink-only-label
+.. _--symlink-only: #symlink-only-label
+.. _--km, --keep-metadata: #keep-metadata-label
+.. _-r, --reverse: #reverse-label
+.. _--log-level: #log-level-label
+.. _--log-format: #log-format-label
+.. _-i, --isbn-regex: #isbn-regex-label
+.. _--isbn-blacklist-regex: #isbn-blacklist-regex-label
+.. _---mfo, ---metadata-fetch-order: #metadata-fetch-order-label
+.. _--owis, --organize-without-isbn-sources: #organize-without-isbn-sources-label
+.. _--oft, --output-filename-template: #output-filename-template-label
+.. _--ome, --output-metadata-extension: #output-metadata-extension-label
 
 .. |ss| raw:: html
 
