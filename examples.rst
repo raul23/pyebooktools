@@ -178,6 +178,7 @@ cases:
 `:information_source:`
 
   You can also combine all these cases by using all of the `output folders`_
+  in the command-line when calling the `organize`_ subcommand.
 
 Organize ebook files with only ``output_folder``
 ------------------------------------------------
@@ -351,6 +352,7 @@ References
    
 .. URLs
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
+.. _organize: ./README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
