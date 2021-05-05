@@ -86,7 +86,7 @@ def textutil(input_file, output_file):
 def check_file_for_corruption(
         file_path, tested_archive_extensions=TESTED_ARCHIVE_EXTENSIONS):
     file_err = ''
-    logger.info(f"Testing '{Path(file_path).name}' for corruption...")
+    logger.debug(f"Testing '{Path(file_path).name}' for corruption...")
     logger.debug(f"Full path: {file_path}")
 
     # TODO: test that it is the same as
@@ -106,7 +106,7 @@ def check_file_for_corruption(
         logger.debug(file_err)
         return file_err
     elif mime_type == 'application/pdf':
-        logger.info('Checking pdf file for integrity...')
+        logger.debug('Checking pdf file for integrity...')
         if not command_exists('pdfinfo'):
             file_err = 'pdfinfo does not exist, could not check if pdf is OK'
             logger.debug(file_err)
@@ -114,36 +114,36 @@ def check_file_for_corruption(
         else:
             pdfinfo_output = pdfinfo(file_path)
             if pdfinfo_output.stderr:
-                logger.info('pdfinfo returned an error!')
+                logger.debug('pdfinfo returned an error!')
                 logger.debug(f'Error:\n{pdfinfo_output.stderr}')
                 file_err = 'Has pdf MIME type or extension, but pdfinfo ' \
                            'returned an error!'
                 logger.debug(file_err)
                 return file_err
             else:
-                logger.info('pdfinfo returned successfully')
+                logger.debug('pdfinfo returned successfully')
                 logger.debug(f'Output of pdfinfo:\n{pdfinfo_output.stdout}')
                 if re.search('^Page size:\s*0 x 0 pts$', pdfinfo_output.stdout):
-                    logger.info('pdf is corrupt anyway, page size property is '
-                                'empty!')
+                    logger.debug('pdf is corrupt anyway, page size property is '
+                                 'empty!')
                     file_err = 'pdf can be parsed, but page size is 0 x 0 pts!'
                     logger.debug(file_err)
                     return file_err
 
     if re.match(tested_archive_extensions, ext):
-        logger.info(f"The file has a '{ext}' extension, testing with 7z...")
+        logger.debug(f"The file has a '{ext}' extension, testing with 7z...")
         log = test_archive(file_path)
         if log.stderr:
-            logger.info('Test failed!')
+            logger.debug('Test failed!')
             logger.debug(log.stderr)
             file_err = 'Looks like an archive, but testing it with 7z failed!'
             return file_err
         else:
-            logger.info('Test succeeded!')
+            logger.debug('Test succeeded!')
             logger.debug(log.stdout)
 
     if file_err == '':
-        logger.info('Corruption not detected!')
+        logger.debug('Corruption not detected!')
     else:
         logger.debug(f'We are at the end of the function and '
                      f'file_err="{file_err}"; it should be empty!')
@@ -639,8 +639,8 @@ def move_or_link_ebook_file_and_metadata(
         # TODO: important, encode('utf-8')? like in rename?
         logger.debug(f'{k}: {v}')
     new_name = substitute_params(d, output_filename_template)
-    logger.info(f"The new file name of the book file/link '{current_ebook_path}' "
-                f'will be: {new_name}')
+    logger.debug(f"The new file name of the book file/link '{current_ebook_path}' "
+                 f'will be: {new_name}')
 
     new_path = unique_filename(new_folder, new_name)
     logger.debug(f'Full path: {new_path}')
@@ -648,19 +648,19 @@ def move_or_link_ebook_file_and_metadata(
 
     if keep_metadata:
         new_metadata_path = f'{new_path}.{output_metadata_extension}'
-        logger.info(f"Moving metadata file '{current_metadata_path}' to "
-                    f"'{new_metadata_path}'....")
+        logger.debug(f"Moving metadata file '{current_metadata_path}' to "
+                     f"'{new_metadata_path}'....")
         if dry_run:
             logger.debug('Removing current metadata file: '
                          f'{current_metadata_path}')
             remove_file(current_metadata_path)
         else:
             if Path(new_metadata_path).is_file():
-                logger.info(f'File already exists: {new_metadata_path}')
+                logger.debug(f'File already exists: {new_metadata_path}')
             else:
                 shutil.move(current_metadata_path, new_metadata_path)
     else:
-        logger.info(f'Removing metadata file {current_metadata_path}...')
+        logger.debug(f'Removing metadata file {current_metadata_path}...')
         remove_file(current_metadata_path)
     return new_path
 
@@ -932,7 +932,7 @@ def search_file_for_isbns(
     # TODO: explain pop()
     func_params.pop('file_path')
     basename = os.path.basename(file_path)
-    logger.info(f"Searching file '{basename}' for ISBN numbers...")
+    logger.debug(f"Searching file '{basename}' for ISBN numbers...")
     # Step 1: check the filename for ISBNs
     # TODO: make sure that we return an empty string when we can't find ISBNs
     logger.debug('check the filename for ISBNs')
