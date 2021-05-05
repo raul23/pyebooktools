@@ -23,11 +23,11 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     OCR=always, first try OCR then conversion
-   INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
-   INFO     OCR successful!
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   OCR=always, first try OCR then conversion
+   Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
+   OCR successful!
 
 Convert a pdf file to text **without** OCR
 ------------------------------------------
@@ -40,10 +40,10 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     OCR=false, try only conversion...
-   INFO     Conversion successful!
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   OCR=false, try only conversion...
+   Conversion successful!
 
 ``edit`` examples
 =================
@@ -90,9 +90,9 @@ The input string can be enclosed within single or double quotes.
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Extracted ISBNs:
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Extracted ISBNs:
    9781594201721
    9781892391810
 
@@ -141,10 +141,10 @@ Find ISBNs in a pdf file
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
-   INFO     Extracted ISBNs:
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Searching file 'pdf_file.pdf' for ISBN numbers...
+   Extracted ISBNs:
    9789580158448
    1000100111
 
@@ -222,17 +222,17 @@ along with their copied ``metadata.opf`` files into an output folder:
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Files sorted in asc
-   INFO     Parsing metadata for 'Title1 - Author1.pdf'...
-   INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title2 - Author2.epub'...
-   INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title3 - Author3.pdf'...
-   INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title4 - Author4.epub'...
-   INFO     Saving book file and metadata...
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Files sorted in asc
+   Parsing metadata for 'Title1 - Author1.pdf'...
+   Saving book file and metadata...
+   Parsing metadata for 'Title2 - Author2.epub'...
+   Saving book file and metadata...
+   Parsing metadata for 'Title3 - Author3.pdf'...
+   Saving book file and metadata...
+   Parsing metadata for 'Title4 - Author4.epub'...
+   Saving book file and metadata...
 
 |
 
