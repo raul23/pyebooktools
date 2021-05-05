@@ -205,6 +205,16 @@ where
    :align: left
    :alt: Example: output terminal
 
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+   
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_uncertain_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_uncertain_folder.png
+   :align: left
+   :alt: Example: content of ``folder_uncertain``
+
 ``rename`` examples
 ===================
 
