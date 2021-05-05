@@ -736,7 +736,9 @@ Specific options for organizing files
   
   A regular expression that specifies which file extensions will be
   tested with ``7z t`` for corruption.
-  
+
+.. _organize-without-isbn-label:
+
 * ``--owi``, ``--organize-without-isbn``; config variable
   ``organize_without_isbn``; default value ``False``
   
@@ -813,7 +815,7 @@ Input and output options for organizing files
   config variable ``output_folder_uncertain``; default value is 
   ``None``
   
-  If ``organize_without_isbn`` is enabled, this is the folder
+  If `organize_without_isbn`_ is enabled, this is the folder
   to which all ebooks that were renamed based on non-ISBN
   metadata will be moved to.
   
@@ -1225,6 +1227,7 @@ References
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _organize: #organize-options-folder-to-organize
+.. _organize_without_isbn: #organize-without-isbn-label
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
