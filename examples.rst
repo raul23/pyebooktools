@@ -190,12 +190,21 @@ This is the command to organize these books as wanted:
 
 where 
 
+- `--log-format only_msg`_ is to make sure to log only the message without 
+  any logging level (e.g. ``INFO``)
 - `output_folder`_ will contain all the *renamed* ebook files 
   for which an ISBN was found in it
 - `output_folder_uncertain`_ will contain all the *renamed*
   ebook files for which no ISBNs could be found in them
-- `--log-format only_msg`_ is to make sure to log only the message without 
-  any logging level (e.g. ``INFO``)
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_output_terminal.png
+   :align: left
+   :alt: Example: output terminal
 
 ``rename`` examples
 ===================
