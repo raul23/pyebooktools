@@ -879,7 +879,7 @@ Specific options for renaming files
   ebooks. Value ``opfcopy`` just copies calibre's ``metadata.opf`` next to each
   renamed file with a `output_metadata_extension`_ extension, while
   ``recreate`` saves a metadata file that is similar to the one
-  `organize-ebooks.py`_ creates. ``disable`` disables this function. [SM]_
+  `organize_ebooks.py`_ creates. ``disable`` disables this function. [SM]_
 
 Input and output options for renaming files
 """""""""""""""""""""""""""""""""""""""""""
@@ -1234,6 +1234,7 @@ References
 .. _organize_without_isbn: #organize-without-isbn-label
 .. _organize_without_isbn_sources: #organize-without-isbn-sources-label
 .. _output_folder_corrupt: #output-folder-corrupt-label
+.. _output_metadata_extension: #output-metadata-extension-label
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
