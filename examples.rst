@@ -182,12 +182,16 @@ cases:
   `organize`_ subcommand.
   
   Or better you can also do it through the config file ``config.py`` by
-  running the following command and modifying the right variables:
+  running the following command:
   
   
   .. code-block:: terminal
 
      $ ebooktools edit main
+     
+  The ``config.py`` file will be opened by the default text editor
+  associated with this type of file and then you can modify the
+  right configuration variables.
    
   See `edit`_ for more info about this subcommand.
 
