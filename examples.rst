@@ -237,6 +237,7 @@ Content of ``output_folder_uncertain``:
      extracted author & title and just by title
   3. If there is no useful metadata or nothing is found online, the script will
      try to use the filename for searching.
+[OWI]_
 
 ``rename`` examples
 ===================
@@ -325,6 +326,10 @@ Note that the metadata folders contain only one file each as expected.
    In order to avoid data loss, use the ``--dry-run`` option to test that
    ``split`` would do what you expect it to do, as explained in the
    `Security and safety`_ section.
+   
+References
+==========
+.. [OWI] ./README.rst#organize-without-isbn-label
    
 .. URLs
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
