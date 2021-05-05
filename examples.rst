@@ -20,6 +20,10 @@ from the ``ebooktools.py`` script.
   The ``config.py`` file will be opened by the default source code
   editor associated with this type of file and then you can modify
   the right configuration variables for the given subcommand.
+  
+  You can then run the subcommand and all the updated options in
+  the configuration file will be used. However, command-line
+  parameters supersede variables defined in the configuration file. 
    
   See `edit`_ for more info about this subcommand.
 
