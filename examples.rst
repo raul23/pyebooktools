@@ -217,10 +217,10 @@ Content of ``output_folder``:
 
 Content of ``folder_uncertain``:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_uncertain_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_uncertain_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_uncertain.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_uncertain.png
    :align: left
-   :alt: Example: content of ``folder_uncertain``
+   :alt: Example: content of ``output_folder_uncertain``
 
 ``rename`` examples
 ===================
