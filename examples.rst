@@ -173,7 +173,8 @@ Organize ebook files with pamphlets folder
 
 Organize ebook files with uncertain folder
 ------------------------------------------
-We want to organize ebook files, some of which do not contain any ISBNs:
+We want to organize the following ebook files, some of which do not contain 
+any ISBNs:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_to_organize.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_to_organize.png
