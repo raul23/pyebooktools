@@ -573,7 +573,7 @@ Edits a configuration file, which can either be
 
 - the main configuration file (``main``) where all the options associated
   with the ``ebooktools.py`` script can be found and whose default values
-  are defined in `default_config.py`_ or
+  are defined in `default_config.py`_
 - the logging configuration file (``log``) to setup the different loggers
   used in the ``ebooktools.py`` script and whose default values are 
   defined in `default_logging.py`.
