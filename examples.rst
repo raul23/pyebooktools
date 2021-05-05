@@ -244,7 +244,7 @@ Content of ``output_folder_uncertain``:
 Rename book files from calibre library folder
 ---------------------------------------------
 Rename book files from a calibre library folder and save their symlinks
-along with their copied ``metadata.opf`` files into an output folder:
+along with their copied ``metadata.opf`` files in a separate folder:
 
 .. code-block:: terminal
 
