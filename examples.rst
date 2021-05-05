@@ -173,7 +173,7 @@ cases:
 - `Organize ebook files with output_folder_pamphlets`_: e.g. small pdfs or 
   saved webpages
 - `Organize ebook files with output_folder_uncertain`_: use online metadata
-  sources to get ISBN from author & title
+  sources to get ISBN from extracted author & title
 
 Organize ebook files with only ``output_folder``
 ------------------------------------------------
