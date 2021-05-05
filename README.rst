@@ -828,7 +828,9 @@ Input and output options for organizing files
   ``None``
   
   If specified, corrupt files will be moved to this folder.
-  
+
+.. _output-folder-pamphlets-label:
+
 * ``--ofp <value>``, ``--output-folder-pamphlets <value>``;
   config variable ``output_folder_pamphlets``; default value is 
   ``None``
