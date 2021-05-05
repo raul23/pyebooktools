@@ -215,7 +215,7 @@ Content of ``output_folder``:
    :alt: Example: content of ``output_folder``
 |
 
-Content of ``folder_uncertain``:
+Content of ``output_folder_uncertain``:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_uncertain.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_uncertain.png
