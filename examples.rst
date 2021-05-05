@@ -188,8 +188,11 @@ This is the command to organize these books as wanted:
 
    $ ebooktools organize --log-format only_msg --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
 
-where ``output_folder_uncertain`` will contain all the ebook files for
-which no ISBNs could be found in them.
+where 
+
+- ``output_folder`` will contain all the ebook files for which an ISBN was found in it
+- ``output_folder_uncertain`` will contain all the ebook files for
+  which no ISBNs could be found in them.
 
 ``rename`` examples
 ===================
