@@ -727,7 +727,7 @@ Specific options for organizing files
   
   Do not organize or rename files, just check them for corruption
   (ex. zero-filled files, corrupt archives or broken ``.pdf`` files). 
-  Useful with the ``output_folder_corrupt`` option.
+  Useful with the `output_folder_corrupt`_ option.
 
 * ``--tested-archive-extensions <value>``; config variable
   ``tested_archive_extensions``; default value 
@@ -747,7 +747,7 @@ Specific options for organizing files
   retrieved ISBNs. If enabled, the script will first try to use
   calibre's ``ebook-meta`` command-line tool to extract the author and 
   title metadata from the ebook file. The script will try searching the
-  online metadata sources (``organize_without_isbn_sources``) by the
+  online metadata sources (`organize_without_isbn_sources`_) by the
   extracted author & title and just by title. If there is no useful
   metadata or nothing is found online, the script will try to use the
   filename for searching. [OWI]_
@@ -818,7 +818,9 @@ Input and output options for organizing files
   If `organize_without_isbn`_ is enabled, this is the folder
   to which all ebooks that were renamed based on non-ISBN
   metadata will be moved to.
-  
+
+.. _output-folder-corrupt-label:
+
 * ``--ofc <value>``, ``--output-folder-corrupt <value>``;
   config variable ``output_folder_corrupt``; default value is 
   ``None``
@@ -1230,6 +1232,8 @@ References
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _organize: #organize-options-folder-to-organize
 .. _organize_without_isbn: #organize-without-isbn-label
+.. _organize_without_isbn_sources: #organize-without-isbn-sources-label
+.. _output_folder_corrupt: #output-folder-corrupt-label
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
