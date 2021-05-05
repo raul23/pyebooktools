@@ -980,11 +980,11 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     OCR=always, first try OCR then conversion
-   INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
-   INFO     OCR successful!
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   OCR=always, first try OCR then conversion
+   Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
+   OCR successful!
 
 Example 2: find ISBNs in a pdf file
 -----------------------------------
@@ -998,10 +998,10 @@ Find ISBNs in a pdf file:
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
-   INFO     Extracted ISBNs:
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Searching file 'pdf_file.pdf' for ISBN numbers...
+   Extracted ISBNs:
    9789580158448
    1000100111
 
