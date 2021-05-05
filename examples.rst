@@ -8,7 +8,8 @@ from the ``ebooktools.py`` script.
 
   Sometimes, it might be more convenient to edit the configuration
   file ``config.py`` instead of building a long command in the
-  terminal with all the options for a given subcommand.
+  terminal with all the options for a given subcommand (e.g. 
+  ``organize``).
 
   Run the following command to edit this configuration file:
   
@@ -21,9 +22,10 @@ from the ``ebooktools.py`` script.
   editor associated with this type of file and then you can modify
   the right configuration variables for the given subcommand.
   
-  You can then run the subcommand and all the updated options in
-  the configuration file will be used. However, command-line
-  parameters supersede variables defined in the configuration file. 
+  You can then run the given subcommand (e.g. ``organize`` and all 
+  the updated options in the configuration file will be used. 
+  However, command-line parameters supersede variables defined in 
+  the configuration file. 
    
   See `edit`_ for more info about this subcommand.
 
