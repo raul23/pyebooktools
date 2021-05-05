@@ -189,9 +189,9 @@ cases:
 
      $ ebooktools edit main
      
-  The ``config.py`` file will be opened by the default text editor
-  associated with this type of file and then you can modify the
-  right configuration variables.
+  The ``config.py`` file will be opened by the default source code
+  editor associated with this type of file and then you can modify
+  the right configuration variables.
    
   See `edit`_ for more info about this subcommand.
 
