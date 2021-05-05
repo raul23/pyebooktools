@@ -237,7 +237,8 @@ Content of ``output_folder_uncertain``:
      extracted author & title and just by title
   3. If there is no useful metadata or nothing is found online, the script will
      try to use the filename for searching.
-[OWI]_
+  
+  [OWI]_
 
 ``rename`` examples
 ===================
