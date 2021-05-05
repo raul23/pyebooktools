@@ -205,11 +205,18 @@ where
    :align: left
    :alt: Example: output terminal
 
+|
+
+Content of ``output_folder``:
+
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_output_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
-   
+|
+
+Content of ``folder_uncertain``:
+
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_uncertain_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_uncertain_folder.png
    :align: left
