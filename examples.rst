@@ -84,8 +84,8 @@ To edit the **main** config file with **PyCharm**:
 
 A tab with the main config file will be opened in PyCharm's Editor window:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
    :align: left
    :alt: Example: opened tab with config file in PyCharm
 
@@ -225,20 +225,160 @@ cases:
 
 Organize ebook files with only ``output_folder``
 ------------------------------------------------
+We want to organize the following ebook files:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks:
+
+.. code-block:: terminal
+
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
 
 Organize ebook files with ``output_folder_corrupt``
 ---------------------------------------------------
+We want to organize the following ebook files, some of which are corrupted:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks as wanted:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_corrupt/ 
+
+where 
+
+- `--owi`_ is a flag to enable the organization of ebooks without 
+  ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks 
+  for which an ISBN was found in it
+- `output_folder_uncertain`_ will contain all corrupted ebooks
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+|
+
+Content of ``output_folder_corrupt``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_uncertain.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_uncertain.png
+   :align: left
+   :alt: Example: content of ``output_folder_corrupt``
+
+|
+
+`:information_source:`
+
+  TODO
 
 Organize ebook files with ``output_folder_pamphlets``
 -----------------------------------------------------
+We want to organize the following ebook files, some of which are pamphlets:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks as wanted:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_pamphlets/ 
+
+where 
+
+- `--owi`_ is a flag to enable the organization of ebooks without 
+  ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks 
+  for which an ISBN was found in it
+- `output_folder_uncertain`_ will contain all the pamphlets-like documents
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+|
+
+Content of ``output_folder_pamphlets``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_pamphlets.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_pamphlets.png
+   :align: left
+   :alt: Example: content of ``output_folder_pamphlets``
+
+|
+
+`:information_source:`
+
+  TODO
 
 Organize ebook files with ``output_folder_uncertain``
 -----------------------------------------------------
 We want to organize the following ebook files, some of which do not contain 
 any ISBNs:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_to_organize.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_to_organize.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_to_organize.png
    :align: left
    :alt: Example: content of ``folder_to_organize``
 
@@ -263,8 +403,8 @@ where
 
 .. code-block:: terminal
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_output_terminal.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_output_terminal.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/output_terminal.png
    :align: left
    :alt: Example: output terminal
 
@@ -272,16 +412,16 @@ where
 
 Content of ``output_folder``:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
 |
 
 Content of ``output_folder_uncertain``:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_uncertain.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_organize_with_uncertain_content_folder_uncertain.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_uncertain.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_uncertain.png
    :align: left
    :alt: Example: content of ``output_folder_uncertain``
 
@@ -333,8 +473,8 @@ along with their copied ``metadata.opf`` files in a separate folder:
 
 Content of ``output_folder``:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
 
@@ -356,8 +496,8 @@ Split a folder
 --------------
 We have a folder containing four ebooks and their corresponding metadata:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_folder_with_books.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_folder_with_books.png
    :align: left
    :alt: Example: content of ``folder_with_books``
 
@@ -374,8 +514,8 @@ their numbering should start at 1:
 
 **Output:** content of ``output_folder``
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
 
