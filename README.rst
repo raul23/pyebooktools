@@ -374,14 +374,14 @@ Options for OCR
   Whether to enable OCR for ``.pdf``, ``.djvu`` and image files. It is disabled
   by default and can be used differently in two scripts [OCR]_:
   
-  * ``organize_ebooks.py`` can use OCR for finding ISBNs in scanned books.
+  * `organize_ebooks.py`_ can use OCR for finding ISBNs in scanned books.
     Setting the value to ``True`` will cause it to use OCR for books that
     failed to be converted to ``.txt`` or were converted to empty files by the
     simple conversion tools (``ebook-convert``, ``pdftotext``, ``djvutxt``).
     Setting the value to ``always`` will cause it to use OCR even when the
     simple tools produced a non-empty result, if there were no ISBNs in it.
     
-  * ``convert_to_txt.py`` can use OCR for the conversion to ``.txt``. Setting
+  * `convert_to_txt.py`_ can use OCR for the conversion to ``.txt``. Setting
     the value to ``True`` will cause it to use OCR for books that failed to be
     converted to ``.txt`` or were converted to empty files by the simple
     conversion tools. Setting it to ``always`` will cause it to first try
