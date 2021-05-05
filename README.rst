@@ -294,7 +294,7 @@ General control flags
   Do not delete the gathered metadata for the organized ebooks, instead save it
   in an accompanying file together with each renamed book. It is very useful
   for semi-automatic verification of the organized files with
-  ``interactive_organizer.py`` or for additional verification, indexing or
+  `interactive_organizer.py`_ or for additional verification, indexing or
   processing at a later date. [KM]_
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
@@ -1207,6 +1207,7 @@ References
 .. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
 .. _examples.rst: ./examples.rst
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
+.. _interactive_organizer.py: ./pyebooktools/interactive_organizer.py
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
