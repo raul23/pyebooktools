@@ -4,6 +4,25 @@ EXAMPLES
 Examples to show how to execute the different `subcommands`_
 from the ``ebooktools.py`` script.
 
+`:star:`
+
+  Sometimes, it might be more convenient to edit the configuration
+  file ``config.py`` instead of building a long command in the
+  terminal with all the options for a given subcommand.
+
+  Run the following command to edit this configuration file:
+  
+  
+  .. code-block:: terminal
+
+     $ ebooktools edit main
+     
+  The ``config.py`` file will be opened by the default source code
+  editor associated with this type of file and then you can modify
+  the right configuration variables for the given subcommand.
+   
+  See `edit`_ for more info about this subcommand.
+
 .. contents:: **Contents**
    :depth: 2
    :local:
