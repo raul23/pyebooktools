@@ -190,8 +190,7 @@ This is the command to organize these books as wanted:
 
 where 
 
-- `--log-format only_msg`_ is to make sure to log only the message without 
-  any logging level (e.g. ``INFO``)
+- `--owi`_
 - `output_folder`_ will contain all the *renamed* ebook files 
   for which an ISBN was found in it
 - `output_folder_uncertain`_ will contain all the *renamed*
@@ -296,9 +295,9 @@ Note that the metadata folders contain only one file each as expected.
    
 .. URLs
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
-.. _--log-format only_msg: ./README.rst#log-format-label
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
+.. _--owi: ./README.rst#organize-without-isbn-label
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
