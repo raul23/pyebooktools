@@ -483,14 +483,14 @@ Content of ``output_folder``:
 
 |
 
-**NOTES:**
+`:information_source:`
 
-* The book files are renamed based on the content of their associated
-  ``metadata.opf`` files and the new filenames follow the
-  `output_filename_template`_ format.
-* The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
-  <./README.rst#output-metadata-extension-label>`__) beside the
-  symlinks to the book files.
+  * The book files are renamed based on the content of their associated
+    ``metadata.opf`` files and the new filenames follow the
+    `output_filename_template`_ format.
+  * The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
+    <./README.rst#output-metadata-extension-label>`__) beside the
+    symlinks to the book files.
 
 ``split`` examples
 ==================
