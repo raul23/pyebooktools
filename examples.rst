@@ -191,12 +191,12 @@ This is the command to organize these ebooks as wanted:
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebook files without 
+- `--owi`_ is a flag to enable the organization of ebooks without 
   ISBNs
-- `output_folder`_ will contain all the *renamed* ebook files 
+- `output_folder`_ will contain all the *renamed* ebooks 
   for which an ISBN was found in it
 - `output_folder_uncertain`_ will contain all the *renamed*
-  ebook files for which no ISBNs could be found in them
+  ebooks for which no ISBNs could be found in them
 
 **Output:**
 
