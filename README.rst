@@ -758,7 +758,7 @@ Specific options for organizing files
   This is a regular expression that is matched against lowercase
   filenames. All files that do not contain ISBNs are matched against it
   and matching files are ignored by the script, even if 
-  ``organize_without_isbn`` is ``True``. The default value is calibrated
+  `organize_without_isbn`_ is ``True``. The default value is calibrated
   to match most periodicals (magazines, newspapers, etc.) so the script
   can ignore them. [WII]_
   
@@ -768,9 +768,9 @@ Specific options for organizing files
   
   This is a regular expression that is matched against lowercase
   filenames. All files that do not contain ISBNs and do not match
-  ``without_isbn_ignore`` are matched against it and matching files
+  `without_isbn_ignore`_ are matched against it and matching files
   are considered pamphlets by default. They are moved to 
-  ``output_folder_pamphlets`` if set, otherwise they are ignored. [PIF]_
+  `output_folder_pamphlets`_ if set, otherwise they are ignored. [PIF]_
   
 * ``--pamphlet-excluded-files <value>``; config variable
   ``pamphlet_excluded_files``; default value 
@@ -877,9 +877,9 @@ Specific options for renaming files
   
   This specifies whether metadata files will be saved together with the renamed
   ebooks. Value ``opfcopy`` just copies calibre's ``metadata.opf`` next to each
-  renamed file with a ``output_metadata_extension`` extension, while
+  renamed file with a `output_metadata_extension`_ extension, while
   ``recreate`` saves a metadata file that is similar to the one
-  ``organize-ebooks.py`` creates. ``disable`` disables this function. [SM]_
+  `organize-ebooks.py`_ creates. ``disable`` disables this function. [SM]_
 
 Input and output options for renaming files
 """""""""""""""""""""""""""""""""""""""""""
@@ -887,7 +887,7 @@ Input and output options for renaming files
   
   Calibre library folder which will be traversed and all the book files in it
   will be renamed. The renamed files will be either moved or symlinked (if the
-  ``--symlink-only`` flag is enabled) to the ouput folder along with their
+  `--symlink-only`_ flag is enabled) to the ouput folder along with their
   corresponding metadata.
 
 * ``-o <value>``, ``--output-folder <value>``; config variable
