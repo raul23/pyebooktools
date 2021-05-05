@@ -1229,7 +1229,7 @@ References
 .. _find: #find-options-input-data
 .. _General control flags: #general-control-flags
 .. _interact: #security-and-safety
-.. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _isbn_blacklist_regex: #isbn-blacklist-regex-label
 .. _keep_metadata: #keep-metadata-label
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
