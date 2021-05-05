@@ -180,6 +180,10 @@ We want to organize ebook files, some of which do not contain any ISBNs:
    :align: left
    :alt: Example: content of ``folder_to_organize``
 
+|
+
+This is the command to organize these books as wanted:
+
 .. code-block:: terminal
 
    ebooktools organize --log-format only_msg --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
