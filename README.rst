@@ -471,7 +471,7 @@ Options related to the input and output files
 * ``--ome <value>``, ``--output-metadata-extension <value>``; config variable
   ``output_metadata_extension``; default value ``meta``
   
-  If ``keep_metadata`` is enabled, this is the extension of the additional
+  If `keep_metadata`_ is enabled, this is the extension of the additional
   metadata file that is saved next to each newly renamed file. [OME]_
 
 Miscellaneous options
@@ -1224,6 +1224,7 @@ References
 .. _General control flags: #general-control-flags
 .. _interact: #security-and-safety
 .. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _keep_metadata: #keep-metadata-label
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
