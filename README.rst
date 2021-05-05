@@ -794,12 +794,14 @@ Specific options for organizing files
   ``.pdf`` files that do not contain valid ISBNs and have a
   lower number pages than this are considered 
   pamplets/non-ebook documents.
-  
-* ``--pamphlet-max-filesize-kb <value>``; config variable
-  ``pamphlet_max_filesize_kb``; default value ``250``
+
+.. _pamphlet-max-filesize-kib-label:
+
+* ``--pamphlet-max-filesize-kib <value>``; config variable
+  ``pamphlet_max_filesize_kib``; default value ``250``
   
   Other files that do not contain valid ISBNs and are below
-  this size in KBs are considered pamplets/non-ebook documents.
+  this size in **KiBs** are considered pamplets/non-ebook documents.
 
 Input and output options for organizing files
 """""""""""""""""""""""""""""""""""""""""""""
