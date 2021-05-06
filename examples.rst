@@ -281,7 +281,7 @@ where
 - `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
-- `output_folder_uncertain`_ will contain all corrupted ebooks
+- `output_folder_corrupt`_ will contain any corrupted ebook
 
 **Output:**
 
@@ -338,7 +338,7 @@ where
 - `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
-- `output_folder_uncertain`_ will contain all the pamphlets-like documents
+- `output_folder_pamphlets`_ will contain all the pamphlets-like documents
 
 **Output:**
 
@@ -543,6 +543,8 @@ References
 .. _organize: ./README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
+.. _output_folder_corrupt: ./README.rst#output-folder-corrupt-label
+.. _output_folder_pamphlets: ./README.rst#organize-output-pamphlets-label
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
 .. _output folders: ./README.rst#input-and-output-options-for-organizing-files
 .. _--owi: ./README.rst#organize-without-isbn-label
