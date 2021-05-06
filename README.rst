@@ -576,7 +576,7 @@ Edits a configuration file, which can either be
   are defined in `default_config.py`_
 - the logging configuration file (``log``) to setup the different loggers
   used in the ``ebooktools.py`` script and whose default values are 
-  defined in `default_logging.py`.
+  defined in `default_logging.py`_.
 
 The configuration file can be opened by a user-specified application 
 (``app``) or a default program associated with this type of file (when 
