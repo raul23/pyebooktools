@@ -42,7 +42,7 @@ def split(folder_with_books,
                 not fp.name.startswith('.'):
             # TODO: debug logging
             # print(fp)
-            files.append((fp))
+            files.append(fp)
         # TODO: debug logging skip directory/file
     # TODO: important sort within glob?
     logger.info("Files sorted {}".format("in desc" if reverse else "in asc"))
@@ -84,7 +84,9 @@ def split(folder_with_books,
             else:
                 move(file_to_move, file_dest, clobber=False)
             # Move metadata file if found
-            metadata_name = f'{file_to_move.stem}.{output_metadata_extension}'
+            # TODO: important, extension of metadata (other places too)
+            # metadata_name = f'{file_to_move.stem}.{output_metadata_extension}'
+            metadata_name = f'{file_to_move.name}.{output_metadata_extension}'
             metada_file_to_move = file_to_move.parent.joinpath(metadata_name)
             if metada_file_to_move.exists():
                 logger.debug(f"Found metadata file: {metada_file_to_move}")
