@@ -6,10 +6,9 @@ from the ``ebooktools.py`` script.
 
 `:star:`
 
-  Sometimes, it might be more convenient to edit the configuration
-  file ``config.py`` instead of building a long command in the
-  terminal with all the options for a given subcommand (e.g. 
-  ``organize``).
+  Sometimes, it might be more convenient to edit the configuration file
+  ``config.py`` instead of building a long command in the terminal with all the
+  options for a given subcommand (e.g. ``organize``).
 
   Run the following command to edit this configuration file:
   
@@ -18,14 +17,13 @@ from the ``ebooktools.py`` script.
 
      $ ebooktools edit main
      
-  The ``config.py`` file will be opened by the default source code
-  editor associated with this type of file and then you can modify
-  the right configuration variables for the given subcommand.
+  The ``config.py`` file will be opened by the default source code editor
+  associated with this type of file and then you can modify the right
+  configuration variables for the given subcommand.
   
-  You can then run the given subcommand and all 
-  the updated options in the configuration file will be used. 
-  However, command-line parameters supersede variables defined in 
-  the configuration file. 
+  You can then run the given subcommand and all the updated options in the
+  configuration file will be used. However, command-line parameters supersede
+  variables defined in the configuration file.
    
   See `edit`_ for more info about this subcommand.
 
@@ -43,7 +41,7 @@ Convert a pdf file to text **with** OCR
    $ ebooktools convert --ocr always pdf_to_convert.pdf -o converted.txt
    
 By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
-trying the simple conversion tools (``pdftotext`` or calibre's 
+trying the simple conversion tools (``pdftotext`` or calibre's
 ``ebook-convert`` if the former command is not found).
 
 .. code-block:: terminal
@@ -72,10 +70,10 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
 ``edit`` examples
 =================
-The two config files that can be edited are the `main`_ and 
-`logging`_ config files. We will only concentrate in the main 
-config file because it is the most important one since it 
-contains `all the options`_ for the ``ebooktools.py`` script.
+The two config files that can be edited are the `main`_ and `logging`_ config
+files. We will only concentrate in the main config file because it is the most
+important one since it contains `all the options`_ for the ``ebooktools.py``
+script.
 
 Edit the main config file
 -------------------------
@@ -135,10 +133,9 @@ ISBNs are separated by newlines, ``\n``.
 
 `:information_source:`
 
-  If you want to search ISBNs in a **multiple-lines string**, e.g. you
-  copied many pages from a document, you must follow the ``find``
-  subcommand with a backslash ``\`` and enclose the string within
-  **double quotes**, like so:
+  If you want to search ISBNs in a **multiple-lines string**, e.g. you copied
+  many pages from a document, you must follow the ``find`` subcommand with a
+  backslash ``\`` and enclose the string within **double quotes**, like so:
   
   .. code-block:: terminal
 
@@ -179,19 +176,17 @@ Find ISBNs in a pdf file
    9789580158448
    1000100111
 
-The search for ISBNs starts in the first pages of the document to increase
-the likelihood that the first extracted ISBN is the correct one. Then the
-last pages are analyzed in reverse. Finally, the rest of the pages are
-searched.
+The search for ISBNs starts in the first pages of the document to increase the
+likelihood that the first extracted ISBN is the correct one. Then the last
+pages are analyzed in reverse. Finally, the rest of the pages are searched.
 
 Thus, in this example, the first extracted ISBN is the correct one
 associated with the book since it was found in the first page. 
 
-The last sequence ``1000100111`` was found in the middle of the document
-and is not an ISBN even though it is a technically valid but wrong ISBN
-that the regular expression `isbn_blacklist_regex`_ didn't catch. Maybe
-it is a binary sequence that is part of a problem in a book about digital
-system. 
+The last sequence ``1000100111`` was found in the middle of the document and is
+not an ISBN even though it is a technically valid but wrong ISBN that the
+regular expression `isbn_blacklist_regex`_ didn't catch. Maybe it is a binary
+sequence that is part of a problem in a book about digital system.
 
 ``organize`` examples
 =====================
@@ -199,9 +194,9 @@ These examples show how to organize ebooks depending on different
 cases:
 
 - `Organize ebook files with only output_folder`_: ignore ebooks without ISBNs
-- `Organize ebook files with output_folder_corrupt`_: check for corruption (e.g. 
-  zero-filled files, corrupt archives or broken ``.pdf`` files)
-- `Organize ebook files with output_folder_pamphlets`_: e.g. small pdfs or 
+- `Organize ebook files with output_folder_corrupt`_: check for corruption
+  (e.g. zero-filled files, corrupt archives or broken ``.pdf`` files)
+- `Organize ebook files with output_folder_pamphlets`_: e.g. small pdfs or
   saved webpages
 - `Organize ebook files with output_folder_uncertain`_: use online metadata
   sources to get ISBN from extracted author & title
@@ -212,20 +207,20 @@ cases:
   along with the `--owi`_ flag in the command-line when calling the 
   `organize`_ subcommand.
   
-  Or better you can also do it through the config file ``config.py`` by
-  running the following command:
+  Or better you can also do it through the config file ``config.py`` by running
+  the following command:
   
   
   .. code-block:: terminal
 
      $ ebooktools edit main
      
-  The ``config.py`` file will be opened by the default source code
-  editor associated with this type of file and then you can modify
-  the right configuration variables.
+  The ``config.py`` file will be opened by the default source code editor
+  associated with this type of file and then you can modify the right
+  configuration variables.
   
-  Then run the ``organize`` subcommand and the updated options in
-  the configuration file will be used.
+  Then run the ``organize`` subcommand and the updated options in the
+  configuration file will be used.
    
   See `edit`_ for more info about this subcommand.
 
@@ -283,10 +278,9 @@ This is the command to organize these ebooks as wanted:
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without 
-  ISBNs
-- `output_folder`_ will contain all the *renamed* ebooks 
-  for which an ISBN was found in it
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
+  found in it
 - `output_folder_uncertain`_ will contain all corrupted ebooks
 
 **Output:**
@@ -319,8 +313,8 @@ Content of ``output_folder_corrupt``:
 
 `:information_source:`
 
-  Along each corrupted file, a metadata file is saved containing information about 
-  the corruption reason and the ebook's old file path.
+  Along each corrupted file, a metadata file is saved containing information
+  about the corruption reason and the ebook's old file path.
 
 Organize ebook files with ``output_folder_pamphlets``
 -----------------------------------------------------
@@ -341,10 +335,9 @@ This is the command to organize these ebooks as wanted:
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without 
-  ISBNs
-- `output_folder`_ will contain all the *renamed* ebooks 
-  for which an ISBN was found in it
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
+  found in it
 - `output_folder_uncertain`_ will contain all the pamphlets-like documents
 
 **Output:**
@@ -377,14 +370,13 @@ Content of ``output_folder_pamphlets``:
 
 `:information_source:`
 
-  If no ISBN was found for a non-pdf file and the file size 
-  is less than `pamphlet_max_filesize_kib`_, then it is 
-  considered as a pamphlet.
+  If no ISBN was found for a non-pdf file and the file size is less than
+  `pamphlet_max_filesize_kib`_, then it is considered as a pamphlet.
 
 Organize ebook files with ``output_folder_uncertain``
 -----------------------------------------------------
-We want to organize the following ebook files, some of which do not contain 
-any ISBNs:
+We want to organize the following ebook files, some of which do not contain any
+ISBNs:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_to_organize.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_to_organize.png
@@ -401,12 +393,11 @@ This is the command to organize these ebooks as wanted:
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without 
-  ISBNs
-- `output_folder`_ will contain all the *renamed* ebooks 
-  for which an ISBN was found in it
-- `output_folder_uncertain`_ will contain all the *renamed*
-  ebooks for which no ISBNs could be found in them
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
+  found in it
+- `output_folder_uncertain`_ will contain all the *renamed* ebooks for which no
+  ISBNs could be found in them
 
 **Output:**
 
@@ -438,11 +429,11 @@ Content of ``output_folder_uncertain``:
 
 `:information_source:`
 
-  For those ebooks for which no ISBNs could be found in them, the ``ebooktools.py``
-  script takes the following steps to organize them:
+  For those ebooks for which no ISBNs could be found in them, the
+  ``ebooktools.py`` script takes the following steps to organize them:
   
-  1. Use calibre's ``ebook-meta`` to extract the author and title 
-     metadata from the ebook file
+  1. Use calibre's ``ebook-meta`` to extract the author and title metadata from
+     the ebook file
   2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by the 
      extracted author & title and just by title
   3. If there is no useful metadata or nothing is found online, the script will
@@ -455,8 +446,8 @@ Content of ``output_folder_uncertain``:
 
 Rename book files from a calibre library folder
 -----------------------------------------------
-Rename book files from a calibre library folder and save their symlinks
-along with their copied ``metadata.opf`` files in a separate folder:
+Rename book files from a calibre library folder and save their symlinks along
+with their copied ``metadata.opf`` files in a separate folder:
 
 .. code-block:: terminal
 
@@ -494,8 +485,8 @@ Content of ``output_folder``:
   * The book files are renamed based on the content of their associated
     ``metadata.opf`` files and the new filenames follow the
     `output_filename_template`_ format.
-  * The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
-    <./README.rst#output-metadata-extension-label>`__) beside the
+  * The ``metadata.opf`` files are copied with the ``meta`` extension
+    (`default <./README.rst#output-metadata-extension-label>`__) beside the
     symlinks to the book files.
 
 ``split`` examples

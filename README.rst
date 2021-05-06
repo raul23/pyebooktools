@@ -239,10 +239,10 @@ subcommand (as defined in the `Script usage, subcommands and options`_ section).
 
 `:warning:`
  
-   In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_ option
-   when running some of the subcommands (e.g. ``rename`` and ``split``) to make
-   sure that they would do what you expect them to do, as explained in the
-   `Security and safety`_ section.
+   In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_
+   option when running some of the subcommands (e.g. ``rename`` and ``split``)
+   to make sure that they would do what you expect them to do, as explained in
+   the `Security and safety`_ section.
 
 General options
 ---------------
@@ -654,7 +654,7 @@ as described below.
 
 Description
 """""""""""                       
-Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was 
+Tries to find `valid ISBNs`_ inside a file or in a ``string`` if no file was
 specified. Searching for ISBNs in files uses progressively more
 resource-intensive methods until some ISBNs are found, for more details see
 
@@ -747,61 +747,57 @@ Specific options for organizing files
 * ``--owi``, ``--organize-without-isbn``; config variable
   ``organize_without_isbn``; default value ``False``
   
-  Specify whether the script will try to organize ebooks if there were
-  no ISBN found in the book or if no metadata was found online with the
-  retrieved ISBNs. If enabled, the script will first try to use
-  calibre's ``ebook-meta`` command-line tool to extract the author and 
-  title metadata from the ebook file. The script will try searching the
-  online metadata sources (`organize_without_isbn_sources`_) by the
-  extracted author & title and just by title. If there is no useful
-  metadata or nothing is found online, the script will try to use the
-  filename for searching. [OWI]_
+  Specify whether the script will try to organize ebooks if there were no ISBN
+  found in the book or if no metadata was found online with the retrieved
+  ISBNs. If enabled, the script will first try to use calibre's ``ebook-meta``
+  command-line tool to extract the author and title metadata from the ebook
+  file. The script will try searching the online metadata sources
+  (`organize_without_isbn_sources`_) by the extracted author & title and just
+  by title. If there is no useful metadata or nothing is found online, the
+  script will try to use the filename for searching. [OWI]_
 
 .. _without-isbn-ignore-label:
 
 * ``--wii <value>``, ``--without-isbn-ignore <value>``; config variable
   ``without_isbn_ignore``; complex default value
   
-  This is a regular expression that is matched against lowercase
-  filenames. All files that do not contain ISBNs are matched against it
-  and matching files are ignored by the script, even if 
-  `organize_without_isbn`_ is ``True``. The default value is calibrated
-  to match most periodicals (magazines, newspapers, etc.) so the script
-  can ignore them. [WII]_
+  This is a regular expression that is matched against lowercase filenames. All
+  files that do not contain ISBNs are matched against it and matching files are
+  ignored by the script, even if `organize_without_isbn`_ is ``True``. The
+  default value is calibrated to match most periodicals (magazines, newspapers,
+  etc.) so the script can ignore them. [WII]_
   
 * ``--pamphlet-included-files <value>``; config variable
   ``pamphlet_included_files``; default value 
   ``\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$``
   
-  This is a regular expression that is matched against lowercase
-  filenames. All files that do not contain ISBNs and do not match
-  `without_isbn_ignore`_ are matched against it and matching files
-  are considered pamphlets by default. They are moved to 
-  `output_folder_pamphlets`_ if set, otherwise they are ignored. [PIF]_
+  This is a regular expression that is matched against lowercase filenames. All
+  files that do not contain ISBNs and do not match `without_isbn_ignore`_ are
+  matched against it and matching files are considered pamphlets by default.
+  They are moved to `output_folder_pamphlets`_ if set, otherwise they are
+  ignored. [PIF]_
   
 * ``--pamphlet-excluded-files <value>``; config variable
   ``pamphlet_excluded_files``; default value 
   ``\.(chm|epub|cbr|cbz|mobi|lit|pdb)$``
   
-  This is a regular expression that is matched against lowercase
-  filenames. If files do not contain ISBNs and match against it, they
-  are NOT considered as pamphlets, even if they have a small size or
-  number of pages.
+  This is a regular expression that is matched against lowercase filenames. If
+  files do not contain ISBNs and match against it, they are NOT considered as
+  pamphlets, even if they have a small size or number of pages.
   
 * ``--pamphlet-max-pdf-pages <value>``; config variable
   ``pamphlet_max_pdf_pages``; default value ``50``
   
-  ``.pdf`` files that do not contain valid ISBNs and have a
-  lower number pages than this are considered 
-  pamplets/non-ebook documents.
+  ``.pdf`` files that do not contain valid ISBNs and have a lower number pages
+  than this are considered pamplets/non-ebook documents.
 
 .. _pamphlet-max-filesize-kib-label:
 
 * ``--pamphlet-max-filesize-kib <value>``; config variable
   ``pamphlet_max_filesize_kib``; default value ``250``
   
-  Other files that do not contain valid ISBNs and are below
-  this size in **KiBs** are considered pamplets/non-ebook documents.
+  Other files that do not contain valid ISBNs and are below this size in
+  **KiBs** are considered pamplets/non-ebook documents.
 
 Input and output options for organizing files
 """""""""""""""""""""""""""""""""""""""""""""
@@ -815,8 +811,8 @@ Input and output options for organizing files
   ``output_folder``; **default value is the current working 
   directory** (check with ``pwd``)
   
-  The folder where ebooks that were renamed based on the ISBN 
-  metadata will be moved to.
+  The folder where ebooks that were renamed based on the ISBN metadata will be
+  moved to.
 
 .. _output-folder-uncertain-label:
 
@@ -824,9 +820,8 @@ Input and output options for organizing files
   config variable ``output_folder_uncertain``; default value is 
   ``None``
   
-  If `organize_without_isbn`_ is enabled, this is the folder
-  to which all ebooks that were renamed based on non-ISBN
-  metadata will be moved to.
+  If `organize_without_isbn`_ is enabled, this is the folder to which all
+  ebooks that were renamed based on non-ISBN metadata will be moved to.
 
 .. _output-folder-corrupt-label:
 
