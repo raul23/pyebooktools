@@ -145,7 +145,8 @@ class OrganizeEbooks:
             logger.debug('Parts of the filename match the pamphlet ignore '
                          f'regex: [{matches}]')
             return False
-        logger.debug('The file does not match the pamphlet exclude regex, continuing...')
+        logger.debug('The file does not match the pamphlet exclude regex, '
+                     'continuing...')
         mime_type = get_mime_type(file_path)
         file_size_KiB = get_file_size(file_path, unit='KiB')
         if file_size_KiB is None:
@@ -160,7 +161,8 @@ class OrganizeEbooks:
                 logger.error(f'Could not get the number of pages for {file_path}')
                 return None
             elif pages > self.pamphlet_max_pdf_pages:
-                logger.debug(f'The file has {pages} pages, too many for a pamphlet')
+                logger.debug(f'The file has {pages} pages, too many for a '
+                             'pamphlet')
                 return False
             else:
                 logger.debug(f'The file has only {pages} pages, looks like a '
@@ -198,7 +200,8 @@ class OrganizeEbooks:
             for i, match in enumerate(matches):
                 parts.append(match.group())
             matches = ';'.join(parts)
-            logger.debug(f'Parts of the filename match the ignore regex: [{matches}]')
+            logger.debug('Parts of the filename match the ignore regex: '
+                         f'[{matches}]')
             skip_file(old_path,
                       f'{prev_reason}File matches the ignore regex ({matches})')
             return
@@ -214,7 +217,8 @@ class OrganizeEbooks:
                 ok_file(old_path, new_path)
                 move_or_link_file(old_path, new_path)
             else:
-                logger.debug('Output folder for pamphlet files is not set, skipping...')
+                logger.debug('Output folder for pamphlet files is not set, '
+                             'skipping...')
                 skip_file(old_path, 'No pamphlet folder specified')
             return
         elif is_p is False:
@@ -289,8 +293,8 @@ class OrganizeEbooks:
                         f.write(metadata.stdout)
                     finisher('title&author', ebookmeta, metadata.stdout)
                     return
-                logger.debug(f"Trying to swap places - author '{title}' and title "
-                             f"'{author}'...")
+                logger.debug(f"Trying to swap places - author '{title}' and "
+                             f"title '{author}'...")
                 options = f'--verbose --title="{author}" --author="{title}"'
                 metadata = fetch_metadata(self.organize_without_isbn_sources,
                                           options)
@@ -326,24 +330,30 @@ class OrganizeEbooks:
                 f.write(filename)
             finisher('title', ebookmeta, filename)
             return
-        logger.debug(f'Could not find anything, removing the temp file {tmpmfile}...')
+        logger.debug('Could not find anything, removing the temp file '
+                     f'{tmpmfile}...')
         remove_file(tmpmfile)
-        skip_file(old_path, f'{prev_reason}Insufficient or wrong file name/metadata')
+        skip_file(old_path, f'{prev_reason}Insufficient or wrong file '
+                            'name/metadata')
 
     def _organize_by_isbns(self, file_path, isbns):
         # TODO: important, returns nothing?
         isbn_sources = self.isbn_metadata_fetch_order
+        if not isbn_sources:
+            # NOTE: If you use Calibre versions that are older than 2.84, it's
+            # required to manually set the following option to an empty string.
+            isbn_sources = []
         for isbn in isbns.split(self.isbn_ret_separator):
             tmp_file = tempfile.mkstemp(suffix='.txt')[1]
-            logger.debug(f"Trying to fetch metadata for ISBN '{isbn}' into temp file "
-                         f"'{tmp_file}'...")
+            logger.debug(f"Trying to fetch metadata for ISBN '{isbn}' into "
+                         f"temp file '{tmp_file}'...")
 
             # IMPORTANT: as soon as we find metadata from one source, we return
             for isbn_source in isbn_sources:
                 # Remove whitespaces around the isbn source
                 isbn_source = isbn_source.strip()
-                # Check if there are spaces in the arguments, and if it is the case
-                # enclose the arguments in quotation marks
+                # Check if there are spaces in the arguments, and if it is the
+                # case enclose the arguments in quotation marks
                 # e.g. WorldCat xISBN --> "WorldCat xISBN"
                 if ' ' in isbn_source:
                     isbn_source = f'"{isbn_source}"'
@@ -355,16 +365,17 @@ class OrganizeEbooks:
                     with open(tmp_file, 'w') as f:
                         f.write(metadata)
 
-                    # TODO: is it necessary to sleep after fetching the metadata from
-                    # online sources like they do? The code is run sequentially, so
-                    # we are executing the rest of the code here once fetch_metadata()
-                    # is done, ref.: https://bit.ly/2vV9MfU
+                    # TODO: is it necessary to sleep after fetching the
+                    # metadata from online sources like they do? The code is
+                    # run sequentially, so we are executing the rest of the
+                    # code here once fetch_metadata() is done
+                    # Ref.: https://bit.ly/2vV9MfU
                     time.sleep(0.1)
                     logger.debug('Successfully fetched metadata')
                     logger.debug(f'Fetched metadata:{metadata}')
 
-                    logger.debug('Adding additional metadata to the end of the metadata '
-                                 'file...')
+                    logger.debug('Adding additional metadata to the end of the '
+                                 'metadata file...')
                     more_metadata = 'ISBN                : {}\n' \
                                     'All found ISBNs     : {}\n' \
                                     'Old file path       : {}\n' \
@@ -389,14 +400,14 @@ class OrganizeEbooks:
             remove_file(tmp_file)
 
         if self.organize_without_isbn:
-            logger.debug('Could not organize via the found ISBNs, organizing by '
-                         'filename and metadata instead...')
+            logger.debug('Could not organize via the found ISBNs, organizing '
+                         'by filename and metadata instead...')
             self._organize_by_filename_and_meta(
                 old_path=file_path,
                 prev_reason=f'Could not fetch metadata for ISBNs {isbns}')
         else:
-            logger.debug('Organization by filename and metadata is not turned on, '
-                         'giving up...')
+            logger.debug('Organization by filename and metadata is not turned '
+                         'on, giving up...')
             skip_file(file_path, f'Could not fetch metadata for ISBNs {isbns}; '
                                  f'Non-ISBN organization disabled')
 
