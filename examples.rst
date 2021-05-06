@@ -502,8 +502,6 @@ them:
    :align: left
    :alt: Example: content of ``folder_with_books``
 
-Note that two ebook files don't have metadata files associated with them.
-
 |
 
 We want to split these ebook files into folders containing two files each and
