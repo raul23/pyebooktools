@@ -1055,7 +1055,7 @@ To uninstall the package ``pyebooktools``::
 
 Limitations
 ===========
-Same limitations as for `ebook-tools`_ apply to this project too:
+Same `limitations`_ as for ``ebook-tools`` apply to this project too:
 
   * Automatic organization can be slow - all the scripts are synchronous
     and single-threaded and metadata lookup by ISBN is not done
@@ -1064,7 +1064,7 @@ Same limitations as for `ebook-tools`_ apply to this project too:
     If you want to optimize the performance, run multiple copies of the
     script **on different folders**.
     
-  * The default setting for ``ISBN_METADATA_FETCH_ORDER`` includes two
+  * The default setting for `isbn_metadata_fetch_order`_ includes two
     non-standard metadata sources: Goodreads and WorldCat xISBN. For
     best results, install the plugins (`1`_, `2`_) for them in calibre and
     fine-tune the settings for metadata sources in the calibre GUI.
@@ -1193,6 +1193,7 @@ References
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number
+.. _limitations: https://github.com/na--/ebook-tools#limitations
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _pdftk: https://stackoverflow.com/a/49614525/14664104
@@ -1232,6 +1233,7 @@ References
 .. _General control flags: #general-control-flags
 .. _interact: #security-and-safety
 .. _isbn_blacklist_regex: #isbn-blacklist-regex-label
+.. _isbn_metadata_fetch_order: #metadata-fetch-order-label
 .. _keep_metadata: #keep-metadata-label
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
