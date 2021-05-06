@@ -217,7 +217,7 @@ Usage, options and configuration
 All of the options documented below can either be passed to the
 `ebooktools.py`_ script via command-line parameters or via the configuration
 file ``config.py`` which is created along with the logging config file
-``logging.py`` when the script ``ebooktools.py`` is run the first time with any
+``logging.py`` when the ``ebooktools.py`` script is run the first time with any
 of the subcommands defined `below`_. The default values for these config files
 are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
@@ -294,7 +294,7 @@ General control flags
   Do not delete the gathered metadata for the organized ebooks, instead save it
   in an accompanying file together with each renamed book. It is very useful
   for semi-automatic verification of the organized files with
-  ``interactive_organizer.py`` or for additional verification, indexing or
+  `interactive_organizer.py`_ or for additional verification, indexing or
   processing at a later date. [KM]_
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
@@ -348,7 +348,7 @@ Options related to extracting ISBNs from files and finding metadata by ISBN
   mentioned in the middle of the book. No part of the text is searched twice,
   even if these regions overlap. If you use the command-line option, the format
   for ``<value>`` is ``False`` to disable the functionality or
-  ``first_lines,last_lines`` to enable it with the specified values. [RFFG]_
+  ``first_lines last_lines`` to enable it with the specified values. [RFFG]_
   
 .. _metadata-fetch-order-label:
   
@@ -374,14 +374,14 @@ Options for OCR
   Whether to enable OCR for ``.pdf``, ``.djvu`` and image files. It is disabled
   by default and can be used differently in two scripts [OCR]_:
   
-  * ``organize_ebooks.py`` can use OCR for finding ISBNs in scanned books.
+  * `organize_ebooks.py`_ can use OCR for finding ISBNs in scanned books.
     Setting the value to ``True`` will cause it to use OCR for books that
     failed to be converted to ``.txt`` or were converted to empty files by the
     simple conversion tools (``ebook-convert``, ``pdftotext``, ``djvutxt``).
     Setting the value to ``always`` will cause it to use OCR even when the
     simple tools produced a non-empty result, if there were no ISBNs in it.
     
-  * ``convert_to_txt.py`` can use OCR for the conversion to ``.txt``. Setting
+  * `convert_to_txt.py`_ can use OCR for the conversion to ``.txt``. Setting
     the value to ``True`` will cause it to use OCR for books that failed to be
     converted to ``.txt`` or were converted to empty files by the simple
     conversion tools. Setting it to ``always`` will cause it to first try
@@ -395,7 +395,7 @@ Options for OCR
   ``m`` pages when OCR-ing ebooks. This is done because OCR is a slow
   resource-intensive process and ISBN numbers are usually at the beginning or
   at the end of books. Setting the value to ``False`` disables this
-  optimization and is the default for ``convert_to_txt.sh``, where we probably
+  optimization and is the default for `convert_to_txt.py`_, where we probably
   want the whole book to be converted. [OCROP]_
   
 * ``--ocrc <value>``, ``--ocr-command <value>``; config variable
@@ -471,7 +471,7 @@ Options related to the input and output files
 * ``--ome <value>``, ``--output-metadata-extension <value>``; config variable
   ``output_metadata_extension``; default value ``meta``
   
-  If ``keep_metadata`` is enabled, this is the extension of the additional
+  If `keep_metadata`_ is enabled, this is the extension of the additional
   metadata file that is saved next to each newly renamed file. [OME]_
 
 Miscellaneous options
@@ -573,7 +573,7 @@ Edits a configuration file, which can either be
 
 - the main configuration file (``main``) where all the options associated
   with the ``ebooktools.py`` script can be found and whose default values
-  are defined in `default_config.py`_ or
+  are defined in `default_config.py`_
 - the logging configuration file (``log``) to setup the different loggers
   used in the ``ebooktools.py`` script and whose default values are 
   defined in `default_logging.py`.
@@ -581,6 +581,11 @@ Edits a configuration file, which can either be
 The configuration file can be opened by a user-specified application 
 (``app``) or a default program associated with this type of file (when 
 ``app`` is ``None``).
+
+`:warning:`
+
+  Command-line parameters supersede variables defined in the configuration
+  file. 
 
 Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
@@ -727,7 +732,7 @@ Specific options for organizing files
   
   Do not organize or rename files, just check them for corruption
   (ex. zero-filled files, corrupt archives or broken ``.pdf`` files). 
-  Useful with the ``output_folder_corrupt`` option.
+  Useful with the `output_folder_corrupt`_ option.
 
 * ``--tested-archive-extensions <value>``; config variable
   ``tested_archive_extensions``; default value 
@@ -736,7 +741,9 @@ Specific options for organizing files
   
   A regular expression that specifies which file extensions will be
   tested with ``7z t`` for corruption.
-  
+
+.. _organize-without-isbn-label:
+
 * ``--owi``, ``--organize-without-isbn``; config variable
   ``organize_without_isbn``; default value ``False``
   
@@ -745,18 +752,20 @@ Specific options for organizing files
   retrieved ISBNs. If enabled, the script will first try to use
   calibre's ``ebook-meta`` command-line tool to extract the author and 
   title metadata from the ebook file. The script will try searching the
-  online metadata sources (``organize_without_isbn_sources``) by the
+  online metadata sources (`organize_without_isbn_sources`_) by the
   extracted author & title and just by title. If there is no useful
   metadata or nothing is found online, the script will try to use the
   filename for searching. [OWI]_
-  
+
+.. _without-isbn-ignore-label:
+
 * ``--wii <value>``, ``--without-isbn-ignore <value>``; config variable
   ``without_isbn_ignore``; complex default value
   
   This is a regular expression that is matched against lowercase
   filenames. All files that do not contain ISBNs are matched against it
   and matching files are ignored by the script, even if 
-  ``organize_without_isbn`` is ``True``. The default value is calibrated
+  `organize_without_isbn`_ is ``True``. The default value is calibrated
   to match most periodicals (magazines, newspapers, etc.) so the script
   can ignore them. [WII]_
   
@@ -766,9 +775,9 @@ Specific options for organizing files
   
   This is a regular expression that is matched against lowercase
   filenames. All files that do not contain ISBNs and do not match
-  ``without_isbn_ignore`` are matched against it and matching files
+  `without_isbn_ignore`_ are matched against it and matching files
   are considered pamphlets by default. They are moved to 
-  ``output_folder_pamphlets`` if set, otherwise they are ignored. [PIF]_
+  `output_folder_pamphlets`_ if set, otherwise they are ignored. [PIF]_
   
 * ``--pamphlet-excluded-files <value>``; config variable
   ``pamphlet_excluded_files``; default value 
@@ -785,12 +794,14 @@ Specific options for organizing files
   ``.pdf`` files that do not contain valid ISBNs and have a
   lower number pages than this are considered 
   pamplets/non-ebook documents.
-  
-* ``--pamphlet-max-filesize-kb <value>``; config variable
-  ``pamphlet_max_filesize_kb``; default value ``250``
+
+.. _pamphlet-max-filesize-kib-label:
+
+* ``--pamphlet-max-filesize-kib <value>``; config variable
+  ``pamphlet_max_filesize_kib``; default value ``250``
   
   Other files that do not contain valid ISBNs and are below
-  this size in KBs are considered pamplets/non-ebook documents.
+  this size in **KiBs** are considered pamplets/non-ebook documents.
 
 Input and output options for organizing files
 """""""""""""""""""""""""""""""""""""""""""""
@@ -798,27 +809,35 @@ Input and output options for organizing files
 
   Folder containing the ebook files that need to be organized.
   
+.. _organize-output-folder-label:  
+  
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working 
   directory** (check with ``pwd``)
   
   The folder where ebooks that were renamed based on the ISBN 
   metadata will be moved to.
-  
+
+.. _output-folder-uncertain-label:
+
 * ``--ofu <value>``, ``--output-folder-uncertain <value>``;
   config variable ``output_folder_uncertain``; default value is 
   ``None``
   
-  If ``organize_without_isbn`` is enabled, this is the folder
+  If `organize_without_isbn`_ is enabled, this is the folder
   to which all ebooks that were renamed based on non-ISBN
   metadata will be moved to.
-  
+
+.. _output-folder-corrupt-label:
+
 * ``--ofc <value>``, ``--output-folder-corrupt <value>``;
   config variable ``output_folder_corrupt``; default value is 
   ``None``
   
   If specified, corrupt files will be moved to this folder.
-  
+
+.. _output-folder-pamphlets-label:
+
 * ``--ofp <value>``, ``--output-folder-pamphlets <value>``;
   config variable ``output_folder_pamphlets``; default value is 
   ``None``
@@ -869,9 +888,9 @@ Specific options for renaming files
   
   This specifies whether metadata files will be saved together with the renamed
   ebooks. Value ``opfcopy`` just copies calibre's ``metadata.opf`` next to each
-  renamed file with a ``output_metadata_extension`` extension, while
+  renamed file with a `output_metadata_extension`_ extension, while
   ``recreate`` saves a metadata file that is similar to the one
-  ``organize-ebooks.py`` creates. ``disable`` disables this function. [SM]_
+  `organize_ebooks.py`_ creates. ``disable`` disables this function. [SM]_
 
 Input and output options for renaming files
 """""""""""""""""""""""""""""""""""""""""""
@@ -879,7 +898,7 @@ Input and output options for renaming files
   
   Calibre library folder which will be traversed and all the book files in it
   will be renamed. The renamed files will be either moved or symlinked (if the
-  ``--symlink-only`` flag is enabled) to the ouput folder along with their
+  `--symlink-only`_ flag is enabled) to the ouput folder along with their
   corresponding metadata.
 
 * ``-o <value>``, ``--output-folder <value>``; config variable
@@ -962,17 +981,17 @@ To convert a pdf file to text **with OCR**:
 
    $ ebooktools convert --ocr always -o converted.txt pdf_to_convert.pdf
    
-By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
+By setting `--ocr`_ to ``always``, the pdf file will be first OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's 
 ``ebook-convert`` if the former command is not found).
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     OCR=always, first try OCR then conversion
-   INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
-   INFO     OCR successful!
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   OCR=always, first try OCR then conversion
+   Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
+   OCR successful!
 
 Example 2: find ISBNs in a pdf file
 -----------------------------------
@@ -986,10 +1005,10 @@ Find ISBNs in a pdf file:
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
-   INFO     Extracted ISBNs:
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Searching file 'pdf_file.pdf' for ISBN numbers...
+   Extracted ISBNs:
    9789580158448
    1000100111
 
@@ -1201,6 +1220,7 @@ References
 .. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
 .. _examples.rst: ./examples.rst
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
+.. _interactive_organizer.py: ./pyebooktools/interactive_organizer.py
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
@@ -1216,11 +1236,17 @@ References
 .. _find: #find-options-input-data
 .. _General control flags: #general-control-flags
 .. _interact: #security-and-safety
-.. _isbn_blacklist_regex: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
+.. _isbn_blacklist_regex: #isbn-blacklist-regex-label
+.. _keep_metadata: #keep-metadata-label
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
 .. _Options related to the input and output files: #options-related-to-the-input-and-output-files
 .. _organize: #organize-options-folder-to-organize
+.. _organize_without_isbn: #organize-without-isbn-label
+.. _organize_without_isbn_sources: #organize-without-isbn-sources-label
+.. _output_folder_corrupt: #output-folder-corrupt-label
+.. _output_folder_pamphlets: #output-folder-pamphlets-label
+.. _output_metadata_extension: #output-metadata-extension-label
 .. _related to extracting ISBNs from files: #options-related-to-extracting-isbns-from-files-and-finding-metadata-by-isbn
 .. _rename: #rename-options-calibre-folder
 .. _Script usage, subcommands and options: #script-usage-subcommands-and-options
@@ -1229,6 +1255,7 @@ References
 .. _subcommand: #script-usage-subcommands-and-options
 .. _subcommands: #script-usage-subcommands-and-options
 .. _Usage, options and configuration: #usage-options-and-configuration
+.. _without_isbn_ignore: #without-isbn-ignore-label
 .. _-h, --help: #general-control-flags
 .. _-v, --verbose: #verbose-label
 .. _-q, --quiet: #quiet-label
@@ -1244,6 +1271,7 @@ References
 .. _-i, --isbn-regex: #isbn-regex-label
 .. _--isbn-blacklist-regex: #isbn-blacklist-regex-label
 .. _---mfo, ---metadata-fetch-order: #metadata-fetch-order-label
+.. _--ocr: #options-for-ocr
 .. _--owis, --organize-without-isbn-sources: #organize-without-isbn-sources-label
 .. _--oft, --output-filename-template: #output-filename-template-label
 .. _--ome, --output-metadata-extension: #output-metadata-extension-label

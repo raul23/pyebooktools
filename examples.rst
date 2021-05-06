@@ -4,6 +4,31 @@ EXAMPLES
 Examples to show how to execute the different `subcommands`_
 from the ``ebooktools.py`` script.
 
+`:star:`
+
+  Sometimes, it might be more convenient to edit the configuration
+  file ``config.py`` instead of building a long command in the
+  terminal with all the options for a given subcommand (e.g. 
+  ``organize``).
+
+  Run the following command to edit this configuration file:
+  
+  
+  .. code-block:: terminal
+
+     $ ebooktools edit main
+     
+  The ``config.py`` file will be opened by the default source code
+  editor associated with this type of file and then you can modify
+  the right configuration variables for the given subcommand.
+  
+  You can then run the given subcommand and all 
+  the updated options in the configuration file will be used. 
+  However, command-line parameters supersede variables defined in 
+  the configuration file. 
+   
+  See `edit`_ for more info about this subcommand.
+
 .. contents:: **Contents**
    :depth: 2
    :local:
@@ -23,11 +48,11 @@ trying the simple conversion tools (``pdftotext`` or calibre's
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     OCR=always, first try OCR then conversion
-   INFO     Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
-   INFO     OCR successful!
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   OCR=always, first try OCR then conversion
+   Will run OCR on file 'pdf_to_convert.pdf' with 1 page...
+   OCR successful!
 
 Convert a pdf file to text **without** OCR
 ------------------------------------------
@@ -40,10 +65,10 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     OCR=false, try only conversion...
-   INFO     Conversion successful!
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   OCR=false, try only conversion...
+   Conversion successful!
 
 ``edit`` examples
 =================
@@ -59,8 +84,8 @@ To edit the **main** config file with **PyCharm**:
 
 A tab with the main config file will be opened in PyCharm's Editor window:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_edit_pycharm_tab.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
    :align: left
    :alt: Example: opened tab with config file in PyCharm
 
@@ -90,9 +115,9 @@ The input string can be enclosed within single or double quotes.
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Extracted ISBNs:
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Extracted ISBNs:
    9781594201721
    9781892391810
 
@@ -141,10 +166,10 @@ Find ISBNs in a pdf file
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Searching file 'pdf_file.pdf' for ISBN numbers...
-   INFO     Extracted ISBNs:
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Searching file 'pdf_file.pdf' for ISBN numbers...
+   Extracted ISBNs:
    9789580158448
    1000100111
 
@@ -164,15 +189,260 @@ system.
 
 ``organize`` examples
 =====================
+These examples show how to organize ebooks depending on different 
+cases:
 
-Organize ebook files with corrupted folder
-------------------------------------------
+- `Organize ebook files with only output_folder`_: ignore ebooks without ISBNs
+- `Organize ebook files with output_folder_corrupt`_: check for corruption (e.g. 
+  zero-filled files, corrupt archives or broken ``.pdf`` files)
+- `Organize ebook files with output_folder_pamphlets`_: e.g. small pdfs or 
+  saved webpages
+- `Organize ebook files with output_folder_uncertain`_: use online metadata
+  sources to get ISBN from extracted author & title
 
-Organize ebook files with pamphlets folder
-------------------------------------------
+`:information_source:`
 
-Organize ebook files with uncertain folder
-------------------------------------------
+  You can also combine all these cases by using all of the `output folders`_
+  along with the `--owi`_ flag in the command-line when calling the 
+  `organize`_ subcommand.
+  
+  Or better you can also do it through the config file ``config.py`` by
+  running the following command:
+  
+  
+  .. code-block:: terminal
+
+     $ ebooktools edit main
+     
+  The ``config.py`` file will be opened by the default source code
+  editor associated with this type of file and then you can modify
+  the right configuration variables.
+  
+  Then run the ``organize`` subcommand and the updated options in
+  the configuration file will be used.
+   
+  See `edit`_ for more info about this subcommand.
+
+Organize ebook files with only ``output_folder``
+------------------------------------------------
+We want to organize the following ebook files:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks:
+
+.. code-block:: terminal
+
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+
+Organize ebook files with ``output_folder_corrupt``
+---------------------------------------------------
+We want to organize the following ebook files, one of which is corrupted:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks as wanted:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_corrupt/ 
+
+where 
+
+- `--owi`_ is a flag to enable the organization of ebooks without 
+  ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks 
+  for which an ISBN was found in it
+- `output_folder_uncertain`_ will contain all corrupted ebooks
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+|
+
+Content of ``output_folder_corrupt``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_corrupt.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_corrupt.png
+   :align: left
+   :alt: Example: content of ``output_folder_corrupt``
+
+|
+
+`:information_source:`
+
+  Along each corrupted file, a metadata file is saved containing information about 
+  the corruption reason and the ebook's old file path.
+
+Organize ebook files with ``output_folder_pamphlets``
+-----------------------------------------------------
+We want to organize the following ebook files, some of which are pamphlets:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks as wanted:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_pamphlets/ 
+
+where 
+
+- `--owi`_ is a flag to enable the organization of ebooks without 
+  ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks 
+  for which an ISBN was found in it
+- `output_folder_uncertain`_ will contain all the pamphlets-like documents
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+|
+
+Content of ``output_folder_pamphlets``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_pamphlets.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_pamphlets.png
+   :align: left
+   :alt: Example: content of ``output_folder_pamphlets``
+
+|
+
+`:information_source:`
+
+  If no ISBN was found for a non-pdf file and the file size 
+  is less than `pamphlet_max_filesize_kib`_, then it is 
+  considered as a pamphlet.
+
+Organize ebook files with ``output_folder_uncertain``
+-----------------------------------------------------
+We want to organize the following ebook files, some of which do not contain 
+any ISBNs:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to organize these ebooks as wanted:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
+
+where 
+
+- `--owi`_ is a flag to enable the organization of ebooks without 
+  ISBNs
+- `output_folder`_ will contain all the *renamed* ebooks 
+  for which an ISBN was found in it
+- `output_folder_uncertain`_ will contain all the *renamed*
+  ebooks for which no ISBNs could be found in them
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+
+|
+
+Content of ``output_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_output_folder.png
+   :align: left
+   :alt: Example: content of ``output_folder``
+|
+
+Content of ``output_folder_uncertain``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_uncertain.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_uncertain/content_folder_uncertain.png
+   :align: left
+   :alt: Example: content of ``output_folder_uncertain``
+
+|
+
+`:information_source:`
+
+  For those ebooks for which no ISBNs could be found in them, the ``ebooktools.py``
+  script takes the following steps to organize them:
+  
+  1. Use calibre's ``ebook-meta`` to extract the author and title 
+     metadata from the ebook file
+  2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by the 
+     extracted author & title and just by title
+  3. If there is no useful metadata or nothing is found online, the script will
+     try to use the filename for searching.
+  
+  [OWI]_
 
 ``rename`` examples
 ===================
@@ -180,7 +450,7 @@ Organize ebook files with uncertain folder
 Rename book files from calibre library folder
 ---------------------------------------------
 Rename book files from a calibre library folder and save their symlinks
-along with their copied ``metadata.opf`` files into an output folder:
+along with their copied ``metadata.opf`` files in a separate folder:
 
 .. code-block:: terminal
 
@@ -190,37 +460,37 @@ along with their copied ``metadata.opf`` files into an output folder:
 
 .. code-block:: terminal
 
-   INFO     Running pyebooktools v0.1.0a3
-   INFO     Verbose option disabled
-   INFO     Files sorted in asc
-   INFO     Parsing metadata for 'Title1 - Author1.pdf'...
-   INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title2 - Author2.epub'...
-   INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title3 - Author3.pdf'...
-   INFO     Saving book file and metadata...
-   INFO     Parsing metadata for 'Title4 - Author4.epub'...
-   INFO     Saving book file and metadata...
+   Running pyebooktools v0.1.0a3
+   Verbose option disabled
+   Files sorted in asc
+   Parsing metadata for 'Title1 - Author1.pdf'...
+   Saving book file and metadata...
+   Parsing metadata for 'Title2 - Author2.epub'...
+   Saving book file and metadata...
+   Parsing metadata for 'Title3 - Author3.pdf'...
+   Saving book file and metadata...
+   Parsing metadata for 'Title4 - Author4.epub'...
+   Saving book file and metadata...
 
 |
 
 Content of ``output_folder``:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_rename_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
 
 |
 
-**NOTES:**
+`:information_source:`
 
-* The book files are renamed based on the content of their associated
-  ``metadata.opf`` files and the new filenames follow the
-  `output_filename_template`_ format.
-* The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
-  <./README.rst#output-metadata-extension-label>`__) beside the
-  symlinks to the book files.
+  * The book files are renamed based on the content of their associated
+    ``metadata.opf`` files and the new filenames follow the
+    `output_filename_template`_ format.
+  * The ``metadata.opf`` files are copied with the ``meta`` extension (`default 
+    <./README.rst#output-metadata-extension-label>`__) beside the
+    symlinks to the book files.
 
 ``split`` examples
 ==================
@@ -229,8 +499,8 @@ Split a folder
 --------------
 We have a folder containing four ebooks and their corresponding metadata:
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_folder_with_books.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_folder_with_books.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_folder_with_books.png
    :align: left
    :alt: Example: content of ``folder_with_books``
 
@@ -247,8 +517,8 @@ their numbering should start at 1:
 
 **Output:** content of ``output_folder``
 
-.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
-   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/example_split_content_output_folder.png
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
 
@@ -262,8 +532,25 @@ Note that the metadata folders contain only one file each as expected.
    ``split`` would do what you expect it to do, as explained in the
    `Security and safety`_ section.
    
+References
+==========
+.. [OWI] https://github.com/raul23/pyebooktools#organize-without-isbn-label
+   
 .. URLs
+.. _edit: ./README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
+.. _organize: ./README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
+.. _output_folder: ./README.rst#organize-output-folder-label
+.. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
+.. _output folders: ./README.rst#input-and-output-options-for-organizing-files
+.. _--owi: ./README.rst#organize-without-isbn-label
+.. _pamphlet_max_filesize_kib: ./README.rst#pamphlet-max-filesize-kib-label
 .. _Security and safety: ./README.rst#security-and-safety
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
+
+.. Local URLs
+.. _Organize ebook files with only output_folder: #organize-ebook-files-with-only-output_folder
+.. _Organize ebook files with output_folder_corrupt: #organize-ebook-files-with-output-folder-corrupt
+.. _Organize ebook files with output_folder_pamphlets: #organize-ebook-files-with-output-folder-pamphlets
+.. _Organize ebook files with output_folder_uncertain: #organize-ebook-files-with-output-folder-uncertain
