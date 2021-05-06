@@ -453,8 +453,8 @@ Content of ``output_folder_uncertain``:
 ``rename`` examples
 ===================
 
-Rename book files from calibre library folder
----------------------------------------------
+Rename book files from a calibre library folder
+-----------------------------------------------
 Rename book files from a calibre library folder and save their symlinks
 along with their copied ``metadata.opf`` files in a separate folder:
 
