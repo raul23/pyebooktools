@@ -544,7 +544,7 @@ References
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
 .. _output_folder_corrupt: ./README.rst#output-folder-corrupt-label
-.. _output_folder_pamphlets: ./README.rst#output-pamphlets-label
+.. _output_folder_pamphlets: ./README.rst#output-folder-pamphlets-label
 .. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
 .. _output folders: ./README.rst#input-and-output-options-for-organizing-files
 .. _--owi: ./README.rst#organize-without-isbn-label
