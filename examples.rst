@@ -72,6 +72,11 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
 ``edit`` examples
 =================
+The two config files that can be edited are the `main`_ and 
+`logging`_ config files. We will only concentrate in the main 
+config file because it is the most important one since it 
+contains `all the options`_ for the ``ebooktools.py`` script.
+
 Edit the main config file
 -------------------------
 To edit the **main** config file with **PyCharm**:
@@ -537,8 +542,11 @@ References
 .. [OWI] https://github.com/raul23/pyebooktools#organize-without-isbn-label
    
 .. URLs
+.. _all the options: ./README.rst#usage-options-and-configuration
 .. _edit: ./README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
+.. _logging: ./pyebooktools/configs/default_logging.py
+.. _main: ./pyebooktools/configs/default_config.py
 .. _organize: ./README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ./README.rst#organize-output-folder-label
