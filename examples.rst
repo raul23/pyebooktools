@@ -494,7 +494,8 @@ Content of ``output_folder``:
 
 Split a folder
 --------------
-We have a folder containing four ebooks and their corresponding metadata:
+We have a folder containing four ebooks and their corresponding metadata (for 
+two of them):
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_folder_with_books.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_folder_with_books.png
