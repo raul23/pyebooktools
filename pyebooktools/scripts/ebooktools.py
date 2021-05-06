@@ -228,7 +228,7 @@ def add_isbns_options(parser, remove_opts=None):
         # TODO: test this option (1 or 2 args)
         parser_isbns_group.add_argument(
             "--reorder-files-for-grep", dest='isbn_grep_reorder_files', nargs='+',
-            action=required_length(1, 2), metavar='LINES',
+            action=required_length(2, 2), metavar='LINES',
             help='''These options specify if and how we should reorder the ebook
             text before searching for ISBNs in it. By default, the first 400 lines
             of the text are searched as they are, then the last 50 are searched in
@@ -237,8 +237,8 @@ def add_isbns_options(parser, remove_opts=None):
             actually belong to that book (ex. from the copyright section or the
             back cover), instead of being random ISBNs mentioned in the middle of
             the book. No part of the text is searched twice, even if these regions
-            overlap. Set it to False to disable the functionality of
-            first_lines,last_lines to enable it with the specified values.'''
+            overlap. Set it to `False` to disable the functionality and
+            `first_lines last_lines` to enable it with the specified values.'''
                  + _DEFAULT_MSG.format(ISBN_GREP_REORDER_FILES))
     if not remove_opts.count('metadata-fetch-order'):
         parser_isbns_group.add_argument(
@@ -386,12 +386,16 @@ def process_returned_values(returned_values):
 
 
 # Ref.: https://stackoverflow.com/a/4195302/14664104
-def required_length(nmin,nmax):
+def required_length(nmin, nmax):
     class RequiredLength(argparse.Action):
         def __call__(self, parser, args, values, option_string=None):
             if not nmin <= len(values) <= nmax:
-                msg='argument "{f}" requires between {nmin} and {nmax}' \
-                    'arguments'.format(f=self.dest, nmin=nmin, nmax=nmax)
+                if nmin == nmax:
+                    msg = 'argument "{f}" requires {nmin} arguments'.format(
+                        f=self.dest, nmin=nmin, nmax=nmax)
+                else:
+                    msg='argument "{f}" requires between {nmin} and {nmax} ' \
+                        'arguments'.format(f=self.dest, nmin=nmin, nmax=nmax)
                 raise argparse.ArgumentTypeError(msg)
             setattr(args, self.dest, values)
     return RequiredLength
@@ -636,7 +640,7 @@ def setup_argparser():
     parser_organize_group.add_argument(
         '--owi', '--organize-without-isbn', dest='organize_without_isbn',
         action="store_true",
-        help='Specify whether the script will try to organize ebooks if there'
+        help='Specify whether the script will try to organize ebooks if there '
              'were no ISBN found in the book or if no metadata was found '
              'online with the retrieved ISBNs. If enabled, the script will '
              'first try to use calibre\'s `ebook-meta` command-line tool to '
