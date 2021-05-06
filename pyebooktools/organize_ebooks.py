@@ -46,12 +46,12 @@ def fail_file(old_path, reason, new_path=None):
     # More info about printing in terminal with color:
     # https://stackoverflow.com/a/21786287
     old_path = get_parts_from_path(old_path)
-    logger.info(f'{RED}ERR{NC}\t: {old_path}')
-    second_line = f'REASON\t: {reason}'
+    logger.info(f'{RED}ERR{NC}:\t {old_path}')
+    second_line = f'REASON:\t {reason}'
     if new_path:
         new_path = get_parts_from_path(new_path)
         logger.info(second_line)
-        logger.info(f'TO\t: {new_path}\n')
+        logger.info(f'TO:\t {new_path}\n')
     else:
         logger.info(second_line + '\n')
 
@@ -59,15 +59,15 @@ def fail_file(old_path, reason, new_path=None):
 def ok_file(old_path, new_path):
     old_path = get_parts_from_path(old_path)
     new_path = get_parts_from_path(new_path)
-    logger.info(f'{GREEN}OK{NC}\t: {old_path}\nTO\t: {new_path}\n')
+    logger.info(f'{GREEN}OK{NC}:\t {old_path}\nTO:\t {new_path}\n')
 
 
 def skip_file(old_path, new_path):
     # TODO: https://bit.ly/2rf38f5
     old_path = get_parts_from_path(old_path)
     new_path = get_parts_from_path(new_path)
-    logger.info(f'{BOLD}SKIP{NC}\t: {old_path}')
-    logger.info(f'REASON\t: {new_path}\n')
+    logger.info(f'{BOLD}SKIP{NC}:\t {old_path}')
+    logger.info(f'REASON:\t {new_path}\n')
 
 
 # TODO: important, do the same for others
@@ -142,12 +142,10 @@ class OrganizeEbooks:
             for i, match in enumerate(matches):
                 parts.append(match.group())
             matches = ';'.join(parts)
-            logger.debug('Parts of the filename match the pamphlet exclude '
+            logger.debug('Parts of the filename match the pamphlet ignore '
                          f'regex: [{matches}]')
-            # TODO: [ERROR] they are returning 1, but it should be returning 0
-            # because the file is considered as a pamphlet
-            return True
-        logger.debg('The file does not match the pamphlet exclude regex, continuing...')
+            return False
+        logger.debug('The file does not match the pamphlet exclude regex, continuing...')
         mime_type = get_mime_type(file_path)
         file_size_KiB = get_file_size(file_path, unit='KiB')
         if file_size_KiB is None:
@@ -166,7 +164,7 @@ class OrganizeEbooks:
                 return False
             else:
                 logger.debug(f'The file has only {pages} pages, looks like a '
-                            'pamphlet')
+                             'pamphlet')
                 return True
         elif file_size_KiB < self.pamphlet_max_filesize_kib:
             logger.debug(f"The file has a type '{mime_type}' and a small size "
@@ -187,7 +185,7 @@ class OrganizeEbooks:
         # TODO: check that it does the same as
         # `if [[ "$WITHOUT_ISBN_IGNORE" != "" &&
         # "$lowercase_name" =~ $WITHOUT_ISBN_IGNORE ]]`
-        # ref.: https://bit.ly/2HJTzfg
+        # Ref.: https://bit.ly/2HJTzfg
         if self.without_isbn_ignore and re.match(self.without_isbn_ignore,
                                                  lowercase_name):
             parts = []
@@ -272,11 +270,10 @@ class OrganizeEbooks:
         author = search_meta_val(ebookmeta, 'Author(s)')
         # Equivalent to (in bash):
         # if [[ "${title//[^[:alpha:]]/}" != "" && "$title" != "unknown" ]]
-        # ref.: https://bit.ly/2HDHZGm
+        # Ref.: https://bit.ly/2HDHZGm
         if re.sub(r'[^A-Za-z]', '', title) != '' and title != 'unknown':
             logger.debug('There is a relatively normal-looking title, '
                          'searching for metadata...')
-            # TODO: complete condition for author
             if re.sub(r'\s', '', author) != '' and author != 'unknown':
                 logger.debug(f'Trying to fetch metadata by title "{title}" '
                              f'and author "{author}"...')
@@ -416,11 +413,13 @@ class OrganizeEbooks:
                 # TODO: do we add the meta extension directly to new_path (which
                 # already has an extension); thus if new_path='/test/path/book.pdf'
                 # then new_metadata_path='/test/path/book.pdf.meta' or should it be
-                # new_metadata_path='/test/path/book.meta' (which is what I'm doing
-                # here)
-                # ref.: https://bit.ly/2I6K3pW
+                # new_metadata_path='/test/path/book.meta'
+                # Ref.: https://bit.ly/2I6K3pW
+                """
                 new_metadata_path = f'{os.path.splitext(new_path)[0]}.' \
                                     f'{self.output_metadata_extension}'
+                """
+                new_metadata_path = f'{new_path}.{self.output_metadata_extension}'
                 logger.debug(f'Saving original filename to {new_metadata_path}...')
                 if not self.dry_run:
                     metadata = f'Corruption reason   : {file_err}\n' \
@@ -437,6 +436,8 @@ class OrganizeEbooks:
                          'organising...')
             skip_file(file_path, 'File appears OK')
         else:
+            # TODO: important, if html has ISBN it will be considered as an ebook
+            # self._is_pamphlet() needs to be called before search...()
             logger.debug('File passed the corruption test, looking for ISBNs...')
             isbns = search_file_for_isbns(file_path, **self.__dict__)
             if isbns:
@@ -458,6 +459,7 @@ class OrganizeEbooks:
         self.folder_to_organize = folder_to_organize
         files = []
         logger.debug(f"Recursively scanning '{folder_to_organize}' for files...")
+        # TODO: urgent, say if empty folder
         for fp in Path(folder_to_organize).rglob('*'):
             # Ignore directory and hidden files
             if Path.is_file(fp) and not fp.name.startswith('.'):
