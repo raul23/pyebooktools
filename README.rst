@@ -1064,7 +1064,7 @@ Same `limitations`_ as for ``ebook-tools`` apply to this project too:
     If you want to optimize the performance, run multiple copies of the
     script **on different folders**.
     
-  * The default setting for ``ISBN_METADATA_FETCH_ORDER`` includes two
+  * The default setting for `isbn_metadata_fetch_order`_ includes two
     non-standard metadata sources: Goodreads and WorldCat xISBN. For
     best results, install the plugins (`1`_, `2`_) for them in calibre and
     fine-tune the settings for metadata sources in the calibre GUI.
@@ -1233,6 +1233,7 @@ References
 .. _General control flags: #general-control-flags
 .. _interact: #security-and-safety
 .. _isbn_blacklist_regex: #isbn-blacklist-regex-label
+.. _isbn_metadata_fetch_order: #metadata-fetch-order-label
 .. _keep_metadata: #keep-metadata-label
 .. _Miscellaneous options: #miscellaneous-options
 .. _OCR ones: #options-for-ocr
