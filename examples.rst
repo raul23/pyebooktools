@@ -96,7 +96,8 @@ A tab with the main config file will be opened in PyCharm's Editor window:
 
 Reset the main config file
 --------------------------
-To reset the **main** config file with factory settings:
+To reset the **main** config file with factory settings as defined in the
+`default_config.py`_:
 
 .. code-block:: terminal
    
@@ -543,6 +544,7 @@ References
    
 .. URLs
 .. _all the options: ./README.rst#usage-options-and-configuration
+.. _default_config.py: ./pyebooktools/configs/default_config.py
 .. _edit: ./README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
 .. _logging: ./pyebooktools/configs/default_logging.py
