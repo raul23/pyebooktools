@@ -58,7 +58,7 @@ dry_run = False
 symlink_only = False
 keep_metadata = False
 logging_level = 'info'
-logging_formatter = 'simple'
+logging_formatter = 'only_msg'
 
 # 1.2 Options related to extracting ISBNs from files and finding metadata by ISBN
 # ===============================================================================
