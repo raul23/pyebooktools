@@ -629,15 +629,15 @@ def move_or_link_ebook_file_and_metadata(
 
             # Process field value
             # Get only the first 100 characters
-            field_value = substitute_with_sed(
+            d[field_name] = substitute_with_sed(
                 regex='[\\/\*\?<>\|\x01-\x1F\x7F\x22\x24\x60]', replacement='_',
                 text=field_value)[:100]
-            d[field_name] = field_value
 
     logger.debug('Variables that will be used for the new filename construction:')
     for k, v in d.items():
         # TODO: important, encode('utf-8')? like in rename?
         logger.debug(f'{k}: {v}')
+
     new_name = substitute_params(d, output_filename_template)
     logger.debug(f"The new file name of the book file/link '{current_ebook_path}' "
                  f'will be: {new_name}')
@@ -1048,6 +1048,8 @@ def search_meta_val(ebookmeta, key):
 def substitute_params(hashmap, output_filename_template=OUTPUT_FILENAME_TEMPLATE):
     array = ''
     for k, v in hashmap.items():
+        if not k:
+            continue
         if isinstance(v, bytes):
             v = v.decode('UTF-8')
         # logger.debug(f'{hashmap[k]}')
