@@ -1055,7 +1055,7 @@ To uninstall the package ``pyebooktools``::
 
 Limitations
 ===========
-Same limitations as for `ebook-tools`_ apply to this project too:
+Same `limitations`_ as for ``ebook-tools`` apply to this project too:
 
   * Automatic organization can be slow - all the scripts are synchronous
     and single-threaded and metadata lookup by ISBN is not done
@@ -1193,6 +1193,7 @@ References
 .. _ebook-tools documentation: https://github.com/na--/ebook-tools#security-and-safety
 .. _Goodreads: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number
+.. _limitations: https://github.com/na--/ebook-tools#limitations
 .. _na--: https://github.com/na--
 .. _p7zip: https://sourceforge.net/projects/p7zip/
 .. _pdftk: https://stackoverflow.com/a/49614525/14664104
