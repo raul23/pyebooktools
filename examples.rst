@@ -288,7 +288,8 @@ where
 - `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
-- `output_folder_corrupt`_ will contain any corrupted ebook
+- `output_folder_corrupt`_ will contain any corrupted ebook (e.g. zero-filled 
+  files, corrupt archives or broken .pdf files)
 
 **Output:**
 
