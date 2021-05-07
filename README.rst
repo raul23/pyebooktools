@@ -1076,12 +1076,12 @@ Starting from first priority tasks:
 
 1. Port all `ebook-tools`_ shell scripts into Python
 
-   - |ss| ``organize-ebooks.sh``: **done**, *see* `organize_ebooks.py`_ |se|
+   - |ss| ``organize-ebooks.sh`` |se|: **done**, *see* `organize_ebooks.py`_
    - ``interactive-organizer.sh``: **working on it**
-   - |ss| ``find-isbns.sh``: **done**, *see* `find_isbns.py`_ |se|
-   - |ss| ``convert-to-txt.sh``: **done**, *see* `convert_to_txt.py`_ |se|
-   - |ss| ``rename-calibre-library.sh``: **done**, *see* `rename_calibre_library.py`_ |se|
-   - |ss| ``split-into-folders.sh``: **done**, *see* `split_into_folders.py`_ |se| 
+   - |ss| ``find-isbns.sh`` |se|: **done**, *see* `find_isbns.py`_
+   - |ss| ``convert-to-txt.sh`` |se|: **done**, *see* `convert_to_txt.py`_
+   - |ss| ``rename-calibre-library.sh`` |se|: **done**, *see* `rename_calibre_library.py`_
+   - |ss| ``split-into-folders.sh`` |se|: **done**, *see* `split_into_folders.py`_
    
 2. Test on linux
 
