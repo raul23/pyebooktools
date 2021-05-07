@@ -190,7 +190,7 @@ sequence that is part of a problem in a book about digital system.
 
 ``organize`` examples
 =====================
-You can also use ``organize`` to check ebooks for corruption without
+You can use ``organize`` to check ebooks for corruption without
 organizing them by using the `--corruption-check-only`_ flag. See the
 `Check ebooks for corruption only`_ example for more details.
 
