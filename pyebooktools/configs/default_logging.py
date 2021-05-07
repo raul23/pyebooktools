@@ -104,6 +104,12 @@ logging = {
           "handlers": ["console"],
           "propagate": False
         },
+        "pyebooktools.remove_extras":
+        {
+          "level": "DEBUG",
+          "handlers": ["console"],
+          "propagate": False
+        },
         "pyebooktools.rename_calibre_library":
         {
           "level": "DEBUG",
