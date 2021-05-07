@@ -1083,6 +1083,8 @@ Starting from first priority tasks:
    - |ss| ``rename-calibre-library.sh`` |se|: **done**, *see* `rename_calibre_library.py`_
    - |ss| ``split-into-folders.sh`` |se|: **done**, *see* `split_into_folders.py`_
 
+   **Status:** only ``interactive-organizer.sh`` remaining, will port later
+
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following methods:
   
@@ -1099,7 +1101,7 @@ Starting from first priority tasks:
    * ``qpdf``
    * ``jhove``
    
-   **Working on it**
+   **Status:** working on it
    
 3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks and attachments from PDF files based
