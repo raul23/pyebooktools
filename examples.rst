@@ -190,15 +190,19 @@ sequence that is part of a problem in a book about digital system.
 
 ``organize`` examples
 =====================
-These examples show how to organize ebooks depending on different 
+You can also use ``organize`` to check ebooks for corruption without
+organizing them by using the `--corruption-check-only`_ flag. See the
+`Check ebooks for corruption only`_ example for more details.
+
+The following examples show how to organize ebooks depending on different 
 cases:
 
-- `Organize ebook files with only output_folder`_: ignore ebooks without ISBNs
-- `Organize ebook files with output_folder_corrupt`_: check for corruption
+- `Organize ebooks with only output_folder`_: ignore ebooks without ISBNs
+- `Organize ebooks with output_folder_corrupt`_: check for corruption
   (e.g. zero-filled files, corrupt archives or broken ``.pdf`` files)
-- `Organize ebook files with output_folder_pamphlets`_: e.g. small pdfs or
+- `Organize ebooks with output_folder_pamphlets`_: e.g. small pdfs or
   saved webpages
-- `Organize ebook files with output_folder_uncertain`_: use online metadata
+- `Organize ebooks with output_folder_uncertain`_: use online metadata
   sources to get ISBN from extracted author & title
 
 `:information_source:`
@@ -224,8 +228,11 @@ cases:
    
   See `edit`_ for more info about this subcommand.
 
-Organize ebook files with only ``output_folder``
-------------------------------------------------
+Check ebooks for corruption only
+--------------------------------
+
+Organize ebooks with only ``output_folder``
+-------------------------------------------
 We want to organize the following ebook files:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_folder_to_organize.png
@@ -259,8 +266,8 @@ Content of ``output_folder``:
    :align: left
    :alt: Example: content of ``output_folder``
 
-Organize ebook files with ``output_folder_corrupt``
----------------------------------------------------
+Organize ebooks with ``output_folder_corrupt``
+----------------------------------------------
 We want to organize the following ebook files, one of which is corrupted:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_corrupt/content_folder_to_organize.png
@@ -316,8 +323,8 @@ Content of ``output_folder_corrupt``:
   Along each corrupted file, a metadata file is saved containing information
   about the corruption reason and the ebook's old file path.
 
-Organize ebook files with ``output_folder_pamphlets``
------------------------------------------------------
+Organize ebooks with ``output_folder_pamphlets``
+------------------------------------------------
 We want to organize the following ebook files, some of which are pamphlets:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_to_organize.png
@@ -373,8 +380,8 @@ Content of ``output_folder_pamphlets``:
   If no ISBN was found for a non-pdf file and the file size is less than
   `pamphlet_max_filesize_kib`_, then it is considered as a pamphlet.
 
-Organize ebook files with ``output_folder_uncertain``
------------------------------------------------------
+Organize ebooks with ``output_folder_uncertain``
+------------------------------------------------
 We want to organize the following ebook files, some of which do not contain any
 ISBNs:
 
@@ -534,6 +541,7 @@ References
    
 .. URLs
 .. _all the options: ./README.rst#usage-options-and-configuration
+.. _--corruption-check-only: ./README.rst#specific-options-for-organizing-files
 .. _default_config.py: ./pyebooktools/configs/default_config.py
 .. _edit: ./README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
@@ -552,7 +560,8 @@ References
 .. _subcommands: ./README.rst#script-usage-subcommands-and-options
 
 .. Local URLs
-.. _Organize ebook files with only output_folder: #organize-ebook-files-with-only-output_folder
-.. _Organize ebook files with output_folder_corrupt: #organize-ebook-files-with-output-folder-corrupt
-.. _Organize ebook files with output_folder_pamphlets: #organize-ebook-files-with-output-folder-pamphlets
-.. _Organize ebook files with output_folder_uncertain: #organize-ebook-files-with-output-folder-uncertain
+.. _Check ebooks for corruption only: #check-ebooks-for-corruption-only
+.. _Organize ebooks with only output_folder: #organize-ebooks-with-only-output_folder
+.. _Organize ebooks with output_folder_corrupt: #organize-ebooks-with-output-folder-corrupt
+.. _Organize ebooks with output_folder_pamphlets: #organize-ebooks-with-output-folder-pamphlets
+.. _Organize ebooks with output_folder_uncertain: #organize-ebooks-with-output-folder-uncertain
