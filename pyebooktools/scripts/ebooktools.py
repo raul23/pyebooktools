@@ -584,7 +584,7 @@ def setup_argparser():
     # ==========
     # fix-ebooks
     # ==========
-    # create the parser for the "organize-ebooks" command
+    # create the parser for the "fix-ebooks" command
     name_input = 'input_data'
     desc = 'Not implemented yet!'
     parser_fix = subparsers.add_parser(
@@ -718,6 +718,28 @@ def setup_argparser():
         help='If specified, pamphlets will be moved to this folder.'
              + _DEFAULT_MSG.format(OUTPUT_FOLDER_PAMPHLETS))
     parser_organize.set_defaults(func=organizer.organize)
+    # =============
+    # Remove-extras
+    # =============
+    # create the parser for the "remove-ebooks" command
+    name_input = 'input_data'
+    desc = 'Not implemented yet!'
+    parser_fix = subparsers.add_parser(
+        'remove', add_help=False,
+        usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
+        # Removes extras (e.g. annotations and bookmarks) from ebook files.
+        # For the moment, only PDF files are supported.
+        help=desc,
+        formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
+                                                 width=width))
+    add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
+                                                 'keep-metadata'])
+    parser_fix_input_output_group = parser_fix.add_argument_group(
+        title='Input and output options')
+    parser_fix_input_output_group.add_argument(
+        'input_data',
+        help='Can either be a file or a folder containing the ebook files '
+             'whose extras will be removed.')
     # ======================
     # rename-calibre-library
     # ======================
