@@ -1084,7 +1084,7 @@ Starting from first priority tasks:
    - |ss| ``split-into-folders.sh`` |se|: **done**, *see* `split_into_folders.py`_
 
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
-   one of the following methods: **working on it**
+   one of the following methods:
   
    * ``gs``: Ghostscript
    * ``pdftocairo``: from Poppler
@@ -1098,6 +1098,8 @@ Starting from first priority tasks:
    * ``pdftotext``
    * ``qpdf``
    * ``jhove``
+   
+   **working on it**
    
 3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks and attachments from PDF files based
