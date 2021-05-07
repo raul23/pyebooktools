@@ -23,6 +23,7 @@ from pyebooktools import (convert_to_txt, edit_config, find_isbns, fix_ebooks,
                           rename_calibre_library, split_into_folders)
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.organize_ebooks import organizer
+from pyebooktools.fix_ebooks import fixer
 from pyebooktools.utils.genutils import (get_config_dict, namespace_to_dict,
                                          override_config_with_args, setup_log)
 from pyebooktools.utils.logutils import init_log
@@ -586,24 +587,26 @@ def setup_argparser():
     # ==========
     # create the parser for the "fix-ebooks" command
     name_input = 'input_data'
-    desc = 'Not implemented yet!'
+    desc = 'Fix corrupted ebook files. For the moment, only PDF files are supported.'
     parser_fix = subparsers.add_parser(
         'fix', add_help=False,
         usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
-        # Tries to fix corrupted ebook files. For the moment, only PDF files
-        # are supported.
-        help=desc,
+        help='Fix corrupted ebook files.',
         formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
                                                  width=width))
     add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
-                                                 'keep-metadata'])
+                                                 'reverse', 'keep-metadata'])
     parser_fix_input_output_group = parser_fix.add_argument_group(
         title='Input and output options')
     parser_fix_input_output_group.add_argument(
-        'input_data',
+        name_input,
         help='Can either be a corrupted file or a folder containing the '
              'corrupted ebook files that need to be fixed.')
-    parser_fix.set_defaults(func=fix_ebooks.fix)
+    parser_fix_input_output_group.add_argument(
+        '-o', '--output-folder', dest='output_folder', metavar='PATH',
+        help='The folder where ebooks that were fixed will be moved to.'
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+    parser_fix.set_defaults(func=fixer.fix)
     # ===============
     # organize-ebooks
     # ===============
@@ -740,6 +743,7 @@ def setup_argparser():
         'input_data',
         help='Can either be a file or a folder containing the ebook files '
              'whose extras will be removed.')
+    parser_fix.set_defaults(func=fixer.fix)
     # ======================
     # rename-calibre-library
     # ======================
