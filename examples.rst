@@ -198,12 +198,13 @@ The following examples show how to organize ebooks depending on different
 cases:
 
 - `Organize ebooks with only output_folder`_: ignore ebooks without ISBNs
-- `Organize ebooks with output_folder_corrupt`_: check for corruption
-  (e.g. zero-filled files, corrupt archives or broken ``.pdf`` files)
+- `Organize ebooks with output_folder_corrupt`_: organize ebooks and check
+  for corruption (e.g. zero-filled files, corrupt archives or broken 
+  ``.pdf`` files)
 - `Organize ebooks with output_folder_pamphlets`_: e.g. small pdfs or
   saved webpages
-- `Organize ebooks with output_folder_uncertain`_: use online metadata
-  sources to get ISBN from extracted author & title
+- `Organize ebooks with output_folder_uncertain`_: organize ebooks that
+  don't have any ISBN in them.
 
 `:information_source:`
 
