@@ -19,15 +19,17 @@ The options are separated based on sections:
   1.5 Options related to the input and output files
   1.6 Miscellaneous options
 2. Subcommand options
-  2.1 edit-config-files
-  2.2 organize-ebooks
-    2.2.1 Specific options for organizing files
-    2.2.2 Output options
-  2.3 interactive-organizer
-  2.4 find-isbns
-  2.5 convert-to-txt
-  2.6 rename-calibre-library
-  2.7 split-into-folders
+  2.1 convert_to_txt
+  2.2 edit_config
+  2.3 find_isbns
+  2.4 fix_ebooks
+  2.5 interactive_organizer
+  2.6 organize_ebooks
+    2.6.1 Specific options for organizing files
+    2.6.2 Output options
+  2.7 remove_extras
+  2.8 rename_calibre_library
+  2.9 split_into_folders
 
 References
 ----------
@@ -107,16 +109,40 @@ reverse = False
 # 2. Subcommand options
 # =====================
 
-# 2.1 edit-config-files
-# =====================
+# 2.1 convert_to_txt
+# ==================
+# Some of the general options affect this subcommand's behavior a lot, especially
+# the OCR ones (see '1.3 Options for OCR').
+output_file = 'output.txt'
+
+# 2.2 edit_config
+# ===============
 # Name of the application to use for editing the config file.
 # If no name is given, then the default application for opening this type of
 # file will be used.
 app = None
 
-# 2.2 organize-ebooks
+# 2.3 find_isbns
+# ==============
+# Some general options affect this subcommand (especially the ones related to
+# extracting ISBNs from files, see section 1.2 above).
+isbn_ret_separator = '\n'
+
+# 2.4 fix_ebooks
+# ==============
+
+# 2.5 interactive_organizer
+# =========================
+# output_folders = []
+# quick_mode = False
+# custom_move_base_dir = None
+# restore_original_base_dir = None
+# diacritic_difference_masking = ?
+# match_partial_words = False
+
+# 2.6 organize_ebooks
 # ===================
-# 2.2.1 Specific options for organizing files
+# 2.6.1 Specific options for organizing files
 # -------------------------------------------
 corruption_check_only = False
 tested_archive_extensions = '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$'
@@ -128,7 +154,7 @@ pamphlet_excluded_files = '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$'
 pamphlet_max_pdf_pages = 50
 pamphlet_max_filesize_kib = 250
 
-# 2.2.2 Output options
+# 2.6.2 Output options
 # --------------------
 # output_folder is by default current directory
 # If organize_without_isbn is enabled, this is the folder to which all ebooks
@@ -139,33 +165,16 @@ output_folder_corrupt = None
 # If specified, pamphlets will be moved to this folder.
 output_folder_pamphlets = None
 
-# 2.3 interactive-organizer
-# =========================
-# output_folders = []
-# quick_mode = False
-# custom_move_base_dir = None
-# restore_original_base_dir = None
-# diacritic_difference_masking = ?
-# match_partial_words = False
+# 2.8 remove_extras
+# =================
+# output_folder is by default current directory
 
-# 2.4 find-isbns
-# ==============
-# Some general options affect this subcommand (especially the ones related to
-# extracting ISBNs from files, see section 1.2 above).
-isbn_ret_separator = '\n'
-
-# 2.5 convert-to-txt
-# ==================
-# Some of the general options affect this subcommand's behavior a lot, especially
-# the OCR ones (see '1.3 Options for OCR').
-output_file = 'output.txt'
-
-# 2.6 rename-calibre-library
+# 2.8 rename_calibre_library
 # ==========================
 # output_folder is by default current directory
 save_metadata = 'recreate'
 
-# 2.7 split-into-folders
+# 2.9 split_into_folders
 # ======================
 # output_folder is by default current directory
 start_number = 0
