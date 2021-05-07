@@ -199,7 +199,7 @@ cases:
 
 - `Organize ebooks with only output_folder`_: ignore ebooks without ISBNs
 - `Organize ebooks with output_folder_corrupt`_: organize ebooks and check
-  for corruption (e.g. zero-filled files or or broken ``.pdf`` files)
+  for corruption (e.g. zero-filled files or broken ``.pdf`` files)
 - `Organize ebooks with output_folder_pamphlets`_: e.g. small pdfs or
   saved webpages
 - `Organize ebooks with output_folder_uncertain`_: organize ebooks that
