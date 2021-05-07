@@ -47,10 +47,18 @@ OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
 SYMLINK_ONLY = default_cfg.symlink_only
 TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
 
-GREEN = '\033[0;32m'
+GREEN = '\033[0;32m'  # 36
 RED = '\033[0;31m'
+YELLOW = '\033[0;33m'  # 32
 BOLD = '\033[1m'
 NC = '\033[0m'
+
+_COLOR_TO_CODE = {
+    'g': GREEN,
+    'r': RED,
+    'y': YELLOW,
+    'bold': BOLD
+}
 
 # TODO: move some functions to genutils, e.g.
 # is_dir_empty, isalnum_in_file, remove_file, remove_tree remove_file
@@ -65,15 +73,6 @@ def catdoc(input_file, output_file):
     if result.returncode == 0:
         with open(output_file, 'w') as f:
             f.write(result.stdout)
-    return convert_result_from_shell_cmd(result)
-
-
-# macOS equivalent for catdoc
-# See https://stackoverflow.com/a/44003923/14664104
-def textutil(input_file, output_file):
-    cmd = f'textutil -convert txt "{input_file}" -output "{output_file}"'
-    args = shlex.split(cmd)
-    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
 
 
@@ -148,6 +147,16 @@ def check_file_for_corruption(
         logger.debug(f'We are at the end of the function and '
                      f'file_err="{file_err}"; it should be empty!')
     return file_err
+
+
+def color_msg(msg, color='y', bold=False):
+    color = color.lower()
+    colors = list(_COLOR_TO_CODE.keys())
+    assert color in colors, f'Wrong color: {color}. Only these colors are supported: ' \
+                            f'{colors}'
+    if bold:
+        msg = f'{BOLD}{msg}{NC}'
+    return f'{_COLOR_TO_CODE[color]}{msg}{NC}'
 
 
 # Ref.: https://stackoverflow.com/a/28909933
@@ -1098,6 +1107,15 @@ def tesseract_wrapper(input_file, output_file):
 
 def test_archive(file_path):
     cmd = '7z t "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+# macOS equivalent for catdoc
+# See https://stackoverflow.com/a/44003923/14664104
+def textutil(input_file, output_file):
+    cmd = f'textutil -convert txt "{input_file}" -output "{output_file}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
