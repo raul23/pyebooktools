@@ -1077,14 +1077,14 @@ Starting from first priority tasks:
 1. Port all `ebook-tools`_ shell scripts into Python
 
    - |ss| ``organize-ebooks.sh`` |se|: **done**, *see* `organize_ebooks.py`_
-   - ``interactive-organizer.sh``: **working on it**
+   - ``interactive-organizer.sh``
    - |ss| ``find-isbns.sh`` |se|: **done**, *see* `find_isbns.py`_
    - |ss| ``convert-to-txt.sh`` |se|: **done**, *see* `convert_to_txt.py`_
    - |ss| ``rename-calibre-library.sh`` |se|: **done**, *see* `rename_calibre_library.py`_
    - |ss| ``split-into-folders.sh`` |se|: **done**, *see* `split_into_folders.py`_
 
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
-   one of the following methods:
+   one of the following methods: **working on it**
   
    * ``gs``: Ghostscript
    * ``pdftocairo``: from Poppler
