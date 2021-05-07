@@ -73,7 +73,7 @@ def skip_file(old_path, new_path):
 # TODO: important, do the same for others
 class OrganizeEbooks:
     def __init__(self):
-        self.folder_to_organize=None
+        self.folder_to_organize = None
         self.output_folder = default_cfg.output_folder
         self.output_folder_corrupt = default_cfg.output_folder_corrupt
         self.output_folder_pamphlets = default_cfg.output_folder_pamphlets
