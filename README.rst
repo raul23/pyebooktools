@@ -1099,7 +1099,7 @@ Starting from first priority tasks:
    * ``qpdf``
    * ``jhove``
    
-   **working on it**
+   **Working on it**
    
 3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks and attachments from PDF files based
