@@ -17,10 +17,46 @@ References
 * `Install qpdf with Homebrew <https://formulae.brew.sh/formula/qpdf>`__
 * `Install qpdf with MacPorts <https://ports.macports.org/port/qpdf/summary>`__
 """
+from pathlib import Path
+
+from pyebooktools.configs import default_config as default_cfg
+from pyebooktools.lib import color_msg as c, is_dir_empty
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
 
 
-def fix(input_data, **kwargs):
-    logger.warning('Not implemented yet!')
+class FixEbooks:
+    def __init__(self):
+        self.input_data = None
+        self.output_folder = default_cfg.output_folder
+
+    def fix(self, input_data, **kwargs):
+        # TODO: add debug message about update attributes
+        self.__dict__.update(kwargs)
+        input_data = Path(input_data)
+        # TODO: urgent, say if empty folder
+        if not input_data.exists():
+            if input_data.is_dir():
+                msg = "Folder doesn't exist:"
+            else:
+                msg = "File doesn't exist:"
+            logger.warning(f'{c(msg)} {input_data}')
+            return 0
+        # NOTE: only PDF files supported
+        if input_data.is_dir() and is_dir_empty(input_data):
+            logger.warning(f"{c('Directory is empty:')} "
+                           f"{input_data}")
+            return 0
+        found_pdf = False
+        for fp in Path(input_data).rglob('*.pdf'):
+            found_pdf = True
+            print(fp)
+        if not found_pdf:
+            logger.warning(f"{c('No PDF files found:')} "
+                           f"{input_data}")
+            logger.warning(f"{c('Only PDF files are supported!', bold=True)}")
+        return 0
+
+
+fixer = FixEbooks()
