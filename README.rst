@@ -17,7 +17,7 @@ ebook collections.
 `:warning:`
 
   * For the moment, the ``ebooktools.py`` script is only tested on **macOS**.
-    Eventually, it will be tested on linux.
+    It will be tested also on linux.
   * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming
     soon.
 
