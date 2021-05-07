@@ -130,6 +130,7 @@ isbn_ret_separator = '\n'
 
 # 2.4 fix_ebooks
 # ==============
+# output_folder is by default current directory
 
 # 2.5 interactive_organizer
 # =========================
