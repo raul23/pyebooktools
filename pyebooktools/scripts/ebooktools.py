@@ -34,6 +34,9 @@ logger = init_log(__name__, __file__)
 # Default config values
 # =====================
 CORRUPTION_CHECK_ONLY = default_cfg.corruption_check_only
+CORRUPTION_CHECK_ORDER = default_cfg.corruption_check_order
+CORRUPTION_FIX_ONLY = default_cfg.corruption_fix_only
+CORRUPTION_FIX_ORDER = default_cfg.corruption_fix_order
 FILES_PER_FOLDER = default_cfg.files_per_folder
 FOLDER_PATTERN = default_cfg.folder_pattern
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
@@ -76,15 +79,75 @@ _MAIN_CFG = 'main'
 _DEFAULT_MSG = ' (default: {})'
 
 
-# TODO: important mention options are grouped in each function
-# TODO: important should be called general control flags
+# Options related to checking for corruption
+def add_corruption_options(parser, remove_opts=None, add_as_group=True,
+                           organize=True):
+    remove_opts = init_list(remove_opts)
+    if add_as_group:
+        parser_corruption = parser.add_argument_group(
+            title='Options related to checking for corruption')
+    else:
+        parser_corruption = parser
+    if not remove_opts.count('corruption_check_only'):
+        if organize:
+            msg = 'Do not organize or rename files, just check them for ' \
+                  'corruption (ex. zero-filled files, corrupt archives or ' \
+                  'broken .pdf files). Useful with the ' \
+                  '`output-folder-corrupt` option.'
+        else:
+            msg = 'Do not fix the files, just check them for corruption (ex. ' \
+                  'zero-filled files, corrupt archives or broken .pdf files). ' \
+                  'Useful with the `output-folder-corrupt` option.'
+        parser_corruption.add_argument(
+            "--cco", "--corruption-check-only", dest='corruption_check_only',
+            action="store_true", help=msg)
+    if not remove_opts.count('corruption_check_order'):
+        parser_corruption.add_argument(
+            "---cmo", "---corruption-check-order", nargs='+',
+            dest='corruption_check_order', metavar='METHOD',
+            help="This option allows you to specify the methods used for "
+                 "checking for corruption in ebooks and the order in which "
+                 "the commands will try them. If a method is not installed, "
+                 "then the next method will be tried."
+                 + _DEFAULT_MSG.format(CORRUPTION_CHECK_ORDER))
+    return parser_corruption
+
+
+# Options related to checking for corruption
+def add_fix_options(parser, remove_opts=None, add_as_group=True):
+    remove_opts = init_list(remove_opts)
+    if add_as_group:
+        parser_fix = parser.add_argument_group(
+            title='Options related to fixing corruption')
+    else:
+        parser_fix = parser
+    if not remove_opts.count('corruption_fix_only'):
+        parser_fix.add_argument(
+            "--cfo", "--corruption-fix-only", dest='corruption_fix_only',
+            action="store_true",
+            help='Do not check the files, just fix them for corruption (ex. '
+                 'zero-filled files, corrupt archives or broken .pdf files). '
+                 'Useful with the `output-folder-corrupt` option.')
+    if not remove_opts.count('corruption_checking_order'):
+        parser_fix.add_argument(
+            "--corruption-fix-order", nargs='+', dest='corruption_fix_order',
+            metavar='METHOD',
+            help="This option allows you to specify the methods used to fix "
+                 "for corruption in ebooks and the order in which the commands "
+                 "will try them. If a method is not installed, then the next "
+                 "method will be tried."
+                 + _DEFAULT_MSG.format(CORRUPTION_FIX_ORDER))
+    return parser_fix
+
+
+# TODO: important, mention options are grouped in each function
 # General options
 def add_general_options(parser, remove_opts=None):
     remove_opts = init_list(remove_opts)
     parser_general_group = parser.add_argument_group(title='General options')
     if not remove_opts.count('help'):
         parser_general_group.add_argument('-h', '--help', action='help',
-                            help='Show this help message and exit.')
+                                          help='Show this help message and exit.')
     # TODO: package name too? instead of program name
     if not remove_opts.count('version'):
         parser_general_group.add_argument(
@@ -594,8 +657,9 @@ def setup_argparser():
         help='Fix corrupted ebook files.',
         formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
                                                  width=width))
-    add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
-                                                 'reverse', 'keep-metadata'])
+    add_general_options(parser_fix)
+    add_corruption_options(parser_fix)
+    add_fix_options(parser_fix)
     parser_fix_input_output_group = parser_fix.add_argument_group(
         title='Input and output options')
     parser_fix_input_output_group.add_argument(
@@ -604,8 +668,15 @@ def setup_argparser():
              'corrupted ebook files that need to be fixed.')
     parser_fix_input_output_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        help='The folder where ebooks that were fixed will be moved to.'
+        help='The folder where the fixed ebooks will be saved.'
              + _DEFAULT_MSG.format(OUTPUT_FOLDER))
+    # TODO: already used for organize
+    parser_fix_input_output_group.add_argument(
+        '--ofc', '--output-folder-corrupt', dest='output_folder_corrupt',
+        metavar='PATH',
+        help='If specified, corrupted files (incl. those that were not fixed) '
+             'will be moved to this folder.'
+             + _DEFAULT_MSG.format(OUTPUT_FOLDER_CORRUPT))
     parser_fix.set_defaults(func=fixer.fix)
     # ===============
     # organize-ebooks
@@ -867,6 +938,7 @@ def main():
             print(msg)
             sys.exit(1)
         # Get main cfg dict
+        # TODO: important, check if an option is defined more than once
         main_cfg = argparse.Namespace(**get_config_dict('main'))
         returned_values = override_config_with_args(main_cfg, parser)
         setup_log(main_cfg.quiet, main_cfg.verbose,
@@ -888,6 +960,14 @@ def main():
 
 
 if __name__ == '__main__':
+    # TODO: mention somewhere, options not used
+    # file_sort_flags = []
+    # debug_prefix_length = 40
+    #
+    # TODO: important, test isbn_metadata_fetch_order with calibre 2.84
+    # TODO: important, test ocr_command = 'tesseract_wrapper'
+    # TODO: urgent, add short versions of some options
+
     # Convert
     # ebooktools convert ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf -o ~/test/_ebooktools/output.txt
     #
