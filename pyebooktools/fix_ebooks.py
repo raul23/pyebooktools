@@ -35,7 +35,6 @@ class FixEbooks:
         # TODO: add debug message about update attributes
         self.__dict__.update(kwargs)
         input_data = Path(input_data)
-        # TODO: urgent, say if empty folder
         if not input_data.exists():
             if input_data.is_dir():
                 msg = "Folder doesn't exist:"
@@ -43,12 +42,12 @@ class FixEbooks:
                 msg = "File doesn't exist:"
             logger.warning(f'{c(msg)} {input_data}')
             return 0
-        # NOTE: only PDF files supported
         if input_data.is_dir() and is_dir_empty(input_data):
             logger.warning(f"{c('Directory is empty:')} "
                            f"{input_data}")
             return 0
         found_pdf = False
+        # NOTE: only PDF files supported
         for fp in Path(input_data).rglob('*.pdf'):
             found_pdf = True
             print(fp)
