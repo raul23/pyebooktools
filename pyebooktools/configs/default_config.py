@@ -18,7 +18,7 @@ The options are separated based on sections:
   1.4 Options related to extracting and searching for non-ISBN metadata
   1.5 Options related to the input and output files
   1.6 Miscellaneous options
-2. Subcommand options
+2. Command options
   2.1 convert_to_txt
   2.2 edit_config
   2.3 find_isbns
@@ -50,7 +50,7 @@ from pyebooktools.configs import get_without_isbn_ignore
 # 1. General options
 # ==================
 # All of these options are part of the common library and may affect some or
-# all of the subcommands.
+# all of the commands.
 
 # 1.1 General control flags
 # =========================
@@ -59,8 +59,6 @@ verbose = False
 dry_run = False
 symlink_only = False
 keep_metadata = False
-logging_level = 'info'
-logging_formatter = 'only_msg'
 
 # 1.2 Options related to extracting ISBNs from files and finding metadata by ISBN
 # ===============================================================================
@@ -86,7 +84,7 @@ ocr_command = 'tesseract_wrapper'
 # =====================================================================
 token_min_length = 3
 tokens_to_ignore = 'ebook|book|novel|series|ed(ition)?|vol(ume)?|${RE_YEAR}'
-organize_without_isbn_sources = ['Goodreads' ,'Amazon.com', 'Google']
+organize_without_isbn_sources = ['Goodreads', 'Amazon.com', 'Google']
 
 # 1.5 Options related to the input and output files
 # =================================================
@@ -98,21 +96,27 @@ output_filename_template = "${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] 
 # metadata file that is saved next to each newly renamed file.
 output_metadata_extension = 'meta'
 
-# 1.6 Miscellaneous options
+# 1.6 Options related to checking for corruption
+# ==============================================
+corruption_check_only = False
+# corruption_check_order = ['pdfinfo', 'pdftotext', 'qpdf', 'jhove']
+corruption_check_order = ['pdfinfo', 'pdftotext']
+
+# 1.7 Miscellaneous options
 # =========================
-# file_sort_flags = []
+logging_level = 'info'
+logging_formatter = 'only_msg'
 # Reverse sort
 reverse = False
-# debug_prefix_length = 40
 
-# =====================
-# 2. Subcommand options
-# =====================
+# ==================
+# 2. Command options
+# ==================
 
 # 2.1 convert_to_txt
 # ==================
-# Some of the general options affect this subcommand's behavior a lot, especially
-# the OCR ones (see '1.3 Options for OCR').
+# Some of the general options affect this command's behavior a lot, especially
+# the OCR ones (section 1.3).
 output_file = 'output.txt'
 
 # 2.2 edit_config
@@ -124,13 +128,17 @@ app = None
 
 # 2.3 find_isbns
 # ==============
-# Some general options affect this subcommand (especially the ones related to
+# Some general options affect this command (especially the ones related to
 # extracting ISBNs from files, see section 1.2 above).
 isbn_ret_separator = '\n'
 
 # 2.4 fix_ebooks
 # ==============
 # output_folder is by default current directory
+# Options related to checking for corruption also affect this command (section 1.6)
+corruption_fix_only = False
+# corruption_fix_order = ['gs', 'pdftocairo', 'mutool', 'cpdf']
+corruption_fix_order = ['gs', 'pdftocairo']
 
 # 2.5 interactive_organizer
 # =========================
@@ -145,7 +153,7 @@ isbn_ret_separator = '\n'
 # ===================
 # 2.6.1 Specific options for organizing files
 # -------------------------------------------
-corruption_check_only = False
+# Options related to checking for corruption also affect this command (section 1.6)
 tested_archive_extensions = '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$'
 organize_without_isbn = False
 without_isbn_ignore = get_without_isbn_ignore()
