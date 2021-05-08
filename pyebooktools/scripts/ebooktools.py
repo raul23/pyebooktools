@@ -650,7 +650,10 @@ def setup_argparser():
     # ==========
     # create the parser for the "fix-ebooks" command
     name_input = 'input_data'
-    desc = 'Fix corrupted ebook files. For the moment, only PDF files are supported.'
+    desc = 'Fix corrupted ebook files. For the moment, only PDF files are ' \
+           'supported.\nIMPORTANT: by default, it checks first the ebooks ' \
+           'for corruption. Use the `--corruption-fix-only` flag to only ' \
+           'fix them.'
     parser_fix = subparsers.add_parser(
         'fix', add_help=False,
         usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
