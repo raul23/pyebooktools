@@ -28,6 +28,7 @@ from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (BOLD, GREEN, NC, RED, check_file_for_corruption,
                               fetch_metadata, find_isbns, get_ebook_metadata,
                               get_file_size, get_mime_type, get_pages_in_pdf,
+                              get_parts_from_path,
                               move_or_link_ebook_file_and_metadata,
                               move_or_link_file, remove_file,
                               search_file_for_isbns, search_meta_val,
@@ -35,11 +36,6 @@ from pyebooktools.lib import (BOLD, GREEN, NC, RED, check_file_for_corruption,
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
-
-
-def get_parts_from_path(path):
-    path = Path(path)
-    return f'{path.anchor}'.join(path.parts[-2:])
 
 
 def fail_file(old_path, reason, new_path=None):
