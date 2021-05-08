@@ -20,7 +20,8 @@ References
 from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.lib import color_msg as c, is_dir_empty
+from pyebooktools.lib import (color_msg as c, check_input_data,
+                              get_parts_from_path)
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
@@ -35,22 +36,13 @@ class FixEbooks:
         # TODO: add debug message about update attributes
         self.__dict__.update(kwargs)
         input_data = Path(input_data)
-        if not input_data.exists():
-            if input_data.is_dir():
-                msg = "Folder doesn't exist:"
-            else:
-                msg = "File doesn't exist:"
-            logger.warning(f'{c(msg)} {input_data}')
-            return 0
-        if input_data.is_dir() and is_dir_empty(input_data):
-            logger.warning(f"{c('Directory is empty:')} "
-                           f"{input_data}")
+        if check_input_data(input_data):
             return 0
         found_pdf = False
         # NOTE: only PDF files supported
-        for fp in Path(input_data).rglob('*.pdf'):
+        for fp in input_data.rglob('*.pdf'):
             found_pdf = True
-            print(fp)
+            print(get_parts_from_path(fp))
         if not found_pdf:
             logger.warning(f"{c('No PDF files found:')} "
                            f"{input_data}")
