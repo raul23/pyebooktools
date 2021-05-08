@@ -149,6 +149,27 @@ def check_file_for_corruption(
     return file_err
 
 
+def check_input_data(input_data):
+    input_data = Path(input_data)
+    if not input_data.exists():
+        is_dir = False
+        if input_data.is_dir():
+            is_dir = True
+            msg = "Folder doesn't exist:"
+        else:
+            msg = "File doesn't exist:"
+        logger.warning(f'{color_msg(msg)} {input_data}')
+        if is_dir:
+            return 1
+        else:
+            return 2
+    if input_data.is_dir() and is_dir_empty(input_data):
+        logger.warning(f"{color_msg('Directory is empty:')} "
+                       f"{input_data}")
+        return 3
+    return 0
+
+
 def color_msg(msg, color='y', bold=False):
     color = color.lower()
     colors = list(_COLOR_TO_CODE.keys())
@@ -534,6 +555,11 @@ def get_pages_in_pdf(file_path):
                                            flags=re.MULTILINE)[0])
             return result
     return convert_result_from_shell_cmd(result)
+
+
+def get_parts_from_path(path):
+    path = Path(path)
+    return f'{path.anchor}'.join(path.parts[-2:])
 
 
 # Checks if directory is empty
