@@ -44,6 +44,8 @@ OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
+OUTPUT_FOLDER = default_cfg.output_folder
+OUTPUT_FOLDER_CORRUPT = default_cfg.output_folder_corrupt
 SYMLINK_ONLY = default_cfg.symlink_only
 TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
 
@@ -254,13 +256,18 @@ def convert_result_from_shell_cmd(old_result):
             if isinstance(new_val, str):
                 try:
                     new_val = old_val.decode('UTF-8')
-                except AttributeError as e:
+                except (AttributeError, UnicodeDecodeError) as e:
                     # TODO: add logger.debug?
-                    # `old_val` already a string
-                    # logger.debug('Error decoding old value: {}'.format(old_val))
-                    # logger.debug(e.__repr__())
-                    # logger.debug('Value already a string. No decoding necessary')
-                    new_val = old_val
+                    AttributeError
+                    if type(e) == UnicodeDecodeError:
+                        # old_val = b'...'
+                        new_val = old_val.decode('unicode_escape')
+                    else:
+                        # `old_val` already a string
+                        # logger.debug('Error decoding old value: {}'.format(old_val))
+                        # logger.debug(e.__repr__())
+                        # logger.debug('Value already a string. No decoding necessary')
+                        new_val = old_val
                 try:
                     new_val = ast.literal_eval(new_val)
                 # TODO: two errors on the same line
@@ -411,56 +418,93 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
     return isbn_ret_separator.join(isbns)
 
 
-# Tries to fix the supplied PDF file for corruption based on the following method:
+def process_gs_result(command_result):
+    file_err = ''
+    # TODO: can be very long (if PDf has many pages)
+    logger.debug(f'Output of gs:\n{command_result.stdout}')
+    if command_result.stderr:
+        file_err = f'gs returned an error: {command_result.stderr.strip()}'
+        result = re.search('^Processing pages 1 through ([\d]+)',
+                           command_result.stdout, flags=re.MULTILINE)
+        if result:
+            num_pages = int(result.groups()[0])
+            result = re.findall('Page ([\d]+)', command_result.stdout)
+            if result:
+                last_page = max([int(i) for i in result])
+                file_err += f'\nPDF file has {num_pages} pages but only ' \
+                            f'{last_page} pages processed!'
+    else:
+        result = re.search('^[\s]+ (No pages will be processed.*)',
+                           command_result.stdout, flags=re.MULTILINE)
+        if result:
+            line = command_result.stdout[result.start():result.end()].strip()
+            file_err = f"pdf couldn't be fixed: {line}"
+        else:
+            result = re.search('^Processing pages 1 through ([\d]+)',
+                               command_result.stdout, flags=re.MULTILINE)
+            # TODO: urgent, factorize (used above)
+            if result:
+                num_pages = int(result.groups()[0])
+                result = re.findall('Page ([\d]+)', command_result.stdout)
+                if result:
+                    last_page = max([int(i) for i in result])
+                    if last_page == num_pages:
+                        logger.debug(f'All {num_pages} pages processed!')
+                    else:
+                        file_err += f'\nPDF file has {num_pages} pages ' \
+                                    f'but only {last_page} pages ' \
+                                    'processed!'
+    return file_err
+
+
+# Tries to fix the supplied PDF file for corruption based on one of the
+# following methods:
 # gs, pdftocairo, mutool, cpdf
 # NOTE: only PDF files are supported for the moment
-def fix_file_for_corruption(input_file, output_folder):
+def fix_file_for_corruption(input_file, output_folder=OUTPUT_FOLDER,
+                            output_folder_corrupt=OUTPUT_FOLDER_CORRUPT,
+                            dry_run=DRY_RUN, symlink_only=SYMLINK_ONLY,
+                            **kwargs):
     file_err = ''
     input_file = Path(input_file)
-    output_file = Path(output_folder).joinpath(input_file.name)
-    logger.debug(f"Fixing '{input_file.name}' for corruption...")
+    output_tmp_file = tempfile.mkstemp()[1]
+    logger.debug(f"Fixing '{get_parts_from_path(input_file)}' for "
+                 "corruption...")
     # TODO: important, use get_parts_from_path() and other places
-    logger.debug(f"Full path: {input_file}")
+    # logger.debug(f"Full path: {input_file}")
 
     mime_type = get_mime_type(input_file)
-    import ipdb
-    ipdb.set_trace()
+    command = ''
+    command_result = ''
     if mime_type == 'application/pdf':
         if command_exists('gs'):
-            gs_output = gs(input_file, output_file)
-            if gs_output.stderr:
-                logger.debug('gs returned an error!')
-                logger.debug(f'Error:\n{gs_output.stderr}')
-                file_err = 'Has pdf MIME type or extension, but gs ' \
-                           'returned an error!'
-                logger.debug(file_err)
-                return file_err
-            else:
-                logger.debug('gs returned successfully')
-                logger.debug(f'Output of gs:\n{gs_output.stdout}')
-                result = re.search('^[\s]+ (No pages will be processed.*)',
-                                   gs_output.stdout, flags=re.MULTILINE)
-                if result:
-                    line = gs_output.stdout[result.start():result.end()].strip()
-                    file_err = f"pdf couldn't be fixed: {line}"
-                    logger.debug(file_err)
-                    return file_err
-                else:
-                    return file_err
+            command = 'gs'
+            command_result = gs(input_file, output_tmp_file)
+            file_err = process_gs_result(command_result)
         elif command_exists('pdftocairo'):
-            pass
+            command = 'pdftocairo'
         elif command_exists('mutool'):
-            pass
+            command = 'mutool'
         elif command_exists('cpdf'):
-            pass
+            command = 'cpdf'
         else:
             file_err = 'None of the methods for fixing PDF files were found, ' \
                        'could not check if pdf is OK'
-            logger.debug(file_err)
-            return file_err
+        if command:
+            if command_result and command_result.stderr:
+                logger.debug(f'Error:\n{command_result.stderr}')
+            if file_err:
+                # logger.debug(file_err)
+                # output_file = Path(output_folder).joinpath(input_file.name)
+                # move_or_link_file(input_file, )
+                pass
+            else:
+                logger.debug(f'{command} returned successfully!')
+            # output_file = Path(output_folder).joinpath(input_file.name)
+        return file_err
     else:
         file_err = 'file is not pdf, only pdfs can be fixed for corruption'
-        logger.debug()
+        logger.debug(file_err)
         return file_err
 
 
@@ -775,13 +819,6 @@ def move_or_link_file(current_path, new_path, dry_run=DRY_RUN,
         logger.debug(f"Moving file '{current_path}' to '{new_path}'...")
         if not dry_run:
             move(current_path, new_path, clobber=False)
-            # TODO: important, remove next
-            """
-            if not Path(new_path).exists():
-                shutil.move(current_path, new_path)
-            else:
-                logger.debug(f'File already exists: {new_path}')
-            """
 
 
 # OCR on a pdf, djvu document or image
