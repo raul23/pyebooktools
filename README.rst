@@ -1086,15 +1086,14 @@ Starting from first priority tasks:
    **Status:** only ``interactive-organizer.sh`` remaining, will port later
 
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
-   one of the following methods:
+   one of the following utilities:
   
    * ``gs``: Ghostscript
    * ``pdftocairo``: from Poppler
    * ``mutool``: it does not "print" the PDF file
    * ``cpdf``
   
-   It will also check PDF files based on one of the following
-   methods:
+   It will also check PDF files based on one of the following utilities:
   
    * ``pdfinfo``
    * ``pdftotext``
@@ -1105,7 +1104,7 @@ Starting from first priority tasks:
    
 3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
-   based on the following methods:
+   based on the following utilities:
  
    * `cpdf`_ to remove bookmarks, attachments and metadata
    * `pdftk`_ to remove annotations 
