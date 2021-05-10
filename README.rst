@@ -1104,10 +1104,10 @@ Starting from first priority tasks:
    **Status:** working on it
    
 3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
-   comments, notes, arrows), bookmarks and attachments from PDF files based
-   on the following methods:
+   comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
+   based on the following methods:
  
-   * `cpdf`_ to remove bookmarks and attachments 
+   * `cpdf`_ to remove bookmarks, attachments and metadata
    * `pdftk`_ to remove annotations 
 
 4. Test on linux
