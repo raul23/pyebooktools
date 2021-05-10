@@ -1117,7 +1117,6 @@ Starting from first priority tasks:
 7. Eventually add documentation on `Read the Docs`_
 
 8. Add a caching system: avoid re-downloading metadata about books
-   and re-converting to txt the same ebooks
 
 Security and safety
 ===================
