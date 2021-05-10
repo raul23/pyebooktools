@@ -38,32 +38,49 @@ class FixEbooks:
         self.symlink_only = default_cfg.symlink_only
 
     def _fix_file(self, file_path):
-        file_err = fix_file_for_corruption(file_path, self.output_folder)
+        file_err = fix_file_for_corruption(file_path, **self.__dict__)
+        if file_err:
+            logger.debug(f"File '{get_parts_from_path(file_path)}' couldn't be "
+                         f"fixed!\n{file_err}")
+            if self.output_folder_corrupt:
+                pass
+            else:
+                msg = c('Output folder for corrupt files is not set, doing nothing')
+                logger.warning(f"{msg}")
+        else:
+            logger.debug('File was successfully fixed')
+        logger.debug('=====================================================')
 
-    def fix(self, input_data, **kwargs):
-        # TODO: add debug message about update attributes
-        self.__dict__.update(kwargs)
-        input_data = Path(input_data)
-        if check_input_data(input_data):
-            return 0
-        found_pdf = False
+    def _get_files(self):
         files = []
         # NOTE: only PDF files supported
         # TODO: important, use get_mime_type?
-        if input_data.is_file() and input_data.suffix == '.pdf':
-            files = [input_data]
+        if self.input_data.is_file() and self.input_data.suffix == '.pdf':
+            files = [self.input_data]
         else:
             # TODO: important, use get_mime_type for each file found?
-            for fp in input_data.rglob('*.pdf'):
-                found_pdf = True
+            for fp in self.input_data.rglob('*.pdf'):
                 # logger.debug(get_parts_from_path(fp))
                 files.append(fp)
             # TODO: important sort within glob?
             logger.debug("Files sorted {}".format("in desc" if self.reverse else "in asc"))
             files.sort(key=lambda x: x.name, reverse=self.reverse)
+        return files
+
+    def fix(self, input_data, **kwargs):
+        input_data = Path(input_data)
+        # TODO: add debug message about update attributes
+        self.__dict__.update(kwargs)
+        self.input_data = input_data
+        if check_input_data(input_data):
+            # TODO: 0 or 1
+            return 0
+        files = self._get_files()
+        logger.debug('=====================================================')
         for fp in files:
+            # logger.debug(f"{fp.name}")
             self._fix_file(fp)
-        if not found_pdf:
+        if not files:
             logger.warning(f"{c('No PDF files found:')} {input_data}")
             logger.warning(f"{c('Only PDF files are supported!', bold=True)}")
         return 0
