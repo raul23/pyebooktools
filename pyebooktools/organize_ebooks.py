@@ -471,13 +471,13 @@ class OrganizeEbooks:
             # Ignore directory and hidden files
             if Path.is_file(fp) and not fp.name.startswith('.'):
                 logger.debug(f"{fp.name}")
-                files.append((fp))
+                files.append(fp)
         # TODO: important sort within glob?
         logger.debug("Files sorted {}".format("in desc" if self.reverse else "in asc"))
         files.sort(key=lambda x: x.name, reverse=self.reverse)
         logger.debug('=====================================================')
         for fp in files:
-            self._organize_file(file_path=fp)
+            self._organize_file(fp)
         return 0
 
 
