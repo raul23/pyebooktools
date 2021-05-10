@@ -411,6 +411,59 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
     return isbn_ret_separator.join(isbns)
 
 
+# Tries to fix the supplied PDF file for corruption based on the following method:
+# gs, pdftocairo, mutool, cpdf
+# NOTE: only PDF files are supported for the moment
+def fix_file_for_corruption(input_file, output_folder):
+    file_err = ''
+    input_file = Path(input_file)
+    output_file = Path(output_folder).joinpath(input_file.name)
+    logger.debug(f"Fixing '{input_file.name}' for corruption...")
+    # TODO: important, use get_parts_from_path() and other places
+    logger.debug(f"Full path: {input_file}")
+
+    mime_type = get_mime_type(input_file)
+    import ipdb
+    ipdb.set_trace()
+    if mime_type == 'application/pdf':
+        if command_exists('gs'):
+            gs_output = gs(input_file, output_file)
+            if gs_output.stderr:
+                logger.debug('gs returned an error!')
+                logger.debug(f'Error:\n{gs_output.stderr}')
+                file_err = 'Has pdf MIME type or extension, but gs ' \
+                           'returned an error!'
+                logger.debug(file_err)
+                return file_err
+            else:
+                logger.debug('gs returned successfully')
+                logger.debug(f'Output of gs:\n{gs_output.stdout}')
+                result = re.search('^[\s]+ (No pages will be processed.*)',
+                                   gs_output.stdout, flags=re.MULTILINE)
+                if result:
+                    line = gs_output.stdout[result.start():result.end()].strip()
+                    file_err = f"pdf couldn't be fixed: {line}"
+                    logger.debug(file_err)
+                    return file_err
+                else:
+                    return file_err
+        elif command_exists('pdftocairo'):
+            pass
+        elif command_exists('mutool'):
+            pass
+        elif command_exists('cpdf'):
+            pass
+        else:
+            file_err = 'None of the methods for fixing PDF files were found, ' \
+                       'could not check if pdf is OK'
+            logger.debug(file_err)
+            return file_err
+    else:
+        file_err = 'file is not pdf, only pdfs can be fixed for corruption'
+        logger.debug()
+        return file_err
+
+
 def get_all_isbns_from_archive(
         file_path, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
         isbn_direct_grep_files=ISBN_DIRECT_GREP_FILES,
@@ -849,6 +902,34 @@ def ocr_file(file_path, output_file, mime_type,
 
 def pdfinfo(file_path):
     cmd = 'pdfinfo "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+def gs(input_file, output_file):
+    cmd = f'gs -o "{output_file}" -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress "{input_file}"'
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+def pdftocairo(file_path):
+    cmd = 'pdftocairo "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+def mutool(file_path):
+    cmd = 'mutool "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+def cpdf(file_path):
+    cmd = 'cpdf "{}"'.format(file_path)
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
