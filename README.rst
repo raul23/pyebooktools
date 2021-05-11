@@ -1116,8 +1116,6 @@ Starting from first priority tasks:
 
 7. Eventually add documentation on `Read the Docs`_
 
-8. Add a caching system: avoid re-downloading metadata about books
-
 Security and safety
 ===================
 Important security and safety tips from the `ebook-tools documentation`_:
