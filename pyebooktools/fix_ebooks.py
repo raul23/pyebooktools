@@ -65,8 +65,11 @@ class FixEbooks:
                 logger.warning(f"{msg}")
         else:
             logger.debug('File was successfully fixed')
-        # Remove temporary file
-        if output_tmp_file:
+            new_path = unique_filename(self.output_folder, file_path.name)
+            move_or_link_file(output_tmp_file, new_path, dry_run=False,
+                              symlink_only=False)
+        if output_tmp_file and Path(output_tmp_file).exists():
+            logger.debug(f'Removing temp file {output_tmp_file}...')
             remove_file(output_tmp_file)
         logger.debug('=====================================================')
 
@@ -78,6 +81,7 @@ class FixEbooks:
             files = [self.input_data]
         else:
             # TODO: important, use get_mime_type for each file found?
+            # you can have a PDF file with the wrong ext?
             for fp in self.input_data.rglob('*.pdf'):
                 # logger.debug(get_parts_from_path(fp))
                 files.append(fp)
@@ -100,7 +104,10 @@ class FixEbooks:
             # logger.debug(f"{fp.name}")
             self._fix_file(fp)
         if not files:
-            logger.warning(f"{c('No PDF files found:')} {input_data}")
+            if input_data.is_file():
+                logger.warning(f"{c('Not a PDF file:')} {input_data}")
+            else:
+                logger.warning(f"{c('No PDF files found:')} {input_data}")
             logger.warning(f"{c('Only PDF files are supported!', bold=True)}")
         return 0
 
