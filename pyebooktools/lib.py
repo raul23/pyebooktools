@@ -475,7 +475,6 @@ def fix_file_for_corruption(input_file):
             logger.debug(f'{command} returned successfully!')
         # If error message has more than one line, other lines
         # should start with a tab (because of fail(), skip()...)
-        import ipdb
         file_err = file_err.replace('\n', '\n\t')
         return file_err, output_tmp_file
     else:
