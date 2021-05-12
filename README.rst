@@ -1088,7 +1088,7 @@ Starting from first priority tasks:
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
   
-   * |ss| ``gs``: Ghostscript |se|
+   * |ss| ``gs``: Ghostscript |se|, *see* `fix_file_for_corruption()`_
    * ``pdftocairo``: from Poppler
    * ``mutool``: it does not "print" the PDF file
    * ``cpdf``
@@ -1218,6 +1218,7 @@ References
 .. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
 .. _examples.rst: ./examples.rst
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
+.. _fix_file_for_corruption(): https://github.com/raul23/pyebooktools/blob/1067ce48a250404bf6225d36dd3e1defd05f751b/pyebooktools/lib.py#L461
 .. _interactive_organizer.py: ./pyebooktools/interactive_organizer.py
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
