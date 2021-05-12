@@ -24,6 +24,7 @@ from pyebooktools import (convert_to_txt, edit_config, find_isbns, fix_ebooks,
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.organize_ebooks import organizer
 from pyebooktools.fix_ebooks import fixer
+from pyebooktools.lib import color_msg as c
 from pyebooktools.utils.genutils import (get_config_dict, namespace_to_dict,
                                          override_config_with_args, setup_log)
 from pyebooktools.utils.logutils import init_log
@@ -213,7 +214,7 @@ def add_input_output_options(parser, remove_opts=None, add_as_group=True):
     remove_opts = init_list(remove_opts)
     if add_as_group:
         parser_input_output = parser.add_argument_group(
-            title='Options related to the input and output files')
+            title='Options related to the output files')
     else:
         parser_input_output = parser
     if not remove_opts.count('output-filename-template'):
@@ -514,10 +515,19 @@ class MyFormatter(argparse.HelpFormatter):
                 default = action.dest.upper()
                 args_string = self._format_args(action, default)
                 for option_string in action.option_strings:
-                    #parts.append('%s %s' % (option_string, args_string))
+                    # parts.append('%s %s' % (option_string, args_string))
                     parts.append('%s' % option_string)
                 parts[-1] += ' %s'%args_string
             return ', '.join(parts)
+
+
+class ArgumentParser(argparse.ArgumentParser):
+
+    def error(self, message):
+        # self.print_help(sys.stderr)
+        # self.print_usage(sys.stderr)
+        print(self.format_usage().splitlines()[0])
+        self.exit(2, c(f'\nerror: {message}\n', 'r'))
 
 
 def setup_argparser():
@@ -531,7 +541,7 @@ def setup_argparser():
     """
     width = os.get_terminal_size().columns - 5
     # Setup the parser
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
         description='This program is a Python port of ebook-tools written in '
                     'Shell by na-- (See https://github.com/na--/ebook-tools). '
                     'It is a collection of tools for automated and '
@@ -572,7 +582,7 @@ def setup_argparser():
     add_general_options(parser_edit, remove_opts=['dry-run', 'keep-metadata',
                                                   'reverse', 'symlink-only'])
     parser_edit_group = parser_edit.add_argument_group(
-        title='Specific options for the subcommand `test`')
+        title='edit options')
     parser_edit_mutual_group = parser_edit_group.add_mutually_exclusive_group()
     parser_edit_mutual_group.add_argument(
         '-a', '--app', metavar='NAME', nargs='?',
@@ -584,7 +594,7 @@ def setup_argparser():
         help=f'Reset a configuration file (`{_MAIN_CFG}` or `{_LOG_CFG}`) '
              'with factory default values.')
     parser_edit_input_group = parser_edit.add_argument_group(
-        title='input argument')
+        title='Input argument')
     parser_edit_input_group.add_argument(
         'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
         help='The config file to edit which can either be the main '
@@ -636,7 +646,7 @@ def setup_argparser():
     add_isbns_options(parser_find, remove_opts=['metadata-fetch-order'])
     add_ocr_options(parser_find)
     parser_find_group = parser_find.add_argument_group(
-        title='Specific options for the subcommand `find`')
+        title='Find options')
     add_isbn_return_separator(parser_find_group)
     parser_find_input_group = parser_find.add_argument_group(
         title='input argument')
@@ -701,7 +711,7 @@ def setup_argparser():
     add_non_isbn_options(parser_organize)
     add_input_output_options(parser_organize)
     parser_organize_group = parser_organize.add_argument_group(
-        title='Specific options for the subcommand `organize`')
+        title='organize options')
     parser_organize_group.add_argument(
         "--cco", "--corruption-check-only", dest='corruption_check_only',
         action="store_true",
@@ -844,7 +854,7 @@ def setup_argparser():
                                                   'metadata-fetch-order'])
     add_input_output_options(parser_rename)
     parser_rename_group = parser_rename.add_argument_group(
-        title='Specific options for the subcommand `rename`')
+        title='rename options')
     parser_rename_group.add_argument(
         '--sm', '--save-metadata', dest='save_metadata',
         choices=['disable', 'opfcopy', 'recreate'],
@@ -892,7 +902,7 @@ def setup_argparser():
                              remove_opts=['output-filename-template'],
                              add_as_group=False)
     parser_split_group = parser_split.add_argument_group(
-        title='Specific options for the subcommand `split`')
+        title='split options')
     parser_split_group.add_argument(
         '-s', '--start-number', dest='start_number', type=int,
         help='The number of the first folder.'
@@ -970,6 +980,11 @@ if __name__ == '__main__':
     # TODO: important, test isbn_metadata_fetch_order with calibre 2.84
     # TODO: important, test ocr_command = 'tesseract_wrapper'
     # TODO: urgent, add short versions of some options
+    #
+    # TODO: important, test organize with other formats (mobi, zip, ...)
+    # See README (search for docx)
+    #
+    # TODO: accept - for output file to write to stdout, see https://bit.ly/3tzBDes
 
     # Convert
     # ebooktools convert ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf -o ~/test/_ebooktools/output.txt
