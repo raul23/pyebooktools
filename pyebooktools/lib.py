@@ -478,7 +478,7 @@ def fix_file_for_corruption(input_file):
         file_err = file_err.replace('\n', '\n\t')
         return file_err, output_tmp_file
     else:
-        file_err = 'file is not pdf, only pdfs can be fixed for corruption'
+        file_err = 'file is not PDF, only PDFs can be fixed for corruption'
         logger.debug(file_err)
         return file_err, output_tmp_file
 
