@@ -475,10 +475,11 @@ def fix_file_for_corruption(input_file):
             logger.debug(f'{command} returned successfully!')
         # If error message has more than one line, other lines
         # should start with a tab (because of fail(), skip()...)
+        import ipdb
         file_err = file_err.replace('\n', '\n\t')
         return file_err, output_tmp_file
     else:
-        file_err = 'file is not PDF, only PDFs can be fixed for corruption'
+        file_err = 'file is not pdf, only pdfs can be fixed for corruption'
         logger.debug(file_err)
         return file_err, output_tmp_file
 
@@ -958,7 +959,8 @@ def process_gs_result(command_result):
     # TODO: can be very long (if PDf has many pages)
     logger.debug(f'Output of gs:\n{command_result.stdout}')
     if command_result.stderr:
-        file_err = f'gs returned an error: {command_result.stderr.strip()}'
+        file_err = f"pdf couldn't be fixed\n" \
+                   f"gs returned an error: {command_result.stderr.strip()}"
         result = re.search('^Processing pages 1 through ([\d]+)',
                            command_result.stdout, flags=re.MULTILINE)
         if result:
