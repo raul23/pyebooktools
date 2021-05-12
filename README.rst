@@ -1088,7 +1088,7 @@ Starting from first priority tasks:
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
   
-   * |ss| ``gs``: Ghostscript |se|, done, *see* `fix_file_for_corruption()`_
+   * |ss| ``gs``: Ghostscript |se|; done, *see* `fix_file_for_corruption()`_
    * ``pdftocairo``: from Poppler
    * ``mutool``: it does not "print" the PDF file
    * ``cpdf``
