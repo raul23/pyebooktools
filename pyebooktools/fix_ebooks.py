@@ -53,13 +53,12 @@ class FixEbooks:
                 new_metadata_path = f'{new_path}.{self.output_metadata_extension}'
                 logger.debug(f'Saving original filename to {new_metadata_path}...')
                 if not self.dry_run:
-                    file_err_tabs = file_err.replace('\n\t', '\n\t\t\t')
-                    metadata = f'Reason for not fixing:\t{file_err_tabs}\n' \
+                    file_err_tabs = file_err.replace('\n\t', '\n\t\t')
+                    metadata = f'Error message:\t{file_err_tabs}\n' \
                                f'Old file path:\t{file_path}'
                     with open(new_metadata_path, 'w') as f:
                         f.write(metadata)
-                fail_file(file_path, f"File couldn't be fixed: {file_err}",
-                          new_path)
+                fail_file(file_path, f"{file_err}", new_path)
             else:
                 msg = c('Output folder for corrupt files is not set, doing nothing')
                 logger.warning(f"{msg}")
@@ -72,19 +71,17 @@ class FixEbooks:
             logger.debug(f'Removing temp file {output_tmp_file}...')
             remove_file(output_tmp_file)
         logger.debug('=====================================================')
+        return 0
 
     def _get_files(self):
-        files = []
-        # NOTE: only PDF files supported
+        # NOTE: only pdf files supported
         # TODO: important, use get_mime_type?
         if self.input_data.is_file() and self.input_data.suffix == '.pdf':
             files = [self.input_data]
         else:
             # TODO: important, use get_mime_type for each file found?
-            # you can have a PDF file with the wrong ext?
-            for fp in self.input_data.rglob('*.pdf'):
-                # logger.debug(get_parts_from_path(fp))
-                files.append(fp)
+            # you can have a pdf file with the wrong ext?
+            files = [fp for fp in self.input_data.rglob('*.pdf')]
             # TODO: important sort within glob?
             logger.debug("Files sorted {}".format("in desc" if self.reverse else "in asc"))
             files.sort(key=lambda x: x.name, reverse=self.reverse)
@@ -100,15 +97,13 @@ class FixEbooks:
             return 0
         files = self._get_files()
         logger.debug('=====================================================')
-        for fp in files:
-            # logger.debug(f"{fp.name}")
-            self._fix_file(fp)
+        _ = list(map(lambda fp: self._fix_file(fp), files))
         if not files:
             if input_data.is_file():
-                logger.warning(f"{c('Not a PDF file:')} {input_data}")
+                logger.warning(f"{c('Not a pdf file:')} {input_data}")
             else:
-                logger.warning(f"{c('No PDF files found:')} {input_data}")
-            logger.warning(f"{c('Only PDF files are supported!', bold=True)}")
+                logger.warning(f"{c('No pdf files found:')} {input_data}")
+            logger.warning(f"{c('Only pdf files are supported!', bold=True)}")
         return 0
 
 
