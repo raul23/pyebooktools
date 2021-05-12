@@ -475,7 +475,7 @@ def fix_file_for_corruption(input_file, output_folder=OUTPUT_FOLDER,
 
     mime_type = get_mime_type(input_file)
     command = ''
-    command_result = ''
+    command_result = Result()
     if mime_type == 'application/pdf':
         if command_exists('gs'):
             command = 'gs'
@@ -491,7 +491,7 @@ def fix_file_for_corruption(input_file, output_folder=OUTPUT_FOLDER,
             file_err = 'None of the methods for fixing PDF files were found, ' \
                        'could not check if pdf is OK'
         if command:
-            if command_result and command_result.stderr:
+            if command_result.stderr:
                 logger.debug(f'Error:\n{command_result.stderr}')
             if file_err:
                 # logger.debug(file_err)
