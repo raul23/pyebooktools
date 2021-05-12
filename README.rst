@@ -1088,7 +1088,7 @@ Starting from first priority tasks:
 2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
   
-   * ``gs``: Ghostscript
+   * |ss| ``gs``: Ghostscript |se|
    * ``pdftocairo``: from Poppler
    * ``mutool``: it does not "print" the PDF file
    * ``cpdf``
@@ -1100,7 +1100,7 @@ Starting from first priority tasks:
    * ``qpdf``
    * ``jhove``
    
-   **Status:** working on it
+   **Status:** working on adding ``pdftocairo``
    
 3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
