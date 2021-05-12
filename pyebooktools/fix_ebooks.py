@@ -21,7 +21,7 @@ from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (color_msg as c, check_input_data,
-                              fix_file_for_corruption, get_parts_from_path)
+                              fix_file_for_corruption, get_parts_from_path as g)
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
@@ -40,7 +40,7 @@ class FixEbooks:
     def _fix_file(self, file_path):
         file_err = fix_file_for_corruption(file_path, **self.__dict__)
         if file_err:
-            logger.debug(f"File '{get_parts_from_path(file_path)}' couldn't be "
+            logger.debug(f"File '{g(file_path)}' couldn't be "
                          f"fixed!\n{file_err}")
             if self.output_folder_corrupt:
                 pass
