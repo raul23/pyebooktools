@@ -397,6 +397,7 @@ class OrganizeEbooks:
                 new_metadata_path = f'{os.path.splitext(new_path)[0]}.' \
                                     f'{self.output_metadata_extension}'
                 """
+                # NOTE: no unique name for matadata path (and other places)
                 new_metadata_path = f'{new_path}.{self.output_metadata_extension}'
                 logger.debug(f'Saving original filename to {new_metadata_path}...')
                 if not self.dry_run:
