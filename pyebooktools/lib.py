@@ -66,6 +66,21 @@ _COLOR_TO_CODE = {
 # is_dir_empty, isalnum_in_file, remove_file, remove_tree remove_file
 
 
+class Result:
+    def __init__(self, stdout='', stderr='', returncode=None, args=None):
+        self.stdout = stdout
+        self.stderr = stderr
+        self.returncode = returncode
+        self.args = args
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return f'stdout={self.stdout}, stderr={self.stderr}, ' \
+               f'returncode={self.returncode}, args={self.args}'
+
+
 # TODO: important, test it on linux
 def catdoc(input_file, output_file):
     cmd = f'catdoc "{input_file}"'
@@ -153,6 +168,7 @@ def check_file_for_corruption(
 
 def check_input_data(input_data):
     input_data = Path(input_data)
+    short_path = get_parts_from_path(input_data)
     if not input_data.exists():
         is_dir = False
         if input_data.is_dir():
@@ -160,14 +176,14 @@ def check_input_data(input_data):
             msg = "Folder doesn't exist:"
         else:
             msg = "File doesn't exist:"
-        logger.warning(f'{color_msg(msg)} {input_data}')
+        logger.warning(f'{color_msg(msg)} {short_path}')
         if is_dir:
             return 1
         else:
             return 2
     if input_data.is_dir() and is_dir_empty(input_data):
         logger.warning(f"{color_msg('Directory is empty:')} "
-                       f"{input_data}")
+                       f"{short_path}")
         return 3
     return 0
 
@@ -229,19 +245,11 @@ def convert_bytes_decimal(num, unit):
         num /= 1000.0
 
 
-class Result:
-    def __init__(self, stdout='', stderr='', returncode=None, args=None):
-        self.stdout = stdout
-        self.stderr = stderr
-        self.returncode = returncode
-        self.args = args
-
-    def __repr__(self):
-        return self.__str__()
-
-    def __str__(self):
-        return f'stdout={self.stdout}, stderr={self.stderr}, ' \
-               f'returncode={self.returncode}, args={self.args}'
+def cpdf(file_path):
+    cmd = 'cpdf "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
 
 
 def convert_result_from_shell_cmd(old_result):
@@ -349,6 +357,20 @@ def extract_archive(input_file, output_file):
     return convert_result_from_shell_cmd(result)
 
 
+def fail_file(old_path, reason, new_path=None):
+    # More info about printing in terminal with color:
+    # https://stackoverflow.com/a/21786287
+    old_path = get_parts_from_path(old_path)
+    logger.info(f'{RED}ERR{NC}:\t{old_path}')
+    second_line = f'REASON:\t{reason}'
+    if new_path:
+        new_path = get_parts_from_path(new_path)
+        logger.info(second_line)
+        logger.info(f'TO:\t{new_path}\n')
+    else:
+        logger.info(second_line + '\n')
+
+
 # Uses Calibre's `fetch-ebook-metadata` CLI tool to download metadata from
 # online sources. The first parameter is the comma-separated list of allowed
 # plugins (e.g. 'Goodreads,Amazon.com,Google') and the second parameter is the
@@ -418,65 +440,22 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
     return isbn_ret_separator.join(isbns)
 
 
-def process_gs_result(command_result):
-    file_err = ''
-    # TODO: can be very long (if PDf has many pages)
-    logger.debug(f'Output of gs:\n{command_result.stdout}')
-    if command_result.stderr:
-        file_err = f'gs returned an error: {command_result.stderr.strip()}'
-        result = re.search('^Processing pages 1 through ([\d]+)',
-                           command_result.stdout, flags=re.MULTILINE)
-        if result:
-            num_pages = int(result.groups()[0])
-            result = re.findall('Page ([\d]+)', command_result.stdout)
-            if result:
-                last_page = max([int(i) for i in result])
-                file_err += f'\nPDF file has {num_pages} pages but only ' \
-                            f'{last_page} pages processed!'
-    else:
-        result = re.search('^[\s]+ (No pages will be processed.*)',
-                           command_result.stdout, flags=re.MULTILINE)
-        if result:
-            line = command_result.stdout[result.start():result.end()].strip()
-            file_err = f"pdf couldn't be fixed: {line}"
-        else:
-            result = re.search('^Processing pages 1 through ([\d]+)',
-                               command_result.stdout, flags=re.MULTILINE)
-            # TODO: urgent, factorize (used above)
-            if result:
-                num_pages = int(result.groups()[0])
-                result = re.findall('Page ([\d]+)', command_result.stdout)
-                if result:
-                    last_page = max([int(i) for i in result])
-                    if last_page == num_pages:
-                        logger.debug(f'All {num_pages} pages processed!')
-                    else:
-                        file_err += f'\nPDF file has {num_pages} pages ' \
-                                    f'but only {last_page} pages ' \
-                                    'processed!'
-    return file_err
-
-
 # Tries to fix the supplied PDF file for corruption based on one of the
 # following methods:
 # gs, pdftocairo, mutool, cpdf
 # NOTE: only PDF files are supported for the moment
-def fix_file_for_corruption(input_file, output_folder=OUTPUT_FOLDER,
-                            output_folder_corrupt=OUTPUT_FOLDER_CORRUPT,
-                            dry_run=DRY_RUN, symlink_only=SYMLINK_ONLY,
-                            **kwargs):
-    file_err = ''
+def fix_file_for_corruption(input_file):
     input_file = Path(input_file)
-    output_tmp_file = tempfile.mkstemp()[1]
-    logger.debug(f"Fixing '{get_parts_from_path(input_file)}' for "
-                 "corruption...")
-    # TODO: important, use get_parts_from_path() and other places
-    # logger.debug(f"Full path: {input_file}")
-
     mime_type = get_mime_type(input_file)
+    file_err = ''
+    output_tmp_file = ''
     command = ''
     command_result = Result()
+
     if mime_type == 'application/pdf':
+        output_tmp_file = tempfile.mkstemp()[1]
+        logger.debug(f"Fixing '{get_parts_from_path(input_file)}' for "
+                     "corruption...")
         if command_exists('gs'):
             command = 'gs'
             command_result = gs(input_file, output_tmp_file)
@@ -490,22 +469,18 @@ def fix_file_for_corruption(input_file, output_folder=OUTPUT_FOLDER,
         else:
             file_err = 'None of the methods for fixing PDF files were found, ' \
                        'could not check if pdf is OK'
-        if command:
-            if command_result.stderr:
-                logger.debug(f'Error:\n{command_result.stderr}')
-            if file_err:
-                # logger.debug(file_err)
-                # output_file = Path(output_folder).joinpath(input_file.name)
-                # move_or_link_file(input_file, )
-                pass
-            else:
-                logger.debug(f'{command} returned successfully!')
-            # output_file = Path(output_folder).joinpath(input_file.name)
-        return file_err
+        if command_result.stderr:
+            logger.debug(f'Error:\n{command_result.stderr}')
+        if command and not file_err:
+            logger.debug(f'{command} returned successfully!')
+        # If error message has more than one line, other lines
+        # should start with a tab (because of fail(), skip()...)
+        file_err = file_err.replace('\n', '\n\t')
+        return file_err, output_tmp_file
     else:
         file_err = 'file is not pdf, only pdfs can be fixed for corruption'
         logger.debug(file_err)
-        return file_err
+        return file_err, output_tmp_file
 
 
 def get_all_isbns_from_archive(
@@ -657,6 +632,13 @@ def get_pages_in_pdf(file_path):
 def get_parts_from_path(path):
     path = Path(path)
     return f'{path.anchor}'.join(path.parts[-2:])
+
+
+def gs(input_file, output_file):
+    cmd = f'gs -o "{output_file}" -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress "{input_file}"'
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
 
 
 # Checks if directory is empty
@@ -821,6 +803,13 @@ def move_or_link_file(current_path, new_path, dry_run=DRY_RUN,
             move(current_path, new_path, clobber=False)
 
 
+def mutool(file_path):
+    cmd = 'mutool "{}"'.format(file_path)
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
 # OCR on a pdf, djvu document or image
 # NOTE: If pdf or djvu document, then first needs to be converted to image and
 # then OCR
@@ -937,15 +926,14 @@ def ocr_file(file_path, output_file, mime_type,
     return 0
 
 
+def ok_file(old_path, new_path):
+    old_path = get_parts_from_path(old_path)
+    new_path = get_parts_from_path(new_path)
+    logger.info(f'{GREEN}OK{NC}:\t{old_path}\nTO:\t{new_path}\n')
+
+
 def pdfinfo(file_path):
     cmd = 'pdfinfo "{}"'.format(file_path)
-    args = shlex.split(cmd)
-    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return convert_result_from_shell_cmd(result)
-
-
-def gs(input_file, output_file):
-    cmd = f'gs -o "{output_file}" -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress "{input_file}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -958,25 +946,50 @@ def pdftocairo(file_path):
     return convert_result_from_shell_cmd(result)
 
 
-def mutool(file_path):
-    cmd = 'mutool "{}"'.format(file_path)
-    args = shlex.split(cmd)
-    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return convert_result_from_shell_cmd(result)
-
-
-def cpdf(file_path):
-    cmd = 'cpdf "{}"'.format(file_path)
-    args = shlex.split(cmd)
-    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return convert_result_from_shell_cmd(result)
-
-
 def pdftotext(input_file, output_file):
     cmd = f'pdftotext "{input_file}" "{output_file}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
+
+
+def process_gs_result(command_result):
+    file_err = ''
+    # TODO: can be very long (if PDf has many pages)
+    logger.debug(f'Output of gs:\n{command_result.stdout}')
+    if command_result.stderr:
+        file_err = f'gs returned an error: {command_result.stderr.strip()}'
+        result = re.search('^Processing pages 1 through ([\d]+)',
+                           command_result.stdout, flags=re.MULTILINE)
+        if result:
+            num_pages = int(result.groups()[0])
+            result = re.findall('Page ([\d]+)', command_result.stdout)
+            if result:
+                last_page = max([int(i) for i in result])
+                file_err += f'\nPDF file has {num_pages} pages but only ' \
+                            f'{last_page} pages processed!'
+    else:
+        result = re.search('^[\s]+ (No pages will be processed.*)',
+                           command_result.stdout, flags=re.MULTILINE)
+        if result:
+            line = command_result.stdout[result.start():result.end()].strip()
+            file_err = f"pdf couldn't be fixed: {line}"
+        else:
+            result = re.search('^Processing pages 1 through ([\d]+)',
+                               command_result.stdout, flags=re.MULTILINE)
+            # TODO: urgent, factorize (used above)
+            if result:
+                num_pages = int(result.groups()[0])
+                result = re.findall('Page ([\d]+)', command_result.stdout)
+                if result:
+                    last_page = max([int(i) for i in result])
+                    if last_page == num_pages:
+                        logger.debug(f'All {num_pages} pages processed!')
+                    else:
+                        file_err += f'\nPDF file has {num_pages} pages ' \
+                                    f'but only {last_page} pages ' \
+                                    'processed!'
+    return file_err
 
 
 # TODO: place it (and other path-related functions) in genutils
@@ -1196,6 +1209,14 @@ def search_meta_val(ebookmeta, key):
         if line.startswith(key):
             return line.split(':')[-1].strip()
     return val
+
+
+def skip_file(old_path, new_path):
+    # TODO: https://bit.ly/2rf38f5
+    old_path = get_parts_from_path(old_path)
+    new_path = get_parts_from_path(new_path)
+    logger.info(f'{BOLD}SKIP{NC}:\t{old_path}')
+    logger.info(f'REASON:\t{new_path}\n')
 
 
 def substitute_params(hashmap, output_filename_template=OUTPUT_FILENAME_TEMPLATE):
