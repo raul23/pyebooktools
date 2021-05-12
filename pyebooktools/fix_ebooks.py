@@ -20,12 +20,19 @@ References
 from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.lib import (color_msg as c, check_input_data, fail_file,
-                              fix_file_for_corruption, get_parts_from_path as g,
-                              move_or_link_file, remove_file, unique_filename)
+from pyebooktools.lib import (GREEN, NC, color_msg as c, check_input_data,
+                              fail_file, fix_file_for_corruption,
+                              get_parts_from_path as g, move_or_link_file,
+                              remove_file, unique_filename)
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
+
+
+def fixed_file(old_path, new_path):
+    old_path = g(old_path)
+    new_path = g(new_path)
+    logger.info(f'{GREEN}FIXED{NC}:\t{old_path}\nIN:\t{new_path}\n')
 
 
 class FixEbooks:
@@ -45,8 +52,9 @@ class FixEbooks:
             logger.debug(f"File couldn't be fixed: {g(file_path)}"
                          f"\n{file_err}")
             if self.output_folder_corrupt:
-                new_path = unique_filename(self.output_folder_corrupt,
-                                           file_path.name)
+                new_path = unique_filename(
+                    Path(self.output_folder_corrupt).joinpath('not_fixed'),
+                    file_path.name)
                 move_or_link_file(file_path, new_path, self.dry_run,
                                   self.symlink_only)
                 # TODO: do we add the meta extension directly to new_path?
@@ -64,9 +72,24 @@ class FixEbooks:
                 logger.warning(f"{msg}")
         else:
             logger.debug('File was successfully fixed')
-            new_path = unique_filename(self.output_folder, file_path.name)
-            move_or_link_file(output_tmp_file, new_path, dry_run=False,
+            new_path_fixed = unique_filename(self.output_folder, file_path.name)
+            move_or_link_file(output_tmp_file, new_path_fixed, dry_run=False,
                               symlink_only=False)
+            fixed_file(file_path, new_path_fixed)
+            new_path_corrupted = unique_filename(
+                Path(self.output_folder_corrupt).joinpath('fixed'),
+                file_path.name)
+            move_or_link_file(file_path, new_path_corrupted, self.dry_run,
+                              self.symlink_only)
+            # TODO: do we add the meta extension directly to new_path?
+            # TODO: important, add next in a func in lib (other places)
+            new_metadata_path = f'{new_path_corrupted}.{self.output_metadata_extension}'
+            logger.debug(f'Saving original filename to {new_metadata_path}...')
+            if not self.dry_run:
+                metadata = f'Fixed file path:\t{new_path_fixed}\n' \
+                           f'Old file path:\t{file_path}'
+                with open(new_metadata_path, 'w') as f:
+                    f.write(metadata)
         if output_tmp_file and Path(output_tmp_file).exists():
             logger.debug(f'Removing temp file {output_tmp_file}...')
             remove_file(output_tmp_file)
