@@ -25,45 +25,16 @@ import time
 from pathlib import Path
 
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.lib import (BOLD, GREEN, NC, RED, check_file_for_corruption,
+from pyebooktools.lib import (check_file_for_corruption, fail_file,
                               fetch_metadata, find_isbns, get_ebook_metadata,
                               get_file_size, get_mime_type, get_pages_in_pdf,
-                              get_parts_from_path,
                               move_or_link_ebook_file_and_metadata,
-                              move_or_link_file, remove_file,
+                              move_or_link_file, remove_file, ok_file,
                               search_file_for_isbns, search_meta_val,
-                              unique_filename)
+                              skip_file, unique_filename)
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
-
-
-def fail_file(old_path, reason, new_path=None):
-    # More info about printing in terminal with color:
-    # https://stackoverflow.com/a/21786287
-    old_path = get_parts_from_path(old_path)
-    logger.info(f'{RED}ERR{NC}:\t {old_path}')
-    second_line = f'REASON:\t {reason}'
-    if new_path:
-        new_path = get_parts_from_path(new_path)
-        logger.info(second_line)
-        logger.info(f'TO:\t {new_path}\n')
-    else:
-        logger.info(second_line + '\n')
-
-
-def ok_file(old_path, new_path):
-    old_path = get_parts_from_path(old_path)
-    new_path = get_parts_from_path(new_path)
-    logger.info(f'{GREEN}OK{NC}:\t {old_path}\nTO:\t {new_path}\n')
-
-
-def skip_file(old_path, new_path):
-    # TODO: https://bit.ly/2rf38f5
-    old_path = get_parts_from_path(old_path)
-    new_path = get_parts_from_path(new_path)
-    logger.info(f'{BOLD}SKIP{NC}:\t {old_path}')
-    logger.info(f'REASON:\t {new_path}\n')
 
 
 # TODO: important, do the same for others
