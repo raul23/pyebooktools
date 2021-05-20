@@ -1116,6 +1116,8 @@ Starting from first priority tasks:
 
 7. Eventually add documentation on `Read the Docs`_
 
+8. Add cache support when converting files to txt
+
 Security and safety
 ===================
 Important security and safety tips from the `ebook-tools documentation`_:
