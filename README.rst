@@ -1116,7 +1116,7 @@ Starting from first priority tasks:
 
 7. Eventually add documentation on `Read the Docs`_
 
-8. Add cache support when converting files to txt
+8. Add `cache`_ support when converting files to txt
 
    **Status:** working on it since it is needed for my other project
    `search-ebooks`_ which makes heavy use of ``ebooktools``
@@ -1188,6 +1188,7 @@ References
 .. URLs
 .. _1: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _2: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
+.. _cache: https://github.com/grantjenks/python-diskcache
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
