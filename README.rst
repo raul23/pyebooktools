@@ -1118,6 +1118,9 @@ Starting from first priority tasks:
 
 8. Add cache support when converting files to txt
 
+   **Status:** working on it since it is needed for my other project
+   `search-ebooks`_ which makes heavy use of ``ebooktools``
+
 Security and safety
 ===================
 Important security and safety tips from the `ebook-tools documentation`_:
@@ -1205,6 +1208,7 @@ References
 .. _poppler: https://poppler.freedesktop.org/
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
+.. _search-ebooks: https://github.com/raul23/search-ebooks/blob/main/searchebooks/scripts/search-ebooks
 .. _searches: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
