@@ -1208,7 +1208,7 @@ References
 .. _poppler: https://poppler.freedesktop.org/
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
-.. _search-ebooks: https://github.com/raul23/search-ebooks/blob/main/searchebooks/scripts/search-ebooks
+.. _search-ebooks: https://github.com/raul23/search-ebooks/blob/main/searchebooks/scripts/search-ebooks#L24
 .. _searches: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
