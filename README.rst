@@ -154,7 +154,7 @@ versions of:
     
     `:warning:`
     
-       On macOS, you don't need catdoc since `textutil`_ is already present
+       On macOS, you don't need ``catdoc`` since `textutil`_ is already present
     
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
