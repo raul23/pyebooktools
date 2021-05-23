@@ -151,6 +151,11 @@ versions of:
   * **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for
     faster than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files
     respectively to ``.txt``.
+    
+    `:warning:`
+    
+       On macOS, you don't need catdoc since `textutil`_ is already present
+    
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
 
@@ -1213,6 +1218,7 @@ References
 .. _searches: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
+.. textutil: https://ss64.com/osx/textutil.html
 .. _Travis CI: https://travis-ci.com/
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
