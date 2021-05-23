@@ -1,7 +1,3 @@
-============
-pyebooktools
-============
-
 .. raw:: html
 
   <p align="center">
