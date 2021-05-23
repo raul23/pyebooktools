@@ -10,6 +10,9 @@ written in Shell by `na--`_. The Python script `ebooktools.py`_ is a collection
 of tools for automated and semi-automated organization and management of large
 ebook collections.
 
+Check also my other project `search-ebooks`_ which is based on ``pyebooktools``
+to search through the content and metadata of ebooks.
+
 `:warning:`
 
   * For the moment, the ``ebooktools.py`` script is only tested on **macOS**.
