@@ -1118,7 +1118,7 @@ Starting from first priority tasks:
 8. Add `cache`_ support when converting files to txt
 
    **Status:** working on it since it is needed for my other project
-   `search-ebooks <https://github.com/raul23/search-ebooks/blob/main/searchebooks/scripts/search-ebooks#L24>`__ 
+   `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
    which makes heavy use of ``pyebooktools``
 
 Security and safety
