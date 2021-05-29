@@ -1078,6 +1078,8 @@ Roadmap
 =======
 Starting from first priority tasks:
 
+Short-term
+----------
 1. Port all `ebook-tools`_ shell scripts into Python
 
    - |ss| ``organize-ebooks.sh`` |se|: **done**, *see* `organize_ebooks.py`_
@@ -1089,7 +1091,13 @@ Starting from first priority tasks:
 
    **Status:** only ``interactive-organizer.sh`` remaining, will port later
 
-2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+2. Add `cache`_ support when converting files to txt
+
+   **Status:** working on it since it is needed for my other project
+   `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
+   which makes heavy use of ``pyebooktools``
+
+3. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
   
    * |ss| ``gs``: Ghostscript |se|; done, *see* `fix_file_for_corruption()`_
@@ -1106,25 +1114,21 @@ Starting from first priority tasks:
    
    **Status:** working on adding ``pdftocairo``
    
-3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
+4. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
    based on the `cpdf`_ utility
    
    **NOTE:** `pdftk`_ can also remove annotations 
 
-4. Test on linux
+Medium-term
+-----------
+1. Test on linux
 
-5. Create a `docker`_ image for this project
+2. Create a `docker`_ image for this project
 
-6. Add tests on `Travis CI`_
+3. Add tests on `Travis CI`_
 
-7. Eventually add documentation on `Read the Docs`_
-
-8. Add `cache`_ support when converting files to txt
-
-   **Status:** working on it since it is needed for my other project
-   `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
-   which makes heavy use of ``pyebooktools``
+4. Eventually add documentation on `Read the Docs`_
 
 Security and safety
 ===================
