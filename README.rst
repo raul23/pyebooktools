@@ -1,7 +1,3 @@
-=========================
-README [Work-In-Progress]
-=========================
-
 .. raw:: html
 
   <p align="center">
@@ -13,6 +9,9 @@ This project (**version 0.1.0a3**) is a Python port of `ebook-tools`_ which is
 written in Shell by `na--`_. The Python script `ebooktools.py`_ is a collection
 of tools for automated and semi-automated organization and management of large
 ebook collections.
+
+Check also my other project `search-ebooks`_ which is based on ``pyebooktools``
+to search through the content and metadata of ebooks.
 
 `:warning:`
 
@@ -152,6 +151,11 @@ versions of:
   * **Optionally** `poppler`_, `catdoc`_ and `DjVuLibre`_ can be installed for
     faster than calibre's conversion of ``.pdf``, ``.doc`` and ``.djvu`` files
     respectively to ``.txt``.
+    
+    `:warning:`
+    
+       On macOS, you don't need ``catdoc`` since `textutil`_ is already present
+    
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
 
@@ -1074,6 +1078,8 @@ Roadmap
 =======
 Starting from first priority tasks:
 
+Short-term
+----------
 1. Port all `ebook-tools`_ shell scripts into Python
 
    - |ss| ``organize-ebooks.sh`` |se|: **done**, *see* `organize_ebooks.py`_
@@ -1085,10 +1091,16 @@ Starting from first priority tasks:
 
    **Status:** only ``interactive-organizer.sh`` remaining, will port later
 
-2. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+2. Add `cache`_ support when converting files to txt
+
+   **Status:** working on it since it is needed for my other project
+   `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
+   which makes heavy use of ``pyebooktools``
+
+3. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
   
-   * |ss| ``gs``: Ghostscript |se|
+   * |ss| ``gs``: Ghostscript |se|; done, *see* `fix_file_for_corruption()`_
    * ``pdftocairo``: from Poppler
    * ``mutool``: it does not "print" the PDF file
    * ``cpdf``
@@ -1102,19 +1114,21 @@ Starting from first priority tasks:
    
    **Status:** working on adding ``pdftocairo``
    
-3. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
+4. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
-   based on the `cpdf`_ utility.
+   based on the `cpdf`_ utility
    
    **NOTE:** `pdftk`_ can also remove annotations 
 
-4. Test on linux
+Medium-term
+-----------
+1. Test on linux
 
-5. Create a `docker`_ image for this project
+2. Create a `docker`_ image for this project
 
-6. Add tests on `Travis CI`_
+3. Add tests on `Travis CI`_
 
-7. Eventually add documentation on `Read the Docs`_
+4. Eventually add documentation on `Read the Docs`_
 
 Security and safety
 ===================
@@ -1183,6 +1197,7 @@ References
 .. URLs
 .. _1: https://www.mobileread.com/forums/showthread.php?t=130638
 .. _2: https://github.com/na--/calibre-worldcat-xisbn-metadata-plugin
+.. _cache: https://github.com/grantjenks/python-diskcache
 .. _calibre: https://calibre-ebook.com/
 .. _catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
 .. _conda: https://docs.conda.io/en/latest/
@@ -1203,9 +1218,11 @@ References
 .. _poppler: https://poppler.freedesktop.org/
 .. _QubesOS: https://www.qubes-os.org/
 .. _Read the Docs: https://readthedocs.org/
+.. _search-ebooks: https://github.com/raul23/search-ebooks
 .. _searches: https://github.com/na--/ebook-tools#searching-for-isbns-in-files
 .. _shell scripts: https://github.com/na--/ebook-tools#script-usage-and-options
 .. _Tesseract: https://github.com/tesseract-ocr/tesseract
+.. _textutil: https://ss64.com/osx/textutil.html
 .. _Travis CI: https://travis-ci.com/
 .. _valid ISBNs: https://en.wikipedia.org/wiki/International_Standard_Book_Number#Check_digits
 .. _venv: https://docs.python.org/3/library/venv.html#module-venv
@@ -1218,6 +1235,7 @@ References
 .. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
 .. _examples.rst: ./examples.rst
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
+.. _fix_file_for_corruption(): https://github.com/raul23/pyebooktools/blob/1067ce48a250404bf6225d36dd3e1defd05f751b/pyebooktools/lib.py#L461
 .. _interactive_organizer.py: ./pyebooktools/interactive_organizer.py
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
