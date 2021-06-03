@@ -1096,7 +1096,15 @@ Short-term
    **Status:** working on it since it is needed for my other project
    `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
    which makes heavy use of `pyebooktools`_
+   
+3. Test on linux
+4. Create a `docker`_ image for this project
 
+Medium-term
+-----------
+1. Add tests on `Travis CI`_
+
+2. Eventually add documentation on `Read the Docs`_
 3. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
   
@@ -1112,23 +1120,11 @@ Short-term
    * ``qpdf``
    * ``jhove``
    
-   **Status:** working on adding ``pdftocairo``
-   
 4. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
    comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
    based on the `cpdf`_ utility
    
    **NOTE:** `pdftk`_ can also remove annotations 
-
-Medium-term
------------
-1. Test on linux
-
-2. Create a `docker`_ image for this project
-
-3. Add tests on `Travis CI`_
-
-4. Eventually add documentation on `Read the Docs`_
 
 Security and safety
 ===================
