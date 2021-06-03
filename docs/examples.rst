@@ -543,23 +543,23 @@ References
    
 .. URLs
 .. _all the options: ../README.rst#usage-options-and-configuration
-.. _--corruption-check-only: ./README.rst#specific-options-for-organizing-files
-.. _default_config.py: ./pyebooktools/configs/default_config.py
-.. _edit: ./README.rst#edit-options-main-log
-.. _isbn_blacklist_regex: ./README.rst#isbn-blacklist-regex-label
-.. _logging: ./pyebooktools/configs/default_logging.py
-.. _main: ./pyebooktools/configs/default_config.py
-.. _organize: ./README.rst#organize-options-folder_to_organize
-.. _output_filename_template: ./README.rst#options-related-to-the-input-and-output-files
-.. _output_folder: ./README.rst#organize-output-folder-label
-.. _output_folder_corrupt: ./README.rst#output-folder-corrupt-label
-.. _output_folder_pamphlets: ./README.rst#output-folder-pamphlets-label
-.. _output_folder_uncertain: ./README.rst#output-folder-uncertain-label
-.. _output folders: ./README.rst#input-and-output-options-for-organizing-files
-.. _--owi: ./README.rst#organize-without-isbn-label
-.. _pamphlet_max_filesize_kib: ./README.rst#pamphlet-max-filesize-kib-label
-.. _Security and safety: ./README.rst#security-and-safety
-.. _subcommands: ./README.rst#script-usage-subcommands-and-options
+.. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
+.. _default_config.py: ../pyebooktools/configs/default_config.py
+.. _edit: ../README.rst#edit-options-main-log
+.. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
+.. _logging: ../pyebooktools/configs/default_logging.py
+.. _main: ../pyebooktools/configs/default_config.py
+.. _organize: ../README.rst#organize-options-folder_to_organize
+.. _output_filename_template: ../README.rst#options-related-to-the-input-and-output-files
+.. _output_folder: ../README.rst#organize-output-folder-label
+.. _output_folder_corrupt: ../README.rst#output-folder-corrupt-label
+.. _output_folder_pamphlets: ../README.rst#output-folder-pamphlets-label
+.. _output_folder_uncertain: ../README.rst#output-folder-uncertain-label
+.. _output folders: ../README.rst#input-and-output-options-for-organizing-files
+.. _--owi: ../README.rst#organize-without-isbn-label
+.. _pamphlet_max_filesize_kib: ../README.rst#pamphlet-max-filesize-kib-label
+.. _Security and safety: ../README.rst#security-and-safety
+.. _subcommands: ../README.rst#script-usage-subcommands-and-options
 
 .. Local URLs
 .. _Check ebooks for corruption only: #check-ebooks-for-corruption-only
