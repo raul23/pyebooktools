@@ -1233,7 +1233,7 @@ References
 .. _default_config.py: ./pyebooktools/configs/default_config.py
 .. _default_logging.py: ./pyebooktools/configs/default_logging.py
 .. _ebooktools.py: ./pyebooktools/scripts/ebooktools.py
-.. _examples.rst: ./examples.rst
+.. _examples.rst: ./docs/examples.rst
 .. _find_isbns.py: ./pyebooktools/find_isbns.py
 .. _fix_file_for_corruption(): https://github.com/raul23/pyebooktools/blob/1067ce48a250404bf6225d36dd3e1defd05f751b/pyebooktools/lib.py#L461
 .. _interactive_organizer.py: ./pyebooktools/interactive_organizer.py
