@@ -109,7 +109,7 @@ Thus, you have access to various `subcommands`_ from within the
   * `ebooktools.py`_ is the name of the Python script which will always be
     referred that way in this document (i.e. no hyphen and ending with ``.py``)
     to distinguish from the original Shell project ``ebook-tools``.
-  * `pyeboooktools`_ is the name of the Python package that you need to
+  * `pyebooktools`_ is the name of the Python package that you need to
     `install <#install-pyebooktools>`__ to have access to the ``ebooktools.py``
     script.
 
