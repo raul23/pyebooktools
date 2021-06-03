@@ -542,7 +542,7 @@ References
 .. [OWI] https://github.com/raul23/pyebooktools#organize-without-isbn-label
    
 .. URLs
-.. _all the options: ./README.rst#usage-options-and-configuration
+.. _all the options: ../README.rst#usage-options-and-configuration
 .. _--corruption-check-only: ./README.rst#specific-options-for-organizing-files
 .. _default_config.py: ./pyebooktools/configs/default_config.py
 .. _edit: ./README.rst#edit-options-main-log
