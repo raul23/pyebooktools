@@ -179,7 +179,7 @@ versions of:
 
 Install ``pyebooktools``
 -------------------------
-To install the ``pyebooktools`` package:
+To install the `pyebooktools`_ package:
 
 1. It is highly recommended to install the ``pyebooktools`` package in a
    virtual environment using for example `venv`_ or `conda`_.
