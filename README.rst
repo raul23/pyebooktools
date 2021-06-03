@@ -11,7 +11,7 @@ of tools for automated and semi-automated organization and management of large
 ebook collections.
 
 Check also my other project `search-ebooks`_ which is based on ``pyebooktools``
-to search through the content and metadata of ebooks.
+for searching through the content and metadata of ebooks.
 
 `:warning:`
 
