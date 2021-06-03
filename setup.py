@@ -1,7 +1,6 @@
-"""setup.py file for the package ``pyebooktools``.
+"""setup.py file for the ``pyebooktools`` package.
 
-The PyPi project name is ``pyebooktools`` and the package name is
-``pyebooktools``.
+``pyebooktools`` is both the PyPi project name and package name.
 
 """
 import fnmatch
