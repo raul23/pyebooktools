@@ -1240,7 +1240,7 @@ References
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
-.. _pyebooktools.py: ./pyebooktools/pyebooktools
+.. _pyebooktools.py: ./pyebooktools
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/lib.py#L880
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
