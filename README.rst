@@ -1027,7 +1027,7 @@ system.
 
 Uninstall
 =========
-To uninstall the package ``pyebooktools``::
+To uninstall the `pyebooktools`_ package::
 
    $ pip uninstall pyebooktools
    
@@ -1095,7 +1095,7 @@ Short-term
 
    **Status:** working on it since it is needed for my other project
    `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
-   which makes heavy use of ``pyebooktools``
+   which makes heavy use of `pyebooktools`_
 
 3. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
    one of the following utilities:
