@@ -443,8 +443,8 @@ Content of ``output_folder_uncertain``:
   
   1. Use calibre's ``ebook-meta`` to extract the author and title metadata from
      the ebook file
-  2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by the 
-     extracted author & title and just by title
+  2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by
+     the extracted author & title and just by title
   3. If there is no useful metadata or nothing is found online, the script will
      try to use the filename for searching.
   
