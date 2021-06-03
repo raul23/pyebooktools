@@ -10,7 +10,7 @@ written in Shell by `na--`_. The Python script `ebooktools.py`_ is a collection
 of tools for automated and semi-automated organization and management of large
 ebook collections.
 
-Check also my other project `search-ebooks`_ which is based on `pyebooktools`_
+Check also my other project `search-ebooks`_ which is based on `this`_ project
 for searching through the content and metadata of ebooks.
 
 `:warning:`
@@ -1240,10 +1240,10 @@ References
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
-.. _pyebooktools: ./pyebooktools
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/lib.py#L880
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
+.. _this: ./pyebooktools
 
 .. URLs: local
 .. _all the ocr-related options: #options-for-ocr
