@@ -495,7 +495,7 @@ Content of ``output_folder``:
     ``metadata.opf`` files and the new filenames follow the
     `output_filename_template`_ format.
   * The ``metadata.opf`` files are copied with the ``meta`` extension
-    (`default <./README.rst#output-metadata-extension-label>`__) beside the
+    (`default`_) beside the
     symlinks to the book files.
 
 ``split`` examples
@@ -544,6 +544,7 @@ References
 .. URLs
 .. _all the options: ../README.rst#usage-options-and-configuration
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
+.. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
 .. _edit: ../README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
