@@ -109,7 +109,7 @@ Thus, you have access to various `subcommands`_ from within the
   * `ebooktools.py`_ is the name of the Python script which will always be
     referred that way in this document (i.e. no hyphen and ending with ``.py``)
     to distinguish from the original Shell project ``ebook-tools``.
-  * ``pyeboooktools`` is the name of the Python package that you need to
+  * `pyeboooktools`_ is the name of the Python package that you need to
     `install <#install-pyebooktools>`__ to have access to the ``ebooktools.py``
     script.
 
@@ -1240,6 +1240,7 @@ References
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
+.. _pyebooktools: ./pyebooktools
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/lib.py#L880
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
