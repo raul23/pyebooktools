@@ -1076,7 +1076,7 @@ Same `limitations`_ as for ``ebook-tools`` apply to this project too:
 
 Roadmap
 =======
-Starting from first priority tasks:
+Starting from first priority tasks
 
 Short-term
 ----------
