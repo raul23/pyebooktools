@@ -1093,7 +1093,7 @@ Short-term
 
 2. Add `cache`_ support when converting files to txt
 
-   **Status:** working on it since it is needed for my other project
+   **Status:** working on it since it is also needed for my other project
    `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
    which makes heavy use of `pyebooktools`_
    
