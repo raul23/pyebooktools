@@ -154,7 +154,10 @@ versions of:
     
     `:warning:`
     
-       On macOS, you don't need ``catdoc`` since `textutil`_ is already present
+       On macOS, `textutil`_ is the counterpart to linux's ``catdoc`` and is 
+       a **built-in** command-line tool for converting  any ``txt``, ``html``, 
+       ``rtf``, ``rtfd``, ``doc``, ``docx``, ``wordml``, ``odt``, or 
+       ``webarchive`` file.
     
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
