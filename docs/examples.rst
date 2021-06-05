@@ -562,6 +562,7 @@ References
 .. _ebook-meta: https://manual.calibre-ebook.com/generated/en/ebook-meta.html
 .. _ebooktools.py: ../README.rst#usage-options-and-configuration
 .. _edit: ../README.rst#edit-options-main-log
+.. _folder_to_organize: ..README.rst#input-and-output-options-for-organizing-files
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
 .. _logging: ../pyebooktools/configs/default_logging.py
 .. _main: ../pyebooktools/configs/default_config.py
