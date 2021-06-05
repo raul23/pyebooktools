@@ -270,7 +270,8 @@ Content of ``output_folder``:
 `:information_source:`
 
   Since the `--owi`_ flag was not used, two ebook files that didn't contain
-  ISBNs could not be further processed. See `Organize ebooks with 
+  ISBNs could not be further processed and thus were left as they are in the 
+  original directory ``folder_to_organize``. See `Organize ebooks with 
   output_folder_uncertain`_ where this flag is enabled to organize 
   ebooks without ISBNs by getting these book identifiers through other 
   means (e.g. *calibre*\'s `ebook-meta`_).
