@@ -340,7 +340,7 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_pamphlets/ 
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofp ~/output_folder_pamphlets/ 
 
 where 
 
