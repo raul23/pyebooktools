@@ -546,6 +546,7 @@ References
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
+.. _ebooktools.py: ../pyebooktools/README.rst#usage-options-and-configuration
 .. _edit: ../README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
 .. _logging: ../pyebooktools/configs/default_logging.py
