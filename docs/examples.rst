@@ -441,7 +441,7 @@ Content of ``output_folder_uncertain``:
   For those ebooks for which no ISBNs could be found in them, the
   ``ebooktools.py`` script takes the following steps to organize them:
   
-  1. Use calibre's ``ebook-meta`` to extract the author and title metadata from
+  1. Use *calibre*\'s `ebook-meta`_ to extract the author and title metadata from
      the ebook file
   2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by
      the extracted author & title and just by title
