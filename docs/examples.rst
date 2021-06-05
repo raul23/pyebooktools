@@ -94,7 +94,7 @@ A tab with the main config file will be opened in PyCharm's Editor window:
 
 Reset the main config file
 --------------------------
-To reset the **main** config file with factory settings as defined in the
+To reset the **main** config file with factory settings as defined in
 `default_config.py`_:
 
 .. code-block:: terminal
