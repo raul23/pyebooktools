@@ -248,6 +248,12 @@ This is the command to organize these ebooks:
 .. code-block:: terminal
 
    $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder
+   
+where 
+
+- `folder_to_organize`_ contains the ebooks that need to be organized
+- `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
+  found in it
 
 **Output:**
 
