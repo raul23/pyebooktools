@@ -266,6 +266,14 @@ Content of ``output_folder``:
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
+   
+`:information_source:`
+
+  Since the `--owi`_ flag was not used, two ebook files that didn't contain
+  ISBNs could not be further processed. See `Organize ebooks with 
+  output_folder_uncertain`_ where this flag is enabled to organize 
+  ebooks without ISBNs by getting these book identifiers through other 
+  means (e.g. *calibre*\'s `ebook-meta`_).
 
 Organize ebooks with ``output_folder_corrupt``
 ----------------------------------------------
