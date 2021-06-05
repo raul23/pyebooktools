@@ -282,7 +282,7 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_corrupt/ 
+   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofc ~/output_folder_corrupt/ 
 
 where 
 
