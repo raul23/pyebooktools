@@ -72,7 +72,7 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 =================
 The two config files that can be edited are the `main`_ and `logging`_ config
 files. We will only focus in the main config file because it is the most
-important one since it contains `all the options`_ for the `ebooktools.py`_
+important one since it contains `all the options`_ for the ``ebooktools.py``
 script.
 
 Edit the main config file
@@ -546,7 +546,6 @@ References
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
-.. _ebooktools.py: ../README.rst#usage-options-and-configuration
 .. _edit: ../README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
 .. _logging: ../pyebooktools/configs/default_logging.py
