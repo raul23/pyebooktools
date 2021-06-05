@@ -2,7 +2,7 @@
 EXAMPLES
 ========
 Examples to show how to execute the different `subcommands`_
-from the ``ebooktools.py`` script.
+from the `ebooktools.py`_ script.
 
 `:star:`
 
@@ -546,6 +546,7 @@ References
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
+.. _ebooktools.py: ../README.rst#usage-options-and-configuration
 .. _edit: ../README.rst#edit-options-main-log
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
 .. _logging: ../pyebooktools/configs/default_logging.py
