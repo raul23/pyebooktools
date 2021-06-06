@@ -40,7 +40,7 @@ Convert a pdf file to text **with** OCR
 
    $ ebooktools convert --ocr always pdf_to_convert.pdf -o converted.txt
    
-By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
+By setting `--ocr`_ to ``always``, the pdf file will be first OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's
 ``ebook-convert`` if the former command is not found).
 
@@ -570,6 +570,7 @@ References
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
 .. _logging: ../pyebooktools/configs/default_logging.py
 .. _main: ../pyebooktools/configs/default_config.py
+.. _--ocr: ../README.rst#options-for-ocr
 .. _organize: ../README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ../README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ../README.rst#organize-output-folder-label
