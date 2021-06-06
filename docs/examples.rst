@@ -44,6 +44,8 @@ By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's
 ``ebook-convert`` if the former command is not found).
 
+**Output:**
+
 .. code-block:: terminal
 
    Running pyebooktools v0.1.0a3
@@ -60,6 +62,8 @@ Convert a pdf file to text **without** OCR
     
 If ``pdftotext`` is present, it is used to convert the pdf file to text.
 Otherwise, calibre's ``ebook-convert`` is used for the conversion.
+
+**Output:**
 
 .. code-block:: terminal
 
