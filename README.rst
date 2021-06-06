@@ -1075,6 +1075,31 @@ Same `limitations`_ as for ``ebook-tools`` apply to this project too:
     best results, install the plugins (`1`_, `2`_) for them in calibre and
     fine-tune the settings for metadata sources in the calibre GUI.
 
+Security and safety
+===================
+Important security and safety tips from the `ebook-tools documentation`_:
+
+  Please keep in mind that this is beta-quality software. To avoid data loss,
+  make sure that you have a backup of any files you want to organize. You may
+  also want to run the scripts with the `--dry-run`_ or `--symlink-only`_
+  option the first time to make sure that they would do what you expect them to
+  do.
+  
+  Also keep in mind that these shell scripts parse and extract complex
+  arbitrary media and archive files and pass them to other external programs
+  written in memory-unsafe languages. This is not very safe and
+  specially-crafted malicious ebook files can probably compromise your system
+  when you use these scripts. If you are cautious and want to organize
+  untrusted or unknown ebook files, use something like `QubesOS`_ or at least
+  do it in a separate VM/jail/container/etc.
+
+**NOTE:** ``--dry-run`` and ``--symlink-only`` can be applied to the following
+subcommands:
+
+* `interact`_
+* `organize`_
+* `rename`_
+* `split`_: only ``--dry-run`` is applicable
 
 Roadmap
 =======
@@ -1127,32 +1152,6 @@ Medium-term
    based on the `cpdf`_ utility
    
    **NOTE:** `pdftk`_ can also remove annotations 
-
-Security and safety
-===================
-Important security and safety tips from the `ebook-tools documentation`_:
-
-  Please keep in mind that this is beta-quality software. To avoid data loss,
-  make sure that you have a backup of any files you want to organize. You may
-  also want to run the scripts with the `--dry-run`_ or `--symlink-only`_
-  option the first time to make sure that they would do what you expect them to
-  do.
-  
-  Also keep in mind that these shell scripts parse and extract complex
-  arbitrary media and archive files and pass them to other external programs
-  written in memory-unsafe languages. This is not very safe and
-  specially-crafted malicious ebook files can probably compromise your system
-  when you use these scripts. If you are cautious and want to organize
-  untrusted or unknown ebook files, use something like `QubesOS`_ or at least
-  do it in a separate VM/jail/container/etc.
-
-**NOTE:** ``--dry-run`` and ``--symlink-only`` can be applied to the following
-subcommands:
-
-* `interact`_
-* `organize`_
-* `rename`_
-* `split`_: only ``--dry-run`` is applicable
 
 Credits
 =======
