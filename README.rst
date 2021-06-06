@@ -1158,7 +1158,7 @@ Credits
 * Special thanks to `na--`_, the developer of `ebook-tools`_, for having made
   these very useful tools. I learned a lot (specially ``bash``) while porting
   them to Python.
-* Thanks to all the developers of the different programs used by the project
+* Thanks to all the developers of the different programs used by this project
   such as ``calibre``, ``Tesseract``, text converters (``djvutxt`` and
   ``pdftotext``) and many other utilities!
 
