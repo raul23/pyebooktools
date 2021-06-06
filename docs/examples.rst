@@ -132,7 +132,7 @@ The input string can be enclosed within single or double quotes.
 The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
 they are matched with the regular expression `isbn_blacklist_regex`_.
 
-By `default <./README.rst#specific-options-for-finding-isbns>`__, the extracted 
+By `default <../README.rst#specific-options-for-finding-isbns>`__, the extracted 
 ISBNs are separated by newlines, ``\n``.
 
 `:information_source:`
