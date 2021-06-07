@@ -89,7 +89,7 @@ To edit the **main** config file with **PyCharm**:
 
 |
 
-A tab with the main config file will be opened in PyCharm's Editor window:
+A tab with the main config file will be opened in **PyCharm**\'s Editor window:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
