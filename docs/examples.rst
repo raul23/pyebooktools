@@ -8,7 +8,7 @@ from the `ebooktools.py`_ script.
 
   Sometimes, it might be more convenient to edit the configuration file
   ``config.py`` instead of building a long command in the terminal with all the
-  options for a given subcommand (e.g. ``organize``).
+  options for a given subcommand (e.g. ``convert``).
 
   Run the following command to edit this configuration file:
  
