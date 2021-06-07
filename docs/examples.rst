@@ -11,8 +11,7 @@ from the `ebooktools.py`_ script.
   options for a given subcommand (e.g. ``organize``).
 
   Run the following command to edit this configuration file:
-  
-  
+ 
   .. code-block:: terminal
 
      $ ebooktools edit main
@@ -21,9 +20,14 @@ from the `ebooktools.py`_ script.
   associated with this type of file and then you can modify the right
   configuration variables for the given subcommand.
   
-  You can then run the given subcommand and all the updated options in the
-  configuration file will be used. However, command-line parameters supersede
-  variables defined in the configuration file.
+  You can then run the given subcommand with the ``-u`` flag and all the 
+  updated options in the configuration file will be used:
+  
+  .. code-block:: terminal
+
+     $ ebooktools convert -u
+     
+  where ``convert`` can also be any of the other supported `subcommands`_.
    
   See `edit`_ for more info about this subcommand.
 
