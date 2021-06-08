@@ -275,8 +275,8 @@ where
 `:information_source:`
 
   `Organize ebooks with output_folder_corrupt`_ shows you how to organize
-  your ebooks by separating the corrupted from the good ebooks by providing
-  the paths to folders that will receive these types of ebooks.
+  your ebooks by separating the corrupted ebooks from the good ones by 
+  providing the paths to folders that will receive these types of ebooks.
 
 Organize ebooks with only ``output_folder``
 -------------------------------------------
