@@ -626,6 +626,7 @@ References
 .. _all the options: ../README.rst#usage-options-and-configuration
 .. _--cco: ../README.rst#specific-options-for-organizing-files
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
+.. _--owi: ../README.rst#organize-without-isbn-label
 .. _--sl: ../README.rst#symlink-only-label
 .. _--sm opfcopy: ../README.rst#specific-options-for-renaming-files
 .. _default: ../README.rst#output-metadata-extension-label
@@ -645,7 +646,7 @@ References
 .. _output_folder_pamphlets: ../README.rst#output-folder-pamphlets-label
 .. _output_folder_uncertain: ../README.rst#output-folder-uncertain-label
 .. _output folders: ../README.rst#input-and-output-options-for-organizing-files
-.. _--owi: ../README.rst#organize-without-isbn-label
+.. _output_metadata_extension: ../README.rst#output-metadata-extension-label
 .. _pamphlet_max_filesize_kib: ../README.rst#pamphlet-max-filesize-kib-label
 .. _Security and safety: ../README.rst#security-and-safety
 .. _subcommands: ../README.rst#script-usage-subcommands-and-options
