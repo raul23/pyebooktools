@@ -536,7 +536,13 @@ This is the command to rename these ebooks as wanted:
 .. code-block:: terminal
 
    $ ebooktools rename --sm opfcopy --sl ~/calibre_folder/ -o ~/output_folder/
-   
+
+where 
+
+- `--sm opfcopy`_ copies calibre's ``metadata.opf`` next to each renamed file with 
+  a `output_metadata_extension`_ extension  
+- `--sl`_
+
 **Output:**
 
 .. code-block:: terminal
@@ -620,6 +626,8 @@ References
 .. _all the options: ../README.rst#usage-options-and-configuration
 .. _--cco: ../README.rst#specific-options-for-organizing-files
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
+.. _--sl: ../README.rst#symlink-only-label
+.. _--sm opfcopy: ../README.rst#specific-options-for-renaming-files
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
 .. _ebook-meta: https://manual.calibre-ebook.com/generated/en/ebook-meta.html
