@@ -238,7 +238,36 @@ cases:
 
 Check ebooks for corruption only
 --------------------------------
-**TODO**
+We only want to check the following ebook files for corruption (e.g. 
+zero-filled files, broken pdfs, corrupt archive, etc.):
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to check these ebooks for corruption only:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --cco  ~/folder_to_organize/
+   
+where 
+
+- `--cco`_ is the short name for ``corruption-check-only`` and is the 
+  flag to check ebooks for corruption only without organizing them.
+- `folder_to_organize`_ contains the ebooks that need to be organized
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
 
 Organize ebooks with only ``output_folder``
 -------------------------------------------
