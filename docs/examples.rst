@@ -10,7 +10,7 @@ from the `ebooktools.py`_ script.
   ``config.py`` instead of building a long command in the terminal with all the
   options for a given subcommand (e.g. ``convert``).
 
-  Run the following command to edit this configuration file:
+  Run the following `edit`_ subcommand to edit this configuration file:
  
   .. code-block:: terminal
 
@@ -222,8 +222,7 @@ cases:
   `organize`_ subcommand.
   
   Or better you can also do it through the config file ``config.py`` by running
-  the following command:
-  
+  the following `edit`_ subcommand:
   
   .. code-block:: terminal
 
@@ -233,8 +232,12 @@ cases:
   associated with this type of file and then you can modify the right
   configuration variables.
   
-  Then run the ``organize`` subcommand and the updated options in the
-  configuration file will be used.
+  Then run the ``organize`` subcommand with the ``-u`` flag and the updated 
+  options in the configuration file will be used:
+  
+  .. code-block:: terminal
+
+     $ ebooktools organize -u
    
   See `edit`_ for more info about this subcommand.
 
