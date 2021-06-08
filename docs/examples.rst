@@ -519,8 +519,8 @@ Content of ``output_folder_uncertain``:
 
 Rename ebook files from a calibre library folder
 ------------------------------------------------
-Rename ebook files from a calibre library folder and save their symlinks along
-with their copied ``metadata.opf`` files in a separate folder.
+We want to rename ebook files from a calibre library folder and save their 
+symlinks along with their copied ``metadata.opf`` files in a separate folder.
 
 Content of ``calibre_folder``:
 
