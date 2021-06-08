@@ -417,7 +417,7 @@ where
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_pamphlets`_ will contain all the pamphlets-like documents
-- `--owi`_ is a flag to enable the organization of ebooks without ISBNs such as
+- `--owi`_ is a flag to enable the organization of documents without ISBNs such as
   pamphlets
 
 **Output:**
