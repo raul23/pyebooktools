@@ -902,6 +902,8 @@ Input and output options for renaming files
   `--symlink-only`_ flag is enabled) to the ouput folder along with their
   corresponding metadata.
 
+.. _rename-output-folder-label:  
+
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working directory** (check
   with ``pwd``)
