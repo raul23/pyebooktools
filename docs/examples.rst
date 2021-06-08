@@ -211,7 +211,7 @@ cases:
 
 `:star:`
 
-  You can use ``organize`` to check ebooks for corruption without
+  You can use `organize`_ to check ebooks for corruption without
   organizing them by using the `--corruption-check-only`_ flag. See the
   `Check ebooks for corruption only`_ example for more details.
 
