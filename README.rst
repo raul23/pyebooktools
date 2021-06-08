@@ -602,13 +602,13 @@ Specific options for editing config files
   given, then the default application for opening this type of file will be 
   used.
 
-* ``-r``, ``--reset``; no config variable; default value ``False``
+* ``-r``, ``--reset``; config variable ``reset``; default value ``False``
 
   Reset a configuration file (``main`` or ``log``) with factory default values.
 
 Input option for editing config files
 """""""""""""""""""""""""""""""""""""
-* ``{main,log}``; no config variable; **required**
+* ``{main,log}``; config variable ``cfg_type``; **required**
   
   The config file to edit which can either be the main configuration file
   (``main``) or the logging configuration file (``log``).
@@ -636,7 +636,7 @@ especially the `OCR ones`_.
 
 Input and output options for converting files
 """""""""""""""""""""""""""""""""""""""""""""
-* ``input_file``; no config variable; **required**
+* ``input_file``; config variable ``input_file``; **required**
   
   The input file to be converted to a text file.
   
@@ -685,7 +685,7 @@ The only subcommand-specific option is:
 
 Input option for finding ISBNs
 """"""""""""""""""""""""""""""
-* ``input_data``; no config variable; **required**
+* ``input_data``; config variable ``input_data``; **required**
 
   Can either be the path to a file or a string. The input will be searched for
   ISBNs.
@@ -807,7 +807,7 @@ Specific options for organizing files
 
 Input and output options for organizing files
 """""""""""""""""""""""""""""""""""""""""""""
-* ``folder_to_organize``; no config variable; **required**
+* ``folder_to_organize``; config variable ``folder_to_organize``; **required**
 
   Folder containing the ebook files that need to be organized.
   
@@ -895,7 +895,7 @@ Specific options for renaming files
 
 Input and output options for renaming files
 """""""""""""""""""""""""""""""""""""""""""
-* ``calibre_folder``; no config variable; **required**
+* ``calibre_folder``; config variable ``calibre_folder``; **required**
   
   Calibre library folder which will be traversed and all the book files in it
   will be renamed. The renamed files will be either moved or symlinked (if the
@@ -959,7 +959,7 @@ Specific options for splitting files
   
 Input and output options for splitting files
 """"""""""""""""""""""""""""""""""""""""""""
-* ``input_file``; no config variable; **required**
+* ``input_file``; config variable ``input_file``; **required**
   
   Folder with books which will be recursively scanned for files.
 
