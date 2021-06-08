@@ -399,6 +399,13 @@ We want to organize the following ebook files, some of which are pamphlets:
 
 |
 
+`:information_source:`
+
+  If no ISBN was found for a non-pdf file and the file size is less than
+  `pamphlet_max_filesize_kib`_, then it is considered as a pamphlet.
+
+|
+
 This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
@@ -410,7 +417,8 @@ where
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_pamphlets`_ will contain all the pamphlets-like documents
-- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs such as
+  pamphlets
 
 **Output:**
 
@@ -437,13 +445,6 @@ Content of ``output_folder_pamphlets``:
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder_pamphlets/content_folder_pamphlets.png
    :align: left
    :alt: Example: content of ``output_folder_pamphlets``
-
-|
-
-`:information_source:`
-
-  If no ISBN was found for a non-pdf file and the file size is less than
-  `pamphlet_max_filesize_kib`_, then it is considered as a pamphlet.
 
 Organize ebooks with ``output_folder_uncertain``
 ------------------------------------------------
