@@ -520,7 +520,18 @@ Content of ``output_folder_uncertain``:
 Rename ebook files from a calibre library folder
 ------------------------------------------------
 Rename ebook files from a calibre library folder and save their symlinks along
-with their copied ``metadata.opf`` files in a separate folder:
+with their copied ``metadata.opf`` files in a separate folder.
+
+**Content of ``calibre_folder``:**
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_calibre_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_calibre_folder.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to rename these ebooks as wanted:
 
 .. code-block:: terminal
 
