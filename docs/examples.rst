@@ -535,16 +535,16 @@ This is the command to rename these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools rename --sm opfcopy --sl ~/calibre_folder/ -o ~/output_folder/
+   $ ebooktools rename ~/calibre_folder/ -o ~/output_folder/ --sm opfcopy --sl
 
 where 
 
+- `output_folder <../README.rst#rename-output-folder-label>`__ is where the renamed 
+  books (or their symbolic links) will be moved to along with their metadata files
 - `--sm opfcopy`_ copies calibre's ``metadata.opf`` next to each renamed file with 
   a `output_metadata_extension`_ extension  
 - `--sl`_ is a flag for creating symbolic links to ebooks, instead of moving them 
   to the ``output_folder``
-- `output_folder <../README.rst#rename-output-folder-label>`__ is where the renamed 
-  books (or their symbolic links) will be moved to along with their metadata files
 
 **Output:**
 
