@@ -209,6 +209,12 @@ cases:
 - `Organize ebooks with output_folder_uncertain`_: organize ebooks that
   don't have any ISBN in them.
 
+`:star:`
+
+  You can use ``organize`` to check ebooks for corruption without
+  organizing them by using the `--corruption-check-only`_ flag. See the
+  `Check ebooks for corruption only`_ example for more details.
+
 `:information_source:`
 
   You can also combine all these cases by using all of the `output folders`_
@@ -231,12 +237,6 @@ cases:
   configuration file will be used.
    
   See `edit`_ for more info about this subcommand.
-
-`:star:`
-
-  You can use ``organize`` to check ebooks for corruption without
-  organizing them by using the `--corruption-check-only`_ flag. See the
-  `Check ebooks for corruption only`_ example for more details.
 
 Check ebooks for corruption only
 --------------------------------
