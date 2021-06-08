@@ -198,10 +198,6 @@ sequence that is part of a problem in a book about digital system.
 
 ``organize`` examples
 =====================
-You can use ``organize`` to check ebooks for corruption without
-organizing them by using the `--corruption-check-only`_ flag. See the
-`Check ebooks for corruption only`_ example for more details.
-
 The following examples show how to organize ebooks depending on different 
 cases:
 
@@ -235,6 +231,12 @@ cases:
   configuration file will be used.
    
   See `edit`_ for more info about this subcommand.
+
+`:star:`
+
+  You can use ``organize`` to check ebooks for corruption without
+  organizing them by using the `--corruption-check-only`_ flag. See the
+  `Check ebooks for corruption only`_ example for more details.
 
 Check ebooks for corruption only
 --------------------------------
