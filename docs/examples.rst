@@ -544,7 +544,7 @@ where
 - `--sl`_ is a flag for creating symbolic links to ebooks, instead of moving them 
   to the ``output_folder``
 - `output_folder <../README.rst#rename-output-folder-label>`__ is where the renamed 
-  books will be moved to along with their metadata files
+  books (or their symbolic links) will be moved to along with their metadata files
 
 **Output:**
 
