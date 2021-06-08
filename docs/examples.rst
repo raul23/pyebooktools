@@ -517,9 +517,9 @@ Content of ``output_folder_uncertain``:
 ``rename`` examples
 ===================
 
-Rename book files from a calibre library folder
------------------------------------------------
-Rename book files from a calibre library folder and save their symlinks along
+Rename ebook files from a calibre library folder
+------------------------------------------------
+Rename ebook files from a calibre library folder and save their symlinks along
 with their copied ``metadata.opf`` files in a separate folder:
 
 .. code-block:: terminal
@@ -555,12 +555,12 @@ Content of ``output_folder``:
 
 `:information_source:`
 
-  * The book files are renamed based on the content of their associated
+  * The ebook files are renamed based on the content of their associated
     ``metadata.opf`` files and the new filenames follow the
     `output_filename_template`_ format.
   * The ``metadata.opf`` files are copied with the ``meta`` extension
     (`default`_) beside the
-    symlinks to the book files.
+    symlinks to the ebook files.
 
 ``split`` examples
 ==================
