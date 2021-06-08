@@ -541,7 +541,10 @@ where
 
 - `--sm opfcopy`_ copies calibre's ``metadata.opf`` next to each renamed file with 
   a `output_metadata_extension`_ extension  
-- `--sl`_
+- `--sl`_ is a flag for creating symbolic links to ebooks, instead of moving them 
+  to the ``output_folder``
+- `output_folder <../README.rst#rename-output-folder-label>`_ is where the renamed 
+  books will be moved to along with their metadata files
 
 **Output:**
 
