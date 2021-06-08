@@ -257,7 +257,7 @@ This is the command to check these ebooks for corruption only:
 where 
 
 - `--cco`_ is the short name for ``corruption-check-only`` and is the 
-  flag to check ebooks for corruption only without organizing them.
+  flag to check ebooks for corruption only without organizing them
 - `folder_to_organize`_ contains the ebooks that need to be organized
 
 **Output:**
@@ -593,6 +593,7 @@ References
    
 .. URLs
 .. _all the options: ../README.rst#usage-options-and-configuration
+.. _--cco: ../README.rst#specific-options-for-organizing-files
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
