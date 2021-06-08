@@ -304,6 +304,12 @@ where
    :align: left
    :alt: Example: output terminal
 
+`:information_source:`
+
+  `Organize ebooks with output_folder_corrupt`_ shows you how to organize
+  your ebooks by separating the corrupted from the good ebooks by providing
+  the paths to folders that will receive these types of ebooks.
+
 |
 
 Content of ``output_folder``:
