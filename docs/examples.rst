@@ -296,7 +296,7 @@ This is the command to organize these ebooks:
 
 .. code-block:: terminal
 
-   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/
    
 where 
 
@@ -346,7 +346,7 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder --ofc ~/output_folder_corrupt/ 
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofc ~/output_folder_corrupt/ 
 
 where 
 
@@ -403,13 +403,14 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder --ofp ~/output_folder_pamphlets/ 
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofp ~/output_folder_pamphlets/ --owi
 
 where 
 
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_pamphlets`_ will contain all the pamphlets-like documents
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 
 **Output:**
 
@@ -460,15 +461,15 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofu ~/output_folder_uncertain/ --owi
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_uncertain`_ will contain all the *renamed* ebooks for which no
   ISBNs could be found in them
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 
 **Output:**
 
