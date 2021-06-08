@@ -254,7 +254,7 @@ This is the command to check these ebooks for corruption only:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --cco  ~/folder_to_organize/
+   $ ebooktools organize --cco ~/folder_to_organize/
    
 where 
 
