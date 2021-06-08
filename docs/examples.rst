@@ -258,7 +258,8 @@ where
 
 - `--cco`_ is the short name for the ``corruption-check-only`` flag and 
   checks ebooks for corruption only without organizing them
-- `folder_to_organize`_ contains the ebooks that need to be organized
+- `folder_to_organize`_ contains the ebooks that need to be organized or 
+  checked (in our case)
 
 **Output:**
 
