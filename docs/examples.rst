@@ -642,10 +642,12 @@ References
 .. URLs
 .. _--cco: ../README.rst#specific-options-for-organizing-files
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
+.. _--dry-run: ../README.rst#dry-run-label
 .. _--fpf: ../README.rst#files-per-folder-label
 .. _--owi: ../README.rst#organize-without-isbn-label
 .. _--sl: ../README.rst#symlink-only-label
 .. _--sm opfcopy: ../README.rst#specific-options-for-renaming-files
+.. _--symlink-only: ../README.rst#symlink-only-label
 .. _-s: ../README.rst#specific-options-for-splitting-files
 .. _all the options: ../README.rst#usage-options-and-configuration
 .. _default: ../README.rst#output-metadata-extension-label
