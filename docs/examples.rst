@@ -42,8 +42,9 @@ The ``config.py`` file will be opened by the default source code editor
 associated with this type of file and then you can modify the right
 configuration variables for the given subcommand.
 
-You can then run the given subcommand with the ``-u`` flag and all the 
-updated options in the configuration file will be used:
+You can then run the given subcommand with the `-u`_ flag (short name
+for the ``use-config`` option) and all the updated options in the 
+configuration file will be used:
 
 .. code-block:: terminal
 
@@ -653,11 +654,13 @@ References
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
 .. _--dry-run: ../README.rst#dry-run-label
 .. _--fpf: ../README.rst#files-per-folder-label
+.. _--ocr: ../README.rst#options-for-ocr
 .. _--owi: ../README.rst#organize-without-isbn-label
 .. _--sl: ../README.rst#symlink-only-label
 .. _--sm opfcopy: ../README.rst#specific-options-for-renaming-files
 .. _--symlink-only: ../README.rst#symlink-only-label
 .. _-s: ../README.rst#specific-options-for-splitting-files
+.. _-u: ../README.rst#use-config-label
 .. _all the options: ../README.rst#usage-options-and-configuration
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
@@ -668,7 +671,6 @@ References
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
 .. _logging: ../pyebooktools/configs/default_logging.py
 .. _main: ../pyebooktools/configs/default_config.py
-.. _--ocr: ../README.rst#options-for-ocr
 .. _organize: ../README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ../README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ../README.rst#organize-output-folder-label
