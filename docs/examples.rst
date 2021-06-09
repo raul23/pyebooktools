@@ -4,37 +4,39 @@ EXAMPLES
 Examples to show how to execute the different `subcommands`_
 from the `ebooktools.py`_ script.
 
-`:star:`
-
-  Sometimes, it might be more convenient to edit the configuration file
-  ``config.py`` instead of building a long command in the terminal with all the
-  options for a given subcommand (e.g. ``convert``).
-
-  Run the following `edit`_ subcommand to edit this configuration file:
- 
-  .. code-block:: terminal
-
-     $ ebooktools edit main
-     
-  The ``config.py`` file will be opened by the default source code editor
-  associated with this type of file and then you can modify the right
-  configuration variables for the given subcommand.
-  
-  You can then run the given subcommand with the ``-u`` flag and all the 
-  updated options in the configuration file will be used:
-  
-  .. code-block:: terminal
-
-     $ ebooktools convert -u
-     
-  where ``convert`` can also be any of the other supported `subcommands`_.
-   
-  See `edit`_ for more info about this subcommand.
+Check also some important `tips`_ about using the ``ebooktools.py`` script.
 
 .. contents:: **Contents**
    :depth: 2
    :local:
    :backlinks: top
+   
+Tips
+====
+Sometimes, it might be more convenient to edit the configuration file
+``config.py`` instead of building a long command in the terminal with all the
+options for a given subcommand (e.g. ``convert``).
+
+Run the following `edit`_ subcommand to edit this configuration file:
+
+  .. code-block:: terminal
+
+     $ ebooktools edit main
+
+The ``config.py`` file will be opened by the default source code editor
+associated with this type of file and then you can modify the right
+configuration variables for the given subcommand.
+
+You can then run the given subcommand with the ``-u`` flag and all the 
+updated options in the configuration file will be used:
+
+  .. code-block:: terminal
+
+     $ ebooktools convert -u
+
+where ``convert`` can also be any of the other supported `subcommands`_.
+
+See `edit`_ for more info about this subcommand.
 
 ``convert`` examples
 ====================
@@ -672,3 +674,4 @@ References
 .. _Organize ebooks with output_folder_corrupt: #organize-ebooks-with-output-folder-corrupt
 .. _Organize ebooks with output_folder_pamphlets: #organize-ebooks-with-output-folder-pamphlets
 .. _Organize ebooks with output_folder_uncertain: #organize-ebooks-with-output-folder-uncertain
+.. _tips: #tips
