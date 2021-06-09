@@ -19,13 +19,26 @@ In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_
 option to test that a given subcommand would do what you expect it to do, 
 as explained in the `Security and safety`_ section.
 
+When `--dry-run`_ is enabled, no file rename/move/symlink/etc. operations 
+will actually be executed.
+
+When `--symlink-only`_ is enabled, symbolic links to ebook files are created
+instead of moving them.
+
+`:star:`
+
+  You will be able to know what the ``ebooktools.py``
+  script would have done by looking at the messages printed out in the 
+  terminal. Use the `--log-level debug`_ flag to get more information about
+  what is the ``ebooktools.py`` is actually performing as operations.
+
 Avoid long command lines with ``use-config``
 --------------------------------------------
 Sometimes, it might be more convenient to edit the main configuration file
 `config.py`_ instead of building a long command in the terminal with all the
 options for a given subcommand (e.g. ``organize``).
 
-For example, you might have the following long subcommand:
+For example, you might have the following long command in the terminal:
 
 .. code-block:: terminal
 
@@ -654,6 +667,7 @@ References
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
 .. _--dry-run: ../README.rst#dry-run-label
 .. _--fpf: ../README.rst#files-per-folder-label
+.. _--log-level debug: ../README.rst#miscellaneous-options
 .. _--ocr: ../README.rst#options-for-ocr
 .. _--owi: ../README.rst#organize-without-isbn-label
 .. _--sl: ../README.rst#symlink-only-label
