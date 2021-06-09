@@ -292,7 +292,7 @@ General control flags
   
     Note that any other command-line parameter that you use in the terminal with 
     the ``--use-config`` flag is ignored, i.e. only the parameters defined in 
-    `config.py`_ will be used.
+    the main config file `config.py`_ will be used.
 
 .. _dry-run-label:
 
