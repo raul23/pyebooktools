@@ -609,9 +609,10 @@ their numbering should start at 1:
 
 where 
 
-- `output_folder <../README.rst#split-output-folder-label>`__ 
-- `-s`_ 
-- `--fpf``_ 
+- `output_folder <../README.rst#split-output-folder-label>`__ in which all the 
+  new consecutively named folders will be created
+- `-s`_ is the number of the first folder
+- `--fpf`_ is the number of files per folder
 
 **Output:** content of ``output_folder``
 
