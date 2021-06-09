@@ -13,7 +13,7 @@ Check also some important `tips`_ about using the ``ebooktools.py`` script.
    
 Tips
 ====
-Avoid long command lines with ``use-congih``
+Avoid long command lines with ``use-config``
 --------------------------------------------
 Sometimes, it might be more convenient to edit the configuration file
 ``config.py`` instead of building a long command in the terminal with all the
