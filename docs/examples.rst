@@ -31,8 +31,6 @@ For example, you might have the following long subcommand:
 
    $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofp ~/output_folder_pamphlets/ --owi 
 
-|
-
 Instead of providing command-line parameters, we will edit the configuration
 file by running the following `edit`_ subcommand:
 
