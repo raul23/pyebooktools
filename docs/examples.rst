@@ -33,9 +33,9 @@ For example, you might have the following long subcommand:
 
 Run the following `edit`_ subcommand to edit this configuration file:
 
-  .. code-block:: terminal
+.. code-block:: terminal
 
-     $ ebooktools edit main
+   $ ebooktools edit main
 
 The ``config.py`` file will be opened by the default source code editor
 associated with this type of file and then you can modify the right
@@ -44,9 +44,9 @@ configuration variables for the given subcommand.
 You can then run the given subcommand with the ``-u`` flag and all the 
 updated options in the configuration file will be used:
 
-  .. code-block:: terminal
+.. code-block:: terminal
 
-     $ ebooktools convert -u
+   $ ebooktools convert -u
 
 where ``convert`` can also be any of the other supported `subcommands`_.
 
