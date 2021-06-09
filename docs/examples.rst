@@ -25,6 +25,10 @@ will actually be executed.
 When `--symlink-only`_ is enabled, symbolic links to ebook files are created
 instead of moving them.
 
+Thus, these flags are convenient with the subcommands `organize`_, `rename`_, 
+and `split`_ (though only ``--dry-run`` applies to it) which will modify the 
+input files.
+
 `:star:`
 
   You will be able to know what the ``ebooktools.py``
@@ -696,7 +700,9 @@ References
 .. _output folders: ../README.rst#input-and-output-options-for-organizing-files
 .. _output_metadata_extension: ../README.rst#output-metadata-extension-label
 .. _pamphlet_max_filesize_kib: ../README.rst#pamphlet-max-filesize-kib-label
+.. _rename: ./README.rst#rename-options-calibre-folder
 .. _Security and safety: ../README.rst#security-and-safety
+.. _split: ./README.rst#split-options-folder-with-books
 .. _subcommands: ../README.rst#script-usage-subcommands-and-options
 
 .. Local URLs
