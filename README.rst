@@ -988,6 +988,8 @@ Input and output options for splitting files
   
   Folder with books which will be recursively scanned for files.
 
+.. _split-output-folder-label:  
+
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working directory** (check
   with ``pwd``)
