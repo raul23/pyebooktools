@@ -53,7 +53,9 @@ updated options in the configuration file will be used:
 
 where ``organize`` can also be any of the other supported `subcommands`_.
 
-See `edit`_ for more info about this subcommand.
+`:star:`
+
+  See `edit`_ for more info about this subcommand.
 
 ``convert`` examples
 ====================
