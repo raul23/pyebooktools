@@ -70,6 +70,9 @@ configuration file will be used:
 
 where ``organize`` can also be any of the other supported `subcommands`_.
 
+The `-u, --use-config`_ tells the ``ebooktools.py`` to only use the
+parameters defined in the config file ``confilg.py``.
+
 `:star:`
 
   See `edit`_ for more info about this subcommand.
@@ -680,6 +683,7 @@ References
 .. _--symlink-only: ../README.rst#symlink-only-label
 .. _-s: ../README.rst#specific-options-for-splitting-files
 .. _-u: ../README.rst#use-config-label
+.. _-u, --use-config: ../README.rst#use-config-label
 .. _all the options: ../README.rst#usage-options-and-configuration
 .. _config.py: ../README.rst#edit-description-label
 .. _default: ../README.rst#output-metadata-extension-label
