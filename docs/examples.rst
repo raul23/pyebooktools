@@ -71,7 +71,7 @@ configuration file will be used:
 where ``organize`` can also be any of the other supported `subcommands`_.
 
 The `-u, --use-config`_ flag tells the ``ebooktools.py`` script to only use the
-parameters defined in the config file ``confilg.py``.
+parameters defined in the config file ``config.py``.
 
 `:star:`
 
