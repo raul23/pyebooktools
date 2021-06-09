@@ -227,8 +227,11 @@ file ``config.py`` which is created along with the logging config file
 of the subcommands defined `below`_. The default values for these config files
 are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
-Command-line parameters supersede variables defined in the configuration file.
-Most parameters are not required and if nothing is specified, the default value
+In order to use the parameters found in the configuration file ``config.py``, 
+use the `--use-config`_ flag. Hence, you don't need to specify a long command-line
+in the terminal by using this flag. 
+
+Most parameters are not required and if nothing is specified, the default values
 defined in the default config file ``default_config.py`` will be used.
 
 The ``ebooktools.py`` script consists of various subcommands for the
@@ -277,6 +280,19 @@ General control flags
 
   Print various debugging information, e.g. print traceback when there is an
   exception.
+  
+.. _use-config-label:
+
+* ``--use-config``; no config variable; default value ``False``
+
+  If this is enabled, the main config file `config.py`_ will be used instead of the 
+  command-line arguments. 
+  
+  `:information_source:`
+  
+    Note that any other command-line parameter that you use in the terminal with 
+    the ``--use-config`` flag is ignored, i.e. only the parameters defined in 
+    `config.py`_ will be used.
 
 .. _dry-run-label:
 
@@ -575,6 +591,9 @@ Very few general options affect this subcommand, such as
 
 Description
 """""""""""
+
+.. _edit-description-label:
+
 Edits a configuration file, which can either be 
 
 - the main configuration file (``main``) where all the options associated
@@ -1247,6 +1266,7 @@ References
 .. URLs: local
 .. _all the ocr-related options: #options-for-ocr
 .. _below: #script-usage-and-options
+.. _config.py: #edit-description-label
 .. _convert: #convert-options-input-file
 .. _edit: #edit-options-main-log
 .. _find: #find-options-input-data
@@ -1277,6 +1297,7 @@ References
 .. _-v, --verbose: #verbose-label
 .. _-q, --quiet: #quiet-label
 .. _--verbose: #verbose-label
+.. _--use-config: #use-config-label
 .. _-d, --dry-run: #dry-run-label
 .. _--dry-run: #dry-run-label
 .. _--sl, --symlink-only: #symlink-only-label
