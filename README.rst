@@ -232,7 +232,7 @@ use the `--use-config`_ flag. Hence, you don't need to specify a long command-li
 in the terminal by using this flag. See the `edit`_ subcommand to know how to
 edit this configuration file.
 
-Most parameters are not required and if nothing is specified, the default values
+Most arguments are not required and if nothing is specified, the default values
 defined in the default config file ``default_config.py`` will be used.
 
 The ``ebooktools.py`` script consists of various subcommands for the
