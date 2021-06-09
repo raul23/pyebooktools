@@ -13,6 +13,12 @@ Check also some important `tips`_ about using the ``ebooktools.py`` script.
    
 Tips
 ====
+Avoid data loss with ``--dry-run`` and ``--symlink-only``
+---------------------------------------------------------
+In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_ 
+option to test that a given subcommand would do what you expect it to do, 
+as explained in the `Security and safety`_ section.
+
 Avoid long command lines with ``use-config``
 --------------------------------------------
 Sometimes, it might be more convenient to edit the configuration file
@@ -39,12 +45,6 @@ updated options in the configuration file will be used:
 where ``convert`` can also be any of the other supported `subcommands`_.
 
 See `edit`_ for more info about this subcommand.
-
-Avoid data loss with ``--dry-run`` and ``--symlink-only``
----------------------------------------------------------
-In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_ 
-option to test that a given subcommand would do what you expect it to do, 
-as explained in the `Security and safety`_ section.
 
 ``convert`` examples
 ====================
