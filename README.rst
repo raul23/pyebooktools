@@ -221,7 +221,7 @@ To install the `pyebooktools`_ package:
 Usage, options and configuration
 ================================
 All of the options documented below can either be passed to the
-`ebooktools.py`_ script via command-line parameters or via the configuration
+`ebooktools.py`_ script via command-line arguments or via the configuration
 file ``config.py`` which is created along with the logging config file
 ``logging.py`` when the ``ebooktools.py`` script is run the first time with any
 of the subcommands defined `below`_. The default values for these config files
@@ -612,7 +612,7 @@ The configuration file can be opened by a user-specified application
 
 `:warning:`
 
-  By default, command-line parameters supersede variables defined in the 
+  By default, command-line arguments supersede parameters defined in the 
   **default** configuration file `default_config.py`_. However, if you 
   enable  the `--use-config`_ flag, the parameters defined in the main 
   config file ``config.py`` will be used instead.
