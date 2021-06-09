@@ -610,7 +610,7 @@ The configuration file can be opened by a user-specified application
 `:warning:`
 
   By default, command-line parameters supersede variables defined in the 
-  **default** configuration file `default_config.py`. However, if you 
+  **default** configuration file `default_config.py`_. However, if you 
   enable  the `--use-config`_ flag, the parameters defined in the main 
   config file ``config.py`` will be used instead.
 
