@@ -662,7 +662,7 @@ References
 .. _-s: ../README.rst#specific-options-for-splitting-files
 .. _-u: ../README.rst#use-config-label
 .. _all the options: ../README.rst#usage-options-and-configuration
-.. _confi.py: ../README.rst#edit-description-label
+.. _config.py: ../README.rst#edit-description-label
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
 .. _ebook-meta: https://manual.calibre-ebook.com/generated/en/ebook-meta.html
