@@ -510,6 +510,7 @@ Miscellaneous options
   ``{debug,info,warning,error}``.
 
 .. _log-format-label:
+.. TODO: explain choices
 
 * ``--log-format <value>``; config variable ``logging_formatter``; default
   value ``simple``
