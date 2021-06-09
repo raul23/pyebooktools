@@ -229,7 +229,8 @@ are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
 In order to use the parameters found in the configuration file ``config.py``, 
 use the `--use-config`_ flag. Hence, you don't need to specify a long command-line
-in the terminal by using this flag. 
+in the terminal by using this flag. See the `edit`_ subcommand to know how to
+edit this configuration file.
 
 Most parameters are not required and if nothing is specified, the default values
 defined in the default config file ``default_config.py`` will be used.
