@@ -638,7 +638,7 @@ References
 .. URLs
 .. _--cco: ../README.rst#specific-options-for-organizing-files
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
-.. _fpf: ../README.rst#files-per-folder
+.. _--fpf: ../README.rst#files-per-folder
 .. _--owi: ../README.rst#organize-without-isbn-label
 .. _--sl: ../README.rst#symlink-only-label
 .. _--sm opfcopy: ../README.rst#specific-options-for-renaming-files
