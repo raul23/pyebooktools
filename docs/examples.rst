@@ -27,7 +27,7 @@ instead of moving them.
 
 Thus, these flags are convenient with the subcommands `organize`_, `rename`_, 
 and `split`_ which will modify the input files. Though only ``--dry-run`` 
-applies to ``split``.
+applies to `split`_.
 
 `:star:`
 
