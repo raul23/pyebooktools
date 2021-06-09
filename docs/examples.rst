@@ -21,8 +21,8 @@ as explained in the `Security and safety`_ section.
 
 Avoid long command lines with ``use-config``
 --------------------------------------------
-Sometimes, it might be more convenient to edit the configuration file
-``config.py`` instead of building a long command in the terminal with all the
+Sometimes, it might be more convenient to edit the main configuration file
+`config.py`_ instead of building a long command in the terminal with all the
 options for a given subcommand (e.g. ``organize``).
 
 For example, you might have the following long subcommand:
@@ -31,8 +31,8 @@ For example, you might have the following long subcommand:
 
    $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofp ~/output_folder_pamphlets/ --owi 
 
-Instead of providing command-line parameters, we will edit the configuration
-file by running the following `edit`_ subcommand:
+Instead of providing command-line arguments, we will edit the configuration
+file ``config.py`` by running the following `edit`_ subcommand:
 
 .. code-block:: terminal
 
@@ -662,6 +662,7 @@ References
 .. _-s: ../README.rst#specific-options-for-splitting-files
 .. _-u: ../README.rst#use-config-label
 .. _all the options: ../README.rst#usage-options-and-configuration
+.. _confi.py: ../README.rst#edit-description-label
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
 .. _ebook-meta: https://manual.calibre-ebook.com/generated/en/ebook-meta.html
