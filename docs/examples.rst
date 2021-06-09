@@ -43,7 +43,7 @@ associated with this type of file and then you can modify the right
 configuration variables for the given subcommand.
 
 You can then run the given subcommand with the `-u`_ flag (short name
-for the ``use-config`` option) and all the updated options in the 
+for the ``--use-config`` option) and all the updated options in the 
 configuration file will be used:
 
 .. code-block:: terminal
