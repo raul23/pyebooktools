@@ -1302,6 +1302,7 @@ References
 .. _-q, --quiet: #quiet-label
 .. _--verbose: #verbose-label
 .. _--use-config: #use-config-label
+.. _-u, --use-config: #use-config-label
 .. _-d, --dry-run: #dry-run-label
 .. _--dry-run: #dry-run-label
 .. _--sl, --symlink-only: #symlink-only-label
