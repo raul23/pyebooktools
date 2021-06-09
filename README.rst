@@ -609,8 +609,10 @@ The configuration file can be opened by a user-specified application
 
 `:warning:`
 
-  Command-line parameters supersede variables defined in the configuration
-  file. 
+  By default, command-line parameters supersede variables defined in the 
+  **default** configuration file `default_config.py`. However, if you 
+  enable  the `--use-config`_ flag, the parameters defined in the main 
+  config file ``config.py`` will be used instead.
 
 Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
