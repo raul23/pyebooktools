@@ -116,10 +116,10 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
 ``edit`` examples
 =================
-The two config files that can be edited are the `main`_ and `logging`_ config
-files. We will only focus in the main config file because it is the most
-important one since it contains `all the options`_ for the ``ebooktools.py``
-script.
+The two config files that can be edited are the `main`_ and `logging`_ 
+config files, ``config.py`` and ``logging.py`` respectively. We will only focus 
+in the main config file because it is the most important one since it contains 
+`all the options`_ for the ``ebooktools.py`` script.
 
 Edit the main config file
 -------------------------
