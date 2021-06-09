@@ -546,6 +546,7 @@ All subcommands are affected by the following global options:
 * `-h, --help`_
 * `-q, --quiet`_
 * `-v, --verbose`_
+* `-u, --use-config`_
 * `--log-level`_
 * `--log-format`_
 
