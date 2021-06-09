@@ -284,7 +284,7 @@ General control flags
   
 .. _use-config-label:
 
-* ``--use-config``; no config variable; default value ``False``
+* ``-u``, ``--use-config``; no config variable; default value ``False``
 
   If this is enabled, the main config file `config.py`_ will be used instead of the 
   command-line arguments. 
