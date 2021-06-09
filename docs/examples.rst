@@ -26,8 +26,8 @@ When `--symlink-only`_ is enabled, symbolic links to ebook files are created
 instead of moving them.
 
 Thus, these flags are convenient with the subcommands `organize`_, `rename`_, 
-and `split`_ (though only ``--dry-run`` applies to it) which will modify the 
-input files.
+and `split`_ which will modify the input files. Though only ``--dry-run`` 
+applies to ``split``.
 
 `:star:`
 
