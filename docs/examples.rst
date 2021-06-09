@@ -31,7 +31,7 @@ applies to `split`_.
 
 `:star:`
 
-  You will be able to know what the ``ebooktools.py``
+  When using these two flags, you will be able to know what the ``ebooktools.py``
   script would have done by looking at the messages printed out in the 
   terminal. Use the `--log-level debug`_ flag to get more information about
   what is the ``ebooktools.py`` performing as operation (e.g. 
