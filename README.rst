@@ -316,9 +316,10 @@ General control flags
   
   Do not delete the gathered metadata for the organized ebooks, instead save it
   in an accompanying file together with each renamed book. It is very useful
-  for semi-automatic verification of the organized files with
-  `interactive_organizer.py`_ or for additional verification, indexing or
-  processing at a later date. [KM]_
+  or for additional verification, indexing or processing at a later date. [KM]_
+  
+  .. TODO
+  .. for semi-automatic verification of the organized files with `interactive_organizer.py`_
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1125,7 +1126,8 @@ Important security and safety tips from the `ebook-tools documentation`_:
 **NOTE:** ``--dry-run`` and ``--symlink-only`` can be applied to the following
 subcommands:
 
-* `interact`_
+.. TODO
+.. `interact`_
 * `organize`_
 * `rename`_
 * `split`_: only ``--dry-run`` is applicable
