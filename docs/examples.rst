@@ -30,7 +30,8 @@ instead of moving them.
   You will be able to know what the ``ebooktools.py``
   script would have done by looking at the messages printed out in the 
   terminal. Use the `--log-level debug`_ flag to get more information about
-  what is the ``ebooktools.py`` is actually performing as operations.
+  what is the ``ebooktools.py`` performing as operation (e.g. 
+  rename/move/symlink/ect.).
 
 Avoid long command lines with ``use-config``
 --------------------------------------------
