@@ -286,12 +286,12 @@ General control flags
 
 * ``-u``, ``--use-config``; no config variable; default value ``False``
 
-  If this is enabled, the main config file `config.py`_ will be used instead of the 
-  command-line arguments. 
+  If this is enabled, the parameters found in the main config file `config.py`_ 
+  will be used instead of the command-line arguments. 
   
   `:information_source:`
   
-    Note that any other command-line parameter that you use in the terminal with 
+    Note that any other command-line argument that you use in the terminal with 
     the ``--use-config`` flag is ignored, i.e. only the parameters defined in 
     the main config file `config.py`_ will be used.
 
