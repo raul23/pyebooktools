@@ -23,7 +23,7 @@ Avoid long command lines with ``use-config``
 --------------------------------------------
 Sometimes, it might be more convenient to edit the configuration file
 ``config.py`` instead of building a long command in the terminal with all the
-options for a given subcommand (e.g. ``convert``).
+options for a given subcommand (e.g. ``organize``).
 
 For example, you might have the following long subcommand:
 
@@ -31,7 +31,10 @@ For example, you might have the following long subcommand:
 
    $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofp ~/output_folder_pamphlets/ --owi 
 
-Run the following `edit`_ subcommand to edit this configuration file:
+|
+
+Instead of providing command-line parameters, we will edit the configuration
+file by running the following `edit`_ subcommand:
 
 .. code-block:: terminal
 
@@ -46,9 +49,9 @@ updated options in the configuration file will be used:
 
 .. code-block:: terminal
 
-   $ ebooktools convert -u
+   $ ebooktools organize -u
 
-where ``convert`` can also be any of the other supported `subcommands`_.
+where ``organize`` can also be any of the other supported `subcommands`_.
 
 See `edit`_ for more info about this subcommand.
 
