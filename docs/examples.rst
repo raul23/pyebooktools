@@ -689,8 +689,8 @@ References
 .. _edit: ../README.rst#edit-options-main-log
 .. _folder_to_organize: ../README.rst#input-and-output-options-for-organizing-files
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
-.. _logging: ../pyebooktools/configs/default_logging.py
-.. _main: ../pyebooktools/configs/default_config.py
+.. _logging: ../README.rst#edit-description-label
+.. _main: ../README.rst#edit-description-label
 .. _organize: ../README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ../README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ../README.rst#organize-output-folder-label
