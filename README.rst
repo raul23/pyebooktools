@@ -976,7 +976,9 @@ Specific options for splitting files
   The print format string that specifies the pattern with which new folders
   will be created. By default it creates folders like
   ``00000000, 00001000, 00002000, ...``.
-  
+
+.. _files-per-folder-label:  
+
 * ``--fpf <value>``, ``--files-per-folder <value>``; config variable 
   ``files_per_folder``; default value ``1000``
 
