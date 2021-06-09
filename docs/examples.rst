@@ -40,6 +40,12 @@ where ``convert`` can also be any of the other supported `subcommands`_.
 
 See `edit`_ for more info about this subcommand.
 
+Avoid data loss with ``--dry-run`` and ``--symlink-only``
+---------------------------------------------------------
+In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_ 
+option to test that a given subcommand would do what you expect it to do, 
+as explained in the `Security and safety`_ section.
+
 ``convert`` examples
 ====================
 Convert a pdf file to text **with** OCR
@@ -628,12 +634,6 @@ where
 |
 
 Note that the metadata folders contain only one file each as expected.
-
-`:warning:`
- 
-   In order to avoid data loss, use the ``--dry-run`` option to test that
-   ``split`` would do what you expect it to do, as explained in the
-   `Security and safety`_ section.
    
 References
 ==========
