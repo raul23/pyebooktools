@@ -29,14 +29,17 @@ from pyebooktools.utils.logutils import init_log
 logger = init_log(__name__, __file__)
 
 
-def rename(calibre_folder, output_folder=default_cfg.output_folder,
+def rename(calibre_folder, output_folder=default_cfg.rename['output_folder'],
            dry_run=default_cfg.dry_run,
            isbn_blacklist_regex=default_cfg.isbn_blacklist_regex,
            isbn_regex=default_cfg.isbn_regex,
            output_filename_template=default_cfg.output_filename_template,
            output_metadata_extension=default_cfg.output_metadata_extension,
-           reverse=default_cfg.reverse, save_metadata=default_cfg.save_metadata,
+           reverse=default_cfg.reverse, save_metadata=default_cfg.rename['save_metadata'],
            symlink_only=default_cfg.symlink_only, **kwargs):
+    if calibre_folder is None:
+        logger.error("\nerror: the following arguments are required: calibre_folder")
+        return 1
     number_ebooks = 0
     file_paths = []
     for book_path in Path(calibre_folder).rglob('*'):
@@ -83,6 +86,7 @@ def rename(calibre_folder, output_folder=default_cfg.output_folder,
         logger.info(f"Parsing metadata for '{book_path.name}'...")
         logger.debug(f'Full path: {book_path}')
         metadata['EXT'] = book_path.suffix.split('.')[-1]
+        # TODO: urgent, you can use ebook-meta meta.opf to read metadata
         metadata['TITLE'] = get_metadata(metadata_path.as_posix(),
                                          '//*[local-name()="title"]/text()')
         authors = get_metadata(metadata_path.as_posix(),
