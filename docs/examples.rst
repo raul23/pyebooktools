@@ -664,7 +664,9 @@ where
 
 |
 
-Note that the metadata folders contain only one file each as expected.
+`:information_source:`
+
+  Note that the metadata folders contain only one file each as expected.
    
 References
 ==========
