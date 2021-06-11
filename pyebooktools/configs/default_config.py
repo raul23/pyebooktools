@@ -17,7 +17,8 @@ The options are separated based on sections:
   1.3 Options for OCR
   1.4 Options related to extracting and searching for non-ISBN metadata
   1.5 Options related to the input and output files
-  1.6 Miscellaneous options
+  1.6 Options related to caching
+  1.7 Miscellaneous options
 2. Command options
   2.1 convert_to_txt
   2.2 edit_config
@@ -26,7 +27,7 @@ The options are separated based on sections:
   2.5 interactive_organizer
   2.6 organize_ebooks
     2.6.1 Specific options for organizing files
-    2.6.2 Output options
+    2.6.2 Input and output options
   2.7 remove_extras
   2.8 rename_calibre_library
   2.9 split_into_folders
@@ -50,7 +51,7 @@ from pyebooktools.configs import get_without_isbn_ignore
 # 1. General options
 # ==================
 # All of these options are part of the common library and may affect some or
-# all of the commands.
+# all of the commands
 
 # 1.1 General control flags
 # =========================
@@ -71,12 +72,12 @@ isbn_grep_rf_reverse_last = 50
 # False to disable the functionality or (first_lines,last_lines) to enable it
 isbn_grep_reorder_files = (isbn_grep_rf_scan_first, isbn_grep_rf_reverse_last)
 # NOTE: If you use Calibre versions that are older than 2.84, it's required to
-# manually set the following option to an empty string.
+# manually set the following option to an empty string
 isbn_metadata_fetch_order = ['Goodreads', 'Amazon.com', 'Google', 'ISBNDB', 'WorldCat xISBN', 'OZON.ru']
 
 # 1.3 Options for OCR
 # ===================
-ocr_enabled = False
+ocr_enabled = 'false'
 ocr_only_first_last_pages = (7, 3)
 ocr_command = 'tesseract_wrapper'
 
@@ -88,19 +89,21 @@ organize_without_isbn_sources = ['Goodreads', 'Amazon.com', 'Google']
 
 # 1.5 Options related to the input and output files
 # =================================================
-output_folder = os.getcwd()
 output_filename_template = "${d[AUTHORS]// & /, } - ${d[SERIES]:+[${d[SERIES]}] " \
                            "- }${d[TITLE]/:/ -}${d[PUBLISHED]:+ (${d[PUBLISHED]%%-*})}" \
                            "${d[ISBN]:+ [${d[ISBN]}]}.${d[EXT]}"
 # If `keep_metadata` is enabled, this is the extension of the additional
-# metadata file that is saved next to each newly renamed file.
+# metadata file that is saved next to each newly renamed file
 output_metadata_extension = 'meta'
 
-# 1.6 Options related to checking for corruption
-# ==============================================
-corruption_check_only = False
-# corruption_check_order = ['pdfinfo', 'pdftotext', 'qpdf', 'jhove']
-corruption_check_order = ['pdfinfo', 'pdftotext']
+# 1.6 Options related to caching
+# ==============================
+use_cache = False
+cache_folder = os.path.expanduser('~/.ebooktools')
+eviction_policy = 'least-recently-stored'
+# In gigabytes (GB)
+cache_size_limit = 1
+clear_cache = False
 
 # 1.7 Miscellaneous options
 # =========================
@@ -116,76 +119,106 @@ reverse = False
 # 2.1 convert_to_txt
 # ==================
 # Some of the general options affect this command's behavior a lot, especially
-# the OCR ones (section 1.3).
+# the OCR ones (section 1.3)
+input_file = None
 output_file = 'output.txt'
+djvu_convert_method = 'djvutxt'
+epub_convert_method = 'calibre'
+msword_convert_method = 'textutil'
+pdf_convert_method = 'pdftotext'
 
 # 2.2 edit_config
 # ===============
 # Name of the application to use for editing the config file.
 # If no name is given, then the default application for opening this type of
-# file will be used.
+# file will be used. Examples: atom, charm, TextEdit
 app = None
+reset = False
+cfg_type = 'main'
 
 # 2.3 find_isbns
 # ==============
 # Some general options affect this command (especially the ones related to
-# extracting ISBNs from files, see section 1.2 above).
+# extracting ISBNs from files, see section 1.2 above)
+input_data = None
 isbn_ret_separator = '\n'
 
 # 2.4 fix_ebooks
 # ==============
-# output_folder is by default current directory
-# Options related to checking for corruption also affect this command (section 1.6)
-corruption_fix_only = False
-# corruption_fix_order = ['gs', 'pdftocairo', 'mutool', 'cpdf']
-corruption_fix_order = ['gs', 'pdftocairo']
+fix = {
+    'corruption_check_only': False,
+    'corruption_check_method': 'pdfinfo',  # pdftotext
+    'corruption_fix_only': False,
+    'corruption_fix_method': 'gs',  # pdftocairo
+    'corruption_fix_order': [],  # TODO: urgent, remove
+    'output_folder': os.getcwd(),
+    'output_folder_uncertain': None,
+    'output_folder_corrupt': None,
+}
 
 # 2.5 interactive_organizer
 # =========================
-# output_folders = []
-# quick_mode = False
-# custom_move_base_dir = None
-# restore_original_base_dir = None
-# diacritic_difference_masking = ?
-# match_partial_words = False
+"""
+interactive_organizer = {
+    'output_folders': [],
+    'quick_mode': False,
+    'custom_move_base_dir': None,
+    'restore_original_base_dir': None,
+    'diacritic_difference_masking': '?',
+    'match_partial_words': False
+}
+"""
 
 # 2.6 organize_ebooks
 # ===================
-# 2.6.1 Specific options for organizing files
-# -------------------------------------------
-# Options related to checking for corruption also affect this command (section 1.6)
-tested_archive_extensions = '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$'
-organize_without_isbn = False
-without_isbn_ignore = get_without_isbn_ignore()
-# TODO: why '?' in pptx, see https://bit.ly/2ryWlgt
-pamphlet_included_files = '\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$'
-pamphlet_excluded_files = '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$'
-pamphlet_max_pdf_pages = 50
-pamphlet_max_filesize_kib = 250
+organize = {
+    # 2.6.1 Specific options for organizing files
+    # -------------------------------------------
+    'corruption_check_only': False,
+    'corruption_check_method': 'pdfinfo',  # pdftotext
+    'corruption_check_order': [],  # TODO: urgent, remove
+    'tested_archive_extensions': '^(7z|bz2|chm|arj|cab|gz|tgz|gzip|zip|rar|xz|tar|epub|docx|odt|ods|cbr|cbz|maff|iso)$',
+    'organize_without_isbn': False,
+    'without_isbn_ignore': get_without_isbn_ignore(),
+    # TODO: why '?' in pptx, see https://bit.ly/2ryWlgt
+    'pamphlet_included_files': '\.(png|jpg|jpeg|gif|bmp|svg|csv|pptx?)$',
+    'pamphlet_excluded_files': '\.(chm|epub|cbr|cbz|mobi|lit|pdb)$',
+    'pamphlet_max_pdf_pages': 50,
+    'pamphlet_max_filesize_kib': 250,
 
-# 2.6.2 Output options
-# --------------------
-# output_folder is by default current directory
-# If organize_without_isbn is enabled, this is the folder to which all ebooks
-# that were renamed based on non-ISBN metadata will be moved to.
-output_folder_uncertain = None
-# If specified, corrupt files will be moved to this folder.
-output_folder_corrupt = None
-# If specified, pamphlets will be moved to this folder.
-output_folder_pamphlets = None
+    # 2.6.2 Input and output options
+    # ------------------------------
+    'folder_to_organize': None,
+    'output_folder': os.getcwd(),
+    # If organize_without_isbn is enabled, this is the folder to which all
+    # ebooks that were renamed based on non-ISBN metadata will be moved to
+    'output_folder_uncertain': None,
+    # If specified, corrupt files will be moved to this folder
+    'output_folder_corrupt': None,
+    # If specified, pamphlets will be moved to this folder
+    'output_folder_pamphlets': None
+}
 
-# 2.8 remove_extras
+# 2.7 remove_extras
 # =================
-# output_folder is by default current directory
+remove = {
+    'output_folder': os.getcwd(),
+}
 
 # 2.8 rename_calibre_library
 # ==========================
-# output_folder is by default current directory
-save_metadata = 'recreate'
+rename = {
+    'save_metadata': 'recreate',
+    'calibre_folder': None,
+    'output_folder': os.getcwd(),
+}
 
 # 2.9 split_into_folders
 # ======================
-# output_folder is by default current directory
-start_number = 0
-folder_pattern = '%05d000'
-files_per_folder = 1000
+split = {
+    'start_number': 0,
+    'folder_pattern': '%05d000',
+    'files_per_folder': 1000,
+    'folder_with_books': None,
+    'output_folder': os.getcwd(),
+}
