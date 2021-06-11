@@ -655,7 +655,9 @@ where
 - `-s`_ is the number of the first folder
 - `--fpf`_ is the number of files per folder
 
-**Output:** content of ``output_folder``
+|
+
+Content of ``output_folder``
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
