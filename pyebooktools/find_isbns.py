@@ -42,12 +42,15 @@ def find(input_data, isbn_blacklist_regex=default_cfg.isbn_blacklist_regex,
     # Check if input data is a file path or a string
     try:
         if Path(input_data).is_file():
-            logger.debug(f'The input data is a file path: {input_data}')
+            logger.debug(f'The input data is a file path')
+            logger.info(f"Searching file '{Path(input_data).name}' for "
+                        "ISBN numbers...")
             isbns = search_file_for_isbns(input_data, **func_params)
         else:
-            logger.debug(f'The input data is a string: {input_data}')
+            logger.debug(f'The input data is a string')
             isbns = find_isbns(input_data, **func_params)
     except OSError as e:
+        # TODO: important, find case for this error; if not remove it
         if e.args[0]:
             logger.debug(f'{e.args[1]}: the input data might be a string')
             isbns = find_isbns(input_data, **func_params)
