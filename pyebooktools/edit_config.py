@@ -17,7 +17,7 @@ logger = init_log(__name__, __file__)
 
 
 # NOTE: https://stackoverflow.com/a/27163648 [launch PyCharm from terminal]
-def edit_file(cfg_type, app=None):
+def edit_file(cfg_type, app=None, configs_dirpath=None):
     """Edit a configuration file.
 
     The user chooses what type of config file (`cfg_type`) to edit: 'log' for
@@ -36,6 +36,8 @@ def edit_file(cfg_type, app=None):
         Name of the application to use for opening the config file, e.g.
         `TextEdit` (the default value is :obj:`None` which implies that the
         default application will be used to open the config file).
+    configs_dirpath: str, optional
+        TODO: writeme
 
     Returns
     -------
@@ -47,7 +49,7 @@ def edit_file(cfg_type, app=None):
 
     """
     # Get path to the config file
-    filepath = get_config_filepath(cfg_type)
+    filepath = get_config_filepath(cfg_type, configs_dirpath)
     # Command to open the config file with the default application in the
     # OS or the user-specified app, e.g. `open filepath` in macOS opens the
     # file with the default app (e.g. atom)
@@ -97,17 +99,17 @@ def edit_file(cfg_type, app=None):
     return retcode
 
 
-def reset_file(cfg_type):
+def reset_file(cfg_type, configs_dirpath=None):
     # Get path to the config file
-    filepath = get_config_filepath(cfg_type)
+    filepath = get_config_filepath(cfg_type, configs_dirpath)
     logger.info("Resetting the file {}...".format(
         os.path.basename(filepath)))
     logger.debug(f"Filepath: {filepath}")
     # Copy it from the default one
     if cfg_type == 'main':
-        src = get_main_config_filepath(default_config=True)
+        src = get_main_config_filepath(configs_dirpath, default_config=True)
     else:
-        src = get_logging_filepath(default_config=True)
+        src = get_logging_filepath(configs_dirpath, default_config=True)
     shutil.copy(src, filepath)
     logger.info("File was reset!")
     return 0
