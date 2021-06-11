@@ -9,6 +9,7 @@ This is a Python port of `lib.sh`_ from `ebook-tools`_ written in Shell by
 .. _na--: https://github.com/na--
 """
 import ast
+import hashlib
 import mimetypes
 import os
 import re
@@ -29,6 +30,7 @@ logger = init_log(__name__, __file__)
 # =====================
 # Default config values
 # =====================
+CACHE_FOLDER = default_cfg.cache_folder
 DRY_RUN = default_cfg.dry_run
 KEEP_METADATA = default_cfg.keep_metadata
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
@@ -44,14 +46,15 @@ OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
 OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
-OUTPUT_FOLDER = default_cfg.output_folder
-OUTPUT_FOLDER_CORRUPT = default_cfg.output_folder_corrupt
 SYMLINK_ONLY = default_cfg.symlink_only
-TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
+TESTED_ARCHIVE_EXTENSIONS = default_cfg.organize['tested_archive_extensions']
+USE_CACHE = default_cfg.use_cache
 
-GREEN = '\033[0;32m'  # 36
+GREEN = '\033[0;36m'  # 32
 RED = '\033[0;31m'
 YELLOW = '\033[0;33m'  # 32
+BLUE = '\033[0;34m'  #
+VIOLET = '\033[0;35m'  #
 BOLD = '\033[1m'
 NC = '\033[0m'
 
@@ -59,6 +62,8 @@ _COLOR_TO_CODE = {
     'g': GREEN,
     'r': RED,
     'y': YELLOW,
+    'b': BLUE,
+    'v': VIOLET,
     'bold': BOLD
 }
 
@@ -266,7 +271,6 @@ def convert_result_from_shell_cmd(old_result):
                     new_val = old_val.decode('UTF-8')
                 except (AttributeError, UnicodeDecodeError) as e:
                     # TODO: add logger.debug?
-                    AttributeError
                     if type(e) == UnicodeDecodeError:
                         # old_val = b'...'
                         new_val = old_val.decode('unicode_escape')
@@ -293,18 +297,41 @@ def convert_result_from_shell_cmd(old_result):
     return new_result
 
 
+# Ref.: https://stackoverflow.com/a/59056837/14664104
+def get_hash(file_path):
+    with open(file_path, "rb") as f:
+        file_hash = hashlib.md5()
+        chunk = f.read(8192)
+        while chunk:
+            file_hash.update(chunk)
+            chunk = f.read(8192)
+    return file_hash.hexdigest()
+
+
 # Tries to convert the supplied ebook file into .txt. It uses calibre's
 # ebook-convert tool. For optimization, if present, it will use pdftotext
 # for pdfs, catdoc for word files and djvutxt for djvu files.
 # Ref.: https://bit.ly/2HXdf2I
-def convert_to_txt(input_file, output_file, mime_type):
-    result = None
-    if mime_type == 'application/pdf' and command_exists('pdftotext'):
-        logger.debug('The file looks like a pdf, using pdftotext to extract '
+def convert_to_txt(input_file, output_file, mime_type,
+                   djvu_convert_method=default_cfg.djvu_convert_method,
+                   epub_convert_method=default_cfg.epub_convert_method,
+                   msword_convert_method=default_cfg.msword_convert_method,
+                   pdf_convert_method=default_cfg.pdf_convert_method, **kwargs):
+    # TODO: not need to specify the full path to djvutxt if you set correctly
+    # the right env. variables
+    if mime_type.startswith('image/vnd.djvu') \
+         and djvu_convert_method == 'djvutxt' and command_exists('djvutxt'):
+        logger.debug('The file looks like a djvu, using djvutxt to extract the '
+                     'text')
+        result = djvutxt(input_file, output_file)
+    elif mime_type.startswith('application/epub+zip') \
+            and epub_convert_method == 'epubtxt' and command_exists('unzip'):
+        logger.debug('The file looks like an epub, using epub2txt to extract '
                      'the text')
-        result = pdftotext(input_file, output_file)
-    elif mime_type == 'application/msword' and \
-            (command_exists('catdoc') or command_exists('textutil')):
+        result = epubtxt(input_file, output_file)
+    elif mime_type == 'application/msword' \
+            and msword_convert_method in ['catdoc', 'textutil'] \
+            and (command_exists('catdoc') or command_exists('textutil')):
         msg = 'The file looks like a doc, using {} to extract the text'
         if command_exists('catdoc'):
             logger.debug(msg.format('catdoc'))
@@ -312,12 +339,11 @@ def convert_to_txt(input_file, output_file, mime_type):
         else:
             logger.debug(msg.format('textutil'))
             result = textutil(input_file, output_file)
-    # TODO: not need to specify the full path to djvutxt if you set correctly
-    # the right env. variables
-    elif mime_type.startswith('image/vnd.djvu') and command_exists('djvutxt'):
-        logger.debug('The file looks like a djvu, using djvutxt to extract the '
-                     'text')
-        result = djvutxt(input_file, output_file)
+    elif mime_type == 'application/pdf' and pdf_convert_method == 'pdftotext' \
+            and command_exists('pdftotext'):
+        logger.debug('The file looks like a pdf, using pdftotext to extract '
+                     'the text')
+        result = pdftotext(input_file, output_file)
     elif (not mime_type.startswith('image/vnd.djvu')) \
             and mime_type.startswith('image/'):
         msg = f'The file looks like a normal image ({mime_type}), skipping ' \
@@ -338,6 +364,19 @@ def djvutxt(input_file, output_file):
     # TODO: use genutils.run_cmd() [fix problem with 3.<6] and in other places?
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return convert_result_from_shell_cmd(result)
+
+
+def epubtxt(input_file, output_file):
+    cmd = f'unzip -c "{input_file}"'
+    # TODO: use genutils.run_cmd() [fix problem with 3.<6] and in other places?
+    args = shlex.split(cmd)
+    result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if not result.stderr:
+        text = str(result.stdout)
+        with open(output_file, 'w') as f:
+            f.write(text)
+        result.stdout = text
     return convert_result_from_shell_cmd(result)
 
 
@@ -444,43 +483,47 @@ def find_isbns(input_str, isbn_blacklist_regex=ISBN_BLACKLIST_REGEX,
 # following methods:
 # gs, pdftocairo, mutool, cpdf
 # NOTE: only PDF files are supported for the moment
-def fix_file_for_corruption(input_file):
+def fix_file_for_corruption(input_file, command='gs'):
+    g = get_parts_from_path
     input_file = Path(input_file)
     mime_type = get_mime_type(input_file)
-    file_err = ''
     output_tmp_file = ''
-    command = ''
-    command_result = Result()
+    fix_cmd = {'gs': gs, 'pdftocairo': pdftocairo}
+    # 'mutool': mutool, 'cpdf': cpdf}
+    process_result = {'gs': process_gs_result,
+                      'pdftocairo': process_pdftocairo_result}
+    # 'mutool': process_mutool_result,
+    # 'cpdf': process_cpdf_result}
 
-    if mime_type == 'application/pdf':
-        output_tmp_file = tempfile.mkstemp()[1]
-        logger.debug(f"Fixing '{get_parts_from_path(input_file)}' for "
-                     "corruption...")
-        if command_exists('gs'):
-            command = 'gs'
-            command_result = gs(input_file, output_tmp_file)
-            file_err = process_gs_result(command_result)
-        elif command_exists('pdftocairo'):
-            command = 'pdftocairo'
-        elif command_exists('mutool'):
-            command = 'mutool'
-        elif command_exists('cpdf'):
-            command = 'cpdf'
+    if command not in fix_cmd:
+        file_err = f"Command '{command}' not supported\n" \
+                   "Only the following commands for fixing " \
+                   f"pdfs are supported: {fix_cmd.keys()}"
+        exit_code = 3
+    elif mime_type == 'application/pdf':
+        logger.debug(f"Fixing '{g(input_file)}' for corruption...")
+        if command_exists(command):
+            output_tmp_file = tempfile.mkstemp()[1]
+            command_result = fix_cmd[command](input_file, output_tmp_file)
+            file_err, result_exit_code = process_result[command](command_result,
+                                                                 output_tmp_file)
+            if command_result.stderr:
+                logger.debug(f'Error:\n{command_result.stderr}')
+            if file_err:
+                # If error message has more than one line, other lines
+                # should start with a tab (because of fail(), skip()...)
+                file_err = file_err.replace('\n', '\n\t')
+                exit_code = 2 if result_exit_code == 2 else 1
+            else:
+                logger.debug(f'{command} returned successfully!')
+                exit_code = 0
         else:
-            file_err = 'None of the methods for fixing PDF files were found, ' \
-                       'could not check if pdf is OK'
-        if command_result.stderr:
-            logger.debug(f'Error:\n{command_result.stderr}')
-        if command and not file_err:
-            logger.debug(f'{command} returned successfully!')
-        # If error message has more than one line, other lines
-        # should start with a tab (because of fail(), skip()...)
-        file_err = file_err.replace('\n', '\n\t')
-        return file_err, output_tmp_file
+            file_err = f'Command not found: {command}'
+            exit_code = 4
     else:
         file_err = 'file is not pdf, only pdfs can be fixed for corruption'
-        logger.debug(file_err)
-        return file_err, output_tmp_file
+        exit_code = 5
+    return exit_code, file_err, output_tmp_file
 
 
 def get_all_isbns_from_archive(
@@ -502,9 +545,9 @@ def get_all_isbns_from_archive(
     logger.debug(f"Decompressing '{file_path}' into tmp folder '{tmpdir}'")
     result = extract_archive(file_path, tmpdir)
     if result.stderr:
-        logger.debug('Error extracting the file (probably not an archive)! '
-                     'Removing tmp dir...')
-        logger.debug(result.stderr)
+        logger.debug('Error extracting the file (probably not an archive)!')
+        logger.debug(f'Error: {result.stderr}')
+        logger.debug('Removing tmp dir...')
         remove_tree(tmpdir)
         # TODO: return None?
         return ''
@@ -571,6 +614,7 @@ def get_file_size(file_path, unit):
 
 
 # Ref.: https://bit.ly/3txo53J
+# TODO: important, give a better name (better distinguish from ebook-meta)
 def get_metadata(source_data, xpath):
     return (u'\\n'.join(parse(source_data).xpath(xpath))).encode('utf-8')
 
@@ -608,9 +652,12 @@ def get_pages_in_djvu(file_path):
 
 
 # Return number of pages in a pdf document
-def get_pages_in_pdf(file_path):
-    # NOTE: mdls is for macOS
-    if command_exists('mdls'):
+def get_pages_in_pdf(file_path, cmd='mdls'):
+    # TODO: important, add error msg if cmd not supported
+    # NOTE1: mdls is for macOS only (pdfinfo works on macOS/linux)
+    # NOTE2: mdls might not work on some corruption-fixed pdf files but pdfinfo yes
+    #        mdls will return (null)
+    if command_exists(cmd) and cmd == 'mdls':
         cmd = f'mdls -raw -name kMDItemNumberOfPages "{file_path}"'
         args = shlex.split(cmd)
         result = subprocess.run(args, stdout=subprocess.PIPE,
@@ -643,8 +690,10 @@ def gs(input_file, output_file):
 
 # Checks if directory is empty
 # Ref.: https://stackoverflow.com/a/47363995
+# NOTE: .DS_Store can be the only file present and not empty directory
 def is_dir_empty(path):
-    return next(os.scandir(path), None) is None
+    with os.scandir(path) as scan:
+        return next(scan, None) is None
 
 
 # Ref.: https://stackoverflow.com/a/15924160
@@ -816,8 +865,8 @@ def mutool(file_path):
 def ocr_file(file_path, output_file, mime_type,
              ocr_command=OCR_COMMAND,
              ocr_only_first_last_pages=OCR_ONLY_FIRST_LAST_PAGES, **kwargs):
+    # Convert pdf to png image
     def convert_pdf_page(page, input_file, output_file):
-        # Convert pdf to png image
         cmd = f'gs -dSAFER -q -r300 -dFirstPage={page} -dLastPage={page} ' \
               '-dNOPAUSE -dINTERPOLATE -sDEVICE=png16m ' \
               f'-sOutputFile="{output_file}" "{input_file}" -c quit'
@@ -875,8 +924,8 @@ def ocr_file(file_path, output_file, mime_type,
         logger.debug(f"Function '{ocr_command}' doesn't exit. Ending ocr.")
         return 1
 
-    logger.info(f"Will run OCR on file '{file_path}' with {num_pages} "
-                f"page{'s' if num_pages > 1 else ''}...")
+    logger.info(f"Will run OCR on file '{get_parts_from_path(file_path)}' with "
+                f"{num_pages} page{'s' if num_pages > 1 else ''}...")
     logger.debug(f'mime type: {mime_type}')
 
     # TODO: ? assert on ocr_only_first_last_pages (should be tuple or False)
@@ -895,7 +944,8 @@ def ocr_file(file_path, output_file, mime_type,
     logger.debug(f'Pages to process: {pages_to_process}')
 
     text = ''
-    for page in pages_to_process:
+    for i, page in enumerate(pages_to_process, start=1):
+        # print(i)
         # Make temporary files
         tmp_file = tempfile.mkstemp()[1]
         tmp_file_txt = tempfile.mkstemp(suffix='.txt')[1]
@@ -908,10 +958,11 @@ def ocr_file(file_path, output_file, mime_type,
         logger.debug(f"Running the '{ocr_command}' ...")
         result = eval(f'{ocr_command}("{tmp_file}", "{tmp_file_txt}")')
         logger.debug(f"Result of '{ocr_command.__repr__()}':\n{result}")
+        # TODO: important, write at the end?
         with open(tmp_file_txt, 'r') as f:
             data = f.read()
             # TODO: remove this debug eventually; too much data printed
-            logger.debug(f"Text content of page {page}:\n{data}")
+            # logger.debug(f"Text content of page {page}:\n{data}")
         text += data
         # Remove temporary files
         logger.debug('Cleaning up tmp files')
@@ -939,8 +990,8 @@ def pdfinfo(file_path):
     return convert_result_from_shell_cmd(result)
 
 
-def pdftocairo(file_path):
-    cmd = 'pdftocairo "{}"'.format(file_path)
+def pdftocairo(input_file, output_file):
+    cmd = f'pdftocairo -pdf "{input_file}" "{output_file}"'
     args = shlex.split(cmd)
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return convert_result_from_shell_cmd(result)
@@ -953,13 +1004,10 @@ def pdftotext(input_file, output_file):
     return convert_result_from_shell_cmd(result)
 
 
-def process_gs_result(command_result):
-    file_err = ''
-    # TODO: can be very long (if PDf has many pages)
-    logger.debug(f'Output of gs:\n{command_result.stdout}')
-    if command_result.stderr:
-        file_err = f"pdf couldn't be fixed\n" \
-                   f"gs returned an error: {command_result.stderr.strip()}"
+def process_gs_result(command_result, *args, **kwargs):
+    def get_pages_info():
+        num_pages = None
+        last_page = None
         result = re.search('^Processing pages 1 through ([\d]+)',
                            command_result.stdout, flags=re.MULTILINE)
         if result:
@@ -967,30 +1015,64 @@ def process_gs_result(command_result):
             result = re.findall('Page ([\d]+)', command_result.stdout)
             if result:
                 last_page = max([int(i) for i in result])
-                file_err += f'\nPDF file has {num_pages} pages but only ' \
-                            f'{last_page} pages processed!'
+        return num_pages, last_page
+
+    file_err = ''
+    exit_code = 1
+    # TODO: can be very long (if pdf has many pages)
+    logger.debug(f'Output of gs:\n{command_result.stdout}')
+    if command_result.stderr:
+        file_err = "PDF couldn't be fixed\ngs returned an error: " \
+                   f"{command_result.stderr.strip()}"
+        num_pages, last_page = get_pages_info()
+        if num_pages and last_page:
+            file_err += f'\nPDF file has {num_pages} pages but only ' \
+                        f'{last_page} pages processed!'
     else:
         result = re.search('^[\s]+ (No pages will be processed.*)',
                            command_result.stdout, flags=re.MULTILINE)
         if result:
             line = command_result.stdout[result.start():result.end()].strip()
-            file_err = f"pdf couldn't be fixed: {line}"
+            file_err = f"PDF couldn't be fixed: {line}"
         else:
-            result = re.search('^Processing pages 1 through ([\d]+)',
-                               command_result.stdout, flags=re.MULTILINE)
-            # TODO: urgent, factorize (used above)
-            if result:
-                num_pages = int(result.groups()[0])
-                result = re.findall('Page ([\d]+)', command_result.stdout)
-                if result:
-                    last_page = max([int(i) for i in result])
-                    if last_page == num_pages:
-                        logger.debug(f'All {num_pages} pages processed!')
-                    else:
-                        file_err += f'\nPDF file has {num_pages} pages ' \
-                                    f'but only {last_page} pages ' \
-                                    'processed!'
-    return file_err
+            num_pages, last_page = get_pages_info()
+            if num_pages and last_page:
+                if last_page == num_pages:
+                    logger.debug(f'All {num_pages} pages processed!')
+                    exit_code = 0
+                else:
+                    file_err += f'\nPDF file has {num_pages} pages but only ' \
+                                f'{last_page} pages processed!'
+    return file_err, exit_code
+
+
+def process_pdftocairo_result(command_result, output_tmp_file):
+    file_err = ''
+    exit_code = 1
+    # TODO: can be very long (if pdf has many pages)
+    logger.debug(f'Output of pdftocairo:\n{command_result.stdout}')
+    if command_result.stderr:
+        # Get number of pages
+        # NOTE: mdls returns `(null)` on corruption-fixed pdf files but pdfinfo
+        #       returns the correct number of pages
+        pages_result = get_pages_in_pdf(output_tmp_file, cmd='pdfinfo')
+        stderr_lines = command_result.stderr.strip().splitlines()
+        error_msg = '\n'.join(stderr_lines[0:5])
+        if len(stderr_lines) > 5:
+            error_msg += '\n[...]\n'
+        if pages_result.stderr:
+            file_err = "PDF couldn't be fixed\npdftocairo returned errors:\n" \
+                       f"{error_msg}"
+        else:
+            num_pages = pages_result.stdout
+            file_err = "pdftocairo returned errors:\n" \
+                       f"{error_msg}\n<< But pdftocairo was able to " \
+                       f"generate a pdf file with {num_pages} pages >>"
+            exit_code = 2
+    else:
+        logger.debug("pdftocairo didn't return any error")
+        exit_code = 0
+    return file_err, exit_code
 
 
 # TODO: place it (and other path-related functions) in genutils
@@ -1099,7 +1181,7 @@ def search_file_for_isbns(
     # TODO: explain pop()
     func_params.pop('file_path')
     basename = os.path.basename(file_path)
-    logger.debug(f"Searching file '{basename}' for ISBN numbers...")
+    # logger.debug(f"Searching file '{basename}' for ISBN numbers...")
     # Step 1: check the filename for ISBNs
     # TODO: make sure that we return an empty string when we can't find ISBNs
     logger.debug('check the filename for ISBNs')
@@ -1163,7 +1245,7 @@ def search_file_for_isbns(
             data = reorder_file_content(tmp_file_txt, **func_params)
             isbns = find_isbns(data, **func_params)
             if isbns:
-                logger.debug(f"Text output contains ISBNs '{isbns}'!")
+                logger.debug(f"Text output contains ISBNs '{isbns}'")
             elif ocr_enabled == 'always':
                 logger.debug('We will try OCR because the successfully converted '
                              'text did not have any ISBNs')
@@ -1193,7 +1275,7 @@ def search_file_for_isbns(
     remove_file(tmp_file_txt)
 
     if isbns:
-        logger.debug(f"Returning the found ISBNs '{isbns}'!")
+        logger.debug(f"Returning the found ISBNs '{isbns}'")
     else:
         logger.debug(f'Could not find any ISBNs in {file_path} :(')
 
