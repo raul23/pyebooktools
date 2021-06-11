@@ -28,6 +28,8 @@ from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.lib import (check_file_for_corruption, fail_file,
                               fetch_metadata, find_isbns, get_ebook_metadata,
                               get_file_size, get_mime_type, get_pages_in_pdf,
+                              # get_parts_from_path as g,
+                              is_dir_empty,
                               move_or_link_ebook_file_and_metadata,
                               move_or_link_file, remove_file, ok_file,
                               search_file_for_isbns, search_meta_val,
@@ -41,11 +43,11 @@ logger = init_log(__name__, __file__)
 class OrganizeEbooks:
     def __init__(self):
         self.folder_to_organize = None
-        self.output_folder = default_cfg.output_folder
-        self.output_folder_corrupt = default_cfg.output_folder_corrupt
-        self.output_folder_pamphlets = default_cfg.output_folder_pamphlets
-        self.output_folder_uncertain = default_cfg.output_folder_uncertain
-        self.corruption_check_only = default_cfg.corruption_check_only
+        self.output_folder = default_cfg.organize['output_folder']
+        self.output_folder_corrupt = default_cfg.organize['output_folder_corrupt']
+        self.output_folder_pamphlets = default_cfg.organize['output_folder_pamphlets']
+        self.output_folder_uncertain = default_cfg.organize['output_folder_uncertain']
+        self.corruption_check_only = default_cfg.organize['corruption_check_only']
         self.dry_run = default_cfg.dry_run
         self.isbn_blacklist_regex = default_cfg.isbn_blacklist_regex
         self.isbn_direct_grep_files = default_cfg.isbn_direct_grep_files
@@ -60,18 +62,18 @@ class OrganizeEbooks:
         self.ocr_command = default_cfg.ocr_command
         self.ocr_enabled = default_cfg.ocr_enabled
         self.ocr_only_first_last_pages = default_cfg.ocr_only_first_last_pages
-        self.organize_without_isbn = default_cfg.organize_without_isbn
+        self.organize_without_isbn = default_cfg.organize['organize_without_isbn']
         self.organize_without_isbn_sources = default_cfg.organize_without_isbn_sources
         self.output_filename_template = default_cfg.output_filename_template
         self.output_metadata_extension = default_cfg.output_metadata_extension
-        self.pamphlet_excluded_files = default_cfg.pamphlet_excluded_files
-        self.pamphlet_included_files = default_cfg.pamphlet_included_files
-        self.pamphlet_max_filesize_kib = default_cfg.pamphlet_max_filesize_kib
-        self.pamphlet_max_pdf_pages = default_cfg.pamphlet_max_pdf_pages
+        self.pamphlet_excluded_files = default_cfg.organize['pamphlet_excluded_files']
+        self.pamphlet_included_files = default_cfg.organize['pamphlet_included_files']
+        self.pamphlet_max_filesize_kib = default_cfg.organize['pamphlet_max_filesize_kib']
+        self.pamphlet_max_pdf_pages = default_cfg.organize['pamphlet_max_pdf_pages']
         self.reverse = default_cfg.reverse
         self.symlink_only = default_cfg.symlink_only
-        self.tested_archive_extensions = default_cfg.tested_archive_extensions
-        self.without_isbn_ignore = default_cfg.without_isbn_ignore
+        self.tested_archive_extensions = default_cfg.organize['tested_archive_extensions']
+        self.without_isbn_ignore = default_cfg.organize['without_isbn_ignore']
 
     def _is_pamphlet(self, file_path):
         logger.debug(f"Checking whether '{file_path}' looks like a pamphlet...")
@@ -193,7 +195,7 @@ class OrganizeEbooks:
         else:
             logger.debug(f"Couldn't determine if file '{old_path}' is a pamphlet")
         if not self.output_folder_uncertain:
-            logger.debug('No uncertain folder specified, skipping...')
+            # logger.debug('No uncertain folder specified, skipping...')
             skip_file(old_path, 'No uncertain folder specified')
             return
         result = get_ebook_metadata(old_path)
@@ -379,6 +381,7 @@ class OrganizeEbooks:
                                  f'Non-ISBN organization disabled')
 
     def _organize_file(self, file_path):
+        logger.info(f'Processing {Path(file_path).name} ...')
         file_err = check_file_for_corruption(file_path,
                                              self.tested_archive_extensions)
         if file_err:
@@ -418,6 +421,8 @@ class OrganizeEbooks:
             # TODO: important, if html has ISBN it will be considered as an ebook
             # self._is_pamphlet() needs to be called before search...()
             logger.debug('File passed the corruption test, looking for ISBNs...')
+            logger.debug(f"Searching file '{Path(file_path).name}' for ISBN "
+                         "numbers...")
             isbns = search_file_for_isbns(file_path, **self.__dict__)
             if isbns:
                 logger.debug(f"Organizing '{file_path}' by ISBNs\n{isbns}")
@@ -432,18 +437,39 @@ class OrganizeEbooks:
                           'No ISBNs found; Non-ISBN organization disabled')
         logger.debug('=====================================================')
 
+    # TODO: important, do the same for others
+    def _update(self, **kwargs):
+        logger.debug('Updating attributes for organize...')
+        for k, v in self.__dict__.items():
+            new_val = kwargs.get(k)
+            if new_val and v != new_val:
+                logger.debug(f'{k}: {v} -> {new_val}')
+                self.__setattr__(k, new_val)
+
     def organize(self, folder_to_organize, **kwargs):
-        # TODO: add debug message about update attributes
-        self.__dict__.update(kwargs)
+        # TODO: important, factorize (other places, e.g. rename)
+        # TODO: important, add red color to error message (other places too)
+        if folder_to_organize is None:
+            logger.error("\nerror: the following arguments are required: folder_to_organize")
+            return 1
+        self._update(**kwargs)
         self.folder_to_organize = folder_to_organize
         files = []
+        # TODO: important, other places too
+        if is_dir_empty(folder_to_organize):
+            logger.warning(f'Folder is empty: {folder_to_organize}')
+        if self.corruption_check_only:
+            logger.info('We are only checking for corruption\n')
+        else:
+            logger.info('')
         logger.debug(f"Recursively scanning '{folder_to_organize}' for files...")
-        # TODO: urgent, say if empty folder
         for fp in Path(folder_to_organize).rglob('*'):
             # Ignore directory and hidden files
             if Path.is_file(fp) and not fp.name.startswith('.'):
                 logger.debug(f"{fp.name}")
                 files.append(fp)
+        if not files:
+            logger.warning(f'No ebooks found in folder: {folder_to_organize}')
         # TODO: important sort within glob?
         logger.debug("Files sorted {}".format("in desc" if self.reverse else "in asc"))
         files.sort(key=lambda x: x.name, reverse=self.reverse)
