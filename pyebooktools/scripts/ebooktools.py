@@ -19,14 +19,16 @@ import os
 import sys
 
 import pyebooktools
-from pyebooktools import (convert_to_txt, edit_config, find_isbns, fix_ebooks,
-                          rename_calibre_library, split_into_folders)
+from pyebooktools import (
+    convert_to_txt, edit_config, find_isbns, rename_calibre_library,
+    split_into_folders)
 from pyebooktools.configs import default_config as default_cfg
-from pyebooktools.organize_ebooks import organizer
 from pyebooktools.fix_ebooks import fixer
 from pyebooktools.lib import color_msg as c
-from pyebooktools.utils.genutils import (get_config_dict, namespace_to_dict,
-                                         override_config_with_args, setup_log)
+from pyebooktools.organize_ebooks import organizer
+from pyebooktools.remove_extras import remover
+from pyebooktools.utils.genutils import (
+    get_config_dict, namespace_to_dict, override_config_with_args, setup_log)
 from pyebooktools.utils.logutils import init_log
 
 logger = init_log(__name__, __file__)
@@ -34,12 +36,14 @@ logger = init_log(__name__, __file__)
 # =====================
 # Default config values
 # =====================
-CORRUPTION_CHECK_ONLY = default_cfg.corruption_check_only
-CORRUPTION_CHECK_ORDER = default_cfg.corruption_check_order
-CORRUPTION_FIX_ONLY = default_cfg.corruption_fix_only
-CORRUPTION_FIX_ORDER = default_cfg.corruption_fix_order
-FILES_PER_FOLDER = default_cfg.files_per_folder
-FOLDER_PATTERN = default_cfg.folder_pattern
+# TODO: important, use namespace
+CFG_TYPE = default_cfg.cfg_type
+CORRUPTION_CHECK_ONLY = default_cfg.organize['corruption_check_only']
+CORRUPTION_CHECK_ORDER = default_cfg.organize['corruption_check_order']
+CORRUPTION_FIX_ONLY = default_cfg.fix['corruption_fix_only']
+CORRUPTION_FIX_ORDER = default_cfg.fix['corruption_fix_order']
+FILES_PER_FOLDER = default_cfg.split['files_per_folder']
+FOLDER_PATTERN = default_cfg.split['folder_pattern']
 ISBN_BLACKLIST_REGEX = default_cfg.isbn_blacklist_regex
 ISBN_DIRECT_GREP_FILES = default_cfg.isbn_direct_grep_files
 ISBN_GREP_REORDER_FILES = default_cfg.isbn_grep_reorder_files
@@ -49,34 +53,34 @@ ISBN_REGEX = default_cfg.isbn_regex
 ISBN_RET_SEPARATOR = default_cfg.isbn_ret_separator
 LOGGING_FORMATTER = default_cfg.logging_formatter
 LOGGING_LEVEL = default_cfg.logging_level
-PAMPHLET_EXCLUDED_FILES = default_cfg.pamphlet_excluded_files
-PAMPHLET_INCLUDED_FILES = default_cfg.pamphlet_included_files
-PAMPHLET_MAX_FILESIZE_KIB = default_cfg.pamphlet_max_filesize_kib
-PAMPHLET_MAX_PDF_PAGES = default_cfg.pamphlet_max_pdf_pages
+PAMPHLET_EXCLUDED_FILES = default_cfg.organize['pamphlet_excluded_files']
+PAMPHLET_INCLUDED_FILES = default_cfg.organize['pamphlet_included_files']
+PAMPHLET_MAX_FILESIZE_KIB = default_cfg.organize['pamphlet_max_filesize_kib']
+PAMPHLET_MAX_PDF_PAGES = default_cfg.organize['pamphlet_max_pdf_pages']
 OCR_COMMAND = default_cfg.ocr_command
 OCR_ENABLED = default_cfg.ocr_enabled
 OCR_ONLY_FIRST_LAST_PAGES = default_cfg.ocr_only_first_last_pages
-ORGANIZE_WITHOUT_ISBN = default_cfg.organize_without_isbn
+ORGANIZE_WITHOUT_ISBN = default_cfg.organize['organize_without_isbn']
 ORGANIZE_WITHOUT_ISBN_SOURCES = default_cfg.organize_without_isbn_sources
 OUTPUT_FILE = default_cfg.output_file
 OUTPUT_FILENAME_TEMPLATE = default_cfg.output_filename_template
-OUTPUT_FOLDER = default_cfg.output_folder
-OUTPUT_FOLDER_CORRUPT = default_cfg.output_folder_corrupt
-OUTPUT_FOLDER_PAMPHLETS = default_cfg.output_folder_pamphlets
-OUTPUT_FOLDER_UNCERTAIN = default_cfg.output_folder_uncertain
+OUTPUT_FOLDER = default_cfg.organize['output_folder']
+OUTPUT_FOLDER_CORRUPT = default_cfg.organize['output_folder_corrupt']
+OUTPUT_FOLDER_PAMPHLETS = default_cfg.organize['output_folder_pamphlets']
+OUTPUT_FOLDER_UNCERTAIN = default_cfg.organize['output_folder_uncertain']
 OUTPUT_METADATA_EXTENSION = default_cfg.output_metadata_extension
-SAVE_METADATA = default_cfg.save_metadata
-START_NUMBER = default_cfg.start_number
-TESTED_ARCHIVE_EXTENSIONS = default_cfg.tested_archive_extensions
+SAVE_METADATA = default_cfg.rename['save_metadata']
+START_NUMBER = default_cfg.split['start_number']
+TESTED_ARCHIVE_EXTENSIONS = default_cfg.organize['tested_archive_extensions']
 TOKEN_MIN_LENGTH = default_cfg.token_min_length
 TOKENS_TO_IGNORE = default_cfg.tokens_to_ignore
-WITHOUT_ISBN_IGNORE = default_cfg.without_isbn_ignore
+WITHOUT_ISBN_IGNORE = default_cfg.organize['without_isbn_ignore']
 
 # ====================
 # Other default values
 # ====================
-_LOG_CFG = 'log'
-_MAIN_CFG = 'main'
+LOG_CFG = 'log'
+MAIN_CFG = 'main'
 _DEFAULT_MSG = ' (default: {})'
 
 
@@ -108,8 +112,8 @@ def add_corruption_options(parser, remove_opts=None, add_as_group=True,
             dest='corruption_check_order', metavar='METHOD',
             help="This option allows you to specify the methods used for "
                  "checking for corruption in ebooks and the order in which "
-                 "the commands will try them. If a method is not installed, "
-                 "then the next method will be tried."
+                 "they will be tried. If a method is not installed, then the "
+                 "next one will be tried."
                  + _DEFAULT_MSG.format(CORRUPTION_CHECK_ORDER))
     return parser_corruption
 
@@ -133,73 +137,96 @@ def add_fix_options(parser, remove_opts=None, add_as_group=True):
         parser_fix.add_argument(
             "--corruption-fix-order", nargs='+', dest='corruption_fix_order',
             metavar='METHOD',
-            help="This option allows you to specify the methods used to fix "
-                 "for corruption in ebooks and the order in which the commands "
+            help="This option allows you to specify the commands used to fix "
+                 "corruption in ebooks and the order in which the commands "
                  "will try them. If a method is not installed, then the next "
                  "method will be tried."
                  + _DEFAULT_MSG.format(CORRUPTION_FIX_ORDER))
     return parser_fix
 
 
+class OptionsChecker:
+    def __init__(self, add_opts, remove_opts):
+        self.add_opts = init_list(add_opts)
+        self.remove_opts = init_list(remove_opts)
+
+    def check(self, opt_name):
+        return not self.remove_opts.count(opt_name) or \
+               self.add_opts.count(opt_name)
+
+
 # TODO: important, mention options are grouped in each function
+# TODO: important, mention add_opts supersede remove_opts
 # General options
-def add_general_options(parser, remove_opts=None):
-    remove_opts = init_list(remove_opts)
-    parser_general_group = parser.add_argument_group(title='General options')
-    if not remove_opts.count('help'):
+def add_general_options(parser, add_opts=None, remove_opts=None,
+                        program_version=pyebooktools.__version__,
+                        title='General options'):
+    checker = OptionsChecker(add_opts, remove_opts)
+    parser_general_group = parser.add_argument_group(title=title)
+    if checker.check('help'):
         parser_general_group.add_argument('-h', '--help', action='help',
                                           help='Show this help message and exit.')
     # TODO: package name too? instead of program name
-    if not remove_opts.count('version'):
+    if checker.check('version'):
         parser_general_group.add_argument(
             '-v', '--version', action='version',
-            version=f'%(prog)s v{pyebooktools.__version__}',
+            version=f'%(prog)s v{program_version}',
             help="Show program's version number and exit.")
-    if not remove_opts.count('quiet'):
+    if checker.check('quiet'):
         parser_general_group.add_argument(
             '-q', '--quiet', action='store_true',
             help='Enable quiet mode, i.e. nothing will be printed.')
-    if not remove_opts.count('verbose'):
+    if checker.check('verbose'):
         # TODO: important test traceback
         parser_general_group.add_argument(
             '--verbose', action='store_true',
             help='Print various debugging information, e.g. print traceback '
                  'when there is an exception.')
-    if not remove_opts.count('dry-run'):
+    if checker.check('use-config'):
+        parser_general_group.add_argument(
+            '-u', '--use-config', dest='use_config', action='store_true',
+            help='If this is enabled, the parameters found in the main '
+                 'config file will be used instead of the command-line '
+                 'arguments. NOTE: any other command-line argument that '
+                 'you use in the terminal with the `--use-config` flag is '
+                 'ignored, i.e. only the parameters defined in the main '
+                 'config file config.py will be used.')
+    if checker.check('dry-run'):
         parser_general_group.add_argument(
             '-d', '--dry-run', dest='dry_run', action='store_true',
             help='If this is enabled, no file rename/move/symlink/etc. '
                  'operations will actually be executed.')
     # TODO: important remove symlink-only and other options for some subcommands
-    if not remove_opts.count('symlink-only'):
+    if checker.check('symlink-only'):
         parser_general_group.add_argument(
             '--sl', '--symlink-only', dest='symlink_only', action='store_true',
             help='Instead of moving the ebook files, create symbolic links to '
                  'them.')
-    if not remove_opts.count('keep-metadata'):
+    if checker.check('keep-metadata'):
         parser_general_group.add_argument(
             '--km', '--keep-metadata', dest='keep_metadata', action='store_true',
             help='Do not delete the gathered metadata for the organized ebooks, '
-                 'instead save it in an accompanying file together with each'
+                 'instead save it in an accompanying file together with each '
                  'renamed book. It is very useful for semi-automatic '
                  'verification of the organized files with '
                  '`interactive-organizer.sh` or for additional verification, '
                  'indexing or processing at a later date.')
     # TODO: important move reverse and 2 others after into misc
     # TODO: implement more sort options, e.g. random sort
-    if not remove_opts.count('reverse'):
+    if checker.check('reverse'):
         parser_general_group.add_argument(
             '-r', '--reverse', dest='reverse', action='store_true',
             help='If this is enabled, the files will be sorted in reverse (i.e. '
                  'descending) order. By default, they are sorted in ascending '
                  'order.')
-    if not remove_opts.count('log-level'):
+    # TODO: important, add color to default values (other places too)
+    if checker.check('log-level'):
         parser_general_group.add_argument(
             '--log-level', dest='logging_level',
             choices=['debug', 'info', 'warning', 'error'],
             help='Set logging level for all loggers.'
                  + _DEFAULT_MSG.format(LOGGING_LEVEL))
-    if not remove_opts.count('log-format'):
+    if checker.check('log-format'):
         # TODO: explain each format
         parser_general_group.add_argument(
             '--log-format', dest='logging_formatter',
@@ -341,7 +368,7 @@ def add_non_isbn_options(parser):
         default regular expression includes common words that probably hinder
         online metadata searching like book, novel, series, volume and others,
         as well as probable publication years like (so 1999 is ignored while
-        2033 is not). You can see it in lib.py.'''
+        2033 is not).'''
              + _DEFAULT_MSG.format(TOKENS_TO_IGNORE))
     parser_non_isbn_group.add_argument(
         '--owis', '--organize-without-isbn-sources', nargs='+',
@@ -360,20 +387,20 @@ def add_non_isbn_options(parser):
 
 
 # Options for OCR
-def add_ocr_options(parser, remove_opts=None):
+def add_ocr_options(parser, title='Options for OCR', remove_opts=None):
     remove_opts = init_list(remove_opts)
-    parser_convert_group = parser.add_argument_group(title='Options for OCR')
+    parser_ocr_group = parser.add_argument_group(title=title)
     if not remove_opts.count('ocr-enabled'):
-        parser_convert_group.add_argument(
+        parser_ocr_group.add_argument(
             "--ocr", "--ocr-enabled", dest='ocr_enabled',
-            choices=['always', 'true', 'false'],
-            help='''Whether to enable OCR for .pdf, .djvu and image files. It is
-                disabled by default.''')
+            choices=['always', 'true', 'false'], default=OCR_ENABLED,
+            help='Whether to enable OCR for .pdf, .djvu and image files. It is '
+                 'disabled by default.' + _DEFAULT_MSG.format(OCR_ENABLED))
     if not remove_opts.count('ocr-only-first-last-pages'):
         # TODO: improve presentation of default values (and other places)
         # e.g. right now: (7,3)
         # what we want: 7 3
-        parser_convert_group.add_argument(
+        parser_ocr_group.add_argument(
             "--ocrop", "--ocr-only-first-last-pages",
             dest='ocr_only_first_last_pages', metavar='PAGES', nargs=2,
             help='''Value n,m instructs the subcommands to convert only the
@@ -381,7 +408,7 @@ def add_ocr_options(parser, remove_opts=None):
                  + _DEFAULT_MSG.format(OCR_ONLY_FIRST_LAST_PAGES))
     if not remove_opts.count('ocr-command'):
         # TODO: test ocrc option or drop it
-        parser_convert_group.add_argument(
+        parser_ocr_group.add_argument(
             "--ocrc", "--ocr-command",
             dest='ocr_command', metavar='CMD',
             help='''This allows us to define a hook for using custom OCR settings
@@ -425,29 +452,22 @@ def parse_edit_args(main_cfg):
 
 
 def process_returned_values(returned_values):
-    def log_opts_overriden(opts_overriden, msg, log_level='info'):
-        nb_items = len(opts_overriden)
-        for i, (cfg_name, old_v, new_v) in enumerate(opts_overriden):
+    def log_opts_overridden(opts_overridden, msg, log_level='debug'):
+        nb_items = len(opts_overridden)
+        for i, (cfg_name, old_v, new_v) in enumerate(opts_overridden):
             msg += f'\t {cfg_name}: {old_v} --> {new_v}'
             if i + 1 < nb_items:
                 msg += "\n"
         getattr(logger, log_level)(msg)
 
-    # Process 1st returned values: default args overriden by config options
-    if returned_values.default_args_overriden:
-        msg = 'Default arguments overridden by config options:\n'
-        log_opts_overriden(returned_values.default_args_overriden, msg)
-    # Process 2nd returned values: config options overriden by args
-    if returned_values.config_opts_overridden:
-        msg = 'Config options overridden by command-line arguments:\n'
-        log_opts_overriden(returned_values.config_opts_overridden, msg, 'debug')
-    # Process 3rd returned values: arguments not found in config file
-    """
-    if args_not_found_in_config:
-        msg = 'Command-line arguments not found in config file: ' \
-              f'\n\t{args_not_found_in_config}'
-        logger.debug(msg)
-    """
+    # Process default args overridden by command-line args/config options
+    if returned_values.default_args_overridden:
+        msg = returned_values.msg
+        log_opts_overridden(returned_values.default_args_overridden, msg)
+    # Process arguments not found in config file
+    if returned_values.args_not_found_in_config and True:
+        msg = 'Command-line arguments not found in config file:\n'
+        log_opts_overridden(returned_values.args_not_found_in_config, msg)
 
 
 # Ref.: https://stackoverflow.com/a/4195302/14664104
@@ -572,10 +592,10 @@ def setup_argparser():
     # ==========
     # create the parser for the "edit" command
     desc = 'Edit a configuration file, either the main configuration file ' \
-           f'(`{_MAIN_CFG}`) or the logging configuration file (`{_LOG_CFG}`).'
+           f'(`{MAIN_CFG}`) or the logging configuration file (`{LOG_CFG}`).'
     parser_edit = subparsers.add_parser(
         'edit', add_help=False,
-        usage=f'%(prog)s [OPTIONS] {{{_MAIN_CFG}, {_LOG_CFG}}}\n\n{desc}',
+        usage=f'%(prog)s [OPTIONS] {{{MAIN_CFG}, {LOG_CFG}}}\n\n{desc}',
         help='Edit a configuration file.',
         formatter_class=lambda prog: MyFormatter(
             prog, max_help_position=50, width=width))
@@ -591,15 +611,15 @@ def setup_argparser():
              'type of file will be used.')
     parser_edit_mutual_group.add_argument(
         '-r', '--reset', action='store_true',
-        help=f'Reset a configuration file (`{_MAIN_CFG}` or `{_LOG_CFG}`) '
+        help=f'Reset a configuration file (`{MAIN_CFG}` or `{LOG_CFG}`) '
              'with factory default values.')
     parser_edit_input_group = parser_edit.add_argument_group(
         title='Input argument')
     parser_edit_input_group.add_argument(
-        'cfg_type', choices=[_MAIN_CFG, _LOG_CFG],
+        'cfg_type', choices=[LOG_CFG, MAIN_CFG], nargs='?',
         help='The config file to edit which can either be the main '
-             f'configuration file (`{_MAIN_CFG}`) or the logging configuration '
-             f'file (`{_LOG_CFG}`).')
+             f'configuration file (`{MAIN_CFG}`) or the logging configuration '
+             f'file (`{LOG_CFG}`).' + _DEFAULT_MSG.format(CFG_TYPE))
     parser_edit.set_defaults(func=parse_edit_args)
     # ==============
     # Convert to txt
@@ -620,7 +640,7 @@ def setup_argparser():
     parser_convert_group = parser_convert.add_argument_group(
         title='Input and output options')
     parser_convert_group.add_argument(
-        name_input,
+        name_input, nargs='?',
         help='''The input file to be converted to a text file.''')
     parser_convert_group.add_argument(
         '-o', '--output-file', dest='output_file', metavar='OUTPUT',
@@ -651,7 +671,7 @@ def setup_argparser():
     parser_find_input_group = parser_find.add_argument_group(
         title='input argument')
     parser_find_input_group.add_argument(
-        name_input,
+        name_input, nargs='?',
         help='Can either be the path to a file or a string. The input will be '
              'searched for ISBNs.')
     parser_find.set_defaults(func=find_isbns.find)
@@ -690,6 +710,9 @@ def setup_argparser():
         help='If specified, corrupted files (incl. those that were not fixed) '
              'will be moved to this folder.'
              + _DEFAULT_MSG.format(OUTPUT_FOLDER_CORRUPT))
+    # TODO: important, explain why long_subcommand? see genutils also
+    # because config groups related options into a dict (e.g. remove_extras)
+    # parser_fix.set_defaults(func=fixer.fix, long_subcommand='fix_ebooks')
     parser_fix.set_defaults(func=fixer.fix)
     # ===============
     # organize-ebooks
@@ -740,7 +763,7 @@ def setup_argparser():
     parser_organize_group.add_argument(
         '--wii', '--without-isbn-ignore', dest='without_isbn_ignore',
         metavar='REGEX',
-        help='This is a regular expression that is matched against lowercase'
+        help='This is a regular expression that is matched against lowercase '
              'filenames. All files that do not contain ISBNs are matched '
              'against it and matching files are ignored by the script, even if '
              '`organize-without-isbn` is true. The default value is calibrated '
@@ -752,8 +775,8 @@ def setup_argparser():
     parser_organize_group.add_argument(
         '--pamphlet-included-files', dest='pamphlet_included_files',
         metavar='REGEX',
-        help='This is a regular expression that is matched against lowercase'
-             'filenames. All files that do not contain ISBNs and do not match'
+        help='This is a regular expression that is matched against lowercase '
+             'filenames. All files that do not contain ISBNs and do not match '
              '`without_isbn_ignore` are matched against it and matching files '
              'are considered pamphlets by default. They are moved to '
              '`output_folder_pamphlets` if set, otherwise they are ignored.'
@@ -761,7 +784,7 @@ def setup_argparser():
     parser_organize_group.add_argument(
         '--pamphlet-excluded-files', dest='pamphlet_excluded_files',
         metavar='REGEX',
-        help='This is a regular expression that is matched against lowercase'
+        help='This is a regular expression that is matched against lowercase '
              'filenames. If files do not contain ISBNs and match against it, '
              'they are NOT considered as pamphlets, even if they have a small '
              'size or number of pages.'
@@ -769,29 +792,29 @@ def setup_argparser():
     parser_organize_group.add_argument(
         '--pamphlet-max-pdf-pages', dest='pamphlet_max_pdf_pages', type=int,
         metavar='PAGES',
-        help='.pdf files that do not contain valid ISBNs and have a lower'
+        help='.pdf files that do not contain valid ISBNs and have a lower '
              'number pages than this are considered pamplets/non-ebook '
              'documents.' + _DEFAULT_MSG.format(PAMPHLET_MAX_PDF_PAGES))
     parser_organize_group.add_argument(
         '--pamphlet-max-filesize-kb', dest='pamphlet_max_filesize_kib', type=int,
         metavar='SIZE',
-        help='Other files that do not contain valid ISBNs and are below this'
+        help='Other files that do not contain valid ISBNs and are below this '
              'size in KBs are considered pamplets/non-ebook documents.'
              + _DEFAULT_MSG.format(PAMPHLET_MAX_FILESIZE_KIB))
     add_isbn_return_separator(parser_organize_group)
     parser_organize_input_output_group = parser_organize.add_argument_group(
         title='Input and output options')
     parser_organize_input_output_group.add_argument(
-        name_input,
+        name_input, nargs='?',
         help='Folder containing the ebook files that need to be organized.')
     parser_organize_input_output_group.add_argument(
         '-o', '--output-folder', dest='output_folder', metavar='PATH',
-        help='The folder where ebooks that were renamed based on the ISBN'
+        help='The folder where ebooks that were renamed based on the ISBN '
              'metadata will be moved to.' + _DEFAULT_MSG.format(OUTPUT_FOLDER))
     parser_organize_input_output_group.add_argument(
         '--ofu', '--output-folder-uncertain', dest='output_folder_uncertain',
         metavar='PATH',
-        help='If `organize_without_isbn` is enabled, this is the folder to'
+        help='If `organize_without_isbn` is enabled, this is the folder to '
              'which all ebooks that were renamed based on non-ISBN metadata '
              'will be moved to.' + _DEFAULT_MSG.format(OUTPUT_FOLDER_UNCERTAIN))
     parser_organize_input_output_group.add_argument(
@@ -811,7 +834,7 @@ def setup_argparser():
     # create the parser for the "remove-ebooks" command
     name_input = 'input_data'
     desc = 'Not implemented yet!'
-    parser_fix = subparsers.add_parser(
+    parser_remove = subparsers.add_parser(
         'remove', add_help=False,
         usage=f'%(prog)s [OPTIONS] {name_input}\n\n{desc}',
         # Removes extras (e.g. annotations and bookmarks) from ebook files.
@@ -819,15 +842,15 @@ def setup_argparser():
         help=desc,
         formatter_class=lambda prog: MyFormatter(prog, max_help_position=52,
                                                  width=width))
-    add_general_options(parser_fix, remove_opts=['dry-run', 'symlink-only',
-                                                 'keep-metadata'])
-    parser_fix_input_output_group = parser_fix.add_argument_group(
+    add_general_options(parser_remove, remove_opts=['dry-run', 'symlink-only',
+                                                    'keep-metadata'])
+    parser_remove_input_output_group = parser_remove.add_argument_group(
         title='Input and output options')
-    parser_fix_input_output_group.add_argument(
-        'input_data',
+    parser_remove_input_output_group.add_argument(
+        'input_data', nargs='?',
         help='Can either be a file or a folder containing the ebook files '
              'whose extras will be removed.')
-    parser_fix.set_defaults(func=fixer.fix)
+    parser_remove.set_defaults(func=remover.remove)
     # ======================
     # rename-calibre-library
     # ======================
@@ -868,7 +891,7 @@ def setup_argparser():
     parser_rename_input_output_group = parser_rename.add_argument_group(
         title='Input and output options')
     parser_rename_input_output_group.add_argument(
-        'calibre_folder',
+        'calibre_folder', nargs='?',
         help='''Calibre library folder which will be traversed and all the book
             files in it will be renamed. The renamed files will either be moved
             or symlinked (if the flag `--symlink-only` is enabled) to the
@@ -922,7 +945,7 @@ def setup_argparser():
     parser_split_input_output_group = parser_split.add_argument_group(
         title='Input and output options')
     parser_split_input_output_group.add_argument(
-        name_input,
+        name_input, nargs='?',
         help='''Folder with books which will be recursively scanned for files.
             The found files (and the accompanying metadata files if present) will
             be split into folders with consecutive names that each contain the
@@ -952,91 +975,29 @@ def main():
             sys.exit(1)
         # Get main cfg dict
         # TODO: important, check if an option is defined more than once
+        # TODO: work with the default or user config file?
         main_cfg = argparse.Namespace(**get_config_dict('main'))
-        returned_values = override_config_with_args(main_cfg, parser)
-        setup_log(main_cfg.quiet, main_cfg.verbose,
+        # Override main configuration from file with command-line arguments
+        returned_values = override_config_with_args(
+            main_cfg, args, default_cfg.__dict__, use_config=args.use_config)
+        setup_log(package=pyebooktools, quiet=main_cfg.quiet,
+                  verbose=main_cfg.verbose,
                   logging_level=main_cfg.logging_level,
                   logging_formatter=main_cfg.logging_formatter,
                   subcommand=main_cfg.subcommand)
-        # Override main configuration from file with command-line arguments
         process_returned_values(returned_values)
+        if main_cfg.subcommand == 'edit':
+            return main_cfg.func(main_cfg)
+        else:
+            return main_cfg.func(**namespace_to_dict(main_cfg))
     except AssertionError as e:
         # TODO (IMPORTANT): use same logic as in Darth-Vader-RPi
         # TODO: add KeyboardInterruptError
         logger.error(e)
         return 1
-    else:
-        if args.subcommand == 'edit':
-            return args.func(main_cfg)
-        else:
-            return args.func(**namespace_to_dict(main_cfg))
 
 
 if __name__ == '__main__':
-    # TODO: mention somewhere, options not used
-    # file_sort_flags = []
-    # debug_prefix_length = 40
-    #
-    # TODO: important, test isbn_metadata_fetch_order with calibre 2.84
-    # TODO: important, test ocr_command = 'tesseract_wrapper'
-    # TODO: urgent, add short versions of some options
-    #
-    # TODO: important, test organize with other formats (mobi, zip, ...)
-    # See README (search for docx)
-    #
-    # TODO: accept - for output file to write to stdout, see https://bit.ly/3tzBDes
-
-    # Convert
-    # ebooktools convert ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf -o ~/test/_ebooktools/output.txt
-    #
-    # Convert with debug and ocr=always
-    # ebooktools convert --log-level debug --ocr always ~/test/_ebooktools/convert_to_txt/pdf_to_convert.pdf -o ~/test/_ebooktools/output.txt
-    #
-    # Edit
-    # ebooktools edit -a charm log
-    #
-    # Find in a string
-    # ebooktools find "978-159420172-1 978-1892391810 0000000000 0123456789 1111111111" --log-level debug --log-format console
-    #
-    # Find in a PDF file
-    # ebooktools find --log-level debug --log-format console ~/test/_ebooktools/find_isbns/Title
-    #
-    # Organize
-    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg -o ~/test/_ebooktools/organize/output_folder
-    # --ofu ~/test/_ebooktools/oranize/output_folder_uncertain/ --pamphlet-max-pdf-pages 10 --owi
-    #
-    # Organize with output folder (no corrupted files) with dry-run (no metadata copied)
-    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
-    # -o ~/test/_ebooktools/organize/output_folder -d
-    #
-    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
-    #
-    # Organize with corrupted files
-    # ebooktools organize ~/test/_ebooktools/organize/corrupted_files/ --log-level debug -o ~/test/_ebooktools/organize/output_folder/
-    #
-    # Organize with corrupted files and corrupted folder
-    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize -o ~/test/_ebooktools/organize/output_folder/
-    # --log-format only_msg --ofc ~/test/_ebooktools/organize/output_folder_corrupt/
-    #
-    # -d, --dry-run
-    # --sl, --symlink-only
-    # Keep metadata: --km
-    #
-    # Organize with uncertain folder
-    # ebooktools organize ~/test/_ebooktools/organize/folder_to_organize/ --log-format only_msg
-    # -o ~/test/_ebooktools/organize/output_folder --ofu ~/test/_ebooktools/oganize/output_folder_uncertain/
-    # --pamphlet-max-pdf-pages 10 --owi --log-level info --km
-    #
-    # Rename using own calibre library
-    # ebooktools rename --sm opfcopy --sl --log-format console ~/test/_ebooktools/rename_calibre_library/example_07/
-    # -o ~/test/_ebooktools/rename_calibre_library/output_folder/
-    #
-    # Rename using real calibre library
-    # ebooktools rename --sm opfcopy --sl --log-format console ~/Calibre\ Library/ -o ~/test/_ebooktools/rename_calibre_library/output_folder/
-    #
-    # Split
-    # ebooktools split --fpf 2 -s 1 ~/test/_ebooktools/folder_with_books/ -o ~/test/_ebooktools/output_folder/
-    # ebooktools split --log-level debug --log-format simple folder_with_books/ -o output_folder/
     retcode = main()
     msg = f'Program exited with {retcode}'
     if retcode == 1:
