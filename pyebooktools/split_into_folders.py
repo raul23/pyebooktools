@@ -26,13 +26,14 @@ logger = init_log(__name__, __file__)
 
 
 def split(folder_with_books,
-          output_folder=default_cfg.output_folder,
+          output_folder=default_cfg.split['output_folder'],
           dry_run=default_cfg.dry_run,
-          files_per_folder=default_cfg.files_per_folder,
-          folder_pattern=default_cfg.folder_pattern,
+          files_per_folder=default_cfg.split['files_per_folder'],
+          folder_pattern=default_cfg.split['folder_pattern'],
           output_metadata_extension=default_cfg.output_metadata_extension,
           reverse=default_cfg.reverse,
-          start_number=default_cfg.start_number, **kwargs):
+          start_number=default_cfg.split['start_number'],
+          **kwargs):
     files = []
     for fp in Path(folder_with_books).rglob('*'):
         # File extension
@@ -65,7 +66,7 @@ def split(folder_with_books,
             break
         chunk = files[start_index:start_index+files_per_folder]
         start_index += files_per_folder
-        logger.debug(f"Found {len(chunk)} number of files...")
+        logger.debug(f"Found {len(chunk)} files...")
         current_folder_basename = '{0:0{width}}'.format(
             current_folder_num, width=width)
         current_folder = os.path.join(output_folder, current_folder_basename)
