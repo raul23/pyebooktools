@@ -10,8 +10,8 @@ written in Shell by `na--`_. The Python script `ebooktools.py`_ is a collection
 of tools for automated and semi-automated organization and management of large
 ebook collections.
 
-Check also my other project `search-ebooks`_ which is based on ``pyebooktools``
-to search through the content and metadata of ebooks.
+Check also my other project `search-ebooks`_ which is based on `pyebooktools`_
+for searching through the content and metadata of ebooks.
 
 `:warning:`
 
@@ -109,7 +109,7 @@ Thus, you have access to various `subcommands`_ from within the
   * `ebooktools.py`_ is the name of the Python script which will always be
     referred that way in this document (i.e. no hyphen and ending with ``.py``)
     to distinguish from the original Shell project ``ebook-tools``.
-  * ``pyeboooktools`` is the name of the Python package that you need to
+  * `pyebooktools`_ is the name of the Python package that you need to
     `install <#install-pyebooktools>`__ to have access to the ``ebooktools.py``
     script.
 
@@ -128,9 +128,9 @@ Python dependencies
 
 `:information_source:`
 
-  When `installing <#install-pyebooktools>`_ the ``pyebooktools``
-  package, the ``lxml`` library is automatically installed if it
-  is not found or upgraded to the correct supported version.
+  When installing the ``pyebooktools`` package 
+  `below <#install-pyebooktools>`__, the ``lxml`` library is automatically 
+  installed if it is not found or upgraded to the correct supported version.
 
 Other dependencies
 --------------------
@@ -154,7 +154,9 @@ versions of:
     
     `:warning:`
     
-       On macOS, you don't need ``catdoc`` since `textutil`_ is already present
+       On macOS, you don't need ``catdoc`` since it has the built-in `textutil`_
+       command-line tool that converts any ``txt``, ``html``, ``rtf``, 
+       ``rtfd``, ``doc``, ``docx``, ``wordml``, ``odt``, or ``webarchive`` file.
     
   * **Optionally** the `Goodreads`_ and `WorldCat xISBN`_ calibre plugins can
     be installed for better metadata fetching.
@@ -179,7 +181,7 @@ versions of:
 
 Install ``pyebooktools``
 -------------------------
-To install the ``pyebooktools`` package:
+To install the `pyebooktools`_ package:
 
 1. It is highly recommended to install the ``pyebooktools`` package in a
    virtual environment using for example `venv`_ or `conda`_.
@@ -219,14 +221,18 @@ To install the ``pyebooktools`` package:
 Usage, options and configuration
 ================================
 All of the options documented below can either be passed to the
-`ebooktools.py`_ script via command-line parameters or via the configuration
+`ebooktools.py`_ script via command-line arguments or via the configuration
 file ``config.py`` which is created along with the logging config file
 ``logging.py`` when the ``ebooktools.py`` script is run the first time with any
 of the subcommands defined `below`_. The default values for these config files
 are taken from `default_config.py`_ and `default_logging.py`_, respectively.
 
-Command-line parameters supersede variables defined in the configuration file.
-Most parameters are not required and if nothing is specified, the default value
+In order to use the parameters found in the configuration file ``config.py``, 
+use the `--use-config`_ flag. Hence, you don't need to specify a long command-line
+in the terminal by using this flag. See the `edit`_ subcommand to know how to
+edit this configuration file.
+
+Most arguments are not required and if nothing is specified, the default values
 defined in the default config file ``default_config.py`` will be used.
 
 The ``ebooktools.py`` script consists of various subcommands for the
@@ -275,6 +281,19 @@ General control flags
 
   Print various debugging information, e.g. print traceback when there is an
   exception.
+  
+.. _use-config-label:
+
+* ``-u``, ``--use-config``; no config variable; default value ``False``
+
+  If this is enabled, the parameters found in the main config file `config.py`_ 
+  will be used instead of the command-line arguments. 
+  
+  `:information_source:`
+  
+    Note that any other command-line argument that you use in the terminal with 
+    the ``--use-config`` flag is ignored, i.e. only the parameters defined in 
+    the main config file `config.py`_ will be used.
 
 .. _dry-run-label:
 
@@ -297,9 +316,10 @@ General control flags
   
   Do not delete the gathered metadata for the organized ebooks, instead save it
   in an accompanying file together with each renamed book. It is very useful
-  for semi-automatic verification of the organized files with
-  `interactive_organizer.py`_ or for additional verification, indexing or
-  processing at a later date. [KM]_
+  or for additional verification, indexing or processing at a later date. [KM]_
+  
+  .. TODO
+  .. for semi-automatic verification of the organized files with `interactive_organizer.py`_
 
 Options related to extracting ISBNs from files and finding metadata by ISBN
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -490,6 +510,7 @@ Miscellaneous options
   ``{debug,info,warning,error}``.
 
 .. _log-format-label:
+.. TODO: explain choices
 
 * ``--log-format <value>``; config variable ``logging_formatter``; default
   value ``simple``
@@ -527,6 +548,7 @@ All subcommands are affected by the following global options:
 * `-h, --help`_
 * `-q, --quiet`_
 * `-v, --verbose`_
+* `-u, --use-config`_
 * `--log-level`_
 * `--log-format`_
 
@@ -573,6 +595,9 @@ Very few general options affect this subcommand, such as
 
 Description
 """""""""""
+
+.. _edit-description-label:
+
 Edits a configuration file, which can either be 
 
 - the main configuration file (``main``) where all the options associated
@@ -588,8 +613,10 @@ The configuration file can be opened by a user-specified application
 
 `:warning:`
 
-  Command-line parameters supersede variables defined in the configuration
-  file. 
+  By default, command-line arguments supersede parameters defined in the 
+  **default** configuration file `default_config.py`_. However, if you 
+  enable  the `--use-config`_ flag, the parameters defined in the main 
+  config file ``config.py`` will be used instead.
 
 Specific options for editing config files
 """""""""""""""""""""""""""""""""""""""""
@@ -600,13 +627,13 @@ Specific options for editing config files
   given, then the default application for opening this type of file will be 
   used.
 
-* ``-r``, ``--reset``; no config variable; default value ``False``
+* ``-r``, ``--reset``; config variable ``reset``; default value ``False``
 
   Reset a configuration file (``main`` or ``log``) with factory default values.
 
 Input option for editing config files
 """""""""""""""""""""""""""""""""""""
-* ``{main,log}``; no config variable; **required**
+* ``{main,log}``; config variable ``cfg_type``; **required**
   
   The config file to edit which can either be the main configuration file
   (``main``) or the logging configuration file (``log``).
@@ -634,7 +661,7 @@ especially the `OCR ones`_.
 
 Input and output options for converting files
 """""""""""""""""""""""""""""""""""""""""""""
-* ``input_file``; no config variable; **required**
+* ``input_file``; config variable ``input_file``; **required**
   
   The input file to be converted to a text file.
   
@@ -683,7 +710,7 @@ The only subcommand-specific option is:
 
 Input option for finding ISBNs
 """"""""""""""""""""""""""""""
-* ``input_data``; no config variable; **required**
+* ``input_data``; config variable ``input_data``; **required**
 
   Can either be the path to a file or a string. The input will be searched for
   ISBNs.
@@ -713,7 +740,7 @@ is one ebook, even if it's a huge archive). OCR can be used for scanned ebooks
 and corrupt ebooks and non-ebook documents (pamphlets) can be separated in 
 specified folders. All of the general options and flags 
 `above <#general-options>`__ affect how this subcommand operates, but there 
-are also some `specific options <#specific-options-for-organizing-files>`__ 
+are also `specific options <#specific-options-for-organizing-files>`__ 
 for it. [ORG_DESCR]_
 
 General options for organizing files
@@ -805,7 +832,7 @@ Specific options for organizing files
 
 Input and output options for organizing files
 """""""""""""""""""""""""""""""""""""""""""""
-* ``folder_to_organize``; no config variable; **required**
+* ``folder_to_organize``; config variable ``folder_to_organize``; **required**
 
   Folder containing the ebook files that need to be organized.
   
@@ -893,12 +920,14 @@ Specific options for renaming files
 
 Input and output options for renaming files
 """""""""""""""""""""""""""""""""""""""""""
-* ``calibre_folder``; no config variable; **required**
+* ``calibre_folder``; config variable ``calibre_folder``; **required**
   
   Calibre library folder which will be traversed and all the book files in it
   will be renamed. The renamed files will be either moved or symlinked (if the
   `--symlink-only`_ flag is enabled) to the ouput folder along with their
   corresponding metadata.
+
+.. _rename-output-folder-label:  
 
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working directory** (check
@@ -949,7 +978,9 @@ Specific options for splitting files
   The print format string that specifies the pattern with which new folders
   will be created. By default it creates folders like
   ``00000000, 00001000, 00002000, ...``.
-  
+
+.. _files-per-folder-label:  
+
 * ``--fpf <value>``, ``--files-per-folder <value>``; config variable 
   ``files_per_folder``; default value ``1000``
 
@@ -957,9 +988,11 @@ Specific options for splitting files
   
 Input and output options for splitting files
 """"""""""""""""""""""""""""""""""""""""""""
-* ``input_file``; no config variable; **required**
+* ``input_file``; config variable ``input_file``; **required**
   
   Folder with books which will be recursively scanned for files.
+
+.. _split-output-folder-label:  
 
 * ``-o <value>``, ``--output-folder <value>``; config variable
   ``output_folder``; **default value is the current working directory** (check
@@ -1027,7 +1060,7 @@ system.
 
 Uninstall
 =========
-To uninstall the package ``pyebooktools``::
+To uninstall the `pyebooktools`_ package::
 
    $ pip uninstall pyebooktools
    
@@ -1073,63 +1106,6 @@ Same `limitations`_ as for ``ebook-tools`` apply to this project too:
     best results, install the plugins (`1`_, `2`_) for them in calibre and
     fine-tune the settings for metadata sources in the calibre GUI.
 
-
-Roadmap
-=======
-Starting from first priority tasks:
-
-Short-term
-----------
-1. Port all `ebook-tools`_ shell scripts into Python
-
-   - |ss| ``organize-ebooks.sh`` |se|: **done**, *see* `organize_ebooks.py`_
-   - ``interactive-organizer.sh``
-   - |ss| ``find-isbns.sh`` |se|: **done**, *see* `find_isbns.py`_
-   - |ss| ``convert-to-txt.sh`` |se|: **done**, *see* `convert_to_txt.py`_
-   - |ss| ``rename-calibre-library.sh`` |se|: **done**, *see* `rename_calibre_library.py`_
-   - |ss| ``split-into-folders.sh`` |se|: **done**, *see* `split_into_folders.py`_
-
-   **Status:** only ``interactive-organizer.sh`` remaining, will port later
-
-2. Add `cache`_ support when converting files to txt
-
-   **Status:** working on it since it is needed for my other project
-   `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
-   which makes heavy use of ``pyebooktools``
-
-3. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
-   one of the following utilities:
-  
-   * |ss| ``gs``: Ghostscript |se|; done, *see* `fix_file_for_corruption()`_
-   * ``pdftocairo``: from Poppler
-   * ``mutool``: it does not "print" the PDF file
-   * ``cpdf``
-  
-   It will also check PDF files based on one of the following utilities:
-  
-   * ``pdfinfo``
-   * ``pdftotext``
-   * ``qpdf``
-   * ``jhove``
-   
-   **Status:** working on adding ``pdftocairo``
-   
-4. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
-   comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
-   based on the `cpdf`_ utility
-   
-   **NOTE:** `pdftk`_ can also remove annotations 
-
-Medium-term
------------
-1. Test on linux
-
-2. Create a `docker`_ image for this project
-
-3. Add tests on `Travis CI`_
-
-4. Eventually add documentation on `Read the Docs`_
-
 Security and safety
 ===================
 Important security and safety tips from the `ebook-tools documentation`_:
@@ -1151,17 +1127,70 @@ Important security and safety tips from the `ebook-tools documentation`_:
 **NOTE:** ``--dry-run`` and ``--symlink-only`` can be applied to the following
 subcommands:
 
-* `interact`_
+.. TODO
+.. `interact`_
 * `organize`_
 * `rename`_
 * `split`_: only ``--dry-run`` is applicable
+
+Roadmap
+=======
+Starting from first priority tasks
+
+Short-term
+----------
+1. Port all `ebook-tools`_ shell scripts into Python
+
+   - |ss| ``organize-ebooks.sh`` |se|: **done**, *see* `organize_ebooks.py`_
+   - ``interactive-organizer.sh``
+   - |ss| ``find-isbns.sh`` |se|: **done**, *see* `find_isbns.py`_
+   - |ss| ``convert-to-txt.sh`` |se|: **done**, *see* `convert_to_txt.py`_
+   - |ss| ``rename-calibre-library.sh`` |se|: **done**, *see* `rename_calibre_library.py`_
+   - |ss| ``split-into-folders.sh`` |se|: **done**, *see* `split_into_folders.py`_
+
+   **Status:** only ``interactive-organizer.sh`` remaining, will port later
+
+2. Add `cache`_ support when converting files to txt
+
+   **Status:** working on it since it is also needed for my other project
+   `search-ebooks <https://github.com/raul23/search-ebooks#cache>`__ 
+   which makes heavy use of `pyebooktools`_
+   
+3. Test on linux
+4. Create a `docker`_ image for this project
+
+Medium-term
+-----------
+1. Add tests on `Travis CI`_
+
+2. Eventually add documentation on `Read the Docs`_
+3. Add a ``fix`` subcommand that will try to fix corrupted PDF files based on
+   one of the following utilities:
+  
+   * |ss| ``gs``: Ghostscript |se|; done, *see* `fix_file_for_corruption()`_
+   * ``pdftocairo``: from Poppler
+   * ``mutool``: it does not "print" the PDF file
+   * ``cpdf``
+  
+   It will also check PDF files based on one of the following utilities:
+  
+   * ``pdfinfo``
+   * ``pdftotext``
+   * ``qpdf``
+   * ``jhove``
+   
+4. Add a ``remove`` subcommand that can remove annotations (incl. highlights, 
+   comments, notes, arrows), bookmarks, attachments and metadata from PDF files 
+   based on the `cpdf`_ utility
+   
+   **NOTE:** `pdftk`_ can also remove annotations 
 
 Credits
 =======
 * Special thanks to `na--`_, the developer of `ebook-tools`_, for having made
   these very useful tools. I learned a lot (specially ``bash``) while porting
   them to Python.
-* Thanks to all the developers of the different programs used by the project
+* Thanks to all the developers of the different programs used by this project
   such as ``calibre``, ``Tesseract``, text converters (``djvutxt`` and
   ``pdftotext``) and many other utilities!
 
@@ -1240,6 +1269,7 @@ References
 .. _lib.py: ./pyebooktools/lib.py
 .. _LICENSE: ./LICENSE
 .. _organize_ebooks.py: ./pyebooktools/organize_ebooks.py
+.. _pyebooktools: ./pyebooktools
 .. _rename_calibre_library.py: ./pyebooktools/rename_calibre_library.py
 .. _search_file_for_isbns(): https://github.com/raul23/pyebooktools/blob/52795d9d45d5ae0e666a45cbafb6e4919343dfda/pyebooktools/lib.py#L880
 .. _split_into_folders.py: ./pyebooktools/split_into_folders.py
@@ -1247,6 +1277,7 @@ References
 .. URLs: local
 .. _all the ocr-related options: #options-for-ocr
 .. _below: #script-usage-and-options
+.. _config.py: #edit-description-label
 .. _convert: #convert-options-input-file
 .. _edit: #edit-options-main-log
 .. _find: #find-options-input-data
@@ -1277,6 +1308,8 @@ References
 .. _-v, --verbose: #verbose-label
 .. _-q, --quiet: #quiet-label
 .. _--verbose: #verbose-label
+.. _--use-config: #use-config-label
+.. _-u, --use-config: #use-config-label
 .. _-d, --dry-run: #dry-run-label
 .. _--dry-run: #dry-run-label
 .. _--sl, --symlink-only: #symlink-only-label

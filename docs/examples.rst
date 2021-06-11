@@ -2,35 +2,80 @@
 EXAMPLES
 ========
 Examples to show how to execute the different `subcommands`_
-from the ``ebooktools.py`` script.
+from the `ebooktools.py`_ script.
 
-`:star:`
-
-  Sometimes, it might be more convenient to edit the configuration file
-  ``config.py`` instead of building a long command in the terminal with all the
-  options for a given subcommand (e.g. ``organize``).
-
-  Run the following command to edit this configuration file:
-  
-  
-  .. code-block:: terminal
-
-     $ ebooktools edit main
-     
-  The ``config.py`` file will be opened by the default source code editor
-  associated with this type of file and then you can modify the right
-  configuration variables for the given subcommand.
-  
-  You can then run the given subcommand and all the updated options in the
-  configuration file will be used. However, command-line parameters supersede
-  variables defined in the configuration file.
-   
-  See `edit`_ for more info about this subcommand.
+Check also some important `tips`_ about using the ``ebooktools.py`` script.
 
 .. contents:: **Contents**
    :depth: 2
    :local:
    :backlinks: top
+   
+Tips
+====
+Avoid data loss with ``--dry-run`` and ``--symlink-only``
+---------------------------------------------------------
+In order to avoid data loss, use the `--dry-run`_ or `--symlink-only`_ 
+option to test that a given subcommand would do what you expect it to do, 
+as explained in the `Security and safety`_ section.
+
+When `--dry-run`_ is enabled, no file rename/move/symlink/etc. operations 
+will actually be executed.
+
+When `--symlink-only`_ is enabled, symbolic links to ebook files are created
+instead of moving them.
+
+Thus, these flags are convenient with the subcommands `organize`_, `rename`_, 
+and `split`_ which will modify the input files. Though only ``--dry-run`` 
+applies to `split`_.
+
+`:star:`
+
+  When using these two flags, you will be able to know what the ``ebooktools.py``
+  script would have done by looking at the messages printed out in the 
+  terminal. Use the `--log-level debug`_ flag to get more information about
+  what is the ``ebooktools.py`` performing as operation (e.g. 
+  rename/move/symlink/ect.).
+
+Avoid long command lines with ``use-config``
+--------------------------------------------
+Sometimes, it might be more convenient to edit the main configuration file
+`config.py`_ instead of building a long command in the terminal with all the
+options for a given subcommand (e.g. ``organize``).
+
+For example, you might have the following long command in the terminal:
+
+.. code-block:: terminal
+
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofp ~/output_folder_pamphlets/ --owi 
+
+Instead of providing command-line arguments, we will edit the configuration
+file ``config.py`` by running the following `edit`_ subcommand:
+
+.. code-block:: terminal
+
+   $ ebooktools edit main
+
+The ``config.py`` file will be opened by the default source code editor
+associated with this type of file and then you can modify the right
+configuration variables for the given subcommand.
+
+You can then run the given subcommand with the `-u`_ flag (short name
+for the ``--use-config`` option) and all the updated options in the 
+configuration file will be used:
+
+.. code-block:: terminal
+
+   $ ebooktools organize -u
+
+where ``organize`` can also be any of the other supported `subcommands`_.
+
+The `-u, --use-config`_ flag tells the ``ebooktools.py`` script to only use the
+parameters defined in the config file ``config.py``.
+
+`:star:`
+
+  See `edit`_ for more info about this subcommand.
 
 ``convert`` examples
 ====================
@@ -40,9 +85,11 @@ Convert a pdf file to text **with** OCR
 
    $ ebooktools convert --ocr always pdf_to_convert.pdf -o converted.txt
    
-By setting ``--ocr`` to ``always``, the pdf file will be first OCRed before
+By setting `--ocr`_ to ``always``, the pdf file will be first OCRed before
 trying the simple conversion tools (``pdftotext`` or calibre's
 ``ebook-convert`` if the former command is not found).
+
+**Output:**
 
 .. code-block:: terminal
 
@@ -61,6 +108,8 @@ Convert a pdf file to text **without** OCR
 If ``pdftotext`` is present, it is used to convert the pdf file to text.
 Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
+**Output:**
+
 .. code-block:: terminal
 
    Running pyebooktools v0.1.0a3
@@ -70,10 +119,10 @@ Otherwise, calibre's ``ebook-convert`` is used for the conversion.
 
 ``edit`` examples
 =================
-The two config files that can be edited are the `main`_ and `logging`_ config
-files. We will only focus in the main config file because it is the most
-important one since it contains `all the options`_ for the ``ebooktools.py``
-script.
+The two config files that can be edited are the `main`_ and `logging`_ 
+config files, named ``config.py`` and ``logging.py`` respectively. We will only focus 
+in the main config file because it is the most important one since it contains 
+`all the options`_ for the ``ebooktools.py`` script.
 
 Edit the main config file
 -------------------------
@@ -85,7 +134,7 @@ To edit the **main** config file with **PyCharm**:
 
 |
 
-A tab with the main config file will be opened in PyCharm's Editor window:
+A tab with the main config file will be opened in **PyCharm**\'s Editor window:
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/edit/pycharm_tab.png
@@ -94,7 +143,7 @@ A tab with the main config file will be opened in PyCharm's Editor window:
 
 Reset the main config file
 --------------------------
-To reset the **main** config file with factory settings as defined in the
+To reset the **main** config file with factory settings as defined in
 `default_config.py`_:
 
 .. code-block:: terminal
@@ -128,7 +177,7 @@ The input string can be enclosed within single or double quotes.
 The other sequences ``'0000000000 0123456789 1111111111'`` are rejected because
 they are matched with the regular expression `isbn_blacklist_regex`_.
 
-By `default <./README.rst#specific-options-for-finding-isbns>`__, the extracted 
+By `default <../README.rst#specific-options-for-finding-isbns>`__, the extracted 
 ISBNs are separated by newlines, ``\n``.
 
 `:information_source:`
@@ -190,10 +239,6 @@ sequence that is part of a problem in a book about digital system.
 
 ``organize`` examples
 =====================
-You can use ``organize`` to check ebooks for corruption without
-organizing them by using the `--corruption-check-only`_ flag. See the
-`Check ebooks for corruption only`_ example for more details.
-
 The following examples show how to organize ebooks depending on different 
 cases:
 
@@ -205,6 +250,12 @@ cases:
 - `Organize ebooks with output_folder_uncertain`_: organize ebooks that
   don't have any ISBN in them.
 
+`:star:`
+
+  You can use `organize`_ to check ebooks for corruption without
+  organizing them by using the `--corruption-check-only`_ flag. See the
+  `Check ebooks for corruption only`_ example for more details.
+
 `:information_source:`
 
   You can also combine all these cases by using all of the `output folders`_
@@ -212,8 +263,7 @@ cases:
   `organize`_ subcommand.
   
   Or better you can also do it through the config file ``config.py`` by running
-  the following command:
-  
+  the following `edit`_ subcommand:
   
   .. code-block:: terminal
 
@@ -223,14 +273,57 @@ cases:
   associated with this type of file and then you can modify the right
   configuration variables.
   
-  Then run the ``organize`` subcommand and the updated options in the
-  configuration file will be used.
+  Then run the ``organize`` subcommand with the ``-u`` flag and the updated 
+  options in the configuration file will be used:
+  
+  .. code-block:: terminal
+
+     $ ebooktools organize -u
    
   See `edit`_ for more info about this subcommand.
 
 Check ebooks for corruption only
 --------------------------------
-**TODO**
+We only want to check the following ebook files for corruption (e.g. 
+zero-filled files, broken pdfs, corrupt archive, etc.):
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/content_folder_to_organize.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/content_folder_to_organize.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to check these ebooks for corruption only:
+
+.. code-block:: terminal
+
+   $ ebooktools organize --cco ~/folder_to_organize/
+   
+where 
+
+- `--cco`_ is the short name for the ``corruption-check-only`` flag and 
+  checks ebooks for corruption only without organizing them
+- `folder_to_organize`_ contains the ebooks that need to be organized or 
+  checked (as in our case)
+
+**Output:**
+
+.. code-block:: terminal
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/output_terminal.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/corruption_only/output_terminal.png
+   :align: left
+   :alt: Example: output terminal
+   
+`:information_source:`
+
+   * Since `output_folder_corrupt`_ was no provided in the previous 
+     command-line, the corrupted file was just flagged as corrupt 
+     without moving it to another folder.
+   * `Organize ebooks with output_folder_corrupt`_ shows you how to organize
+     your ebooks by separating the corrupted ebooks from the good ones by 
+     providing the paths to folders that will receive these types of ebooks.
 
 Organize ebooks with only ``output_folder``
 -------------------------------------------
@@ -247,7 +340,13 @@ This is the command to organize these ebooks:
 
 .. code-block:: terminal
 
-   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/
+   
+where 
+
+- `folder_to_organize`_ contains the ebooks that need to be organized
+- `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
+  found in it
 
 **Output:**
 
@@ -266,6 +365,15 @@ Content of ``output_folder``:
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/organize/output_folder/content_output_folder.png
    :align: left
    :alt: Example: content of ``output_folder``
+   
+`:information_source:`
+
+  Since the `--owi`_ flag was not used, two ebook files that didn't contain
+  ISBNs could not be further processed and thus were left as they are in the 
+  original directory ``folder_to_organize``. See `Organize ebooks with 
+  output_folder_uncertain`_ where this flag is enabled to organize 
+  ebooks without ISBNs by getting these book identifiers through other 
+  means (e.g. *calibre*\'s `ebook-meta`_).
 
 Organize ebooks with ``output_folder_corrupt``
 ----------------------------------------------
@@ -282,15 +390,14 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_corrupt/ 
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofc ~/output_folder_corrupt/ 
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_corrupt`_ will contain any corrupted ebook (e.g. zero-filled 
-  files, corrupt archives or broken .pdf files)
+  files, corrupt archives or broken ``.pdf`` files)
 
 **Output:**
 
@@ -336,18 +443,26 @@ We want to organize the following ebook files, some of which are pamphlets:
 
 |
 
+`:information_source:`
+
+  If no ISBN was found for a non-pdf file and the file size is less than
+  `pamphlet_max_filesize_kib`_, then it is considered as a pamphlet.
+
+|
+
 This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_pamphlets/ 
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofp ~/output_folder_pamphlets/ --owi
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_pamphlets`_ will contain all the pamphlets-like documents
+- `--owi`_ is a flag to enable the organization of documents without ISBNs such as
+  pamphlets
 
 **Output:**
 
@@ -375,13 +490,6 @@ Content of ``output_folder_pamphlets``:
    :align: left
    :alt: Example: content of ``output_folder_pamphlets``
 
-|
-
-`:information_source:`
-
-  If no ISBN was found for a non-pdf file and the file size is less than
-  `pamphlet_max_filesize_kib`_, then it is considered as a pamphlet.
-
 Organize ebooks with ``output_folder_uncertain``
 ------------------------------------------------
 We want to organize the following ebook files, some of which do not contain any
@@ -398,15 +506,15 @@ This is the command to organize these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools organize --owi ~/folder_to_organize/ -o ~/output_folder --ofu ~/output_folder_uncertain/ 
+   $ ebooktools organize ~/folder_to_organize/ -o ~/output_folder/ --ofu ~/output_folder_uncertain/ --owi
 
 where 
 
-- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 - `output_folder`_ will contain all the *renamed* ebooks for which an ISBN was
   found in it
 - `output_folder_uncertain`_ will contain all the *renamed* ebooks for which no
   ISBNs could be found in them
+- `--owi`_ is a flag to enable the organization of ebooks without ISBNs
 
 **Output:**
 
@@ -441,7 +549,7 @@ Content of ``output_folder_uncertain``:
   For those ebooks for which no ISBNs could be found in them, the
   ``ebooktools.py`` script takes the following steps to organize them:
   
-  1. Use calibre's ``ebook-meta`` to extract the author and title metadata from
+  1. Use *calibre*\'s `ebook-meta`_ to extract the author and title metadata from
      the ebook file
   2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by
      the extracted author & title and just by title
@@ -453,15 +561,35 @@ Content of ``output_folder_uncertain``:
 ``rename`` examples
 ===================
 
-Rename book files from a calibre library folder
------------------------------------------------
-Rename book files from a calibre library folder and save their symlinks along
-with their copied ``metadata.opf`` files in a separate folder:
+Rename ebook files from a calibre library folder
+------------------------------------------------
+We want to rename ebook files from a calibre library folder and save their 
+symlinks along with their copied ``metadata.opf`` files in a separate folder.
+
+Content of ``calibre_folder``:
+
+.. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_calibre_folder.png
+   :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/rename/content_calibre_folder.png
+   :align: left
+   :alt: Example: content of ``folder_to_organize``
+
+|
+
+This is the command to rename these ebooks as wanted:
 
 .. code-block:: terminal
 
-   $ ebooktools rename --sm opfcopy --sl ~/calibre_folder/ -o ~/output_folder/
-   
+   $ ebooktools rename ~/calibre_folder/ -o ~/output_folder/ --sm opfcopy --sl
+
+where 
+
+- `output_folder <../README.rst#rename-output-folder-label>`__ is where the renamed 
+  books (or their symbolic links) will be moved to along with their metadata files
+- `--sm opfcopy`_ copies calibre's ``metadata.opf`` next to each renamed file with 
+  a `output_metadata_extension`_ extension  
+- `--sl`_ is a flag for creating symbolic links to ebooks, instead of moving them 
+  to the ``output_folder``
+
 **Output:**
 
 .. code-block:: terminal
@@ -491,12 +619,12 @@ Content of ``output_folder``:
 
 `:information_source:`
 
-  * The book files are renamed based on the content of their associated
+  * The ebook files are renamed based on the content of their associated
     ``metadata.opf`` files and the new filenames follow the
     `output_filename_template`_ format.
   * The ``metadata.opf`` files are copied with the ``meta`` extension
     (`default`_) beside the
-    symlinks to the book files.
+    symlinks to the ebook files.
 
 ``split`` examples
 ==================
@@ -518,9 +646,18 @@ their numbering should start at 1:
 
 .. code-block:: terminal
    
-   $ ebooktools split -s 1 --fpf 2 ~/folder_with_books/ -o ~/output_folder/
+   $ ebooktools split ~/folder_with_books/ -o ~/output_folder/ -s 1 --fpf 2
 
-**Output:** content of ``output_folder``
+where 
+
+- `output_folder <../README.rst#split-output-folder-label>`__ in which all the 
+  new consecutively named folders will be created
+- `-s`_ is the number of the first folder
+- `--fpf`_ is the number of files per folder
+
+|
+
+Content of ``output_folder``
 
 .. image:: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
    :target: https://raw.githubusercontent.com/raul23/images/master/pyebooktools/examples/split/content_output_folder.png
@@ -529,27 +666,39 @@ their numbering should start at 1:
 
 |
 
-Note that the metadata folders contain only one file each as expected.
+`:information_source:`
 
-`:warning:`
- 
-   In order to avoid data loss, use the ``--dry-run`` option to test that
-   ``split`` would do what you expect it to do, as explained in the
-   `Security and safety`_ section.
+  Note that the metadata folders contain only one file each as expected.
    
 References
 ==========
 .. [OWI] https://github.com/raul23/pyebooktools#organize-without-isbn-label
    
 .. URLs
-.. _all the options: ../README.rst#usage-options-and-configuration
+.. _--cco: ../README.rst#specific-options-for-organizing-files
 .. _--corruption-check-only: ../README.rst#specific-options-for-organizing-files
+.. _--dry-run: ../README.rst#dry-run-label
+.. _--fpf: ../README.rst#files-per-folder-label
+.. _--log-level debug: ../README.rst#miscellaneous-options
+.. _--ocr: ../README.rst#options-for-ocr
+.. _--owi: ../README.rst#organize-without-isbn-label
+.. _--sl: ../README.rst#symlink-only-label
+.. _--sm opfcopy: ../README.rst#specific-options-for-renaming-files
+.. _--symlink-only: ../README.rst#symlink-only-label
+.. _-s: ../README.rst#specific-options-for-splitting-files
+.. _-u: ../README.rst#use-config-label
+.. _-u, --use-config: ../README.rst#use-config-label
+.. _all the options: ../README.rst#usage-options-and-configuration
+.. _config.py: ../README.rst#edit-description-label
 .. _default: ../README.rst#output-metadata-extension-label
 .. _default_config.py: ../pyebooktools/configs/default_config.py
+.. _ebook-meta: https://manual.calibre-ebook.com/generated/en/ebook-meta.html
+.. _ebooktools.py: ../README.rst#usage-options-and-configuration
 .. _edit: ../README.rst#edit-options-main-log
+.. _folder_to_organize: ../README.rst#input-and-output-options-for-organizing-files
 .. _isbn_blacklist_regex: ../README.rst#isbn-blacklist-regex-label
-.. _logging: ../pyebooktools/configs/default_logging.py
-.. _main: ../pyebooktools/configs/default_config.py
+.. _logging: ../README.rst#edit-description-label
+.. _main: ../README.rst#edit-description-label
 .. _organize: ../README.rst#organize-options-folder_to_organize
 .. _output_filename_template: ../README.rst#options-related-to-the-input-and-output-files
 .. _output_folder: ../README.rst#organize-output-folder-label
@@ -557,9 +706,11 @@ References
 .. _output_folder_pamphlets: ../README.rst#output-folder-pamphlets-label
 .. _output_folder_uncertain: ../README.rst#output-folder-uncertain-label
 .. _output folders: ../README.rst#input-and-output-options-for-organizing-files
-.. _--owi: ../README.rst#organize-without-isbn-label
+.. _output_metadata_extension: ../README.rst#output-metadata-extension-label
 .. _pamphlet_max_filesize_kib: ../README.rst#pamphlet-max-filesize-kib-label
+.. _rename: ./README.rst#rename-options-calibre-folder
 .. _Security and safety: ../README.rst#security-and-safety
+.. _split: ./README.rst#split-options-folder-with-books
 .. _subcommands: ../README.rst#script-usage-subcommands-and-options
 
 .. Local URLs
@@ -568,3 +719,4 @@ References
 .. _Organize ebooks with output_folder_corrupt: #organize-ebooks-with-output-folder-corrupt
 .. _Organize ebooks with output_folder_pamphlets: #organize-ebooks-with-output-folder-pamphlets
 .. _Organize ebooks with output_folder_uncertain: #organize-ebooks-with-output-folder-uncertain
+.. _tips: #tips
