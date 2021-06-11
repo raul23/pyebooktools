@@ -20,5 +20,13 @@ from pyebooktools.utils.logutils import init_log
 logger = init_log(__name__, __file__)
 
 
-def remove(input_data, **kwargs):
-    logger.warning('Not implemented yet!')
+class RemoveExtras:
+    def __init__(self):
+        self.input_data = None
+
+    def remove(self, input_data, **kwargs):
+        self.input_data = input_data
+        logger.warning('Not implemented yet!')
+
+
+remover = RemoveExtras()
