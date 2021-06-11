@@ -1,6 +1,7 @@
 """General utilities
 """
 import codecs
+import importlib
 import json
 import logging.config
 import os
@@ -16,8 +17,6 @@ from pathlib import Path
 from runpy import run_path
 from types import SimpleNamespace
 
-import pyebooktools
-from pyebooktools.configs import default_config as default_cfg
 from pyebooktools.utils.logutils import (init_log, set_logging_field_width,
                                          set_logging_formatter, set_logging_level)
 
@@ -43,15 +42,15 @@ def copy(src, dst, clobber=True):
         shutil.copy(src, dst)
 
 
-def get_config_dict(cfg_type='main'):
-    return load_cfg_dict(get_config_filepath(cfg_type), cfg_type)
+def get_config_dict(cfg_type='main', configs_dirpath=None):
+    return load_cfg_dict(get_config_filepath(cfg_type, configs_dirpath), cfg_type)
 
 
-def get_config_filepath(cfg_type='main'):
+def get_config_filepath(cfg_type='main', configs_dirpath=None):
     if cfg_type == 'main':
-        cfg_filepath = get_main_config_filepath()
+        cfg_filepath = get_main_config_filepath(configs_dirpath)
     elif cfg_type == 'log':
-        cfg_filepath = get_logging_filepath()
+        cfg_filepath = get_logging_filepath(configs_dirpath)
     else:
         raise ValueError(f"Invalid cfg_type: {cfg_type}")
     return cfg_filepath
@@ -89,6 +88,7 @@ def load_cfg_dict(cfg_filepath, cfg_type):
                             f"{cfg_filepath}")
         return cfg_dict
 
+    configs_dirpath = Path(cfg_filepath).parent
     assert cfg_type in CFG_TYPES, f"Invalid cfg_type: {cfg_type}"
     _, file_ext = os.path.splitext(cfg_filepath)
     try:
@@ -99,9 +99,9 @@ def load_cfg_dict(cfg_filepath, cfg_type):
         # Copy it from the default one
         # TODO: IMPORTANT destination with default?
         if cfg_type == 'main':
-            src = get_main_config_filepath(default_config=True)
+            src = get_main_config_filepath(configs_dirpath, default_config=True)
         else:
-            src = get_logging_filepath(default_config=True)
+            src = get_logging_filepath(configs_dirpath, default_config=True)
         shutil.copy(src, cfg_filepath)
         cfg_dict = _load_cfg_dict(cfg_filepath, cfg_type)
     return cfg_dict
@@ -205,39 +205,87 @@ def namespace_to_dict(ns):
     return adict
 
 
-def override_config_with_args(config, parser):
-    ignored_args = ['func', 'subparser_name']
-    # If config is Namespace
-    config = vars(config)
-    args = parser.parse_args().__dict__
-    # args_not_found_in_config = []
-    results = namedtuple("results", "config_opts_overridden default_args_overriden")
-    results.config_opts_overridden = []
-    results.default_args_overriden = []
-    for arg_name, arg_val in args.items():
-        if arg_name in ignored_args:
-            continue
-        config_val = config.get(arg_name)
-        # No value was specified, use default value
-        default_val = getattr(default_cfg, arg_name, 'not_found')
-        if arg_val is not None:
-            # User specified a value in the command-line
-            if arg_val != config_val:
-                config[arg_name] = arg_val
-                results.config_opts_overridden.append(
-                    (arg_name, config_val, arg_val))
-            # else: command-line arg and config option same value, nothing to do
-        elif config_val is not None:
-            # User provided a value from the config file
-            if config_val != default_val:
-                results.default_args_overriden.append(
-                    (arg_name, default_val, config_val))
-        else:
-            if default_val != 'not_found':
-                config[arg_name] = default_val
+def override_config_with_args(main_config, args, default_config, use_config=False):
+
+    def process_user_args(user_args):
+
+        def get_opt_val(opt_name, cfg_dict, default=False):
+            default_val = 'not_found' if default else None
+            opt_val = cfg_dict.get(opt_name, 'not_found')
+            if opt_val == 'not_found' and args.get('subcommand'):
+                    opt_val = cfg_dict.get(args['subcommand'], {}).get(
+                        opt_name, default_val)
+            return opt_val
+
+        for arg_name, arg_val in list(user_args.items()):
+            """
+            if arg_name in ignored_args:
+                continue
+            """
+            if isinstance(arg_val, dict):
+                if args['subcommand'] == arg_name:
+                    process_user_args(arg_val)
+                    del config[args['subcommand']]
+                else:
+                    del config[arg_name]
+                continue
+            arg_val = get_opt_val(arg_name, user_args)
+            default_val = get_opt_val(arg_name, default_config, default=True)
+            if arg_val is not None:
+                if arg_val != default_val:
+                    # User specified a value in the command-line/config file
+                    config[arg_name] = arg_val
+                    if default_val == 'not_found':
+                        results.args_not_found_in_config.append((arg_name, default_val, arg_val))
+                    else:
+                        results.default_args_overridden.append((arg_name, default_val, arg_val))
+                else:
+                    # User didn't change the config value (same as default one)
+                    # TODO: factorize
+                    if config.get(arg_name, 'not_found') != 'not_found':
+                        config[arg_name] = arg_val
+                    else:
+                        config.setdefault(arg_name, arg_val)
             else:
-                raise AttributeError("No value could be found for the "
-                                     f"argument {arg_name}")
+                if default_val != 'not_found':
+                    if config.get(arg_name, 'not_found') != 'not_found':
+                        config[arg_name] = default_val
+                    else:
+                        config.setdefault(arg_name, default_val)
+                else:
+                    # import ipdb
+                    # ipdb.set_trace()
+                    raise AttributeError("No value could be found for the "
+                                         f"argument '{arg_name}'")
+
+    # ignored_args = ['func', 'subparser_name']
+    # If config is Namespace
+    main_config = vars(main_config)
+    args = args.__dict__
+    results = namedtuple("results", "args_not_found_in_config default_args_overridden msg")
+    results.args_not_found_in_config = []
+    results.default_args_overridden = []
+    if use_config:
+        results.msg = 'Default arguments overridden by config options:\n'
+        config_keys = set()
+        for k, v in main_config.items():
+            if isinstance(v, dict):
+                config_keys.update(list(v.keys()))
+        for k, v in args.items():
+            if k not in config_keys:
+                main_config.setdefault(k, v)
+        config = main_config
+        user_args = main_config
+    else:
+        results.msg = 'Default arguments overridden by command-line arguments:\n'
+        config = args.copy()
+        user_args = config
+        # Remove subdicts (e.g. fix or organize)
+        for k, v in list(main_config.items()):
+            if isinstance(v, dict):
+                del main_config[k]
+    process_user_args(user_args)
+    main_config.update(config)
     return results
 
 
@@ -289,11 +337,11 @@ def run_cmd(cmd):
         return result
 
 
-def setup_log(quiet=False, verbose=False, logging_level=None,
-              logging_formatter=None, subcommand=None):
+def setup_log(package=None, configs_dirpath=None, quiet=False, verbose=False,
+              logging_level=None, logging_formatter=None, subcommand=None):
     package_path = os.getcwd()
-    log_filepath = get_logging_filepath()
-    main_cfg_msg = f"Main config path: {get_main_config_filepath()}"
+    log_filepath = get_logging_filepath(configs_dirpath)
+    main_cfg_msg = f"Main config path: {get_main_config_filepath(configs_dirpath)}"
     main_log_msg = f'Logging path: {log_filepath}'
     # Get logging cfg dict
     log_dict = load_cfg_dict(log_filepath, cfg_type='log')
@@ -323,8 +371,11 @@ def setup_log(quiet=False, verbose=False, logging_level=None,
     # =============
     # Start logging
     # =============
-    logger.info("Running {} v{}".format(pyebooktools.__name__,
-                                        pyebooktools.__version__))
+    if package:
+        if type(package) == str:
+            package = importlib.import_module(package)
+        logger.info("Running {} v{}".format(package.__name__,
+                                            package.__version__))
     logger.info("Verbose option {}".format(
         "enabled" if verbose else "disabled"))
     logger.debug("Working directory: {}".format(package_path))
@@ -346,17 +397,17 @@ def get_configs_dirpath():
     return __path__[0]
 
 
-def get_logging_filepath(default_config=False):
-    # TODO: add names of logging files as global
+def get_logging_filepath(configs_dirpath=None, default_config=False):
+    configs_dirpath = get_configs_dirpath() if configs_dirpath is None else configs_dirpath
     if default_config:
-        return os.path.join(get_configs_dirpath(), 'default_logging.py')
+        return os.path.join(configs_dirpath, 'default_logging.py')
     else:
-        return os.path.join(get_configs_dirpath(), 'logging.py')
+        return os.path.join(configs_dirpath, 'logging.py')
 
 
-def get_main_config_filepath(default_config=False):
-    # TODO: add names of config files as global
+def get_main_config_filepath(configs_dirpath=None, default_config=False):
+    configs_dirpath = get_configs_dirpath() if configs_dirpath is None else configs_dirpath
     if default_config:
-        return os.path.join(get_configs_dirpath(), 'default_config.py')
+        return os.path.join(configs_dirpath, 'default_config.py')
     else:
-        return os.path.join(get_configs_dirpath(), 'config.py')
+        return os.path.join(configs_dirpath, 'config.py')
