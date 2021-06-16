@@ -740,7 +740,7 @@ and corrupt ebooks and non-ebook documents (pamphlets) can be separated in
 specified folders. All of the general options and flags 
 `above <#general-options>`__ affect how this subcommand operates, but there 
 are also `specific options <#specific-options-for-organizing-files>`__ 
-for it. [ORG_DESCR]_
+for it. [ORGD]_
 
 General options for organizing files
 """"""""""""""""""""""""""""""""""""
@@ -1211,7 +1211,7 @@ References
 .. [OFT] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [OME] https://github.com/na--/ebook-tools#options-related-to-the-input-and-output-files
 .. [ORG] https://github.com/na--/ebook-tools#ebook-tools
-.. [ORG_DESCR] https://github.com/na--/ebook-tools#description
+.. [ORGD] https://github.com/na--/ebook-tools#description
 .. [OWI] https://github.com/na--/ebook-tools#specific-options-for-organizing-files
 .. [OWIS] https://github.com/na--/ebook-tools#options-related-to-extracting-and-searching-for-non-isbn-metadata
 .. [PIF] https://github.com/na--/ebook-tools#specific-options-for-organizing-files
