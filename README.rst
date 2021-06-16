@@ -7,8 +7,7 @@
 
 This project (**version 0.1.0a3**) is a Python port of `ebook-tools`_ which is
 written in Shell by `na--`_. The Python script `ebooktools.py`_ is a collection
-of tools for automated and semi-automated organization and management of large
-ebook collections.
+of tools for automated organization and management of large ebook collections.
 
 Check also my other project `search-ebooks`_ which is based on `pyebooktools`_
 for searching through the content and metadata of ebooks.
@@ -576,8 +575,8 @@ of each subcommand without showing the subcommand options.
 |
 
 In the subsections below, you will find a definition for each of the
-supported subcommands for automated and semi-automated organization and
-management of large ebook collections.
+supported subcommands for automated and organization and management 
+of large ebook collections.
 
 edit [OPTIONS] {main,log}
 ^^^^^^^^^^^^^^^^^^^^^^^^^
