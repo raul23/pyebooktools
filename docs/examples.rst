@@ -321,9 +321,9 @@ where
    * Since `output_folder_corrupt`_ was no provided in the previous 
      command-line, the corrupted file was just flagged as corrupt 
      without moving it to another folder.
-   * `Organize ebooks with output_folder_corrupt`_ shows you how to organize
-     your ebooks by separating the corrupted ebooks from the good ones by 
-     providing the paths to folders that will receive these types of ebooks.
+   * The `Organize ebooks with output_folder_corrupt`_ example shows you how 
+     to organize your ebooks by separating the corrupted ebooks from the good 
+     ones.
 
 Organize ebooks with only ``output_folder``
 -------------------------------------------
