@@ -554,7 +554,7 @@ Content of ``output_folder_uncertain``:
   2. Search the online metadata sources (``Goodreads,Amazon.com,Google``) by
      the extracted author & title and just by title
   3. If there is no useful metadata or nothing is found online, the script will
-     try to use the filename for searching.
+     try to use the filename for searching
   
   [OWI]_
 
