@@ -14,10 +14,9 @@ for searching through the content and metadata of ebooks.
 
 `:warning:`
 
-  * For the moment, the ``ebooktools.py`` script is only tested on **macOS**.
-    It will be tested also on linux.
-  * **More to come!** Check the `Roadmap <#roadmap>`_ to know what is coming
-    soon.
+  Check `organize-ebooks <https://github.com/raul23/organize-ebooks>`_ which is the Python port of `organize-ebooks.sh 
+  <https://github.com/na--/ebook-tools/blob/master/organize-ebooks.sh>`_ and includes a `Docker image 
+  <https://hub.docker.com/repository/docker/raul23/organize/general>`_ for easy installation of all needed dependencies and Python package.
 
 .. contents:: **Contents**
    :depth: 3
