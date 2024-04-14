@@ -315,7 +315,7 @@ General control flags
   .. for semi-automatic verification of the organized files with `interactive_organizer.py`_
 
 Script usage, subcommands and options
-------------------------------------
+-------------------------------------
 The usage pattern for running a given **subcommand** is the following:
 
 .. code-block:: terminal
