@@ -174,16 +174,16 @@ versions of:
 
 Install ``pyebooktools``
 -------------------------
-To install the `pyebooktools`_ package:
+1. Install first the `Python dependencies <#python-dependencies>`_ and other `tools <#other-dependencies>`_.
 
-1. It is highly recommended to install the ``pyebooktools`` package in a
+2. It is highly recommended to install the ``pyebooktools`` package in a
    virtual environment using for example `venv`_ or `conda`_.
 
-2. Make sure to update *pip*::
+3. Make sure to update *pip*::
 
    $ pip install --upgrade pip
 
-3. Install the ``pyebooktools`` package (**bleeding-edge version**) with
+4. Install the ``pyebooktools`` package (**bleeding-edge version**) with
    *pip*::
 
    $ pip install git+https://github.com/raul23/pyebooktools#egg=pyebooktools
